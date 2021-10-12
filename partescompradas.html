@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  	<title>Inventory Search</title>
+  	<link rel="stylesheet" href="css/stylesheet-partes.css">
+</head>
+<body>
+	<input type="text" id="input" onkeyup="quicksearch()" placeholder="Buscar Numero De Parte..." title="Type in a name">
+	<table id="table">
+   <tr>
+       <th>Numero De Parte</th>
+       <th>Cantidad</th>
+       <th>Localizacion</th>
+   </tr>
+   <tr>
+  	<td> <a href="">190562</a> </td>
+  	<td> <a href="">500</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">893-13U</a> </td>
+  	<td> <a href="">900</a> </td>
+	<td> <a href="">PCG1401</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">976B335S00MA</a> </td>
+  	<td> <a href="">1000</a> </td>
+	<td> <a href="">PCG201</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">KRG25LTCA</a> </td>
+  	<td> <a href="">500</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0549303AA01</a> </td>
+  	<td> <a href="">2400</a> </td>
+	<td> <a href="">PCG101</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0571635AA01</a> </td>
+  	<td> <a href="">5000</a> </td>
+	<td> <a href="">PCG302</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0S71636AA01</a> </td>
+  	<td> <a href="">3000</a> </td>
+	<td> <a href="">PCG302</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0571640AA01</a> </td>
+  	<td> <a href="">12400</a> </td>
+	<td> <a href="">PCG301</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0571668AA01</a> </td>
+  	<td> <a href="">1000</a> </td>
+	<td> <a href="">PCG202</a> </td>
+  </tr>
+  <tr>
+  <tr>
+  	<td> <a href="">L0572828AA03</a> </td>
+  	<td> <a href="">750</a> </td>
+	<td> <a href="">PCG301</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0591424AA01</a> </td>
+  	<td> <a href="">1500</a> </td>
+	<td> <a href="">PCG301</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0S92042AA01</a> </td>
+  	<td> <a href="">5000</a> </td>
+	<td> <a href="">PCG301</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0592045AA04</a> </td>
+  	<td> <a href="">3000</a> </td>
+	<td> <a href="">PCG301</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0592046AA01</a> </td>
+  	<td> <a href="">4700</a> </td>
+	<td> <a href="">PCG302</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0597009AA02</a> </td>
+  	<td> <a href="">5000</a> </td>
+	<td> <a href="">PCG302</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0637636AA01</a> </td>
+  	<td> <a href="">700</a> </td>
+	<td> <a href="">PCG201</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0639918AA01</a> </td>
+  	<td> <a href="">300</a> </td>
+	<td> <a href="">PCG1301</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0649100AA01</a> </td>
+  	<td> <a href="">3000</a> </td>
+	<td> <a href="">PCG202</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0649101AA01</a> </td>
+  	<td> <a href="">1400</a> </td>
+	<td> <a href="">PCG202</a> </td>
+  </tr>
+  <tr>
+	<td> <a href="">L0668944aa01</a> </td>
+	<td> <a href="">1500</a> </td>
+	<td> <a href="">PCG302</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0676165AA01</a> </td>
+     	<td> <a href="">2000</a> </td>
+	<td> <a href="">PCG202</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0676166AA01</a> </td>
+  	<td> <a href="">2300</a> </td>
+	<td> <a href="">PCG202</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0676168AA01</a> </td>
+  	<td> <a href="">1750</a> </td>
+	<td> <a href="">PCG202</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0676174AA01</a> </td>
+  	<td> <a href="">7800</a> </td>
+	<td> <a href="">PCG201</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0676177AA01</a> </td>
+  	<td> <a href="">2500</a> </td>
+	<td> <a href="">PCG201</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0676192AA01</a> </td>
+  	<td> <a href="">2000</a> </td>
+	<td> <a href="">PCG1301</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0676194AA01</a> </td>
+  	<td> <a href="">400</a> </td>
+	<td> <a href="">PCG1202</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0676195AA01</a> </td>
+  	<td> <a href="">1800</a> </td>
+	<td> <a href="">PCG1301</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0676232AA01</a> </td>
+  	<td> <a href="">700</a> </td>
+	<td> <a href="">PCG202</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0681545AA01</a> </td>
+  	<td> <a href="">2000</a> </td>
+	<td> <a href="">PCG301</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0681546AA01</a> </td>
+  	<td> <a href="">1500</a> </td>
+	<td> <a href="">PCG301</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0681547AA01</a> </td>
+  	<td> <a href="">1500</a> </td>
+	<td> <a href="">PCG1303</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0682842AAO1</a> </td>
+  	<td> <a href="">600</a> </td>
+	<td> <a href="">PCG301</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0682843AA01</a> </td>
+  	<td> <a href="">1700</a> </td>
+	<td> <a href="">PCG1303</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0685445AA01</a> </td>
+  	<td> <a href="">1300</a> </td>
+	 <td>  <a href="">PCG302</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0797260AA01</a> </td>
+  	<td> <a href="">400</a> </td>
+	<td>   <a href="">PCG1301</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0816048AA01GKA</a> </td>
+  	<td> <a href="">1000</a> </td>
+	<td>   <a href="">PCG202</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0816049AA0109X</a> </td>
+  	<td> <a href="">1000</a> </td>
+	<td>   <a href="">PCG202</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0816049AA0145D</a> </td>
+  	<td> <a href="">1000</a> </td>
+	<td> <a href="">PCG202</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0816049AA01GKA</a> </td>
+  	<td> <a href="">1000</a> </td>
+	<td> <a href="">PCG202</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">Q010000839</a> </td>
+  	<td> <a href="">1000</a> </td>
+	<td> <a href="">PCG201</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">Q92K204G19</a> </td>
+  	<td> <a href="">1000</a> </td>
+	<td> <a href="">PCG201</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">WRG16LBAA</a> </td>
+  	<td> <a href="">500</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">WRG25LBAA</a> </td>
+  	<td> <a href="">500</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">WRG25MAAA</a> </td>
+  	<td> <a href="">1000</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">721B135S00MA</a> </td>
+  	<td> <a href="">1600</a> </td>
+	<td> <a href="">PCG1202</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">721B20S00MA</a> </td>
+  	<td> <a href="">7000</a> </td>
+	<td> <a href="">PCG1202</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0594162AA01</a> </td>
+  	<td> <a href="">2000</a> </td>
+	<td> <a href="">PCG1202</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">WYNGB3-167A</a> </td>
+  	<td> <a href="">N/A</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">91577X92-119X</a> </td>
+  	<td> <a href="">N/A</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">91577X92-309X</a> </td>
+  	<td> <a href="">N/A</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">91577X92-313N</a> </td>
+  	<td> <a href="">N/A</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">91577X92-645D</a> </td>
+  	<td> <a href="">N/A</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">91577X92-999K</a> </td>
+  	<td> <a href="">N/A</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">L0749224AA01</a> </td>
+  	<td> <a href="">N/A</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">N03425756033</a> </td>
+  	<td> <a href="">N/A</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">WYNGB3-119X</a> </td>
+  	<td> <a href="">N/A</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">WYNGB3-309X</a> </td>
+  	<td> <a href="">N/A</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">WYNGB3-313N</a> </td>
+  	<td> <a href="">N/A</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">WYNGB3-645D</a> </td>
+  	<td> <a href="">N/A</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">WYNGB3-999K</a> </td>
+  	<td> <a href="">N/A</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">WYNGB3-923T</a> </td>
+  	<td> <a href="">N/A</a> </td>
+  </tr>
+  <tr>
+  	<td> <a href="">91577X92-923T</a> </td>
+  	<td> <a href="">N/A</a> </td>
+  </tr>
+  	</table>
+	<script src="js/search.js">
+	</script>
+</body>
+<footer>L.I.S Menu v1.3</footer>
+</html>

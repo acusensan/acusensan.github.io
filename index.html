@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  	<title>Inventory Search</title>
+  	<link rel="stylesheet" href="css/stylesheet.css">
+  	<style>
+  		
+  	</style>
+ </head>
+ <body>
+<div class="btn-group">
+	<button><a href="partescompradas.html">Partes Compradas</a></button>
+	<button>null</button>
+	<button>null</button>
+	<input type="button" value="download" onclick="passwd()"/>
+</div>
+<script>
+	function passwd(){
+		var password = prompt('enter the password to download the file');
+		if (password.toLowerCase() == "teacher"){
+			window.open("folder/test.txt")
+		}
+		else{
+			alert("incorrect password");
+		}
+	}
+</script>
+</body>
+<footer>L.I.S Menu v1.3</footer>
+</html>
