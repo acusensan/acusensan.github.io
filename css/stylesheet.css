@@ -1,0 +1,28 @@
+body{
+  			color: #ffffff;
+  			background-color: #212121;
+  			margin: 0;
+  		}
+  		.btn-group button {
+  			background-color:#292931;
+  			border: 4px white;
+  			color: white;
+  			padding: 80px;
+  			width: 100%;
+  			display: block;
+  		}
+  		.btn-group button a {
+  			color: white;
+  			font-size: 30px;
+  			text-decoration: none;
+  		}
+  		.btn-group button:not (:last-child){
+  			border-bottom: none;
+  		}
+  		.btn-group button:hover {
+  			background-color: #212121;
+  		}
+  		footer{
+  			text-align: center;
+  			padding-top: 10px;
+  		}
