@@ -26,3 +26,6 @@ body{
   			text-align: center;
   			padding-top: 10px;
   		}
+          div.content{
+          	text-align:center;
+          }
