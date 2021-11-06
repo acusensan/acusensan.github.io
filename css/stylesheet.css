@@ -29,7 +29,7 @@ body{
           div.content{
           	text-align:center;
           }
-		  div.btn{
+		  div button.btn{
 			border: 2px solid #4CAF50;
 			color: white;
 			padding: 16px 32px;
@@ -40,4 +40,6 @@ body{
 			margin: 4px 2px;
 			transition-duration: 0.4s;
 			cursor: pointer;
+			width:50%;
 		  }
+		  
