@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <style>
+    /* Additional custom styles */
+    .topnav{
+      overflow:hidden;
+      background: #333;
+    }
+    .topnav a{
+      float: left;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+    .topnav a:hover{
+      background-color: #ddd;
+      color: white;
+    }
+    .topnav a.active{
+      background-color: #04AA6D;
+      color: white;
+    }
+    .container {
+      margin-top: 20px;
+    }
+    .responsive-table {
+      overflow-x: auto;
+    }
+    th, td {
+      min-width: 150px;
+      padding: 10px;
+    }
+  </style>
+  <script>
+    function filterTable() {
+      var input, filter, table, tr, td, i;
+      input = document.getElementById("searchInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="topnav">
+    <a href="partescompradas.html" class="active">Partes Compradas</a>
+    <a href="hilos.html">Hilos</a>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col s12">
+        <div class="input-field">
+          <input id="searchInput" type="text" onkeyup="filterTable()" placeholder="Buscar">
+          <label for="searchInput">Buscar Numero De Parte...</label>
+        </div>
+      </div>
+    </div>
+    <div class="responsive-table">
+      <table id="myTable" class="striped">
+        <thead><tr><th>Numero De Parte</th><th>Qty</th><th>Localizacion</th><th>Carline</th></tr></thead>
+        <tbody>
+          <tr><td>687B200S00MA</td><td>2500</td><td>APC0104</td><td>CABECERAS</td></tr>
+          <tr><td>721B135S00MA</td><td>1600</td><td>APC0104</td><td>CABECERAS</td></tr>
+          <tr><td>721B140S00MA</td><td>1800</td><td>APC0104</td><td>CABECERAS</td></tr>
+          <tr><td>721B20S00MA</td><td>7000</td><td>APC0104</td><td>CABECERAS</td></tr>
+          <tr><td>L0594162AA01</td><td>2000</td><td>APC0104</td><td>CABECERAS</td></tr>
+          <tr><td>L001797262NCPAA</td><td>2000</td><td>APC0204</td><td>PCGT1XX</td></tr>
+          <tr><td>L001802491NCPAA</td><td>1000</td><td>APC0116</td><td>PCGT1XX</td></tr>
+          <tr><td>L001802492NCPAA</td><td>1000</td><td>APC0116</td><td>PCGT1XX</td></tr>
+          <tr><td>L002171015NCPAA</td><td>1000</td><td>APC0204</td><td>PCGT1XX</td></tr>
+          <tr><td>L0571635AA01</td><td>5000</td><td>APC0105</td><td>PCGT1XX</td></tr>
+          <tr><td>L0571636AA01</td><td>3000</td><td>APC0105</td><td>PCGT1XX</td></tr>
+          <tr><td>L0571640AA01</td><td>12500</td><td>APC0115</td><td>PCGT1XX</td></tr>
+          <tr><td>L0571668AA01</td><td>1000</td><td>APC0106</td><td>PCGT1XX</td></tr>
+          <tr><td>L0572828AA03</td><td>1000</td><td>APC0105</td><td>PCGT1XX</td></tr>
+          <tr><td>L0591424AA01</td><td>1500</td><td>APC0105</td><td>PCGT1XX</td></tr>
+          <tr><td>L0592042AA01</td><td>6000</td><td>APC0115</td><td>PCGT1XX</td></tr>
+          <tr><td>L0592045AA04</td><td>3000</td><td>APC0115</td><td>PCGT1XX</td></tr>
+          <tr><td>L0592046AA01</td><td>4700</td><td>APC0106</td><td>PCGT1XX</td></tr>
+          <tr><td>L0597009AA02</td><td>5000</td><td>APC0115</td><td>PCGT1XX</td></tr>
+          <tr><td>L0637636AA01</td><td>700</td><td>APC0106</td><td>PCGT1XX</td></tr>
+          <tr><td>L0639918AA01</td><td>300</td><td>APC0107</td><td>PCGT1XX</td></tr>
+          <tr><td>L0649100AA01</td><td>3000</td><td>APC0117</td><td>PCGT1XX</td></tr>
+          <tr><td>L0649101AA01</td><td>1400</td><td>APC0117</td><td>PCGT1XX</td></tr>
+          <tr><td>L0668944AA01</td><td>1500</td><td>APC0105</td><td>PCGT1XX</td></tr>
+          <tr><td>L0676165AA01</td><td>2000</td><td>APC0106</td><td>PCGT1XX</td></tr>
+          <tr><td>L0676166AA01</td><td>2300</td><td>APC0117</td><td>PCGT1XX</td></tr>
+          <tr><td>L0676168AA01</td><td>1750</td><td>APC0117</td><td>PCGT1XX</td></tr>
+          <tr><td>L0676177AA01</td><td>2000</td><td>APC0117</td><td>PCGT1XX</td></tr>
+          <tr><td>L0676192AA01</td><td>2000</td><td>APC0107</td><td>PCGT1XX</td></tr>
+          <tr><td>L0676195AA01</td><td>1800</td><td>APC0107</td><td>PCGT1XX</td></tr>
+          <tr><td>L0676232AA01</td><td>700</td><td>APC0214</td><td>PCGT1XX</td></tr>
+          <tr><td>L0681545AA01</td><td>2000</td><td>APC0116</td><td>PCGT1XX</td></tr>
+          <tr><td>L0681546AA01</td><td>1500</td><td>APC0116</td><td>PCGT1XX</td></tr>
+          <tr><td>L0681547AA01</td><td>1500</td><td>APC0116</td><td>PCGT1XX</td></tr>
+          <tr><td>L0682842AA01</td><td>600</td><td>APC0115</td><td>PCGT1XX</td></tr>
+          <tr><td>L0682843AA01</td><td>1700</td><td>APC0115</td><td>PCGT1XX</td></tr>
+          <tr><td>L0685445AA01</td><td>1300</td><td>APC0116</td><td>PCGT1XX</td></tr>
+          <tr><td>L0797260AA01</td><td>400</td><td>APC0107</td><td>PCGT1XX</td></tr>
+          <tr><td>L002194708NCPAA</td><td>3300</td><td>APC0202</td><td>SUV</td></tr>
+          <tr><td>L0654899AA01</td><td>7500</td><td>APC0212</td><td>SUV</td></tr>
+          <tr><td>L0676258AA05</td><td>2600</td><td>APC0202</td><td>SUV</td></tr>
+          <tr><td>L0698195AA01</td><td>800</td><td>APC0201</td><td>SUV</td></tr>
+          <tr><td>L0698200AA01</td><td>600</td><td>APC0211</td><td>SUV</td></tr>
+          <tr><td>L0698203AA01</td><td>550</td><td>APC0211</td><td>SUV</td></tr>
+          <tr><td>L0706490AA03</td><td>2000</td><td>APC0202</td><td>SUV</td></tr>
+          <tr><td>L0706491AA03</td><td>1500</td><td>APC0202</td><td>SUV</td></tr>
+          <tr><td>L0706492AA02</td><td>1500</td><td>APC0201</td><td>SUV</td></tr>
+          <tr><td>L0724597AA01</td><td>2000</td><td>APC0201</td><td>SUV</td></tr>
+          <tr><td>L0736063AA01</td><td>700</td><td>APC0201</td><td>SUV</td></tr>
+          <tr><td>L0736066AA01</td><td>125</td><td>APC0201</td><td>SUV</td></tr>
+          <tr><td>L0753466AA01</td><td>2000</td><td>APC0203</td><td>SUV</td></tr>
+          <tr><td>L0776538AA01</td><td>500</td><td>APC0202</td><td>SUV</td></tr>
+          <tr><td>L0780891AA01</td><td>750</td><td>APC0202</td><td>SUV</td></tr>
+          <tr><td>L0797678AA01</td><td>450</td><td>APC0211</td><td>SUV</td></tr>
+          <tr><td>L0797679AA01</td><td>100</td><td>APC0211</td><td>SUV</td></tr>
+          <tr><td>L0797825AA01</td><td>1200</td><td>APC0212</td><td>SUV</td></tr>
+          <tr><td>L0802979AA01</td><td>2000</td><td>APC0203</td><td>SUV</td></tr>
+          <tr><td>L0802980AA01</td><td>2000</td><td>APC0203</td><td>SUV</td></tr>
+          <tr><td>L0802981AA01</td><td>1500</td><td>APC0203</td><td>SUV</td></tr>
+          <tr><td>L0806941AA01</td><td>850</td><td>APC0212</td><td>SUV</td></tr>
+          <tr><td>L0806942AA01</td><td>250</td><td>APC0212</td><td>SUV</td></tr>
+          <tr><td>L0806943AA01</td><td>2000</td><td>APC0212</td><td>SUV</td></tr>
+          <tr><td>L0806944AA01</td><td>400</td><td>APC0212</td><td>SUV</td></tr>
+          <tr><td>L001434100NCPAA</td><td>4400</td><td>APC0112</td><td>COLORADO</td></tr>
+          <tr><td>L001466311NCPAA</td><td>3000</td><td>APC0114</td><td>COLORADO</td></tr>
+          <tr><td>L001518304NCPAA</td><td>3000</td><td>APC0112</td><td>COLORADO</td></tr>
+          <tr><td>L002215045NCPAA</td><td>2500</td><td>APC0114</td><td>COLORADO</td></tr>
+          <tr><td>L002215046NCPAA</td><td>3500</td><td>APC0114</td><td>COLORADO</td></tr>
+          <tr><td>L002312377NCPAA</td><td>700</td><td>APC0113</td><td>COLORADO</td></tr>
+          <tr><td>L002312378NCPAA</td><td>700</td><td>APC0113</td><td>COLORADO</td></tr>
+          <tr><td>L002312379NCPAC</td><td>375</td><td>APC0113</td><td>COLORADO</td></tr>
+          <tr><td>L002312383NCPAC</td><td>700</td><td>APC0113</td><td>COLORADO</td></tr>
+          <tr><td>L002316235NCPAB</td><td>500</td><td>APC0103</td><td>COLORADO</td></tr>
+          <tr><td>L002316236NCPAA</td><td>1800</td><td>APC0103</td><td>COLORADO</td></tr>
+          <tr><td>L002316237NCPAA</td><td>1000</td><td>APC0103</td><td>COLORADO</td></tr>
+          <tr><td>L002316238NCPAA</td><td>1200</td><td>APC0103</td><td>COLORADO</td></tr>
+          <tr><td>L002316914NCPAA</td><td>6700</td><td>APC0114</td><td>COLORADO</td></tr>
+          <tr><td>L002316915NCPAA</td><td>1200</td><td>APC0114</td><td>COLORADO</td></tr>
+          <tr><td>L002316951NCPAC</td><td>80</td><td>APC0112</td><td>COLORADO</td></tr>
+          <tr><td>L002396469NCPAA</td><td>2600</td><td>APC0113</td><td>COLORADO</td></tr>
+          <tr><td>L002401087NCPAC</td><td>1000</td><td>APC0102</td><td>COLORADO</td></tr>
+          <tr><td>L002401088NCPAC</td><td>1000</td><td>APC0102</td><td>COLORADO</td></tr>
+          <tr><td>L002401089NCPAD</td><td>1000</td><td>APC0102</td><td>COLORADO</td></tr>
+          <tr><td>L002401090NCPAD</td><td>1000</td><td>APC0102</td><td>COLORADO</td></tr>
+          <tr><td>L002401091NCPAB</td><td>1000</td><td>APC0102</td><td>COLORADO</td></tr>
+          <tr><td>L002401092NCPAA</td><td>350</td><td>APC0102</td><td>COLORADO</td></tr>
+          <tr><td>L002401093NCPAA</td><td>650</td><td>APC0102</td><td>COLORADO</td></tr>
+          <tr><td>L002479499NCPAA</td><td>3600</td><td>APC0113</td><td>COLORADO</td></tr>
+          <tr><td>L002479502NCPAA</td><td>1900</td><td>APC0112</td><td>COLORADO</td></tr>
+          <tr><td>L002481117NCPAA</td><td>1100</td><td>APC0114</td><td>COLORADO</td></tr>
+          <tr><td>L002618780NCPAA</td><td>900</td><td>APC0112</td><td>COLORADO</td></tr>
+          <tr><td>L0430654AA01</td><td>5000</td><td>APC0112</td><td>COLORADO</td></tr>
+          <tr><td>1561-305SAA</td><td>950</td><td>APC0110</td><td>SAVANA</td></tr>
+          <tr><td>1561-345SAA</td><td>750</td><td>APC0110</td><td>SAVANA</td></tr>
+          <tr><td>1561B165S00MA</td><td>2000</td><td>Pendiente</td><td>SAVANA</td></tr>
+          <tr><td>1561B255S00MA</td><td>850</td><td>APC0120</td><td>SAVANA</td></tr>
+          <tr><td>1561B260S00MA</td><td>1400</td><td>APC0118</td><td>SAVANA</td></tr>
+          <tr><td>1561B265S00MA</td><td>1400</td><td>APC0119</td><td>SAVANA</td></tr>
+          <tr><td>1561B355S00MA</td><td>1000</td><td>APC0109</td><td>SAVANA</td></tr>
+          <tr><td>1561B760S00MA</td><td>450</td><td>APC0110</td><td>SAVANA</td></tr>
+          <tr><td>1805B140S00MA</td><td>1900</td><td>APC0118</td><td>SAVANA</td></tr>
+          <tr><td>1805B150S00MA</td><td>1000</td><td>Pendiente</td><td>SAVANA</td></tr>
+          <tr><td>1805B170S00MA</td><td>1600</td><td>Pendiente</td><td>SAVANA</td></tr>
+          <tr><td>1805B180S00MA</td><td>550</td><td>APC0119</td><td>SAVANA</td></tr>
+          <tr><td>1805B30S00MA</td><td>Pendiente</td><td>APC0109</td><td>SAVANA</td></tr>
+          <tr><td>1805B40S00MA</td><td>5000</td><td>Pendiente</td><td>SAVANA</td></tr>
+          <tr><td>1805B50S00MA</td><td>Pendiente</td><td>Pendiente</td><td>SAVANA</td></tr>
+          <tr><td>1805B620S00MA</td><td>400</td><td>APC0110</td><td>SAVANA</td></tr>
+          <tr><td>1805B770S00MA</td><td>300</td><td>APC0120</td><td>SAVANA</td></tr>
+          <tr><td>1805B80S00MA</td><td>Pendiente</td><td>Pendiente</td><td>SAVANA</td></tr>
+          <tr><td>1805B95S00MA</td><td>Pendiente</td><td>Pendiente</td><td>SAVANA</td></tr>
+          <tr><td>2140B115S00MA</td><td>350</td><td>APC0109</td><td>SAVANA</td></tr>
+          <tr><td>2140B150S00MA</td><td>750</td><td>APC0119</td><td>SAVANA</td></tr>
+          <tr><td>2140B15S00MA</td><td>5000</td><td>Pendiente</td><td>SAVANA</td></tr>
+          <tr><td>2140B40S00MA</td><td>2500</td><td>APC0120</td><td>SAVANA</td></tr>
+          <tr><td>2140B630S00MA</td><td>100</td><td>APC0120</td><td>SAVANA</td></tr>
+          <tr><td>2140B65S00MA</td><td>1300</td><td>APC0119</td><td>SAVANA</td></tr>
+          <tr><td>2140B85S00MA</td><td>1000</td><td>Pendiente</td><td>SAVANA</td></tr>
+          <tr><td>2232B910F00MA</td><td>175</td><td>APC0110</td><td>SAVANA</td></tr>
+          <tr><td>305B105S00MA</td><td>Pendiente</td><td>APC0110</td><td>SAVANA</td></tr>
+          <tr><td>305B270S00MA</td><td>500</td><td>APC0120</td><td>SAVANA</td></tr>
+          <tr><td>305B290S00MA</td><td>500</td><td>APC0119</td><td>SAVANA</td></tr>
+          <tr><td>305B30S00MA</td><td>Pendiente</td><td>APC0109</td><td>SAVANA</td></tr>
+          <tr><td>305B45S00MA</td><td>2500</td><td>APC0119</td><td>SAVANA</td></tr>
+          <tr><td>725B40S00MA</td><td>4000</td><td>APC0118</td><td>SAVANA</td></tr>
+          <tr><td>794-100SAA</td><td>1500</td><td>APC0120</td><td>SAVANA</td></tr>
+          <tr><td>958B45S00MA</td><td>Pendiente</td><td>Pendiente</td><td>SAVANA</td></tr>
+          <tr><td>975B25S00MA</td><td>Pendiente</td><td>APC0109</td><td>SAVANA</td></tr>
+          <tr><td>L0022028AA02G15</td><td>1000</td><td>Pendiente</td><td>SAVANA</td></tr>
+          <tr><td>STFR-415X122FAC</td><td>300</td><td>APC0109</td><td>SAVANA</td></tr>
+          <tr><td>346779</td><td>300</td><td>APC0118</td><td>BINDING</td></tr>
+          <tr><td>346803</td><td>300</td><td>APC0118</td><td>BINDING</td></tr>
+          <tr><td>Q010000839</td><td>1000</td><td>APC0213</td><td>BOTON</td></tr>
+          <tr><td>Q92K204g19</td><td>1000</td><td>APC0213</td><td>BOTON</td></tr>
+          <tr><td>Q92K204g20</td><td>1000</td><td>APC0213</td><td>BOTON</td></tr>
+          <tr><td>L002162447NCPAA</td><td>144</td><td>APC0104</td><td>ELASTICO</td></tr>
+          <tr><td>L0617164AA01</td><td>1000</td><td>APC0213</td><td>ELASTICO</td></tr>
+          <tr><td>L0269501AA01</td><td>750</td><td>APC0108</td><td>ELGIN CLIP</td></tr>
+          <tr><td>L0148229AA02</td><td>500</td><td>APC0213</td><td>ETIQUETA</td></tr>
+          <tr><td>L0697064AA01</td><td>1000</td><td>APC0104</td><td>ETIQUETA</td></tr>
+          <tr><td>0010686</td><td>2.5</td><td>APC0109</td><td>GRAPA</td></tr>
+          <tr><td>L0549303AA01</td><td>varia</td><td>APC0302</td><td>LACE</td></tr>
+          <tr><td>L0672525AA01</td><td>2000</td><td>APC0115</td><td>LACE</td></tr>
+          <tr><td>L00180970202FAA</td><td>2000</td><td>APC0213</td><td>PULL STRAP</td></tr>
+          <tr><td>L00180970209XAA</td><td>2000</td><td>APC0213</td><td>PULL STRAP</td></tr>
+          <tr><td>L00180970245DAA</td><td>2000</td><td>APC0213</td><td>PULL STRAP</td></tr>
+          <tr><td>L00180970264DAA</td><td>2000</td><td>APC0213</td><td>PULL STRAP</td></tr>
+          <tr><td>L001809702GKAAA</td><td>2000</td><td>APC0213</td><td>PULL STRAP</td></tr>
+          <tr><td>L001809702GWBAA</td><td>2000</td><td>APC0213</td><td>PULL STRAP</td></tr>
+          <tr><td>25ZZ5</td><td>6000</td><td>APC0203</td><td>SLIDDER</td></tr>
+          <tr><td>5CC-DF6SLSEP</td><td>3000</td><td>APC0203</td><td>SLIDDER</td></tr>
+          <tr><td>72918</td><td>700</td><td>APC0302</td><td>VELCRO</td></tr>
+          <tr><td>170480</td><td>250</td><td>APC0302</td><td>VELCRO</td></tr>
+          <tr><td>190562</td><td>500</td><td>APC0302</td><td>VELCRO</td></tr>
+          <tr><td>197443</td><td>500</td><td>APC0302</td><td>VELCRO</td></tr>
+          <tr><td>KRG25LTCA</td><td>500</td><td>APC0301</td><td>VELCRO</td></tr>
+          <tr><td>L0429142AA02</td><td>2000</td><td>APC0301</td><td>VELCRO</td></tr>
+          <tr><td>L0575409AA01</td><td>950</td><td>APC0302</td><td>VELCRO</td></tr>
+          <tr><td>L0575410AA01</td><td>1000</td><td>APC0302</td><td>VELCRO</td></tr>
+          <tr><td>L0633654AA01</td><td>328</td><td>Pisopc</td><td>VELCRO</td></tr>
+          <tr><td>WRG16HMAA</td><td>500</td><td>APC0301</td><td>VELCRO</td></tr>
+          <tr><td>WRG16LBAA</td><td>500</td><td>APC0301</td><td>VELCRO</td></tr>
+          <tr><td>WRG25LBAA</td><td>500</td><td>APC0301</td><td>VELCRO</td></tr>
+          <tr><td>WRG25MAAA</td><td>1000</td><td>APC0301</td><td>VELCRO</td></tr>
+          <tr><td>255S5-184D</td><td>766</td><td>APC0101</td><td>ZIPPER</td></tr>
+          <tr><td>255s5-195A</td><td>766</td><td>APC0111</td><td>ZIPPER</td></tr>
+          <tr><td>5CC-CH-PLF8-309X</td><td>766</td><td>APC0111</td><td>ZIPPER</td></tr>
+          <tr><td>5CC-CH-PLF8-645D</td><td>766</td><td>APC0111</td><td>ZIPPER</td></tr>
+          <tr><td>L001449870U52AA</td><td>766</td><td>APC0101</td><td>ZIPPER</td></tr>
+          <tr><td>L00180249345DAA</td><td>1000</td><td>APC0215</td><td>ZIPPER</td></tr>
+          <tr><td>L001802493GKAAA</td><td>1000</td><td>APC0215</td><td>ZIPPER</td></tr>
+          <tr><td>L0449870AA0102F</td><td>766</td><td>APC0111</td><td>ZIPPER</td></tr>
+          <tr><td>L0449870AA0164D</td><td>766</td><td>APC0111</td><td>ZIPPER</td></tr>
+          <tr><td>L0449870AA01GWB</td><td>766</td><td>APC0111</td><td>ZIPPER</td></tr>
+          <tr><td>L0816048AA0145D</td><td>1000</td><td>APC0215</td><td>ZIPPER</td></tr>
+          <tr><td>L0816048AA01GKA</td><td>1000</td><td>APC0215</td><td>ZIPPER</td></tr>
+          <tr><td>L0816049AA0109X</td><td>1000</td><td>APC0214</td><td>ZIPPER</td></tr>
+          <tr><td>L0816049AA0145D</td><td>1000</td><td>APC0205</td><td>ZIPPER</td></tr>
+          <tr><td>L0816049AA01GKA</td><td>1000</td><td>APC0205</td><td>ZIPPER</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>
