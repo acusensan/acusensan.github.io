@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <style>
+    /* Additional custom styles */
+    .topnav{
+      overflow:hidden;
+      background: #333;
+    }
+    .topnav a{
+      float: left;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+    .topnav a:hover{
+      background-color: #ddd;
+      color: white;
+    }
+    .topnav a.active{
+      background-color: #04AA6D;
+      color: white;
+    }
+    .container {
+      margin-top: 20px;
+    }
+    .responsive-table {
+      overflow-x: auto;
+    }
+    th, td {
+      min-width: 150px;
+      padding: 10px;
+    }
+  </style>
+  <script>
+    function filterTable() {
+      var input, filter, table, tr, td, i;
+      input = document.getElementById("searchInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="topnav">
+    <a href="partescompradas.html">Partes Compradas</a>
+    <a href="hilos.html" class="active">Hilos</a>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col s12">
+        <div class="input-field">
+          <input id="searchInput" type="text" onkeyup="filterTable()" placeholder="Buscar">
+          <label for="searchInput">Buscar Numero De Parte...</label>
+        </div>
+      </div>
+    </div>
+    <div class="responsive-table">
+      <table id="myTable" class="striped">
+        <thead><tr><th>Numero De Parte</th><th>Calibre</th><th>Color</th></tr></thead>
+        <tbody>
+        <tr><td>291577X33-110D</td><td>30</td><td>110D </td></tr>
+        <tr><td>291577X33-149B</td><td>30</td><td>149B</td></tr>
+        <tr><td>291577X33-309X</td><td>30</td><td>309X</td></tr>
+        <tr><td>291577X33-313N</td><td>30</td><td>313N</td></tr>
+        <tr><td>291577X33-645D</td><td>30</td><td>645D</td></tr>
+        <tr><td>291577X33-848</td><td>30</td><td>848</td></tr>
+        <tr><td>291577X33-999K</td><td>30</td><td>999k</td></tr>
+        <tr><td>41577X69-110D</td><td></td><td>110D</td></tr>
+        <tr><td>41577X69-8927</td><td></td><td>8927</td></tr>
+        <tr><td>91577X92-110D</td><td>90</td><td>110D</td></tr>
+        <tr><td>91577X92-119X</td><td>90</td><td>119X</td></tr>
+        <tr><td>91577X92-245V  </td><td>90</td><td>245V</td></tr>
+        <tr><td>91577X92-309X</td><td>90</td><td>309X</td></tr>
+        <tr><td>91577X92-312N</td><td>90</td><td>312N</td></tr>
+        <tr><td>91577X92-313N</td><td>90</td><td>313N</td></tr>
+        <tr><td>91577X92-341M</td><td>90</td><td>341M</td></tr>
+        <tr><td>91577X92-395A</td><td>90</td><td>395A</td></tr>
+        <tr><td>91577X92-400C</td><td>90</td><td>400C</td></tr>
+        <tr><td>91577X92-645D</td><td>90</td><td>645D</td></tr>
+        <tr><td>91577X92-834T</td><td>90</td><td>834T</td></tr>
+        <tr><td>91577X92-8927</td><td>90</td><td>8927</td></tr>
+        <tr><td>91577X92-923T</td><td>90</td><td>923</td></tr>
+        <tr><td>91577X92-9936</td><td>90</td><td>9936</td></tr>
+        <tr><td>91577X92-999K</td><td>90</td><td>999K</td></tr>
+        <tr><td>L001583854GKUAA</td><td>30</td><td>702S</td></tr>
+        <tr><td>L00162055731EAA</td><td>90</td><td>31E</td></tr>
+        <tr><td>L00162055763JAA</td><td>90</td><td>63J</td></tr>
+        <tr><td>L00162055776CAA</td><td>90</td><td>476C</td></tr>
+        <tr><td>L00162055788TAA</td><td>90</td><td>868T</td></tr>
+        <tr><td>L001620557E02AA</td><td>90</td><td> E02</td></tr>
+        <tr><td>L001620557E03AA</td><td>90</td><td>E03 </td></tr>
+        <tr><td>L00162055931EAA</td><td>135</td><td>31E</td></tr>
+        <tr><td>L00162055963JAA</td><td>135</td><td>63J</td></tr>
+        <tr><td>L00162055973DAA</td><td>135</td><td>737D</td></tr>
+        <tr><td>L00162055976CAA</td><td>135</td><td>476C</td></tr>
+        <tr><td>L00162055988TAA</td><td>135</td><td>868T</td></tr>
+        <tr><td>L001620559E03AA</td><td>135</td><td>303E</td></tr>
+        <tr><td>L0583835AA0188T</td><td>90</td><td>868T</td></tr>
+        <tr><td>L0583854AA0163J</td><td>30</td><td>63J</td></tr>
+        <tr><td>L0583854AA0164D</td><td>30</td><td>604D</td></tr>
+        <tr><td>L0583854AA01GKA</td><td>30</td><td>600R</td></tr>
+        <tr><td>L0620557AA0101F</td><td>90</td><td>201F</td></tr>
+        <tr><td>L0620557AA0102F</td><td>90</td><td>202F</td></tr>
+        <tr><td>L0620557AA0107M</td><td>90</td><td>245V</td></tr>
+        <tr><td>L0620557AA0164D</td><td>90</td><td>604D</td></tr>
+        <tr><td>L0620557AA0173D</td><td>90</td><td>737D</td></tr>
+        <tr><td>L0620557AA01E02</td><td>90</td><td>E02</td></tr>
+        <tr><td>L0620557AA01X07</td><td>90</td><td>407X</td></tr>
+        <tr><td>L0620557AA01XTS</td><td>90</td><td>834T</td></tr>
+        <tr><td>L0620559AA0101F</td><td>135</td><td>201F</td></tr>
+        <tr><td>L0620559AA0102F</td><td>135</td><td>202F</td></tr>
+        <tr><td>L0620559AA0107M</td><td>135</td><td>245V</td></tr>
+        <tr><td>L0620559AA0164D</td><td>135</td><td>604D</td></tr>
+        <tr><td>L0620559AA01E02</td><td>135</td><td>E02</td></tr>
+        <tr><td>L0620559AA01X07</td><td>135</td><td>407X</td></tr>
+        <tr><td>L0620559AA01XTS</td><td>135</td><td>834T</td></tr>
+        <tr><td>L0749224AA01</td><td>30</td><td>WHITE</td></tr>
+        <tr><td>M15H60ATLBXEZ</td><td>135</td><td>TLB</td></tr>
+        <tr><td>M15H63AWSB</td><td>105</td><td>WHITE</td></tr>
+        <tr><td>N03425756033</td><td>90</td><td>600R</td></tr>
+        <tr><td>T35WCWHITE</td><td>35</td><td></td></tr>
+        <tr><td>WYNGB3-119X</td><td>135</td><td>WHITE</td></tr>
+        <tr><td>WYNGB3-167A</td><td>135</td><td>167A</td></tr>
+        <tr><td>WYNGB3-309X</td><td>135</td><td>309X</td></tr>
+        <tr><td>WYNGB3-312N</td><td>135</td><td>312N</td></tr>
+        <tr><td>WYNGB3-313N</td><td>135</td><td>313N</td></tr>
+        <tr><td>WYNGB3-341M</td><td>135</td><td>341M</td></tr>
+        <tr><td>WYNGB3-395A</td><td>135</td><td>395A</td></tr>
+        <tr><td>WYNGB3-400C</td><td>135</td><td>400C</td></tr>
+        <tr><td>WYNGB3-645D</td><td>135</td><td>645D</td></tr>
+        <tr><td>WYNGB3-834T</td><td>135</td><td>834T</td></tr>
+        <tr><td>WYNGB3-8927</td><td>135</td><td>8927</td></tr>
+        <tr><td>WYNGB3-923T</td><td>135</td><td>923</td></tr>
+        <tr><td>WYNGB3-9936</td><td>135</td><td>9936</td></tr>
+        <tr><td>WYNGB3-999K</td><td>135</td><td>999K</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>
