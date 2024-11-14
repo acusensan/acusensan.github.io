@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown Menu Example</title>
+    <!-- Import Materialize CSS -->
+    <link href="css/materialize.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        #selected-items {
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="teal lighten-2">
+    <div class="nav-wrapper">
+      <a href="#!" class="brand-logo"></a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ajuste.html">Ajuste</a></li>
+        <li><a href="Ajustev2.html">Ajuste Version 2</a></li>
+        <li><a href="Barcode.html">Generar Codigo</a></li>
+        <li><a href="hilos.html">Hilos</a></li>
+        <li><a href="partescompradas.html">Partes Compradas</a></li>
+        <li><a href="toolcrib.html">ToolCrib</a></li>
+        <li><a href="verificacion.html">Verificacion</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <ul class="sidenav" id="mobile-demo">
+    <li><a href="index.html">Home</a></li>
+        <li><a href="ajuste.html">Ajuste</a></li>
+        <li><a href="Ajustev2.html">Ajuste Version 2</a></li>
+        <li><a href="Barcode.html">Generar Codigo</a></li>
+        <li><a href="hilos.html">Hilos</a></li>
+        <li><a href="partescompradas.html">Partes Compradas</a></li>
+        <li><a href="toolcrib.html">ToolCrib</a></li>
+        <li><a href="verificacion.html">Verificacion</a></li>
+  </ul>
+    <div class="container">
+        <div id="selected-items" class="card-panel teal lighten-2 white-text"></div>
+        <ul id="entry-list" class="collection"></ul> <!-- New list element -->
+        <div class="input-field">
+            <label for="section"></label>
+            <select id="section" class="browser-default" onchange="updateRackOptions(); updateSelectedItems()">
+                <option value="Rack 1">Rack 1</option>
+                <option value="Rack 2">Rack 2</option>
+                <option value="Rack 3">Rack 3</option>
+            </select>
+        </div>
+        <div class="input-field">
+            <label for="rack"></label>
+            <select id="rack" class="browser-default" onchange="updateSelectedItems()">
+                <!-- Options will be added by JavaScript -->
+            </select>
+        </div>
+        <div class="nav-buttons">
+            <button class="btn waves-effect waves-light" onclick="changeRack(-1)">◀</button>
+            <button class="btn waves-effect waves-light" onclick="changeRack(1)">▶</button>
+        </div>
+        <div class="input-field">
+            <label for="menu2"></label>
+            <select id="menu2" class="browser-default" onchange="updateMenu3(); updateSelectedItems()">
+                <option value="PCGREARS">PCGREARS</option>
+                <option value="PCGSAVAN">PCGSAVAN</option>
+                <option value="PCG31XX">PCG31XX</option>
+                <option value="PCGBT1CC">PCGBT1CC</option>
+            </select>
+        </div>
+        <div class="input-field">
+            <label for="menu3"></label>
+            <select id="menu3" class="browser-default" onchange="updateSelectedItems()">
+                <!-- Options will be added by JavaScript based on Menu 2 selection -->
+            </select>
+        </div>
+        <button class="btn waves-effect waves-light" onclick="addEntry()">Add Entry</button> <!-- New button -->
+        <button class="btn waves-effect waves-light" onclick="downloadData()">Download Data</button>
+    </div>
+
+    <!-- Import Materialize JavaScript -->
+    <script src="js/materialize.min.js"></script>
+    <script>
+        // Initialize the sidenav
+    document.addEventListener('DOMContentLoaded', function() {
+      var elems = document.querySelectorAll('.sidenav');
+      var instances = M.Sidenav.init(elems);
+    });
+        document.addEventListener('DOMContentLoaded', function() {
+            updateRackOptions();
+        });
+
+        function updateRackOptions() {
+            const section = document.getElementById('section').value;
+            const rackSelect = document.getElementById('rack');
+            rackSelect.innerHTML = ''; // Clear previous options
+
+            let start, end;
+            switch (section) {
+                case 'Rack 1':
+                    start = 121;
+                    end = 140;
+                    break;
+                case 'Rack 2':
+                    start = 221;
+                    end = 240;
+                    break;
+                case 'Rack 3':
+                    start = 303;
+                    end = 304;
+                    break;
+            }
+
+            for (let i = start; i <= end; i++) {
+                const option = document.createElement('option');
+                option.value = `APC0${i}`;
+                option.text = `APC0${i}`;
+                rackSelect.appendChild(option);
+            }
+        }
+
+        function changeRack(direction) {
+            const rackSelect = document.getElementById('rack');
+            let selectedIndex = rackSelect.selectedIndex;
+            selectedIndex += direction;
+            if (selectedIndex >= 0 && selectedIndex < rackSelect.options.length) {
+                rackSelect.selectedIndex = selectedIndex;
+                updateSelectedItems();
+            }
+        }
+
+        function updateMenu3() {
+            const menu2 = document.getElementById('menu2').value;
+            const menu3 = document.getElementById('menu3');
+            menu3.innerHTML = ''; // Clear previous options
+
+            let options = [];
+            switch (menu2) {
+                case 'PCGREARS':
+                    options = ['Option 1', 'Option 2'];
+                    break;
+                case 'PCGSAVAN':
+                    options = ['Option 3', 'Option 4'];
+                    break;
+                case 'PCG31XX':
+                    options = ['Option 5', 'Option 6'];
+                    break;
+                case 'PCGBT1CC':
+                    options = ['L001809702HXWAA','L002806946NCPAA','L002806947NCPAA'];
+                    break;
+            }
+
+            options.forEach(optionText => {
+                const option = document.createElement('option');
+                option.value = optionText;
+                option.text = optionText;
+                menu3.appendChild(option);
+            });
+        }
+
+        function updateSelectedItems() {
+            const section = document.getElementById('section').value;
+            const rack = document.getElementById('rack').value;
+            const menu2 = document.getElementById('menu2').value;
+            const menu3 = document.getElementById('menu3').value;
+            const selectedItems = `${section}, ${rack}, ${menu2}, ${menu3}`;
+            document.getElementById('selected-items').innerText = selectedItems;
+        }
+
+        function addEntry() {
+            const section = document.getElementById('section').value;
+            const rack = document.getElementById('rack').value;
+            const menu2 = document.getElementById('menu2').value;
+            const menu3 = document.getElementById('menu3').value;
+            const selectedItems = `${section}, ${rack}, ${menu2}, ${menu3}`;
+
+            const entryList = document.getElementById('entry-list');
+            const newEntry = document.createElement('li');
+            newEntry.className = 'collection-item';
+            newEntry.innerText = selectedItems;
+            entryList.insertBefore(newEntry, entryList.firstChild); // Add new entry at the top
+        }
+
+        function downloadData() {
+            const entryList = document.getElementById('entry-list');
+            let entries = '';
+            for (let i = 0; i < entryList.children.length; i++) {
+                entries += entryList.children[i].innerText + '\n';
+            }
+
+            const blob = new Blob([entries], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'selected-items.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>
