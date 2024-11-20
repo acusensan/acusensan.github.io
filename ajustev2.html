@@ -97,20 +97,11 @@
                 <!-- Options will be added by JavaScript based on Menu 2 selection -->
             </select>
         </div>
-        <div class="input-field">
-            <input type="number" id="quantity" min="1" class="validate">
-            <label for="quantity">Cantidad</label>
-        </div>
         <button class="btn waves-effect waves-light" onclick="addEntry()">Agregar</button> <!-- New button -->
         <button class="btn waves-effect waves-light" onclick="downloadData()">Descargar</button>
     </div>
     <script src="js/materialize.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('input');
-    M.updateTextFields(); // Initialize the input fields
-    });
-
         // Initialize the sidenav
     document.addEventListener('DOMContentLoaded', function() {
       var elems = document.querySelectorAll('.sidenav');
@@ -169,7 +160,6 @@
                 case 'BT1':
                     options = ['L001423285NCPAA','L001450016NCPAA','L001553609NCPAA','L001614470NCPAA','L001676174NCPAA','L001676224NCPAA','L001698202NCPAA','L002053089NCPAA','L002460234NCPAA','L002798840NCPAB','L002798841NCPAB','L002798842NCPAC','L002799378NCPAA','L002799379NCPAB','L002799380NCPAA','L002806896NCPAA','L002806897NCPAA','L002806946NCPAA','L002806947NCPAA','L002807250NCPAA','L002907223NCPAA','L002907225NCPAB','L002914716NCPAA','L002914905NCPAA','L003141998NCPAA','L003141999NCPAA','L003142000NCPAA','L003142001NCPAA','L003142002NCPAA','L003142003NCPAA','L003142004NCPAA','L003142005NCPAA','L0609247AA01','L0701143AA01'];
                     break;
-                    break;
                 case 'COLORADO':
                     options = ['L001434100NCPAA','L001466311NCPAA','L001518304NCPAA','L002215045NCPAA','L002215046NCPAA','L002312377NCPAA','L002312378NCPAA','L002312379NCPAC','L002312383NCPAC','L002316235NCPAB','L002316236NCPAA','L002316237NCPAA','L002316238NCPAA','L002316914NCPAA','L002316915NCPAA','L002316951NCPAC','L002396469NCPAA','L002401087NCPAC','L002401088NCPAC','L002401089NCPAD','L002401090NCPAD','L002401091NCPAB','L002401092NCPAA','L002401093NCPAA','L002479499NCPAA','L002479502NCPAA','L002481117NCPAA','L002618780NCPAA','L0430654AA01'];
                     break;
@@ -178,6 +168,7 @@
                     break;
                 case 'SUV':
                     options = ['L002194708NCPAA','L0654899AA01','L0676258AA05','L0698195AA01','L0698200AA01','L0698203AA01','L0706490AA03','L0706491AA03','L0706492AA02','L0724597AA01','L0736063AA01','L0736066AA01','L0753466AA01','L0776538AA01','L0780891AA01','L0797678AA01','L0797679AA01','L0797825AA01','L0802979AA01','L0802980AA01','L0802981AA01','L0806941AA01','L0806942AA01','L0806943AA01','L0806944AA01'];
+                    break;
                 case 'SAVANA':
                     options = ['1561-305SAA','1561-345SAA','2232b910F00MA','794-100SAA','STFR-415X122FAC'];
                     break;
@@ -189,6 +180,7 @@
                     break;
                 case 'ZIPPER':
                     options = ['255S5-184D','255S5-195A','5CC-CH-PLF8-309X','5CC-CH-PLF8-645D','L001449870U52AA','L00180249345DAA','L001802493GKAAA','L0449870AA0102F','L0449870AA0164D','L0449870AA01GWB','L0816049AA0109X','L0816049AA0145D','L0816049AA01GKA'];
+                    break;
             }
 
             options.forEach(optionText => {
@@ -204,18 +196,16 @@
             const rack = document.getElementById('rack').value;
             const menu2 = document.getElementById('menu2').value;
             const menu3 = document.getElementById('menu3').value;
-            const quantity = document.getElementById('quantity').value;
-            const selectedItems = `${section}, ${rack}, ${menu2}, ${menu3}, ${quantity}`;
+            const selectedItems = `${section}, ${rack}, ${menu2}, ${menu3}`;
             document.getElementById('selected-items').innerText = selectedItems;
-}
+        }
 
         function addEntry() {
             const section = document.getElementById('section').value;
             const rack = document.getElementById('rack').value;
             const menu2 = document.getElementById('menu2').value;
             const menu3 = document.getElementById('menu3').value;
-            const quantity = document.getElementById('quantity').value;
-            const selectedItems = `${rack} ${menu3} ${quantity}`;
+            const selectedItems = `${section}, ${rack}, ${menu2}, ${menu3}`;
 
             const entryList = document.getElementById('entry-list');
             const newEntry = document.createElement('li');
@@ -224,31 +214,22 @@
             entryList.insertBefore(newEntry, entryList.firstChild); // Add new entry at the top
         }
 
-
         function downloadData() {
-    const entryList = document.getElementById('entry-list');
-    let entries = '';
-    for (let i = 0; i < entryList.children.length; i++) {
-        entries += entryList.children[i].innerText + '\n';
-    }
+            const entryList = document.getElementById('entry-list');
+            let entries = '';
+            for (let i = 0; i < entryList.children.length; i++) {
+                entries += entryList.children[i].innerText + '\n';
+            }
 
-    const now = new Date();
-    const formattedDate = now.toISOString().slice(0, 10);
-    const formattedTime = now.toTimeString().slice(0, 8).replace(/:/g, '-');
-    const filename = `selected-items_${formattedDate}_${formattedTime}.txt`;
-
-    const blob = new Blob([entries], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-}
-
-
+            const blob = new Blob([entries], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'selected-items.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
     </script>
 </body>
 </html>
