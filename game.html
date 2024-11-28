@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>./Acu</title>
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            align-items: center;
+        }
+        main {
+            flex: 1 0 auto;
+        }
+        .card {
+            margin: 10px;
+            cursor: pointer; /* Add cursor pointer for better UX */
+        }
+        .menu-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+        .menu-button .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: #333;
+        }
+        .dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        #game {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 10px;
+            margin-top: 20px;
+        }
+
+        .room {
+            width: 100px;
+            height: 100px;
+            background-color: lightgray;
+            border: 2px solid black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        #status {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Side Navigation -->
+    <ul id="slide-out" class="sidenav">
+        <li><div class="user-view">
+            <div class="background">
+                <img src="background.jpg">
+            </div>
+            <a href="#user"><img class="circle" src="user.jpg"></a>
+            <a href="#name"><span class="white-text name">Logo Text</span></a>
+        </div></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ajuste.html">Ajuste</a></li>
+        <li><a href="barcode.html">Generar Codigo De Barrar</a></li>
+        <li><a href="hilos.html">Hilos</a></li>
+        <li><a href="partescompradas.html">Partes Compradas</a></li>
+        <li><a href="reglatres.html">Regla De Tres</a></li>
+        <li><a href="toolcrib.html">Tool Crib</a></li>
+        <li><a href="game.html">Game</a></li>
+        <li><a href="verificacion.html">Verificacion</a></li>
+
+    </ul>
+
+    <!-- Toolbar -->
+    <nav>
+        <div class="nav-wrapper blue">
+            <button class="menu-button sidenav-trigger" data-target="slide-out">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <a href="#" class="brand-logo"><code>./Acu</code></a>
+            <ul class="right">
+                <li><a href="#settings-modal" class="modal-trigger">Settings</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <h4>Settings</h4>
+            <p>
+                <label>
+                    <input type="checkbox" id="dark-mode-toggle" />
+                    <span>Dark Mode</span>
+                </label>
+            </p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <div id="game">
+        <div class="room" id="room1"></div>
+        <div class="room" id="room2"></div>
+        <div class="room" id="room3"></div>
+        <div class="room" id="room4"></div>
+        <div class="room" id="room5"></div>
+        <div class="room" id="room6"></div>
+    </div>
+    <div id="status">
+        <p>Vidas: <span id="lives">3</span></p>
+        <p>Timpo: <span id="time">60</span> segundos</p>
+        <p>Puntos: <span id="score">0</span></p>
+        <p>Record: <span id="record">0</span></p>
+    </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer blue">
+        <div class="footer-copyright">
+            <div class="container">
+                © <span id="current-year"></span> ./Acu
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/materialize.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            M.Sidenav.init(document.querySelectorAll('.sidenav'));
+            M.Modal.init(document.querySelectorAll('.modal'));
+
+            // Update the copyright year
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            // Dark mode toggle
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            darkModeToggle.addEventListener('change', function() {
+                document.body.classList.toggle('dark-mode', darkModeToggle.checked);
+            });
+
+            // Load saved theme
+            if (localStorage.getItem('dark-mode') === 'true') {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.checked = true;
+            }
+
+            // Save theme preference
+            darkModeToggle.addEventListener('change', function() {
+                localStorage.setItem('dark-mode', darkModeToggle.checked);
+            });
+
+            // Add click event to cards to navigate to different pages
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const link = card.getAttribute('data-link');
+                    if (link) {
+                        window.location.href = link;
+                    }
+                });
+            });
+        });
+        let lives = 3;
+        let time = 60;
+        let score = 0;
+        let record = localStorage.getItem('record') || 0;
+        let activeRoom = null;
+        let gameInterval;
+        let intervalTime = 1000;
+
+        const rooms = document.querySelectorAll('.room');
+        const livesDisplay = document.getElementById('lives');
+        const timeDisplay = document.getElementById('time');
+        const scoreDisplay = document.getElementById('score');
+        const recordDisplay = document.getElementById('record');
+
+        recordDisplay.textContent = record;
+
+        function startGame() {
+            gameInterval = setInterval(() => {
+                if (time > 0) {
+                    time--;
+                    timeDisplay.textContent = time;
+                    if (activeRoom) {
+                        activeRoom.style.backgroundColor = 'lightgray';
+                    }
+                    activeRoom = rooms[Math.floor(Math.random() * rooms.length)];
+                    activeRoom.style.backgroundColor = 'yellow';
+                    if (intervalTime > 200) {
+                        intervalTime -= 8; // Decrease interval time to make the game faster
+                        clearInterval(gameInterval);
+                        startGame();
+                    }
+                } else {
+                    clearInterval(gameInterval);
+                    alert('Time is up! You lose.');
+                    updateRecord();
+                }
+            }, intervalTime);
+        }
+
+        function handleRoomInteraction(room) {
+            if (room === activeRoom) {
+                room.style.backgroundColor = 'lightgray';
+                activeRoom = null;
+                score++;
+                scoreDisplay.textContent = score;
+            } else {
+                lives--;
+                livesDisplay.textContent = lives;
+                if (lives === 0) {
+                    clearInterval(gameInterval);
+                    alert('You are out of lives! Game over.');
+                    updateRecord();
+                }
+            }
+        }
+
+        function updateRecord() {
+            if (score > record) {
+                record = score;
+                localStorage.setItem('record', record);
+                recordDisplay.textContent = record;
+            }
+        }
+
+        rooms.forEach(room => {
+            room.addEventListener('click', () => handleRoomInteraction(room));
+            room.addEventListener('touchstart', () => handleRoomInteraction(room));
+        });
+
+        startGame();
+    </script>
+</body>
+</html>

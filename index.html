@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>./Acu</title>
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        main {
+            flex: 1 0 auto;
+        }
+        .card {
+            margin: 10px;
+            cursor: pointer; /* Add cursor pointer for better UX */
+        }
+        .menu-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+        .menu-button .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: #333;
+        }
+        .dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Side Navigation -->
+    <ul id="slide-out" class="sidenav">
+        <li><div class="user-view">
+            <div class="background">
+                <img src="background.jpg">
+            </div>
+            <a href="#user"><img class="circle" src="user.jpg"></a>
+            <a href="#name"><span class="white-text name">Logo Text</span></a>
+        </div></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ajuste.html">Ajuste</a></li>
+        <li><a href="barcode.html">Generar Codigo De Barrar</a></li>
+        <li><a href="hilos.html">Hilos</a></li>
+        <li><a href="partescompradas.html">Partes Compradas</a></li>
+        <li><a href="reglatres.html">Regla De Tres</a></li>
+        <li><a href="toolcrib.html">Tool Crib</a></li>
+        <li><a href="game.html">Game</a></li>
+        <li><a href="verificacion.html">Verificacion</a></li>
+    </ul>
+
+    <!-- Toolbar -->
+    <nav class="blue">
+        <div class="nav-wrapper">
+            <button class="menu-button sidenav-trigger" data-target="slide-out">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <a href="#" class="brand-logo"><code>./Acu</code></a>
+            <ul class="right">
+                <li><a href="#settings-modal" class="modal-trigger">Settings</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <h4>Settings</h4>
+            <p>
+                <label>
+                    <input type="checkbox" id="dark-mode-toggle" />
+                    <span>Dark Mode</span>
+                </label>
+            </p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <div class="row">
+                <!-- 10 Content Cards -->
+                <div class="col s12 m6 l4">
+                    <div class="card" data-link="ajuste.html">
+                        <div class="card-content">
+                            <span class="card-title">Ajuste</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l4">
+                    <div class="card" data-link="barcode.html">
+                        <div class="card-content">
+                            <span class="card-title">Generar Codigo De Barras</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l4">
+                    <div class="card" data-link="hilos.html">
+                        <div class="card-content">
+                            <span class="card-title">Hilos</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l4">
+                    <div class="card" data-link="partescompradas.html">
+                        <div class="card-content">
+                            <span class="card-title">Partes Compradas</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l4">
+                    <div class="card" data-link="toolcrib.html">
+                        <div class="card-content">
+                            <span class="card-title">Tool Crib</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l4">
+                    <div class="card" data-link="reglatres.html">
+                        <div class="card-content">
+                            <span class="card-title">Regla De Tres</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l4">
+                    <div class="card" data-link="verificacion.html">
+                        <div class="card-content">
+                            <span class="card-title">Verificacion De Racks</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l4">
+                    <div class="card" data-link="game.html">
+                        <div class="card-content">
+                            <span class="card-title">Game</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Repeat card block -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer blue">
+        <div class="footer-copyright">
+            <div class="container">
+                © <span id="current-year"></span> ./Acu
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/materialize.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            M.Sidenav.init(document.querySelectorAll('.sidenav'));
+            M.Modal.init(document.querySelectorAll('.modal'));
+
+            // Update the copyright year
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            // Dark mode toggle
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            darkModeToggle.addEventListener('change', function() {
+                document.body.classList.toggle('dark-mode', darkModeToggle.checked);
+            });
+
+            // Load saved theme
+            if (localStorage.getItem('dark-mode') === 'true') {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.checked = true;
+            }
+
+            // Save theme preference
+            darkModeToggle.addEventListener('change', function() {
+                localStorage.setItem('dark-mode', darkModeToggle.checked);
+            });
+
+            // Add click event to cards to navigate to different pages
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const link = card.getAttribute('data-link');
+                    if (link) {
+                        window.location.href = link;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

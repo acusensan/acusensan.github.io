@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>./Acu</title>
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        main {
+            flex: 1 0 auto;
+        }
+        .card {
+            margin: 10px;
+            cursor: pointer; /* Add cursor pointer for better UX */
+        }
+        .menu-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+        .menu-button .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: #333;
+        }
+        .dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Side Navigation -->
+    <ul id="slide-out" class="sidenav">
+        <li><div class="user-view">
+            <div class="background">
+                <img src="background.jpg">
+            </div>
+            <a href="#user"><img class="circle" src="user.jpg"></a>
+            <a href="#name"><span class="white-text name">Logo Text</span></a>
+        </div></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ajuste.html">Ajuste</a></li>
+        <li><a href="barcode.html">Generar Codigo De Barrar</a></li>
+        <li><a href="hilos.html">Hilos</a></li>
+        <li><a href="partescompradas.html">Partes Compradas</a></li>
+        <li><a href="reglatres.html">Regla De Tres</a></li>
+        <li><a href="toolcrib.html">Tool Crib</a></li>
+        <li><a href="game.html">Game</a></li>
+        <li><a href="verificacion.html">Verificacion</a></li>
+
+    </ul>
+
+    <!-- Toolbar -->
+    <nav>
+        <div class="nav-wrapper blue">
+            <button class="menu-button sidenav-trigger" data-target="slide-out">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <a href="#" class="brand-logo"><code>./Acu</code></a>
+            <ul class="right">
+                <li><a href="#settings-modal" class="modal-trigger">Settings</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <h4>Settings</h4>
+            <p>
+                <label>
+                    <input type="checkbox" id="dark-mode-toggle" />
+                    <span>Dark Mode</span>
+                </label>
+            </p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+       <div class="row">
+            <form class="col s12">
+                <div class="row">
+                    <div class="row">
+                    <div class="col s12 center-align">
+                        <h5 id="result"></h5>
+                    </div>
+                </div>
+                <p>Peso De Muestra:</p>
+                    <div class="input-field col s12">
+                        <input id="input1" type="number" class="validate">
+                    </div>
+                </div>
+                <p> Cantidad De Muestras:</p>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="input2" type="number" class="validate">
+                    </div>
+                </div>
+                <p> Peso Total:</p>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="input3" type="number" class="validate">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 center-align">
+                        <button class="btn blue waves-effect waves-light" type="button" onclick="calculate()">Calcular</button>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer blue">
+        <div class="footer-copyright">
+            <div class="container">
+                © <span id="current-year"></span> ./Acu
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/materialize.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            M.Sidenav.init(document.querySelectorAll('.sidenav'));
+            M.Modal.init(document.querySelectorAll('.modal'));
+
+            // Update the copyright year
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            // Dark mode toggle
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            darkModeToggle.addEventListener('change', function() {
+                document.body.classList.toggle('dark-mode', darkModeToggle.checked);
+            });
+
+            // Load saved theme
+            if (localStorage.getItem('dark-mode') === 'true') {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.checked = true;
+            }
+
+            // Save theme preference
+            darkModeToggle.addEventListener('change', function() {
+                localStorage.setItem('dark-mode', darkModeToggle.checked);
+            });
+
+            // Add click event to cards to navigate to different pages
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const link = card.getAttribute('data-link');
+                    if (link) {
+                        window.location.href = link;
+                    }
+                });
+            });
+        });
+        function calculate() {
+            const a = parseFloat(document.getElementById('input1').value);
+            const b = parseFloat(document.getElementById('input2').value);
+            const c = parseFloat(document.getElementById('input3').value);
+            if (!isNaN(a) && !isNaN(b) && !isNaN(c)) {
+                const result = (b * c) / a;
+                document.getElementById('result').innerText = `Result: ${result}`;
+            } else {
+                document.getElementById('result').innerText = 'Introduzca números válidos en todos los campos.';
+            }
+        }
+    </script>
+</body>
+</html>
