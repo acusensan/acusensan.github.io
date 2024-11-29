@@ -11,8 +11,15 @@
             min-height: 100vh;
             flex-direction: column;
         }
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000; /* Ensure it stays above other elements */
+            }
         main {
             flex: 1 0 auto;
+            padding-top: 64px;
         }
         .card {
             margin: 10px;
@@ -29,11 +36,14 @@
             width: 25px;
             height: 3px;
             margin: 5px auto;
-            background-color: #333;
+            background-color: #fff; /* Change this to white */
         }
         .dark-mode {
             background-color: #121212;
             color: #ffffff;
+        }
+        .card-title{
+
         }
     </style>
 </head>
@@ -59,7 +69,7 @@
     </ul>
 
     <!-- Toolbar -->
-    <nav class="blue">
+    <nav class="blue darken-4">
         <div class="nav-wrapper">
             <button class="menu-button sidenav-trigger" data-target="slide-out">
                 <span class="bar"></span>
@@ -155,12 +165,13 @@
     </main>
 
     <!-- Footer -->
-    <footer class="page-footer blue">
-        <div class="footer-copyright">
-            <div class="container">
-                © <span id="current-year"></span> ./Acu
-            </div>
+    <footer class="page-footer blue darken-4" style="text-align: center;">
+    <div class="footer-copyright">
+        <div class="container">
+            © <span id="current-year"></span> ./Acu
         </div>
+    </div>
+    
     </footer>
 
     <script src="js/materialize.min.js"></script>

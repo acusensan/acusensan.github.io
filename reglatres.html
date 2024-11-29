@@ -11,8 +11,15 @@
             min-height: 100vh;
             flex-direction: column;
         }
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000; /* Ensure it stays above other elements */
+            }
         main {
             flex: 1 0 auto;
+            padding-top: 64px;
         }
         .card {
             margin: 10px;
@@ -29,7 +36,7 @@
             width: 25px;
             height: 3px;
             margin: 5px auto;
-            background-color: #333;
+            background-color: #fff;
         }
         .dark-mode {
             background-color: #121212;
@@ -42,9 +49,9 @@
     <ul id="slide-out" class="sidenav">
         <li><div class="user-view">
             <div class="background">
-                <img src="background.jpg">
+                <img src="img/background.jpg">
             </div>
-            <a href="#user"><img class="circle" src="user.jpg"></a>
+            <a href="#user"><img class="circle" src="img/user.jpg"></a>
             <a href="#name"><span class="white-text name">Logo Text</span></a>
         </div></li>
         <li><a href="index.html">Home</a></li>
@@ -61,7 +68,7 @@
 
     <!-- Toolbar -->
     <nav>
-        <div class="nav-wrapper blue">
+        <div class="nav-wrapper blue darken-4">
             <button class="menu-button sidenav-trigger" data-target="slide-out">
                 <span class="bar"></span>
                 <span class="bar"></span>
@@ -129,7 +136,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="page-footer blue">
+    <footer class="page-footer blue darken-4">
         <div class="footer-copyright">
             <div class="container">
                 © <span id="current-year"></span> ./Acu
