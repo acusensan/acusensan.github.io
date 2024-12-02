@@ -3,65 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>./Acu</title>
+    <title>Verificacion</title>
     <link rel="stylesheet" href="css/materialize.min.css">
-    <style>
-        body {
-            display: flex;
-            min-height: 100vh;
-            flex-direction: column;
-        }
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000; /* Ensure it stays above other elements */
-            }
-        main {
-            flex: 1 0 auto;
-            padding-top: 64px;
-        }
-        .card {
-            margin: 10px;
-            cursor: pointer; /* Add cursor pointer for better UX */
-        }
-        .menu-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 10px;
-        }
-        .menu-button .bar {
-            display: block;
-            width: 25px;
-            height: 3px;
-            margin: 5px auto;
-            background-color: #fff;
-        }
-        .dark-mode {
-            background-color: #121212;
-            color: #ffffff;
-        }
-    </style>
+    <link rel="stylesheet" href="css/navigationbar.css">
 </head>
 <body>
     <!-- Side Navigation -->
     <ul id="slide-out" class="sidenav">
-        <li><div class="user-view">
-            <div class="background">
-                <img src="img/background.jpg">
-            </div>
-            <a href="#user"><img class="circle" src="img/user.jpg"></a>
-            <a href="#name"><span class="white-text name">Logo Text</span></a>
-        </div></li>
         <li><a href="index.html">Home</a></li>
         <li><a href="ajuste.html">Ajuste</a></li>
         <li><a href="barcode.html">Generar Codigo De Barrar</a></li>
         <li><a href="hilos.html">Hilos</a></li>
+        <li><a href="invrack.html">Inventario Racks</a></li>
         <li><a href="partescompradas.html">Partes Compradas</a></li>
         <li><a href="reglatres.html">Regla De Tres</a></li>
         <li><a href="toolcrib.html">Tool Crib</a></li>
-        <li><a href="game.html">Game</a></li>
         <li><a href="verificacion.html">Verificacion</a></li>
     </ul>
 
@@ -73,7 +29,7 @@
                 <span class="bar"></span>
                 <span class="bar"></span>
             </button>
-            <a href="#" class="brand-logo"><code>./Acu</code></a>
+            <a href="#" class="brand-logo"><code>Verificacion</code></a>
             <ul class="right">
                 <li><a href="#settings-modal" class="modal-trigger">Settings</a></li>
             </ul>
@@ -163,134 +119,10 @@
     </footer>
 
     <script src="js/materialize.min.js"></script>
+    <script src="js/navigationbar.js"></script>
+    <script src="js/verificacion.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            M.Sidenav.init(document.querySelectorAll('.sidenav'));
-            M.Modal.init(document.querySelectorAll('.modal'));
-
-            // Update the copyright year
-            document.getElementById('current-year').textContent = new Date().getFullYear();
-
-            // Dark mode toggle
-            const darkModeToggle = document.getElementById('dark-mode-toggle');
-            darkModeToggle.addEventListener('change', function() {
-                document.body.classList.toggle('dark-mode', darkModeToggle.checked);
-            });
-
-            // Load saved theme
-            if (localStorage.getItem('dark-mode') === 'true') {
-                document.body.classList.add('dark-mode');
-                darkModeToggle.checked = true;
-            }
-
-            // Save theme preference
-            darkModeToggle.addEventListener('change', function() {
-                localStorage.setItem('dark-mode', darkModeToggle.checked);
-            });
-
-            // Add click event to cards to navigate to different pages
-            document.querySelectorAll('.card').forEach(card => {
-                card.addEventListener('click', function() {
-                    const link = card.getAttribute('data-link');
-                    if (link) {
-                        window.location.href = link;
-                    }
-                });
-            });
-        });
-        document.getElementById('fileInput').addEventListener('change', handleFileUpload);
-        document.getElementById('addRowButton').addEventListener('click', addRow);
-        document.getElementById('downloadButton').addEventListener('click', downloadTable);
-
-        function handleFileUpload(event) {
-            const file = event.target.files[0];
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const text = cleanText(e.target.result);
-                const rows = text.split('\n').slice(1); // Skip header row
-                const tableBody = document.querySelector('#inventoryTable tbody');
-                tableBody.innerHTML = ''; // Clear existing rows
-                rows.forEach(row => {
-                    const columns = row.split(/\s+/);
-                    if (columns.length >= 7) {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td>${columns[1]}</td>
-                            <td>${columns[2]}</td>
-                            <td>${columns[3]}</td>
-                            <td>${columns[6]}</td>
-                            <td><label><input type="checkbox" class="removeCheckbox"><span></span></label></td>
-                        `;
-                        tableBody.appendChild(tr);
-                    }
-                });
-            };
-            reader.readAsText(file);
-        }
-
-        function cleanText(text) {
-            const lines = text.split('\n');
-            const cleanedLines = [];
-            for (let line of lines) {
-                if (line.includes('End of Report')) break;
-                cleanedLines.push(line);
-            }
-            return cleanedLines.join('\n');
-        }
-
-        function addRow() {
-            const location = document.getElementById('locationInput').value;
-            const itemNumber = document.getElementById('itemNumberInput').value;
-            const lotSerial = document.getElementById('lotSerialInput').value;
-            const qtyOnHand = document.getElementById('qtyOnHandInput').value;
-
-            const tableBody = document.querySelector('#inventoryTable tbody');
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${location}</td>
-                <td>${itemNumber}</td>
-                <td>${lotSerial}</td>
-                <td>${qtyOnHand}</td>
-                <td><label><input type="checkbox" class="removeCheckbox"><span></span></label></td>
-            `;
-            tableBody.appendChild(tr);
-        }
-
-        function downloadTable() {
-            console.log("Download function called");
-            const table = document.getElementById('inventoryTable');
-            let csvContent = '';
-            for (let row of table.rows) {
-                const cells = Array.from(row.cells).map((cell, index) => {
-                    if (index === 4) { // Assuming the checkbox is in the 5th column
-                        const checkbox = cell.querySelector('input[type="checkbox"]');
-                        return checkbox ? (checkbox.checked ? 'Checked' : '') : '';
-                    }
-                    return cell.innerText;
-                });
-                csvContent += cells.join(',') + '\n';
-            }
-            console.log("CSV Content:", csvContent);
-            const blob = new Blob([csvContent], { type: 'text/csv' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'inventory.csv';
-            document.body.appendChild(a); // Append to body
-            a.click();
-            document.body.removeChild(a); // Remove from body
-        }
-
-        document.addEventListener('change', function(event) {
-            if (event.target.classList.contains('removeCheckbox')) {
-                const row = event.target.closest('tr');
-                if (event.target.checked) {
-                    row.classList.add('highlight');
-                } else {
-                    row.classList.remove('highlight');
-                }
-            }
-        });
+        
     </script>
 </body>
 </html>

@@ -1,0 +1,48 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000; /* Ensure it stays above other elements */
+}
+main {
+    flex: 1 0 auto;
+    padding-top: 64px;
+}
+.sidenav{
+    margin-top: 20px;
+    padding-top: 50px;
+}
+.card {
+    margin: 10px;
+    cursor: pointer; /* Add cursor pointer for better UX */
+}
+.menu-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+}
+.menu-button .bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    background-color: #fff; /* Change this to white */
+}
+.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+.container {
+    width: 90%;
+     max-width: 600px;
+        }
+
+.card-title{
+
+}
