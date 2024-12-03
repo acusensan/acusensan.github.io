@@ -72,7 +72,7 @@
                 <!-- Options will be added by JavaScript -->
             </select>
         </div>
-        <div class="nav-buttons">
+        <div class="nav-buttons col s6 center-align">
             <button class="btn blue waves-effect waves-light" onclick="changeRack(-1)">◀</button>
             <button class="btn blue waves-effect waves-light" onclick="changeRack(1)">▶</button>
         </div>
@@ -99,9 +99,10 @@
             <input type="number" id="quantity" min="1" class="validate">
             <label for="quantity">Cantidad</label>
         </div>
-        <button class="btn blue waves-effect waves-light" onclick="downloadData()">Descargar</button>
-        <button class="btn blue waves-effect waves-light" onclick="addEntry()">Agregar</button> <!-- New button -->
-        
+    <div class="nav-arrows col s6 center-align">
+            <button class="btn blue waves-effect waves-light" onclick="downloadData()">Descargar</button>
+            <button class="btn blue waves-effect waves-light" onclick="addEntry()">Agregar</button>
+    </div>
     </div>
     </main>
 
