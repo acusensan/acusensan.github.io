@@ -81,7 +81,7 @@ function addEntry() {
     // Create delete button
     const deleteButton = document.createElement('button');
     deleteButton.innerText = 'Borrar';
-    deleteButton.className = 'btn blue delete-button';
+    deleteButton.className = 'btn red delete-button';
     deleteButton.onclick = () => entryList.removeChild(newEntry);
 
     newEntry.appendChild(deleteButton);

@@ -15,6 +15,7 @@ main {
     flex: 1 0 auto;
     padding-top: 64px;
 }
+
 .center-text {
     text-align: center;
 }
@@ -69,7 +70,8 @@ main {
 .dark-mode #itemDisplay,
 .dark-mode #itemDisplay h3,
 .dark-mode #itemDisplay ul,
-.dark-mode #itemDisplay li {
+.dark-mode #itemDisplay li,
+.dark-mode .collection-item {
     background-color: #1e1e1e;
     color: #ffffff !important;
 }
@@ -107,4 +109,11 @@ main {
 /* Ensure side navigation text is styled correctly */
 .dark-mode .sidenav a {
     color: #ffffff !important;
+}
+
+.barcode-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
 }

@@ -3,126 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verificacion</title>
-    <link rel="stylesheet" href="css/materialize.min.css">
-    <link rel="stylesheet" href="css/navigationbar.css">
+    <title>Inventory Table</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
-    <!-- Side Navigation -->
-    <ul id="slide-out" class="sidenav">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="ajuste.html">Ajuste</a></li>
-        <li><a href="barcode.html">Generar Codigo De Barrar</a></li>
-        <li><a href="hilos.html">Hilos</a></li>
-        <li><a href="invrack.html">Inventario Racks</a></li>
-        <li><a href="partescompradas.html">Partes Compradas</a></li>
-        <li><a href="reglatres.html">Regla De Tres</a></li>
-        <li><a href="toolcrib.html">Tool Crib</a></li>
-        <li><a href="verificacion.html">Verificacion</a></li>
-    </ul>
-
-    <!-- Toolbar -->
-    <nav class="blue">
-        <div class="nav-wrapper blue darken-4">
-            <button class="menu-button sidenav-trigger" data-target="slide-out">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
-            <a href="#" class="brand-logo"><code>Verificacion</code></a>
-            <ul class="right">
-                <li><a href="#settings-modal" class="modal-trigger">Settings</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Settings Modal -->
-    <div id="settings-modal" class="modal">
-        <div class="modal-content">
-            <h4>Settings</h4>
-            <p>
-                <label>
-                    <input type="checkbox" id="dark-mode-toggle" />
-                    <span>Dark Mode</span>
-                </label>
-            </p>
-        </div>
-        <div class="modal-footer">
-            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <main>
-    <div class="container">
-        <h1 class="center-align">Inventario 3.6.6</h1>
-        <div class="file-field input-field">
-            <div class="btn blue">
-                <span>Archivo</span>
-                <input type="file" id="fileInput" accept=".txt">
-            </div>
-            <div class="file-path-wrapper">
-                <input class="file-path validate" type="text">
-            </div>
-        </div>
-        <table id="inventoryTable" class="highlight">
-            <thead>
-                <tr>
-                    <th>Location</th>
-                    <th>Item Number</th>
-                    <th>Lot/Serial</th>
-                    <th>Qty On Hand</th>
-                    <th>Quitar</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Table rows will be added here -->
-            </tbody>
-        </table>
-        <div class="row">
-            <div class="input-field col s3">
-                <input id="locationInput" type="text" class="validate">
-                <label for="locationInput">Location</label>
-            </div>
-            <div class="input-field col s3">
-                <input id="itemNumberInput" type="text" class="validate">
-                <label for="itemNumberInput">Item Number</label>
-            </div>
-            <div class="input-field col s3">
-                <input id="lotSerialInput" type="text" class="validate">
-                <label for="lotSerialInput">Lot/Serial</label>
-            </div>
-            <div class="input-field col s3">
-                <input id="qtyOnHandInput" type="number" class="validate">
-                <label for="qtyOnHandInput">Qty On Hand</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col s6">
-                <button id="addRowButton" class="btn blue waves-effect waves-light">Agregar</button>
-            </div>
-            <div class="col s6 right-align">
-                <button id="downloadButton" class="btn blue waves-effect waves-light">Descargar Archivo</button>
-            </div>
-        </div>
-    </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="page-footer blue darken-4" style="text-align: center;">
-    <footer class="page-footer blue darken-4" style="text-align: center;">
-    <div class="footer-copyright">
-        <div class="container">
-            © <span id="current-year"></span> ./Acu
-        </div>
-    
-    </footer>
-
-    <script src="js/materialize.min.js"></script>
-    <script src="js/navigationbar.js"></script>
-    <script src="js/verificacion.js"></script>
+    <input type="file" id="fileInput">
+    <table id="inventoryTable">
+        <thead>
+            <tr>
+                <th>Site</th>
+                <th>Location</th>
+                <th>Item Number</th>
+                <th>Lot/Serial</th>
+                <th>Reference</th>
+                <th>UM</th>
+                <th>Qty On Hand</th>
+                <th>Created</th>
+                <th>Expire</th>
+                <th>Status</th>
+                <th>Avail</th>
+                <th>Net</th>
+                <th>OvrIs</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
     <script>
-        
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const text = e.target.result;
+                    const lines = text.split('\n');
+                    const tableBody = document.querySelector('#inventoryTable tbody');
+                    tableBody.innerHTML = ''; // Clear existing table rows
+
+                    lines.forEach(line => {
+                        const columns = line.match(/.{1,20}/g); // Adjust based on column width
+                        if (columns && columns.length === 13) { // Ensure it matches the number of columns
+                            const row = document.createElement('tr');
+                            columns.forEach(column => {
+                                const cell = document.createElement('td');
+                                cell.textContent = column.trim();
+                                row.appendChild(cell);
+                            });
+                            tableBody.appendChild(row);
+                        }
+                    });
+                };
+                reader.readAsText(file);
+            }
+        });
     </script>
 </body>
-</html>

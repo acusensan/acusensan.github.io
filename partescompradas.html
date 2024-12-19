@@ -3,34 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Partes Compradas</title>
+    <title>./Acu</title>
     <link rel="stylesheet" href="css/materialize.min.css">
     <link rel="stylesheet" href="css/navigationbar.css">
+    <meta name="theme-color" content="#0d47a1"> <!-- blue darken-4 color -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="msapplication-navbutton-color" content="#0d47a1"> <!-- blue darken-4 color -->
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex: 1;
+        }
+        .card {
+            cursor: pointer;
+        }
+        .card:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
 </head>
 <body>
     <!-- Side Navigation -->
     <ul id="slide-out" class="sidenav">
         <li><a href="index.html">Home</a></li>
         <li><a href="ajuste.html">Ajuste</a></li>
-        <li><a href="barcode.html">Generar Codigo De Barrar</a></li>
+        <li><a href="barcode.html">Generar Codigo De Barras</a></li>
         <li><a href="hilos.html">Hilos</a></li>
         <li><a href="invrack.html">Inventario Racks</a></li>
         <li><a href="partescompradas.html">Partes Compradas</a></li>
         <li><a href="reglatres.html">Regla De Tres</a></li>
-        <li><a href="toolcrib.html">Tool Crib</a></li>
-        <li><a href="verificacion.html">Verificacion</a></li>
-
+        <!-- <li><a href="verificacion.html">Verificacion</a></li>-->
+        <!-- <li><a href="verificacion.html">Verificacion</a></li>-->
     </ul>
 
     <!-- Toolbar -->
-    <nav>
-        <div class="nav-wrapper blue darken-4">
+    <nav class="blue darken-4">
+        <div class="nav-wrapper">
             <button class="menu-button sidenav-trigger" data-target="slide-out">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
             </button>
-            <a href="#" class="brand-logo"><code>P.P</code></a>
+            <a href="#" class="brand-logo"><code>./Acu</code></a>
             <ul class="right">
                 <li><a href="#settings-modal" class="modal-trigger">Settings</a></li>
             </ul>
@@ -55,33 +74,39 @@
 
     <!-- Main Content -->
     <main>
-        <div class="search-container" style="margin: 20px;">
-        <input type="text" style="width: 96%; padding: 10px; font-size: 16px; margin-bottom: 20px;" id="searchBar" class="input-field" placeholder="Search...">
-    </div>
-    <div class="data-container" id="dataContainer">
-        <!-- Data items will be dynamically inserted here -->
-    </div>
+        <div class="container" style="padding-bottom: 40px;">
+            <div class="search-container" style="margin: 20px;">
+                <input type="text" id="searchBar" class="input-field" placeholder="Search...">
+            </div>
+            <div class="data-container" id="dataContainer">
+                <!-- Data items will be dynamically inserted here -->
+            </div>
+        </div>
 
-    <!-- Modal for displaying images -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <h4>Image Preview</h4>
-            <img class="responsive-img" id="modalImage">
+        <!-- Modal for displaying barcodes -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <h4 style="text-align: center;">Codigo</h4>
+                <div class="barcode-container">
+                    <svg id="modalImage" class="responsive-img"></svg>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+            </div>
         </div>
-        <div class="modal-footer">
-            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
-        </div>
-    </div>
     </main>
 
     <!-- Footer -->
-    <footer class="page-footer blue darken-4" style="text-align: center;">
-    <div class="footer-copyright">
-        <div class="container">
-            © <span id="current-year"></span> ./Acu
+    <footer class="page-footer blue darken-4">
+        <div class="footer-copyright">
+            <div class="container">
+                © <span id="current-year"></span> ./Acu
+            </div>
         </div>
-    </div>
+    </footer>
 
+    <script src="js/JsBarcode.all.min.js"></script>
     <script src="js/materialize.min.js"></script>
     <script src="js/navigationbar.js"></script>
     <script src="js/partescompradas.js"></script>
