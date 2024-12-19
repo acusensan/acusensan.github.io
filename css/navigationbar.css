@@ -117,3 +117,19 @@ main {
     align-items: center;
     padding: 20px;
 }
+
+.page-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .page-footer {
+        padding: 10px;
+        font-size: 14px;
+    }
+}

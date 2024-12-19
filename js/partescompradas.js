@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     M.Modal.init(elems);
     const sidenavElems = document.querySelectorAll('.sidenav');
     M.Sidenav.init(sidenavElems);
-    updateRackOptions();
 });
 
 const data = [
