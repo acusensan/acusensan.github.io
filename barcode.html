@@ -19,7 +19,6 @@
         <li><a href="reglatres.html">Regla De Tres</a></li>
         <li><a href="toolcrib.html">Tool Crib</a></li>
         <li><a href="verificacion.html">Verificacion</a></li>
-
     </ul>
 
     <!-- Toolbar -->
@@ -55,33 +54,47 @@
 
     <!-- Main Content -->
     <main>
-       <div class="container">
-        <h1 class="center-align">Generar Codigo</h1>
-        <div class="center-align">
-            <svg style="width: 100%;" id="barcode"></svg>
+        <div class="container">
+            <h1 class="center-align">Generar Codigo</h1>
+            <div class="center-align">
+                <svg style="width: 100%;" id="barcode"></svg>
+            </div>
+            <div class="input-field">
+                <input type="text" id="barcodeInput" placeholder="Introducir Datos">
+            </div>
+            <div class="center-align">
+                <button class="btn blue waves-effect waves-light" onclick="prependAndGenerate('L')">L (Localizacion)</button>
+                <button class="btn blue waves-effect waves-light" onclick="prependAndGenerate('P')">P (Numero De Parte)</button>
+                <button class="btn blue waves-effect waves-light" onclick="prependAndGenerate('S')">S (Serial)</button>
+                <button class="btn blue waves-effect waves-light" onclick="prependAndGenerate('Q')">Q (Cantidad)</button>
+            </div>
         </div>
-        <div class="input-field">
-            <input type="text" id="barcodeInput" placeholder="Introducir Datos">
-        </div>
-        <div class="center-align">
-            <button class="btn blue waves-effect waves-light" onclick="prependAndGenerate('S')">S (Serial)</button>
-            <button class="btn blue waves-effect waves-light" onclick="prependAndGenerate('P')">P (Numero De Parte)</button>
-            <button class="btn blue waves-effect waves-light" onclick="prependAndGenerate('Q')">Q (Cantidad)</button>
-        </div>
-    </div>
     </main>
 
     <!-- Footer -->
     <footer class="page-footer blue darken-4" style="text-align: center;">
-    <div class="footer-copyright">
-        <div class="container">
-            © <span id="current-year"></span> ./Acu
+        <div class="footer-copyright">
+            <div class="container">
+                © <span id="current-year"></span> ./Acu
+            </div>
         </div>
-    </div>
+    </footer>
 
-    <script src="js/materialize.min.js"></script>
-    <script src="js/JsBarcode.all.min.js"></script>
-    <script src="js/navigationbar.js"></script>
-    <script src="js/barcode.js"></script>
+    <script src="js/materialize.min.js" defer></script>
+    <script src="js/JsBarcode.all.min.js" defer></script>
+    <script src="js/navigationbar.js" defer></script>
+    <script src="js/barcode.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            M.AutoInit();
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        });
+
+        function prependAndGenerate(prefix) {
+            const input = document.getElementById('barcodeInput').value;
+            const barcode = prefix + input;
+            JsBarcode("#barcode", barcode);
+        }
+    </script>
 </body>
 </html>

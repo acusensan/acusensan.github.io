@@ -6,7 +6,26 @@
     <title>Regla De Tres</title>
     <link rel="stylesheet" href="css/materialize.min.css">
     <link rel="stylesheet" href="css/navigationbar.css">
-       
+    <style>
+        .input-field label {
+            color: #9e9e9e;
+        }
+        .input-field input[type=number]:focus + label {
+            color: #42a5f5;
+        }
+        .input-field input[type=number]:focus {
+            border-bottom: 1px solid #42a5f5;
+            box-shadow: 0 1px 0 0 #42a5f5;
+        }
+        .input-field input[type=number].valid {
+            border-bottom: 1px solid #4caf50;
+            box-shadow: 0 1px 0 0 #4caf50;
+        }
+        .input-field input[type=number].invalid {
+            border-bottom: 1px solid #f44336;
+            box-shadow: 0 1px 0 0 #f44336;
+        }
+    </style>
 </head>
 <body>
     <!-- Side Navigation -->
@@ -20,7 +39,6 @@
         <li><a href="reglatres.html">Regla De Tres</a></li>
         <li><a href="toolcrib.html">Tool Crib</a></li>
         <li><a href="verificacion.html">Verificacion</a></li>
-
     </ul>
 
     <!-- Toolbar -->
@@ -56,44 +74,46 @@
 
     <!-- Main Content -->
     <main>
-       <div class="row">
-            <form class="col s12">
-                <div class="row">
+        <div class="container">
+            <h1 class="center-align">Regla De Tres</h1>
+            <div class="row">
+                <form class="col s12">
                     <div class="row">
-                    <div class="col s12 center-align">
-                        <h5 id="result"></h5>
+                        <div class="col s12 center-align">
+                            <h5 id="result"></h5>
+                        </div>
                     </div>
-                </div>
-                <p>Peso De Muestra:</p>
-                    <div class="input-field col s12">
-                        <input id="input1" type="number" class="validate">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="input1" type="number" class="validate">
+                            <label for="input1">Peso De Muestra</label>
+                        </div>
                     </div>
-                </div>
-                <p> Cantidad De Muestras:</p>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="input2" type="number" class="validate">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="input2" type="number" class="validate">
+                            <label for="input2">Cantidad De Muestras</label>
+                        </div>
                     </div>
-                </div>
-                <p> Peso Total:</p>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="input3" type="number" class="validate">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="input3" type="number" class="validate">
+                            <label for="input3">Peso Total</label>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col s12 center-align">
-                        <button class="btn blue waves-effect waves-light" type="button" onclick="calculate()">Calcular</button>
+                    <div class="row">
+                        <div class="col s12 center-align">
+                            <button class="btn blue waves-effect waves-light" type="button" onclick="calculate()">Calcular</button>
+                            <button class="btn red waves-effect waves-light" type="button" onclick="clearFields()">Limpiar</button>
+                        </div>
                     </div>
-                </div>
-                
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
     </main>
 
     <!-- Footer -->
-    <footer class="page-footer blue darken-4">
+    <footer class="page-footer blue darken-4" style="text-align: center;">
         <div class="footer-copyright">
             <div class="container">
                 © <span id="current-year"></span> ./Acu
@@ -101,9 +121,8 @@
         </div>
     </footer>
 
-    <script src="js/materialize.min.js"></script>
-    <script src="js/navigationbar.js"></script>
-    <script src="js/reglatres.js"></script>
-
+    <script src="js/materialize.min.js" defer></script>
+    <script src="js/navigationbar.js" defer></script>
+    <script src="js/reglatres.js" defer></script>
 </body>
 </html>

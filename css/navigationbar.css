@@ -3,46 +3,108 @@ body {
     min-height: 100vh;
     flex-direction: column;
 }
+
 nav {
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 1000; /* Ensure it stays above other elements */
 }
+
 main {
     flex: 1 0 auto;
     padding-top: 64px;
 }
-.sidenav{
+.center-text {
+    text-align: center;
+}
+
+.sidenav {
     margin-top: 20px;
     padding-top: 50px;
 }
+
 .card {
     margin: 10px;
-    cursor: pointer; /* Add cursor pointer for better UX */
+    cursor: pointer;
 }
+
 .menu-button {
     background: none;
     border: none;
     cursor: pointer;
     padding: 10px;
 }
+
 .menu-button .bar {
     display: block;
     width: 25px;
     height: 3px;
     margin: 5px auto;
-    background-color: #fff; /* Change this to white */
+    background-color: #fff;
 }
+
+.container {
+    width: 90%;
+    max-width: 600px;
+}
+
+/* Dark Mode Styles */
 .dark-mode {
     background-color: #121212;
     color: #ffffff;
 }
-.container {
-    width: 90%;
-     max-width: 600px;
-        }
 
-.card-title{
+.dark-mode #barcodeInput,
+.dark-mode .card,
+.dark-mode .sidenav,
+.dark-mode .modal,
+.dark-mode .modal-footer,
+.dark-mode .modal-footer a,
+.dark-mode .input-field select,
+.dark-mode .input-field select option,
+.dark-mode .input-field label,
+.dark-mode .input-field input[type="number"],
+.dark-mode .input-field input[type="text"],
+.dark-mode #itemDisplay,
+.dark-mode #itemDisplay h3,
+.dark-mode #itemDisplay ul,
+.dark-mode #itemDisplay li {
+    background-color: #1e1e1e;
+    color: #ffffff !important;
+}
 
+.dark-mode .input-field select,
+.dark-mode .input-field input[type="number"],
+.dark-mode .input-field input[type="text"] {
+    border: 1px solid #ffffff !important;
+}
+
+/* Additional Styles */
+.collection-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.delete-button {
+    margin-left: 20px;
+    flex-shrink: 0;
+}
+
+/* Ensure placeholder option is styled correctly */
+.dark-mode .input-field select option {
+    background-color: #1e1e1e;
+    color: #ffffff !important;
+}
+
+/* Ensure the disabled and selected option is styled correctly */
+.dark-mode .input-field select option:disabled {
+    color: #b0b0b0 !important;
+}
+
+/* Ensure side navigation text is styled correctly */
+.dark-mode .sidenav a {
+    color: #ffffff !important;
 }

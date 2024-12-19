@@ -29,7 +29,7 @@
                 <span class="bar"></span>
                 <span class="bar"></span>
             </button>
-            <a href="#" class="brand-logo"><code>Inventario Rack</code></a>
+            <a href="#" class="brand-logo"><code>Racks</code></a>
             <ul class="right">
                 <li><a href="#settings-modal" class="modal-trigger">Settings</a></li>
             </ul>
@@ -54,33 +54,32 @@
 
     <!-- Main Content -->
     <main>
-        <div class="container" style="padding-bottom: 40px;">
-        <h3 class="center-align">Inventario De Racks</h3>
-        <div class="input-field">
-            <select id="columnSelect" onchange="updateRacks()">
-                <option value="" disabled selected>---Seleciona Un Rack Principal---</option>
-                <option value="APC01">Rack 1</option>
-                <option value="APC02">Rack 2</option>
-            </select>
-            <label>Rack Principal</label>
+        <div class="container" style="padding-bottom: 40px; padding-top: 20px;">
+            <div class="input-field">
+                <select id="columnSelect" onchange="updateRacks()">
+                    <option value="" disabled selected>---Seleciona Un Rack Principal---</option>
+                    <option value="APC01">Rack 1</option>
+                    <option value="APC02">Rack 2</option>
+                </select>
+                <label>Rack Principal</label>
+            </div>
+            <div class="input-field">
+                <select id="rackSelect">
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+                <label>Seleciona Rack</label>
+            </div>
+            <div class="nav-arrows col s6 center-align">
+                <button class="btn blue" onclick="prevRack()">Anterior</button>
+                <button class="btn blue" onclick="nextRack()">Proximo</button>
+            </div>
+            <div id="itemDisplay" class="section">
+                <!-- Item details will be displayed here -->
+            </div>
+            <div class="col s6 center-align">
+                <button class="btn blue " onclick="downloadCSV()">Dsecargar Archivo</button>
+            </div>
         </div>
-        <div class="input-field">
-            <select id="rackSelect">
-                <!-- Options will be populated by JavaScript -->
-            </select>
-            <label>Seleciona Rack</label>
-        </div>
-        <div class="nav-arrows col s6 center-align">
-            <button class="btn blue" onclick="prevRack()">Proximo</button>
-            <button class="btn blue" onclick="nextRack()">Anterio</button>
-        </div>
-        <div id="itemDisplay" class="section">
-            <!-- Item details will be displayed here -->
-        </div>
-        <div class="col s6 center-align">
-        <button class="btn blue " onclick="downloadCSV()">Dsecargar Archivo</button>
-    </div>
-    </div>
     
     </main>
 

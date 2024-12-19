@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="css/navigationbar.css">
 </head>
 <body>
-    <!-- Side Navigation -->
     <ul id="slide-out" class="sidenav">
         <li><a href="index.html">Home</a></li>
         <li><a href="ajuste.html">Ajuste</a></li>
@@ -19,10 +18,8 @@
         <li><a href="reglatres.html">Regla De Tres</a></li>
         <li><a href="toolcrib.html">Tool Crib</a></li>
         <li><a href="verificacion.html">Verificacion</a></li>
-
     </ul>
 
-    <!-- Toolbar -->
     <nav>
         <div class="nav-wrapper blue darken-4">
             <button class="menu-button sidenav-trigger" data-target="slide-out">
@@ -37,7 +34,6 @@
         </div>
     </nav>
 
-    <!-- Settings Modal -->
     <div id="settings-modal" class="modal">
         <div class="modal-content">
             <h4>Settings</h4>
@@ -53,66 +49,61 @@
         </div>
     </div>
 
-    <!-- Main Content -->
     <main>
-     <div class="container" style="padding-bottom: 40px;">
-        <div id="selected-items" class="card-panel blue lighten-2 white-text"></div>
-        <ul id="entry-list" class="collection"></ul> <!-- New list element -->
-        <div class="input-field">
-            <label for="section"></label>
-            <select id="section" class="browser-default" onchange="updateRackOptions(); updateSelectedItems()">
-                <option value="Rack 1">Rack 1</option>
-                <option value="Rack 2">Rack 2</option>
-                <option value="Rack 3">Rack 3</option>
-            </select>
+        <div class="container" style="padding-bottom: 40px;">
+            <div id="selected-items" class="card-panel blue lighten-2 white-text"></div>
+            <ul id="entry-list" class="collection"></ul>
+            <div class="input-field">
+                <label for="section"></label>
+                <select id="section" class="browser-default" onchange="updateRackOptions(); updateSelectedItems()">
+                    <option value="Rack 1">Rack 1</option>
+                    <option value="Rack 2">Rack 2</option>
+                    <option value="Rack 3">Rack 3</option>
+                </select>
+            </div>
+            <div class="input-field">
+                <label for="rack"></label>
+                <select id="rack" class="browser-default" onchange="updateSelectedItems()"></select>
+            </div>
+            <div class="nav-buttons col s6 center-align">
+                <button class="btn blue waves-effect waves-light" onclick="changeRack(-1)">◀</button>
+                <button class="btn blue waves-effect waves-light" onclick="changeRack(1)">▶</button>
+            </div>
+            <div class="input-field">
+                <label for="menu2"></label>
+                <select id="menu2" class="browser-default" onchange="updateMenu3(); updateSelectedItems()">
+                    <option value="BT1">BT1</option>
+                    <option value="COLORADO">COLORADO</option>
+                    <option value="FIX">FIX-STORAGE</option>
+                    <option value="SUV">SUV</option>
+                    <option value="SAVANA">SAVANA</option>
+                    <option value="MISC">MISC</option>
+                    <option value="VELCRO">VELCRO</option>
+                    <option value="ZIPPER">ZIPPER</option>
+                </select>
+            </div>
+            <div class="input-field">
+                <label for="menu3"></label>
+                <select id="menu3" class="browser-default" onchange="updateSelectedItems()"></select>
+            </div>
+            <div class="input-field">
+                <input type="number" id="quantity" min="1" class="validate">
+                <label for="quantity">Cantidad</label>
+            </div>
+            <div class="nav-arrows col s6 center-align">
+                <button class="btn blue waves-effect waves-light" onclick="downloadData()">Descargar</button>
+                <button class="btn blue waves-effect waves-light" onclick="addEntry()">Agregar</button>
+            </div>
         </div>
-        <div class="input-field">
-            <label for="rack"></label>
-            <select id="rack" class="browser-default" onchange="updateSelectedItems()">
-                <!-- Options will be added by JavaScript -->
-            </select>
-        </div>
-        <div class="nav-buttons col s6 center-align">
-            <button class="btn blue waves-effect waves-light" onclick="changeRack(-1)">◀</button>
-            <button class="btn blue waves-effect waves-light" onclick="changeRack(1)">▶</button>
-        </div>
-        <div class="input-field">
-            <label for="menu2"></label>
-            <select id="menu2" class="browser-default" onchange="updateMenu3(); updateSelectedItems()">
-                <option value="BT1">BT1</option>
-                <option value="COLORADO">COLORADO</option>
-                <option value="FIX">FIX-STORAGE</option>
-                <option value="SUV">SUV</option>
-                <option value="SAVANA">SAVANA</option>
-                <option value="MISC">MISC</option>
-                <option value="VELCRO">VELCRO</option>
-                <option value="ZIPPER">ZIPPER</option>
-            </select>
-        </div>
-        <div class="input-field">
-            <label for="menu3"></label>
-            <select id="menu3" class="browser-default" onchange="updateSelectedItems()">
-                <!-- Options will be added by JavaScript based on Menu 2 selection -->
-            </select>
-        </div>
-        <div class="input-field">
-            <input type="number" id="quantity" min="1" class="validate">
-            <label for="quantity">Cantidad</label>
-        </div>
-    <div class="nav-arrows col s6 center-align">
-            <button class="btn blue waves-effect waves-light" onclick="downloadData()">Descargar</button>
-            <button class="btn blue waves-effect waves-light" onclick="addEntry()">Agregar</button>
-    </div>
-    </div>
     </main>
 
-    <!-- Footer -->
     <footer class="page-footer blue darken-4" style="text-align: center;">
-    <div class="footer-copyright">
-        <div class="container">
-            © <span id="current-year"></span> ./Acu
+        <div class="footer-copyright">
+            <div class="container">
+                © <span id="current-year"></span> ./Acu
+            </div>
         </div>
-    </div>
+    </footer>
 
     <script src="js/materialize.min.js"></script>
     <script src="js/navigationbar.js"></script>
