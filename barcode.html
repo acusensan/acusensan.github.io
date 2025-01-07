@@ -55,6 +55,7 @@
     <!-- Main Content -->
     <main>
         <div class="container">
+            <h1 class="center-align">Generar Codigo</h1>
             <div class="center-align">
                 <svg style="width: 100%;" id="barcode"></svg>
             </div>
@@ -83,17 +84,5 @@
     <script src="js/JsBarcode.all.min.js" defer></script>
     <script src="js/navigationbar.js" defer></script>
     <script src="js/barcode.js" defer></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            M.AutoInit();
-            document.getElementById('current-year').textContent = new Date().getFullYear();
-        });
-
-        function prependAndGenerate(prefix) {
-            const input = document.getElementById('barcodeInput').value;
-            const barcode = prefix + input;
-            JsBarcode("#barcode", barcode);
-        }
-    </script>
 </body>
 </html>
