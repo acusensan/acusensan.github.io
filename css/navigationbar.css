@@ -12,7 +12,7 @@ nav {
 }
 
 main {
-    flex: 1 0 auto;
+    flex: 1 ;
     padding-top: 64px;
 }
 
@@ -20,24 +20,15 @@ main {
     text-align: center;
 }
 
+.scrollable-section {
+    height: 300px; /* Set the height of the section */
+    overflow-y: scroll; /* Enable vertical scrolling */
+    border: 1px solid #ccc; /* Optional: Add a border for better visibility */
+}
+
 .sidenav {
     margin-top: 20px;
     padding-top: 50px;
-}
-
-.card {
-    margin: 10px;
-    cursor: pointer;
-    width: 100%; /* Adjust width as needed */
-    max-width: 300px; /* Set a maximum width */
-}
-
-.card .card-content {
-    padding: 10px; /* Reduce padding */
-}
-
-.card .card-action {
-    padding: 10px; /* Reduce padding */
 }
 
 .menu-button {
@@ -55,9 +46,21 @@ main {
     background-color: #fff;
 }
 
-.container {
-    width: 90%;
+.card {
+    margin-bottom: 20px; /* Add some space between cards */
+}
+
+.container 
+    width: 100%;
     max-width: 600px;
+}
+
+.input-field input[type="number"],
+.input-field input[type="text"],
+.input-field select {
+    font-size: 1.5em; /* Increase the font size */
+    padding: 10px; /* Add more padding */
+    height: auto; /* Adjust the height */
 }
 
 /* Dark Mode Styles */
@@ -72,6 +75,7 @@ main {
 .dark-mode .modal,
 .dark-mode .modal-footer,
 .dark-mode .modal-footer a,
+.dark-mode #searchBar,
 .dark-mode .input-field select,
 .dark-mode .input-field select option,
 .dark-mode .input-field label,

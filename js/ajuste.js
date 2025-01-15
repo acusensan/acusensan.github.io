@@ -92,7 +92,6 @@ function downloadData() {
     const entryList = document.getElementById('entry-list');
     let entries = '';
     for (let i = 0; i < entryList.children.length; i++) {
-        // Get the text content of the entry, excluding the button text
         const entryText = entryList.children[i].childNodes[0].nodeValue.trim();
         entries += entryText + '\n';
     }
