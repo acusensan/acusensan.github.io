@@ -1,7 +1,12 @@
+html {
+    scroll-behavior: smooth;
+}
 body {
     display: flex;
-    min-height: 100vh;
+    height: 100vh;
     flex-direction: column;
+    margin: 0;
+    padding: 0;
 }
 
 nav {
@@ -30,12 +35,17 @@ main {
     margin-top: 20px;
     padding-top: 50px;
 }
+.sidenav a {
+    padding: 15px 20px;
+    font-size: 1.2em;
+}
 
 .menu-button {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 10px;
+    padding: 15px;
+    font-size: 1.5em;
 }
 
 .menu-button .bar {
@@ -137,13 +147,21 @@ main {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding: 20px;
+    padding: 10px;
     text-align: center;
+    bottom: 0;
+    width: 100%;
 }
 
 @media (max-width: 500px) {
     .page-footer {
-        padding: 10px;
+        padding: 5px;
         font-size: 14px;
     }
+    .modal {
+        width: 90%;
+        height: auto;
+        top: 10%;
+    }
+
 }
