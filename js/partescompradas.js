@@ -233,7 +233,8 @@ function displayData(items) {
 function showBarcode(partNumber) {
     const instance = M.Modal.getInstance(modal);
     modalImage.innerHTML = ''; // Clear previous content
-    JsBarcode(modalImage, partNumber, {
+    const modifiedPartNumber = 'P' + partNumber; // Add 'P' before the part number
+    JsBarcode(modalImage, modifiedPartNumber, {
         format: "CODE128",
         displayValue: true
     });

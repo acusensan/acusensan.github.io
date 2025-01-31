@@ -6,7 +6,6 @@
     <title>Hilos</title>
     <link rel="stylesheet" href="css/materialize.min.css">
     <link rel="stylesheet" href="css/navigationbar.css">
-    
 </head>
 <body>
     <!-- Side Navigation -->
@@ -18,8 +17,6 @@
         <li><a href="invrack.html">Inventario Racks</a></li>
         <li><a href="partescompradas.html">Partes Compradas</a></li>
         <li><a href="reglatres.html">Regla De Tres</a></li>
-        <!-- <li><a href="verificacion.html">Verificacion</a></li>-->
-        <!-- <li><a href="verificacion.html">Verificacion</a></li>-->
     </ul>
 
     <!-- Toolbar -->
@@ -55,16 +52,26 @@
 
     <!-- Main Content -->
     <main>
-        <div class="container">
-            <div class="row">
-                <div class="col s12">
-                    <div class="input-field">
-                        <input id="searchInput" type="text" placeholder="Buscar">
-                        <label for="searchInput">Buscar Numero De Hilo...</label>
-                    </div>
+        <div class="container" style="padding-bottom: 40px;">
+            <div class="search-container" style="margin: 20px;">
+                <input type="text" id="searchBar" class="input-field" placeholder="Search...">
+            </div>
+            <div class="data-container" id="dataContainer">
+                <!-- Data items will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <!-- Modal for displaying barcodes -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <h4 style="text-align: center;">Codigo</h4>
+                <div class="barcode-container">
+                    <svg id="modalImage" class="responsive-img"></svg>
                 </div>
             </div>
-            <div id="table-container" class="responsive-table"></div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+            </div>
         </div>
     </main>
 
@@ -80,5 +87,6 @@
     <script src="js/materialize.min.js"></script>
     <script src="js/navigationbar.js"></script>
     <script src="js/hilos.js"></script>
+    <script src="js/JsBarcode.all.min.js"></script>
 </body>
 </html>

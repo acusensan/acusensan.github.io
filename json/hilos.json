@@ -1,10 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const elems = document.querySelectorAll('.modal');
-    M.Modal.init(elems);
-    const sidenavElems = document.querySelectorAll('.sidenav');
-    M.Sidenav.init(sidenavElems);
-});
-const data = [
+[
     { "partNumber": "291577X33-110D", "color": "110D" },
     { "partNumber": "291577X33-149B", "color": "149B" },
     { "partNumber": "291577X33-309X", "color": "309X" },
@@ -84,56 +78,4 @@ const data = [
     { "partNumber": "WYNGB3-923T", "color": "923T" },
     { "partNumber": "WYNGB3-9936", "color": "9936" },
     { "partNumber": "WYNGB3-999K", "color": "999K" }
-];
-
-const searchBar = document.getElementById('searchBar');
-const dataContainer = document.getElementById('dataContainer');
-const modal = document.getElementById('modal');
-const modalImage = document.getElementById('modalImage');
-
-// Function to display data items
-function displayData(items) {
-    dataContainer.innerHTML = `
-        <table class="highlight">
-            <thead>
-                <tr>
-                    <th>Numero De Parte</th>
-                    <th>Color</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${items.map(item => `
-                    <tr class="data-item" onclick="showBarcode('${item.partNumber}')">
-                        <td>${item.partNumber}</td>
-                        <td>${item.color}</td>
-                    </tr>
-                `).join('')}
-            </tbody>
-        </table>
-    `;
-}
-
-// Function to show barcode in modal
-function showBarcode(partNumber) {
-    const instance = M.Modal.getInstance(modal);
-    modalImage.innerHTML = ''; // Clear previous content
-    const modifiedPartNumber = 'P' + partNumber; // Add 'P' before the part number
-    JsBarcode(modalImage, modifiedPartNumber, {
-        format: "CODE128",
-        displayValue: true
-    });
-    instance.open();
-}
-
-// Event listener for search bar
-searchBar.addEventListener('input', (e) => {
-    const searchString = e.target.value.toLowerCase();
-    const filteredData = data.filter(item => 
-        item.partNumber.toLowerCase().includes(searchString) ||
-        item.color.toLowerCase().includes(searchString)
-    );
-    displayData(filteredData);
-});
-
-// Initial display of all data
-displayData(data);
+]
