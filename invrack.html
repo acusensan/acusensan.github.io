@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventario Rack</title>
     <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/navigationbar.css">
 </head>
 <body>
@@ -76,7 +77,11 @@
             <div id="itemDisplay" class="section">
                 <!-- Item details will be displayed here -->
             </div>
-            <div class="col s6 center-align">
+            <div class="nav-arrows col s6 center-align">
+                <button class="btn blue" onclick="prevRack()">Anterior</button>
+                <button class="btn blue" onclick="nextRack()">Proximo</button>
+            </div>
+            <div class="col s6 center-align" style="padding-top:20px;">
                 <button class="btn red " onclick="downloadCSV()">Dsecargar Archivo</button>
             </div>
         </div>

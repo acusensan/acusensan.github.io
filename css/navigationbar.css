@@ -1,5 +1,6 @@
 html {
     scroll-behavior: smooth;
+    overscroll-behavior: none;
 }
 body {
     display: flex;
@@ -7,6 +8,7 @@ body {
     flex-direction: column;
     margin: 0;
     padding: 0;
+    overscroll-behavior: none;
 }
 
 nav {

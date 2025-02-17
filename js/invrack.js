@@ -65,7 +65,6 @@ document.addEventListener('DOMContentLoaded', function() {
             "STFR-415X122FAC"
           ],
             APC0109: [
-            "794-100SAA",
             "L0269501AA01",
             "L0617164AA01",
             "L0697064AA01",
@@ -138,22 +137,21 @@ document.addEventListener('DOMContentLoaded', function() {
             "L0676177AA01"
           ],
             APC0118: [
+            "794-100SAA",
             "L00180970202FAA",
             "L00180970209XAA",
             "L00180970245DAA",
             "L00180970264DAA",
             "L001809702GKAAA",
             "L001809702GWBAA",
-            "L001809702HXWAA",
-            "L002162447NCPAA"
+            "L001809702HXWAA"
           ],
             APC0119: [
-            "72918",
+            "L002162447NCPAA",
             "190562",
             "KRG25LTCA",
             "L0429142AA02",
             "L0549303AA01",
-            "197443",
             "L0575409AA01"
           ],
             APC0120: [
