@@ -4,7 +4,7 @@ html {
 }
 body {
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
     flex-direction: column;
     margin: 0;
     padding: 0;
@@ -66,13 +66,13 @@ main {
     width: 100%;
     max-width: 600px;
 }
-
 .input-field input[type="number"],
 .input-field input[type="text"],
 .input-field select {
     font-size: 1.5em; /* Increase the font size */
     padding: 10px; /* Add more padding */
     height: auto; /* Adjust the height */
+    text-align: center;
 }
 
 /* Dark Mode Styles */
@@ -160,12 +160,12 @@ main {
         font-size: 14px;
     }
     .modal {
-        width: 90%;
+        width: auto;
         height: auto;
         top: 10%;
     }
      .container {
-    width: 100%;
+    width: auto;
   }
 
 }

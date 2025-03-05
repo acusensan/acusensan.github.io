@@ -86,7 +86,6 @@ document.addEventListener('DOMContentLoaded', function() {
             APC0111: [
             "L0449870AA0102F",
             "L0449870AA0164D",
-            "L0449870AA01GWB",
             "L001466311NCPAA",
             "L002215045NCPAA",
             "L002215046NCPAA",

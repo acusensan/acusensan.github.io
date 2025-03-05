@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Materialize components
     M.Sidenav.init(document.querySelectorAll('.sidenav'));
     M.Modal.init(document.querySelectorAll('.modal'));
 
@@ -7,9 +8,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Dark mode toggle
     const darkModeToggle = document.getElementById('dark-mode-toggle');
+    const darkModeText = document.getElementById('dark-mode-text');
+
     darkModeToggle.addEventListener('change', function() {
-        document.body.classList.toggle('dark-mode', darkModeToggle.checked);
-        updateSelectStyles(darkModeToggle.checked);
+        const isDarkMode = darkModeToggle.checked;
+        document.body.classList.toggle('dark-mode', isDarkMode);
+        updateSelectStyles(isDarkMode);
+        localStorage.setItem('dark-mode', isDarkMode);
+        darkModeText.textContent = isDarkMode ? 'Modo Claro' : 'Modo Oscuro';
     });
 
     // Load saved theme
@@ -17,12 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.classList.add('dark-mode');
         darkModeToggle.checked = true;
         updateSelectStyles(true);
+        darkModeText.textContent = 'Modo Claro';
     }
-
-    // Save theme preference
-    darkModeToggle.addEventListener('change', function() {
-        localStorage.setItem('dark-mode', darkModeToggle.checked);
-    });
 
     // Add click event to cards to navigate to different pages
     document.querySelectorAll('.card').forEach(card => {

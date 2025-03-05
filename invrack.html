@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="css/materialize.min.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/navigationbar.css">
+    <style>
+        .flex-container {
+            display: flex;
+            gap: 5px; /* Adjust the gap between elements as needed */
+        }
+        .input-field {
+            flex: .5; /* Adjust the flex property as needed */
+        }
+    </style>
 </head>
 <body>
     <!-- Side Navigation -->
@@ -32,7 +41,7 @@
             </button>
             <a href="#" class="brand-logo">Racks</a>
             <ul class="right">
-                <li><a href="#settings-modal" class="modal-trigger">Settings</a></li>
+                <li><a href="#settings-modal" class="modal-trigger">Ajustes</a></li>
             </ul>
         </div>
     </nav>
@@ -40,11 +49,11 @@
     <!-- Settings Modal -->
     <div id="settings-modal" class="modal">
         <div class="modal-content">
-            <h4>Settings</h4>
+            <h4 id="dark-mode-text">Modo Oscuro</h4>
             <p>
                 <label>
                     <input type="checkbox" id="dark-mode-toggle" />
-                    <span>Dark Mode</span>
+                    <span id="dark-mode-text">Modo Oscuro</span>
                 </label>
             </p>
         </div>
@@ -56,9 +65,10 @@
     <!-- Main Content -->
     <main>
         <div class="container" style="padding-bottom: 40px; padding-top: 20px;">
+            <div class="flex-container">
             <div class="input-field">
                 <select id="columnSelect" onchange="updateRacks()">
-                    <option value="" disabled selected>---Seleciona Un Rack Principal---</option>
+                    <option value="" disabled selected>---Seleciona---</option>
                     <option value="APC01">Rack 1</option>
                     <option value="APC02">Rack 2</option>
                 </select>
@@ -69,6 +79,7 @@
                     <!-- Options will be populated by JavaScript -->
                 </select>
                 <label>Seleciona Rack</label>
+            </div>
             </div>
             <div class="nav-arrows col s6 center-align">
                 <button class="btn blue" onclick="prevRack()">Anterior</button>

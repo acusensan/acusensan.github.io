@@ -66,7 +66,6 @@ clearFields();
 
 function clearFields() {
     document.getElementById('input1').value = '';
-    document.getElementById('input2').value = '';
     document.getElementById('input3').value = '';
     document.getElementById('result').textContent = '';
     M.updateTextFields(); // Update labels for Materialize

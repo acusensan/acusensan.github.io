@@ -19,7 +19,7 @@
             cursor: pointer;
             min-height: 200px; /* Set a minimum height for consistency */
             margin-bottom: 10px; /* Add some space between cards */
-            text-align: center;
+           : center;
         }
         .card:hover {
             background-color: #ccc;
@@ -62,7 +62,7 @@
             </button>
             <a href="#" class="brand-logo"><code>./Acu</code></a>
             <ul class="right">
-                <li><a href="#settings-modal" class="modal-trigger">Settings</a></li>
+                <li><a href="#settings-modal" class="modal-trigger">Ajustes</a></li>
             </ul>
         </div>
     </nav>
@@ -70,11 +70,11 @@
     <!-- Settings Modal -->
     <div id="settings-modal" class="modal">
         <div class="modal-content">
-            <h4>Settings</h4>
+            <h4 id="dark-mode-textc">Modo Oscuro</h4>
             <p>
                 <label>
                     <input type="checkbox" id="dark-mode-toggle" />
-                    <span>Dark Mode</span>
+                    <span id="dark-mode-text">Modo Oscuro</span>
                 </label>
             </p>
         </div>
@@ -144,5 +144,25 @@
     </footer>
     <script src="js/materialize.min.js"></script>
     <script src="js/navigationbar.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.sidenav');
+            var instances = M.Sidenav.init(elems);
+
+            var modalElems = document.querySelectorAll('.modal');
+            var modalInstances = M.Modal.init(modalElems);
+
+            var darkModeToggle = document.getElementById('dark-mode-toggle');
+            var darkModeText = document.getElementById('dark-mode-text');
+
+            darkModeToggle.addEventListener('change', function() {
+                if (darkModeToggle.checked) {
+                    darkModeText.textContent = 'Modo Claro';
+                } else {
+                    darkModeText.textContent = 'Modo Oscuro';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
