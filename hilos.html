@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hilos</title>
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/navigationbar.css">
+</head>
+<body>
+    <!-- Side Navigation -->
+    <ul id="slide-out" class="sidenav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ajuste.html">Ajuste</a></li>
+        <li><a href="barcode.html">Generar Codigo De Barrar</a></li>
+        <li><a href="hilos.html">Hilos</a></li>
+        <li><a href="invrack.html">Inventario Racks</a></li>
+        <li><a href="partescompradas.html">Partes Compradas</a></li>
+        <li><a href="reglatres.html">Regla De Tres</a></li>
+    </ul>
+
+    <!-- Toolbar -->
+    <nav>
+        <div class="nav-wrapper blue darken-4">
+            <button class="menu-button sidenav-trigger" data-target="slide-out">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <a href="#" class="brand-logo">Hilos</a>
+            <ul class="right">
+                <li><a href="#settings-modal" class="modal-trigger">Ajustes</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <h4 id="dark-mode-text">Modo Oscuro</h4>
+            <p>
+                <label>
+                    <input type="checkbox" id="dark-mode-toggle" />
+                    <span id="dark-mode-text">Modo Oscuro</span>
+                </label>
+            </p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container" style="padding-bottom: 40px;">
+            <div class="search-container" style="margin: 20px;">
+                <input type="text" id="searchBar" class="input-field" placeholder="Search...">
+            </div>
+            <div class="data-container" id="dataContainer">
+                <!-- Data items will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <!-- Modal for displaying barcodes -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <h4 style="text-align: center;">Codigo</h4>
+                <div class="barcode-container">
+                    <svg id="modalImage" class="responsive-img"></svg>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer blue darken-4" style="text-align: center;">
+        <div class="footer-copyright">
+            <div class="container">
+                © <span id="current-year"></span> ./Acu
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/materialize.min.js"></script>
+    <script src="js/navigationbar.js"></script>
+    <script src="js/hilos.js"></script>
+    <script src="js/JsBarcode.all.min.js"></script>
+</body>
+</html>

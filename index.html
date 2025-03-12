@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>./Acu</title>
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/navigationbar.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex: 1;
+        }
+        .card {
+            cursor: pointer;
+            min-height: 200px; /* Set a minimum height for consistency */
+            margin-bottom: 10px; /* Add some space between cards */
+           : center;
+        }
+        .card:hover {
+            background-color: #ccc;
+        }
+        .row::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        @media (max-width: 500px) {
+        .card {
+            cursor: pointer;
+            min-height: 20px; /* Set a minimum height for consistency */
+            margin-bottom: 10px; /* Add some space between cards */
+            text-align: center;
+    }
+    
+}
+    </style>
+</head>
+<body>
+    <!-- Side Navigation -->
+    <ul id="slide-out" class="sidenav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ajuste.html">Ajuste</a></li>
+        <li><a href="barcode.html">Generar Codigo De Barras</a></li>
+        <li><a href="hilos.html">Hilos</a></li>
+        <li><a href="invrack.html">Inventario Racks</a></li>
+        <li><a href="partescompradas.html">Partes Compradas</a></li>
+        <li><a href="reglatres.html">Regla De Tres</a></li>
+    </ul>
+    
+    <!-- Toolbar -->
+    <nav class="blue darken-4">
+        <div class="nav-wrapper">
+            <button class="menu-button sidenav-trigger" data-target="slide-out">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <a href="#" class="brand-logo"><code>./Acu</code></a>
+            <ul class="right">
+                <li><a href="#settings-modal" class="modal-trigger">Ajustes</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <h4 id="dark-mode-textc">Modo Oscuro</h4>
+            <p>
+                <label>
+                    <input type="checkbox" id="dark-mode-toggle" />
+                    <span id="dark-mode-text">Modo Oscuro</span>
+                </label>
+            </p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <div class="row">
+                <!-- 10 Content Cards -->
+                <div class="col s12 m6 l4">
+                    <div class="card" data-link="ajuste.html">
+                        <div class="card-content">
+                            <span class="card-title">Ajuste</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l4">
+                    <div class="card" data-link="barcode.html">
+                        <div class="card-content">
+                            <span class="card-title">Generar Codigo De Barras</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l4">
+                    <div class="card" data-link="hilos.html">
+                        <div class="card-content">
+                            <span class="card-title">Hilos</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l4">
+                    <div class="card" data-link="invrack.html">
+                        <div class="card-content">
+                            <span class="card-title">Inventario Racks</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l4">
+                    <div class="card" data-link="partescompradas.html">
+                        <div class="card-content">
+                            <span class="card-title">Partes Compradas</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l4">
+                    <div class="card" data-link="reglatres.html">
+                        <div class="card-content">
+                            <span class="card-title">Regla De Tres</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer blue darken-4" style="text-align: center;">
+        <div class="footer-copyright">
+            <div class="container">
+                © <span id="current-year"></span> ./Acu
+            </div>
+        </div>
+    </footer>
+    <script src="js/materialize.min.js"></script>
+    <script src="js/navigationbar.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.sidenav');
+            var instances = M.Sidenav.init(elems);
+
+            var modalElems = document.querySelectorAll('.modal');
+            var modalInstances = M.Modal.init(modalElems);
+
+            var darkModeToggle = document.getElementById('dark-mode-toggle');
+            var darkModeText = document.getElementById('dark-mode-text');
+
+            darkModeToggle.addEventListener('change', function() {
+                if (darkModeToggle.checked) {
+                    darkModeText.textContent = 'Modo Claro';
+                } else {
+                    darkModeText.textContent = 'Modo Oscuro';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

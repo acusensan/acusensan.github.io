@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario Rack</title>
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/navigationbar.css">
+    <style>
+        .flex-container {
+            display: flex;
+            gap: 5px; /* Adjust the gap between elements as needed */
+        }
+        .input-field {
+            flex: .5; /* Adjust the flex property as needed */
+        }
+    </style>
+</head>
+<body>
+    <!-- Side Navigation -->
+    <ul id="slide-out" class="sidenav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ajuste.html">Ajuste</a></li>
+        <li><a href="barcode.html">Generar Codigo De Barrar</a></li>
+        <li><a href="hilos.html">Hilos</a></li>
+        <li><a href="invrack.html">Inventario Racks</a></li>
+        <li><a href="partescompradas.html">Partes Compradas</a></li>
+        <li><a href="reglatres.html">Regla De Tres</a></li>
+        <!-- <li><a href="verificacion.html">Verificacion</a></li>-->
+        <!-- <li><a href="verificacion.html">Verificacion</a></li>-->
+    </ul>
+
+    <!-- Toolbar -->
+    <nav class="blue darken-4">
+        <div class="nav-wrapper">
+            <button class="menu-button sidenav-trigger" data-target="slide-out">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <a href="#" class="brand-logo">Racks</a>
+            <ul class="right">
+                <li><a href="#settings-modal" class="modal-trigger">Ajustes</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <h4 id="dark-mode-text">Modo Oscuro</h4>
+            <p>
+                <label>
+                    <input type="checkbox" id="dark-mode-toggle" />
+                    <span id="dark-mode-text">Modo Oscuro</span>
+                </label>
+            </p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container" style="padding-bottom: 40px; padding-top: 20px;">
+            <div class="flex-container">
+            <div class="input-field">
+                <select id="columnSelect" onchange="updateRacks()">
+                    <option value="" disabled selected>---Seleciona---</option>
+                    <option value="APC01">Rack 1</option>
+                    <option value="APC02">Rack 2</option>
+                </select>
+                <label>Rack Principal</label>
+            </div>
+            <div class="input-field">
+                <select id="rackSelect">
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+                <label>Seleciona Rack</label>
+            </div>
+            </div>
+            <div class="nav-arrows col s6 center-align">
+                <button class="btn blue" onclick="prevRack()">Anterior</button>
+                <button class="btn blue" onclick="nextRack()">Proximo</button>
+            </div>
+            <div id="itemDisplay" class="section">
+                <!-- Item details will be displayed here -->
+            </div>
+            <div class="nav-arrows col s6 center-align">
+                <button class="btn blue" onclick="prevRack()">Anterior</button>
+                <button class="btn blue" onclick="nextRack()">Proximo</button>
+            </div>
+            <div class="col s6 center-align" style="padding-top:20px;">
+                <button class="btn red " onclick="downloadCSV()">Dsecargar Archivo</button>
+            </div>
+        </div>
+    
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer blue darken-4" style="text-align: center;">
+    <div class="footer-copyright">
+        <div class="container">
+            © <span id="current-year"></span> ./Acu
+        </div>
+    </div>
+    
+    </footer>
+
+    <script src="js/materialize.min.js"></script>
+    <script src="js/navigationbar.js"></script>
+    <script src="js/invrack.js"></script>
+</body>
+</html>

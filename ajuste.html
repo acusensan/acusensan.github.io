@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajuste</title>
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/navigationbar.css">
+    <style>
+         .toast {
+        top: 10px !important; /* Adjust the top position as needed */
+        bottom: auto !important;
+    }
+        .flex-container {
+            display: flex;
+            gap: 5px; /* Adjust the gap between elements as needed */
+        }
+        .input-field {
+            flex: 2; /* Adjust the flex property as needed */
+        }
+        .quantity-field {
+            flex: 2; /* Make the quantity field take up more space */
+        }
+    </style>
+</head>
+<body>
+    <ul id="slide-out" class="sidenav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ajuste.html">Ajuste</a></li>
+        <li><a href="barcode.html">Generar Codigo De Barrar</a></li>
+        <li><a href="hilos.html">Hilos</a></li>
+        <li><a href="invrack.html">Inventario Racks</a></li>
+        <li><a href="partescompradas.html">Partes Compradas</a></li>
+        <li><a href="reglatres.html">Regla De Tres</a></li>
+    </ul>
+
+    <nav>
+        <div class="nav-wrapper blue darken-4">
+            <button class="menu-button sidenav-trigger" data-target="slide-out">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <a href="#" class="brand-logo">Ajuste</a>
+            <ul class="right">
+                <li><a href="#settings-modal" class="modal-trigger">Ajustes</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <h4 id="dark-mode-text">Modo Oscuro</h4>
+            <p>
+                <label>
+                    <input type="checkbox" id="dark-mode-toggle" />
+                    <span id="dark-mode-text">Modo Oscuro</span>
+                </label>
+            </p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
+
+    <main>
+        <div class="container" style="padding-bottom: 40px;">
+            <div class="card scrollable-section">
+                <ul id="entry-list" class="collection"></ul>
+            </div>
+
+            <div class="flex-container">
+                <div class="input-field">
+                    <label for="section"></label>
+                    <select id="section" class="browser-default" onchange="updateRackOptions(); updateSelectedItems()">
+                        <option value="Rack 1">Rack 1</option>
+                        <option value="Rack 2">Rack 2</option>
+                        <option value="Rack 3">Rack 3</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="rack"></label>
+                    <select id="rack" class="browser-default" onchange="updateSelectedItems()"></select>
+                </div>
+            </div>
+            <div class="nav-buttons col s6 center-align">
+                <button class="btn blue waves-effect waves-light" onclick="changeRack(-1)">◀</button>
+                <button class="btn blue waves-effect waves-light" onclick="changeRack(1)">▶</button>
+            </div>
+            <div class="flex-container">
+                <div class="input-field">
+                    <label for="menu2"></label>
+                    <select id="menu2" class="browser-default" onchange="updateMenu3(); updateSelectedItems()">
+                        <option value="BT1">BT1</option>
+                        <option value="COLORADO">COLORADO</option>
+                        <option value="FIX">FIX-STORAGE</option>
+                        <option value="SUV">SUV</option>
+                        <option value="SAVANA">SAVANA</option>
+                        <option value="MISC">MISC</option>
+                        <option value="VELCRO">VELCRO</option>
+                        <option value="ZIPPER">ZIPPER</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="menu3"></label>
+                    <select id="menu3" class="browser-default" onchange="updateSelectedItems()"></select>
+                </div>
+            </div>
+            <div class="input-field quantity-field">
+                <input type="number" id="quantity" min="1" class="validate">
+                <label for="quantity">Cantidad</label>
+            </div>
+            <div class="nav-arrows col s6 center-align">
+                <button class="btn red waves-effect waves-light" onclick="downloadData()">Descargar</button>
+                <button class="btn blue waves-effect waves-light" onclick="addEntry()">Agregar</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="page-footer blue darken-4" style="text-align: center;">
+        <div class="footer-copyright">
+            <div class="container">
+                © <span id="current-year"></span> ./Acu
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/materialize.min.js"></script>
+    <script src="js/navigationbar.js"></script>
+    <script src="js/ajuste.js"></script>
+</body>
+</html>

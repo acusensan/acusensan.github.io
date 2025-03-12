@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regla De Tres</title>
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/navigationbar.css">
+    <style>
+        .flex-container {
+            display: flex;
+            gap: 50px; /* Adjust the gap between elements as needed */
+        }
+    </style>
+</head>
+<body>
+    <!-- Side Navigation -->
+    <ul id="slide-out" class="sidenav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ajuste.html">Ajuste</a></li>
+        <li><a href="barcode.html">Generar Codigo De Barrar</a></li>
+        <li><a href="hilos.html">Hilos</a></li>
+        <li><a href="invrack.html">Inventario Racks</a></li>
+        <li><a href="partescompradas.html">Partes Compradas</a></li>
+        <li><a href="reglatres.html">Regla De Tres</a></li>
+    </ul>
+
+    <!-- Toolbar -->
+    <nav>
+        <div class="nav-wrapper blue darken-4">
+            <button class="menu-button sidenav-trigger" data-target="slide-out">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <a href="#" class="brand-logo">Regla De Tres</a>
+            <ul class="right">
+                <li><a href="#settings-modal" class="modal-trigger">Ajustes</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <h4 id="dark-mode-text">Modo Oscuro</h4>
+            <p>
+                <label>
+                    <input type="checkbox" id="dark-mode-toggle" />
+                    <span id="dark-mode-text">Modo Oscuro</span>
+                </label>
+            </p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
+    <!-- Main Content -->
+    <main>
+        <!-- Results Section -->
+        <div class="container" >
+            <div class="card scrollable-section">
+            <div id="results-container" class="row">
+            <!-- Results will be appended here -->
+        </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <form class="col s12">
+                    <div class="flex-container">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select id="category-select">
+                                <option value="" disabled selected>Categoria</option>
+                                <option value="BT1">BT1</option>
+                                <option value="COLORADO">COLORADO</option>
+                                <option value="FIX">FIX</option>
+                                <option value="SUV">SUV</option>
+                                <option value="SAVANA">SAVANA</option>
+                                <option value="MISC">MISC</option>
+                                <option value="VELCRO">VELCRO</option>
+                                <option value="ZIPPER">ZIPPER</option>
+                            </select>
+                            <label for="category-select">Categoria</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select id="item-select" disabled>
+                                <option value="" disabled selected>Numero De Parte</option>
+                            </select>
+                            <label for="item-select">Parte</label>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="flex-container">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="input2" type="number" class="validate">
+                            <label for="input2">Cantidad De Muestras</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="input1" type="number" class="validate">
+                            <label for="input1">Peso De Muestra</label>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="input3" type="number" class="validate">
+                            <label for="input3">Peso Total</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 center-align">
+                            <button class="btn red waves-effect waves-light" type="button" onclick="downloadResults()">Descargar</button>
+                            <!--- <button class="btn red waves-effect waves-light" type="button" onclick="clearFields()">Limpiar</button>--->
+                            <button class="btn blue waves-effect waves-light" type="button" onclick="calculate()">Calcular</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer blue darken-4" style="text-align: center;">
+        <div class="footer-copyright">
+            <div class="container">
+                © <span id="current-year"></span> ./Acu
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/materialize.min.js" defer></script>
+    <script src="js/navigationbar.js" defer></script>
+    <script src="js/reglatres.js" defer></script>
+</body>
+</html>
