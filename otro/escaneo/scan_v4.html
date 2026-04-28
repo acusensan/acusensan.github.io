@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>./Acu</title>
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/navigationbar.css">
+</head>
+<style>
+  body {
+      background: #f4f6f8;
+    }
+    .container{
+      width: 95%;
+    }
+    .scan-card {
+      margin-top: 15px;
+    }
+
+    .two-column {
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+      margin-top: 15px;
+    }
+
+    .column {
+      width: 95%;
+    }
+    /* ===== STICKY SCAN HEADER ===== */
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #f4f6f8;
+      padding-bottom: 10px;
+    }
+
+    /* Prevent content jump under sticky header */
+    .two-column {
+      margin-top: 10px;
+    }
+      .sticky-header {
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+    table {
+      width: 100%;
+      font-size: 14px;
+    }
+
+    thead th {
+      background: #f1f3f5;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #fafafa;
+    }
+    /* Force exceeded rows to be red (override Materialize striped rows) */
+    table.striped > tbody > tr.exceeded {
+      background-color: #ffebee !important;
+    }
+
+    /* Optional: make text stand out */
+    table.striped > tbody > tr.exceeded td {
+      font-weight: 600;
+    }
+
+    .status {
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      display: inline-block;
+    }
+    /* ===== SCAN STATUS INDICATOR ===== */
+
+    .scan-status {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .scan-status .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    /* READY */
+    .scan-status.ready {
+      color: #2e7d32;
+    }
+
+    .scan-status.ready .dot {
+      background: #2e7d32;
+      animation: pulse 1.5s infinite;
+    }
+
+    /* LOST FOCUS */
+    .scan-status.lost {
+      color: #c62828;
+    }
+
+    .scan-status.lost .dot {
+      background: #c62828;
+      animation: none;
+    }
+
+    /* Pulse animation */
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.1; }
+      100% { opacity: 1; }
+    }
+
+    /* ===== FOCUS SAFETY BORDER ===== */
+    .scan-lost {
+      border: 2px solid #c62828 !important;
+    }
+
+    .status.green { background:#d4edda; color: white; }
+    .status.yellow { background:#fff3cd; color:#856404; }
+    .status.red { background:#f8d7da; color:#721c24; }
+    .status.gray { background:#e2e3e5; color:#6c757d; }
+
+    @media (max-width: 900px) {
+      .two-column {
+        flex-direction: column;
+      }
+      .column {
+        width: 100%;
+      }
+    }
+  </style>
+<body>
+    <!-- Side Navigation -->
+    <ul id="slide-out" class="sidenav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ajuste.html">Ajuste</a></li>
+        <li><a href="invrack.html">Inventario Racks</a></li>
+        <li><a href="partescompradas.html">Partes Compradas</a></li>
+        <li><a href="table.html">Verficar</a></li>
+        <li><a href="hilos.html">Hilos</a></li>
+        <li><a href="barcode.html">Generar Codigo De Barrar</a></li>
+        <li><a href="reglatres.html">Regla De Tres</a></li>
+        <li><a href="scan.html">Escaneo</a></li>
+    </ul>
+    
+    <!-- Toolbar -->
+    <nav class="blue darken-4">
+        <div class="nav-wrapper">
+            <button class="menu-button sidenav-trigger" data-target="slide-out">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <a href="#" class="brand-logo"><code>Escaneo</code></a>
+            <ul class="right">
+                <li><a href="#settings-modal" class="modal-trigger">☀</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <h4 id="dark-mode-text">Modo Oscuro</h4>
+            <p>
+                <label>
+                    <input type="checkbox" id="dark-mode-toggle" />
+                    <span id="dark-mode-text">Modo Oscuro</span>
+                </label>
+            </p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <div class="sticky-header ">
+  <div class="card">
+  <div class="card-content">
+    <span class="card-title">Export</span>
+
+    <button class="btn green" onclick="exportScanLogCSV()">
+      Export Scan Log
+    </button>
+
+    <button class="btn blue" onclick="exportTotalsCSV()" style="margin-left:10px;">
+      Export Totals
+    </button>
+  </div>
+</div>
+    <!-- CSV Upload -->
+      <div class="card-content">
+        <span class="card-title">Load CSV</span>
+        <div class="file-field input-field">
+          <div class="btn blue">File
+            <input type="file" id="csvFile" accept=".csv" />
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text" placeholder="Upload daily CSV totals" />
+          </div>
+        </div>
+      </div>
+
+    <!-- Scan Inputs -->
+    <div class="column">
+        <div class="card">
+        <div id="scanStatus" class="scan-status ready">
+    <span class="dot"></span>
+    <span class="text">Listo Para Escanear</span>
+</div>
+        <span class="card-title">Scan Part</span>
+        <div class="row">
+          <div class="input-field col s12 m8">
+            <input id="scanPart" type="text" class="scan-input" autocomplete="off" />
+            <label for="scanPart">Part Number</label>
+          </div>
+          <div class="input-field col s12 m4">
+            <input id="scanQty" type="number" min="1" />
+            <label for="scanQty">Quantity</label>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+    <!-- Scan Log + Totals (2 columns) -->
+<div class="two-column">
+
+  <!-- Scan Log (LEFT) -->
+  <div class="column">
+        <div class="card">
+      <div class="card-content">
+        <span class="card-title">Scan Log</span>
+        <table class="striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Part</th>
+              <th>Qty</th>
+              <th>Time</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="scanLog"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Totals (RIGHT) -->
+  <div class="column">
+        <div class="card">
+      <div class="card-content">
+        <span class="card-title">Totals</span>
+        <table class="striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Part</th>
+              <th>Scanned</th>
+              <th>Daily</th>
+              <th>CSV</th>
+            </tr>
+          </thead>
+          <tbody id="scanTotals"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer blue darken-4" style="text-align: center;">
+        <div class="footer-copyright">
+            <div class="container">
+                © <span id="current-year"></span> ./Acu
+            </div>
+        </div>
+    </footer>
+    <script src="js/materialize.min.js"></script>
+    <script src="js/navigationbar.js"></script>
+    <script src="js/partsdb.js"></script>
+    <script src="js/scan.js"></script>
+    
+</body>
+</html>

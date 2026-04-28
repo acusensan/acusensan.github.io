@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajuste</title>
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/navigationbar.css">
+    <style>
+.flex-container {
+    display: flex;
+    gap: 8px; 
+}
+
+.input-field {
+    flex: 2;
+    font-size: 1.5em;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.quantity-field {
+    flex: 2;
+    text-align: center;
+}
+
+.scrollable-section {
+    max-height: 450px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+}
+.search {
+    padding-top: 10px;
+}
+button,input,optgroup,select,textarea {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.15;
+    margin: 0;
+}
+
+#modalSearchResults .collection-item {
+  cursor: pointer;
+}
+
+#modalSearchResults .collection-item:hover {
+  background-color: #e3f2fd;
+}
+
+@media (max-width: 600px) {
+    .scrollable-section {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+}
+
+    .nav-buttons,
+    .nav-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .nav-buttons .btn,
+    .nav-actions .btn {
+        flex: 1 1 0;
+        width: 100%;
+    }
+
+    button,input,optgroup,select,textarea {
+        font-size: clamp(14px, 2.5vw, 18px);
+    }
+}
+      
+    </style>
+</head>
+<body>
+    <!-- ==== SIDE NAVIGATION ==== -->
+  <ul id="slide-out" class="sidenav">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="ajuste.html">Ajuste</a></li>
+    <li><a href="invrack.html">Inventario Racks</a></li>
+    <li><a href="partescompradas.html">Partes Compradas</a></li>
+    <li><a href="table.html">Verificar</a></li>
+    <li><a href="hilos.html">Hilos</a></li>
+    <li><a href="barcode.html">Generar Código de Barras</a></li>
+    <li><a href="reglatres.html">Regla de Tres</a></li>
+    <li><a href="scan.html">Escaneo</a></li>
+  </ul>
+
+
+  <!-- ==== TOP NAVIGATION BAR ==== -->
+  <nav class="blue darken-4">
+    <div class="nav-wrapper">
+
+      <!-- Menu Trigger -->
+      <button class="menu-button sidenav-trigger" data-target="slide-out">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+
+      <!-- Brand -->
+      <a href="#" class="brand-logo"><code>Ajuste</code></a>
+
+      <!-- Actions -->
+      <ul class="right">
+        <li>
+          <a href="#settings-modal" class="modal-trigger">☀</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+  <!-- ==== SETTINGS MODAL ==== -->
+  <div id="settings-modal" class="modal">
+    <div class="modal-content">
+
+      <h4>Ajustes</h4>
+
+      <!-- Dark Mode -->
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">Tema</span>
+          <label>
+            <input type="checkbox" id="dark-mode-toggle">
+            <span>Modo Oscuro</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">Descargar Archivo</span>
+          <button class="btn blue waves-effect waves-light" onclick="downloadData()">Descargar</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">Resetear Ajuste</span>
+          <button class="btn red waves-effect waves-light" onclick="clearAllEntries()">Limpiar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="modal-close btn grey waves-effect waves-light">Cerrar</button>
+    </div>
+  </div>
+
+    <main>
+        <div class="container" style="padding-bottom: 0px;">
+            <div class="card scrollable-section">
+                <ul id="entry-list" class="collection"></ul>
+            </div>
+            <div class="nav-buttons col s12 center-align">
+                <button class="btn blue waves-effect waves-light" onclick="changeRack(-1)">◀ Rack Anterior</button>
+                <button class="btn blue waves-effect waves-light" onclick="changeRack(1)">Siguiente Rack ▶</button>
+            </div>
+            <div class="flex-container">
+                <div class="input-field">
+                    <label for="section"></label>
+                    <select id="section" class="browser-default" onchange="updateRackOptions(); updateSelectedItems()">
+                        <option value="Rack 1">Rack A</option>
+                        <option value="Rack 2">Rack B</option>
+                        <option value="Rack 3">Rack C</option>
+                        <option value="Rack 4">Otra Loc.</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="rack"></label>
+                    <select id="rack" class="browser-default" onchange="updateSelectedItems()"></select>
+                </div>
+            </div>
+            <div class="search">
+                <div class="nav-buttons col s12 center-align">
+                    <button class="btn green modal-trigger" data-target="part-search-modal">Buscar Parte</button>
+                </div>
+            </div>
+            <div class="flex-container">
+                <div class="input-field">
+                    <label for="menu2"></label>
+                    <select id="menu2" class="browser-default" onchange="updateMenu3(); updateSelectedItems()"></select>
+                </div>
+                <div class="input-field">
+                    <label for="menu3"></label>
+                    <select id="menu3" class="browser-default" onchange="updateSelectedItems()"></select>
+                    
+                </div>
+            </div>
+
+            <div class="input-field quantity-field">
+                <input type="number" id="quantity" min="1" class="validate">
+                <label for="quantity">Cantidad</label>
+            </div>
+            <div class="nav-buttons col s12 center-align">
+                <button class="btn blue waves-effect waves-light" onclick="addEntry()">Agregar</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- ==== FOOTER ==== -->
+  <footer class="page-footer blue darken-4 center-align">
+    <div class="footer-copyright">
+      <div class="container">
+        © <span id="current-year"></span> Samuel Eduardo Renteria Quintero NCG
+      </div>
+    </div>
+  </footer>
+  
+    <div id="part-search-modal" class="modal">
+        <div class="modal-content">
+            <h5>Search Part Number</h5>
+            <div class="input-field">
+                <input type="text" id="modalPartSearch" placeholder="Numero De Parte..." oninput="modalSearchParts()"autocomplete="off">
+            </div>
+        <ul id="modalSearchResults" class="collection"></ul>
+    </div>
+
+    <script src="js/materialize.min.js"></script>
+    <script src="js/navigationbar.js"></script>
+
+    <script src="js/partsdb.js"></script>
+    <script src="js/hilosdb.js"></script>
+
+    <script src="js/ajuste.js"></script>
+    
+</body>
+</html>

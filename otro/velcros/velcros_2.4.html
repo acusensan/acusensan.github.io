@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velcros – Floor Control v2.4</title>
+    
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <script src="js/materialize.min.js"></script>
+    
+    <style>
+        :root {
+            --bg-main: #f5f5f5;
+            --bg-card: #ffffff;
+            --accent-blue: #1565c0;
+            --accent-green: #2e7d32;
+            --accent-red: #c62828;
+            --accent-warn: #fbc02d;
+            --text-main: #212121;
+        }
+
+        body { 
+            background-color: var(--bg-main); 
+            color: var(--text-main); 
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        nav { background-color: var(--accent-blue) !important; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .brand-logo { font-weight: 800; color: #fff !important; margin-left: 15px; }
+        nav ul li a { color: #fff !important; font-weight: 500; cursor: pointer; }
+
+        .card { 
+            background-color: var(--bg-card) !important; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Status Indicators */
+        .status-pending   { color: #f9a825; font-weight: bold; }
+        .status-approved  { color: var(--accent-green); font-weight: bold; }
+        .status-delivered { color: #7b1fa2; font-weight: bold; } 
+        .status-done      { color: var(--accent-blue); font-weight: bold; }
+
+        .monitor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            padding: 15px 0;
+        }
+
+        /* Alerts */
+        .warn { border-top: 6px solid var(--accent-warn); }
+        .critical { border-top: 6px solid var(--accent-red); animation: pulse-border 2s infinite; }
+        @keyframes pulse-border { 0% { border-top-color: #c62828; } 50% { border-top-color: #ffcdd2; } 100% { border-top-color: #c62828; } }
+
+        input, select { color: var(--text-main) !important; border-bottom: 1px solid #9e9e9e !important; }
+        .input-field label { color: #757575 !important; }
+        
+        .confirm-scan-box { 
+            background: #f9f9f9; 
+            padding: 12px; 
+            border-radius: 6px; 
+            margin-top: 10px; 
+            border: 2px dashed #bdbdbd; 
+        }
+
+        .undo-btn { 
+            background: #f5f5f5 !important; 
+            color: #616161 !important; 
+            box-shadow: none !important;
+            border: 1px solid #e0e0e0;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-wrapper">
+        <a class="brand-logo">VELCROS CTRL</a>
+        <ul id="nav-mobile" class="right">
+            <li><a onclick="setRole('material')">Solicitud</a></li>
+            <li><a onclick="setRole('supervisor')">Supervisor</a></li>
+            <li><a onclick="setRole('status')">Monitor</a></li>
+            <li><a onclick="setRole('log')">Log</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container" style="width: 95%; max-width: 1400px; margin-top: 20px;">
+
+    <div id="materialSection">
+        <div class="row">
+            <div class="col s12 m8 offset-m2 l6 offset-l3">
+                <div class="card" style="padding: 30px;">
+                    <span class="card-title" style="color:var(--accent-blue); font-weight:700;">Nueva Solicitud</span>
+                    <div class="input-field" style="margin-top: 25px;">
+                        <input id="workerId" type="text" autocomplete="off">
+                        <label for="workerId">ID de Trabajador (Escaneo)</label>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <select id="area">
+                                <option value="" disabled selected>Seleccionar Área</option>
+                                <option>Assembly</option><option>Packaging</option>
+                                <option>Warehouse</option><option>Quality</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s6">
+                            <select id="materialTipo" onchange="updateSubTipos()">
+                                <option value="" disabled selected>Material</option>
+                                <option>MiniLoop</option><option>Elastico</option>
+                                <option>Lace</option><option>Grapa</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-field">
+                        <select id="materialSubtipo"><option value="" disabled selected>Subtipo</option></select>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s8">
+                            <input id="qtyReq" type="number">
+                            <label for="qtyReq">Cantidad</label>
+                        </div>
+                        <div class="input-field col s4">
+                            <select id="qtyUnit">
+                                <option value="" disabled selected>Unidad</option>
+                                <option>Caja</option><option>Rollo</option><option>Bolsa</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn-large waves-effect waves-light" style="width:100%; background-color: var(--accent-blue);" onclick="submitRequest()">GENERAR ORDEN</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="supervisorSection" style="display:none;">
+        <div id="supLogin" class="center-align" style="margin-top: 50px;">
+            <div class="card" style="padding: 30px; display: inline-block; width: 350px;">
+                <h5 style="margin-top:0">Acceso Supervisor</h5>
+                <div class="input-field"><input id="supPin" type="password" class="center-align"></div>
+                <button class="btn waves-effect waves-light" style="width:100%; background-color: var(--accent-blue);" onclick="loginSupervisor()">INGRESAR</button>
+            </div>
+        </div>
+        <div id="supPanel" style="display:none;">
+            <div class="row valign-wrapper">
+                <div class="col s8"><h4 id="supAreaName" style="color: var(--accent-blue); font-weight:300;">---</h4></div>
+                <div class="col s4 right-align"><button class="btn-small grey lighten-1 black-text z-depth-0" onclick="logout()">LOGOUT</button></div>
+            </div>
+            <div id="supervisorList" class="monitor-grid"></div>
+        </div>
+    </div>
+
+    <div id="statusSection" style="display:none;">
+        <div class="row">
+            <div class="col s10">
+                <h4 style="font-weight: 300; margin-top: 10px;">Monitor de Despacho</h4>
+            </div>
+            <div class="col s2 right-align">
+                <button class="btn-flat grey-text" onclick="lockMonitor()">Bloquear</button>
+            </div>
+        </div>
+        <div id="activeList" class="monitor-grid"></div>
+        <div class="divider" style="margin: 30px 0;"></div>
+        <h5 class="grey-text">Entregas del Turno</h5>
+        <div id="doneList" class="monitor-grid"></div>
+    </div>
+
+    <div id="logSection" style="display:none;">
+        <div class="card" style="padding: 20px;">
+            <div class="row">
+                <div class="input-field col s12 m6"><input id="logSearch" type="text" oninput="render()"><label>Buscar historial...</label></div>
+                <div class="col s12 m6 right-align" style="padding-top:20px;">
+                    <button class="btn green darken-2" onclick="exportCSV()">CSV</button>
+                    <button class="btn red darken-1" onclick="clearData()">WIPE</button>
+                </div>
+            </div>
+            <div id="logList"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let role = "material";
+    let requests = [];
+    let supervisor = null;
+    let monitorUnlocked = false; // Monitor Gate
+
+    const monitorPass = "test";
+    const supMap = { "1234": "Assembly", "5678": "Packaging", "9012": "Warehouse" };
+    const matMap = { "MiniLoop": ["Negro", "Blanco"], "Elastico": ["HD", "Soft"], "Lace": ["Reflex", "Plano"], "Grapa": ["M1", "P1"] };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const saved = localStorage.getItem('velcro_db_v5');
+        if (saved) {
+            requests = JSON.parse(saved);
+            requests.forEach(r => r.created = new Date(r.created));
+        }
+        M.FormSelect.init(document.querySelectorAll('select'));
+        render();
+    });
+
+    function save() { localStorage.setItem('velcro_db_v5', JSON.stringify(requests)); }
+
+    function updateSubTipos() {
+        const t = document.getElementById('materialTipo').value;
+        const s = document.getElementById('materialSubtipo');
+        s.innerHTML = '';
+        matMap[t]?.forEach(item => s.innerHTML += `<option value="${item}">${item}</option>`);
+        M.FormSelect.init(s);
+    }
+
+    function setRole(r) { 
+        if (r === 'status' && !monitorUnlocked) {
+            const pass = prompt("Contraseña del Monitor:");
+            if (pass === monitorPass) {
+                monitorUnlocked = true;
+            } else {
+                M.toast({html: 'Acceso Denegado'});
+                return;
+            }
+        }
+        role = r; 
+        render(); 
+    }
+
+    function lockMonitor() {
+        monitorUnlocked = false;
+        setRole('material');
+    }
+
+    function submitRequest() {
+        const getV = (id) => document.getElementById(id).value;
+        const r = {
+            id: Date.now(),
+            worker: getV('workerId').trim(), area: getV('area'),
+            mat: getV('materialTipo'), sub: getV('materialSubtipo'),
+            qty: getV('qtyReq'), unit: getV('qtyUnit'),
+            status: 'PENDING', created: new Date()
+        };
+        if(!r.worker || !r.area || !r.mat || !r.qty) return M.toast({html: '⚠️ Faltan datos'});
+        requests.push(r);
+        save();
+        document.getElementById('workerId').value = "";
+        document.getElementById('qtyReq').value = "";
+        M.toast({html: 'Solicitud Enviada'});
+        render();
+    }
+
+    function loginSupervisor() {
+        const pin = document.getElementById('supPin').value;
+        if(supMap[pin]) { 
+            supervisor = { area: supMap[pin] }; 
+            document.getElementById('supPin').value = ""; 
+            render(); 
+        } else {
+            M.toast({html: 'PIN Incorrecto'});
+            document.getElementById('supPin').value = "";
+        }
+    }
+
+    function logout() { supervisor = null; render(); }
+
+    function updateStatus(id, stat) {
+        requests = requests.map(r => r.id === id ? {...r, status: stat} : r);
+        save(); render();
+    }
+
+    function confirmReceipt(id, inputElement) {
+        const scanValue = inputElement.value.trim();
+        const request = requests.find(r => r.id === id);
+        if (scanValue === request.worker) {
+            updateStatus(id, 'DONE');
+            M.toast({html: 'Entrega Confirmada', classes: 'green'});
+        } else {
+            M.toast({html: 'ID no coincide', classes: 'red'});
+            inputElement.value = "";
+        }
+    }
+
+    function undoAction(id) {
+        requests = requests.map(r => r.id === id ? {...r, status: 'PENDING'} : r);
+        M.toast({html: 'Revertido a Pendiente'});
+        save(); render();
+    }
+
+    function render() {
+        document.getElementById('materialSection').style.display = role === 'material' ? 'block' : 'none';
+        document.getElementById('supervisorSection').style.display = role === 'supervisor' ? 'block' : 'none';
+        document.getElementById('statusSection').style.display = role === 'status' ? 'block' : 'none';
+        document.getElementById('logSection').style.display = role === 'log' ? 'block' : 'none';
+
+        if (role === 'supervisor') {
+            document.getElementById('supLogin').style.display = supervisor ? 'none' : 'block';
+            document.getElementById('supPanel').style.display = supervisor ? 'block' : 'none';
+            if (supervisor) {
+                document.getElementById('supAreaName').innerText = supervisor.area;
+                const list = document.getElementById('supervisorList');
+                list.innerHTML = "";
+                requests.filter(r => r.area === supervisor.area).reverse().forEach(r => {
+                    list.innerHTML += `
+                        <div class="card" style="padding:15px">
+                            <span class="right grey-text" style="font-size:0.8rem">${r.created.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</span>
+                            <div style="font-weight:bold">${r.mat} / ${r.sub}</div>
+                            <div>Emp ID: ${r.worker} | Cant: ${r.qty}</div>
+                            <div class="status-${r.status.toLowerCase()}">${r.status}</div>
+                            ${r.status === 'PENDING' ? `
+                                <div style="margin-top:10px">
+                                    <button class="btn-small green darken-1" onclick="updateStatus(${r.id}, 'APPROVED')">APROBAR</button>
+                                    <button class="btn-small red darken-1" onclick="updateStatus(${r.id}, 'DENIED')">RECHAZAR</button>
+                                </div>
+                            ` : ''}
+                        </div>`;
+                });
+            }
+        }
+
+        if (role === 'status') {
+            const active = document.getElementById('activeList');
+            const done = document.getElementById('doneList');
+            active.innerHTML = ""; done.innerHTML = "";
+
+            requests.forEach(r => {
+                if (r.status === 'DENIED') return;
+                const elapsed = Math.floor((Date.now() - r.created) / 60000);
+                const alertCls = (r.status !== 'DONE') ? (elapsed >= 10 ? 'critical' : elapsed >= 5 ? 'warn' : '') : '';
+
+                const cardHtml = `
+                    <div class="card ${alertCls}" style="padding:20px">
+                        <span class="right grey-text">${elapsed} min</span>
+                        <div style="font-size:1.1rem; font-weight:700;">${r.qty} ${r.unit} - ${r.mat}</div>
+                        <div style="color:#555">Área: <b>${r.area}</b> | ID: ${r.worker}</div>
+                        <div style="margin-top:15px">
+                            ${r.status === 'APPROVED' ? `<button class="btn blue darken-2" onclick="updateStatus(${r.id}, 'DELIVERED')">SURTIR</button>` : ''}
+                            ${r.status === 'DELIVERED' ? `
+                                <div class="confirm-scan-box">
+                                    <span style="font-size:0.7rem; font-weight:bold; color:#7b1fa2;">CONFIRMACIÓN DE TRABAJADOR</span>
+                                    <input type="password" placeholder="Scan ID p/ Recibir" onkeydown="if(event.key==='Enter') confirmReceipt(${r.id}, this)">
+                                </div>
+                            ` : ''}
+                            ${r.status === 'DONE' ? `<span class="green-text">ENTREGADO ✓</span> <button class="btn-small undo-btn z-depth-0" onclick="undoAction(${r.id})">Undo</button>` : ''}
+                        </div>
+                    </div>`;
+                if(r.status === 'DONE') done.innerHTML = cardHtml + done.innerHTML;
+                else active.innerHTML += cardHtml;
+            });
+        }
+
+        if (role === 'log') {
+            const search = document.getElementById('logSearch').value.toLowerCase();
+            document.getElementById('logList').innerHTML = requests.filter(r => r.worker.toLowerCase().includes(search) || r.area.toLowerCase().includes(search))
+                .reverse().map(r => `
+                    <div style="padding:10px; border-bottom:1px solid #eee; font-size:0.85rem">
+                        <span class="grey-text">${r.created.toLocaleString()}</span> | 
+                        <b>${r.area}</b> | ID: ${r.worker} | ${r.qty} ${r.mat} | 
+                        <span class="status-${r.status.toLowerCase()}">${r.status}</span>
+                    </div>
+                `).join('');
+        }
+        M.FormSelect.init(document.querySelectorAll('select'));
+    }
+
+    setInterval(() => { if(role === 'status') render(); }, 15000);
+    function exportCSV() {
+        let csv = "Fecha,Hora,Area,Worker,Material,Qty,Status\n";
+        requests.forEach(r => csv += `${r.created.toLocaleDateString()},${r.created.toLocaleTimeString()},${r.area},${r.worker},${r.mat},${r.qty},${r.status}\n`);
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
+        a.download = "FloorControl_Log.csv";
+        a.click();
+    }
+    function clearData() { if(confirm("¿Limpiar historial permanentemente?")) { requests = []; save(); render(); } }
+</script>
+</body>
+</html>

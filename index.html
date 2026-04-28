@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>./Acu</title>
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/navigationbar.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: auto;
+        }
+        .card {
+            cursor: pointer;
+            min-height: 100px; /* Set a minimum height for consistency */
+            margin-bottom: 10px; /* Add some space between cards */
+            text-align: center;
+
+        }
+
+        .card:hover {
+            background-color: #ccc;
+        }
+        .card-content {
+            text-align: center;
+        }
+        .row::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        @media (max-width: 500px) {
+        .card {
+            cursor: pointer;
+            min-height: 20px; /* Set a minimum height for consistency */
+            margin-bottom: 1px; /* Add some space between cards */
+            text-align: center;
+    }
+        .row{
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 10px;
+}   
+    
+}
+    </style>
+</head>
+<body>
+     <!-- ==== SIDE NAVIGATION ==== -->
+  <ul id="slide-out" class="sidenav">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="ajuste.html">Ajuste</a></li>
+    <li><a href="invrack.html">Inventario Racks</a></li>
+    <li><a href="partescompradas.html">Partes Compradas</a></li>
+    <li><a href="table.html">Verificar</a></li>
+    <li><a href="hilos.html">Hilos</a></li>
+    <li><a href="barcode.html">Generar Código de Barras</a></li>
+    <li><a href="reglatres.html">Regla de Tres</a></li>
+    <li><a href="scan.html">Escaneo</a></li>
+  </ul>
+
+
+  <!-- ==== TOP NAVIGATION BAR ==== -->
+  <nav class="blue darken-4">
+    <div class="nav-wrapper">
+
+      <!-- Menu Trigger -->
+      <button class="menu-button sidenav-trigger" data-target="slide-out">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+
+      <!-- Brand -->
+      <a href="#" class="brand-logo"><code></code></a>
+
+      <!-- Actions -->
+      <ul class="right">
+        <li>
+          <a href="#settings-modal" class="modal-trigger">☀</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+  <!-- ==== SETTINGS MODAL ==== -->
+  <div id="settings-modal" class="modal">
+    <div class="modal-content">
+
+      <h4>Ajustes</h4>
+
+      <!-- Dark Mode -->
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">Tema</span>
+          <label>
+            <input type="checkbox" id="dark-mode-toggle">
+            <span>Modo Oscuro</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="modal-close btn grey waves-effect waves-light">Cerrar</button>
+    </div>
+  </div>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <div class="row">
+                <!-- 10 Content Cards -->
+                <div class="col s12 m6 l4">
+                    <div class="card" data-link="ajuste.html">
+                        <div class="card-content">
+                            <span class="card-title">Ajuste</span>
+                        </div>
+                    </div>
+                </div>
+         <div class="col s12 m6 l4">
+                    <div class="card" data-link="invrack.html">
+                        <div class="card-content">
+                            <span class="card-title">Inventario Racks</span>
+                        </div>
+                    </div>
+                </div>
+        <div class="col s12 m6 l4">
+                    <div class="card" data-link="partescompradas.html">
+                        <div class="card-content">
+                            <span class="card-title">Partes Compradas</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l4">
+                    <div class="card" data-link="table.html">
+                        <div class="card-content">
+                            <span class="card-title">Verificar</span>
+                        </div>
+                    </div>
+                </div>
+        <div class="col s12 m6 l4">
+                    <div class="card" data-link="hilos.html">
+                        <div class="card-content">
+                            <span class="card-title">Hilos</span>
+                        </div>
+                    </div>
+                </div>
+        <div class="col s12 m6 l4">
+                    <div class="card" data-link="barcode.html">
+                        <div class="card-content">
+                            <span class="card-title">Generar Codigo De Barras</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l4">
+                    <div class="card" data-link="reglatres.html">
+                        <div class="card-content">
+                            <span class="card-title">Regla De Tres</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6 l4">
+                    <div class="card" data-link="scan.html">
+                        <div class="card-content">
+                            <span class="card-title">Escaneo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+    </main>
+
+     <!-- ==== FOOTER ==== -->
+  <footer class="page-footer blue darken-4 center-align">
+    <div class="footer-copyright">
+      <div class="container">
+        © <span id="current-year"></span> Samuel Eduardo Renteria Quintero NCG
+      </div>
+    </div>
+  </footer>
+
+    <script src="js/materialize.min.js"></script>
+    <script src="js/navigationbar.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.sidenav');
+            var instances = M.Sidenav.init(elems);
+
+            var modalElems = document.querySelectorAll('.modal');
+            var modalInstances = M.Modal.init(modalElems);
+
+            var darkModeToggle = document.getElementById('dark-mode-toggle');
+            var darkModeText = document.getElementById('dark-mode-text');
+
+            darkModeToggle.addEventListener('change', function() {
+                if (darkModeToggle.checked) {
+                    darkModeText.textContent = 'Modo Claro';
+                } else {
+                    darkModeText.textContent = 'Modo Oscuro';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

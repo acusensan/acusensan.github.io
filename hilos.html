@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hilos</title>
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/navigationbar.css">
+     <style>
+        td, th {
+            padding: 10px 2px;
+            text-align: center;
+        }
+        #modalImage {
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      
+      .copy-hint {
+        text-align: center;
+        font-size: 0.9rem;
+        color: #555;
+        margin-top: 8px;
+      }
+
+      .barcode-container {
+        width: 100%;
+        overflow: hidden;
+      }
+      /* Ensure modal never exceeds viewport */
+      .modal {
+        max-height: 90vh !important;
+        height: auto;
+      }
+
+      /* Make content scroll internally */
+      .modal-content {
+        max-height: calc(90vh - 56px); /* space for footer */
+        overflow-y: auto;
+      }
+
+      /* Keep footer always visible */
+      .modal-footer {
+        position: sticky;
+        bottom: 0;
+        background: white;
+        z-index: 10;
+        border-top: 1px solid #ddd;
+      }
+        @media (max-width: 500px) {
+        td, th {
+            padding: 10px 2px;
+            text-align: center;
+        }
+        nav .brand-logo {
+        position: absolute;
+        color: #fff;
+        display: inline-block;
+        font-size: 1.5rem;
+        padding: 0;
+        }
+      }
+      
+
+    </style>
+</head>
+<body>
+     <!-- ==== SIDE NAVIGATION ==== -->
+  <ul id="slide-out" class="sidenav">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="ajuste.html">Ajuste</a></li>
+    <li><a href="invrack.html">Inventario Racks</a></li>
+    <li><a href="partescompradas.html">Partes Compradas</a></li>
+    <li><a href="table.html">Verificar</a></li>
+    <li><a href="hilos.html">Hilos</a></li>
+    <li><a href="barcode.html">Generar Código de Barras</a></li>
+    <li><a href="reglatres.html">Regla de Tres</a></li>
+    <li><a href="scan.html">Escaneo</a></li>
+  </ul>
+
+
+  <!-- ==== TOP NAVIGATION BAR ==== -->
+  <nav class="blue darken-4">
+    <div class="nav-wrapper">
+
+      <!-- Menu Trigger -->
+      <button class="menu-button sidenav-trigger" data-target="slide-out">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+
+      <!-- Brand -->
+      <a href="#" class="brand-logo"><code>Hilos</code></a>
+
+      <!-- Actions -->
+      <ul class="right">
+        <li>
+          <a href="#settings-modal" class="modal-trigger">☀</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+  <!-- ==== SETTINGS MODAL ==== -->
+  <div id="settings-modal" class="modal">
+    <div class="modal-content">
+
+      <h4>Ajustes</h4>
+
+      <!-- Dark Mode -->
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">Modo Oscuro</span>
+          <label>
+            <input type="checkbox" id="dark-mode-toggle">
+            <span>Modo Oscuro</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="modal-close btn grey">Cerrar</button>
+    </div>
+  </div>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container" style="padding-bottom: 40px; width: 100%;">
+            <div class="search-container" style="margin: 20px;">
+                <input type="text" id="searchBar" class="input-field" placeholder="Search...">
+            </div>
+            <div class="data-container" id="dataContainer">
+                <!-- Data items will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <!-- Modal for displaying barcodes -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <h4 style="text-align: center;">Codigo</h4>
+                <div class="barcode-container" style="display: flex; flex-direction: column; align-items: center;">
+                    <svg id="modalImage" class="responsive-img"></svg>
+                    <div id="barcodeDetails" style="margin-top: 20px; text-align: left;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+            </div>
+        </div>
+    </main>
+
+     <!-- ==== FOOTER ==== -->
+  <footer class="page-footer blue darken-4 center-align">
+    <div class="footer-copyright">
+      <div class="container">
+        © <span id="current-year"></span> Samuel Eduardo Renteria Quintero NCG
+      </div>
+    </div>
+  </footer>
+
+    <script src="js/materialize.min.js"></script>
+    <script src="js/navigationbar.js"></script>
+    <script src="js/hilosdb.js"></script>
+    <script src="js/hilos.js"></script>
+    <script src="js/JsBarcode.all.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+html {
+    scroll-behavior: smooth;
+    overscroll-behavior: none;
+}
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    overscroll-behavior: none;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000; /* Ensure it stays above other elements */
+}
+
+main {
+    margin-bottom: 10px;
+    flex: 1 ;
+    padding-top:80px;
+}
+/* Put toasts at the top center */
+#toast-container {
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  right: auto;
+  bottom: auto;
+}
+
+/* Optional: limit width and center multi-line nicely */
+#toast-container .toast {
+  max-width: 1200px;   /* tweak to taste */
+  text-align: center; /* optional */
+}
+.center-text {
+    text-align: center;
+}
+
+.scrollable-section {
+    height: 600px; /* Set the height of the section */
+    overflow-y: scroll; /* Enable vertical scrolling */
+    border: 1px solid #ccc; /* Optional: Add a border for better visibility */
+}
+
+.sidenav {
+    margin-top: 20px;
+    padding-top: 50px;
+}
+.sidenav a {
+    padding: 15px 20px;
+    font-size: 1.2em;
+}
+
+.menu-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 15px;
+    font-size: 1.5em;
+}
+
+.menu-button .bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    background-color: #fff;
+}
+
+.card {
+    margin-bottom: 20px; /* Add some space between cards */
+}
+
+.container
+    width: 100%;
+}
+.input-field input[type="number"],
+.input-field input[type="text"],
+.input-field select {
+    font-size: 2em; /* Increase the font size */
+    padding: 10px; /* Add more padding */
+    height: auto; /* Adjust the height */
+    text-align: center;
+}
+
+/* Dark Mode Styles */
+.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+.dark-mode #barcodeInput,
+.dark-mode .card,
+.dark-mode .his,
+.dark-mode .history-box div,
+.dark-mode .helper-text,
+.dark-mode .barcode-preview,
+.dark-mode th,
+.dark-mode tr,
+.dark-mode option,
+.dark-mode .dropdown-content,
+.dark-mode .dropdown-content li>a,
+.dark-mode .dropdown-content li>span,
+.dark-mode .collapsible-header,
+.dark-mode #add-row-container,
+.dark-mode .sidenav,
+.dark-mode .modal,
+.dark-mode .modal-footer,
+.dark-mode .modal-footer a,
+.dark-mode #searchBar,
+.dark-mode #search-bar-container,
+.dark-mode .input-field select,
+.dark-mode .input-field select option,
+.dark-mode .input-field label,
+.dark-mode .input-field input[type="number"],
+.dark-mode .input-field input[type="text"],
+.dark-mode #itemDisplay,
+.dark-mode #itemDisplay h3,
+.dark-mode #itemDisplay ul,
+.dark-mode #itemDisplay li,
+.dark-mode #itemDisplay li,
+.dark-mode .collection-item {
+    background-color: #1e1e1e;
+    color: #ffffff !important;
+}
+
+.dark-mode .input-field select,
+.dark-mode .input-field input[type="number"],
+.dark-mode .input-field input[type="text"] {
+    border: 1px solid #ffffff !important;
+}
+
+/* Additional Styles */
+.collection-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.delete-button {
+    margin-left: 20px;
+    flex-shrink: 0;
+}
+
+/* Ensure placeholder option is styled correctly */
+.dark-mode .input-field select option {
+    background-color: #1e1e1e;
+    color: #ffffff !important;
+}
+
+/* Ensure the disabled and selected option is styled correctly */
+.dark-mode .input-field select option:disabled {
+    color: #b0b0b0 !important;
+}
+
+/* Ensure side navigation text is styled correctly */
+.dark-mode .sidenav a {
+    color: #ffffff !important;
+}
+
+.barcode-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.page-footer {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+    text-align: center;
+    bottom: 0;
+    width: 100%;
+}
+
+@media (max-width: 500px) {
+    .scrollable-section {
+    height: 300px; /* Set the height of the section */
+    overflow-y: scroll; /* Enable vertical scrolling */
+    border: 1px solid #ccc; /* Optional: Add a border for better visibility */
+}
+    /* Apply box-sizing for consistent layout */
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    .page-footer {
+        padding: 5px;
+        font-size: 0.875rem; /* ~14px, but scalable */
+    }
+
+    .modal {
+        width: auto;
+        height: auto;
+        top: 10%;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .container {
+        width: 100%;
+        padding: 0 10px; /* Prevent content from touching screen edges */
+    }

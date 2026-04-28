@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Part Totals</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin-top: 20px;
+      width: 600px;
+    }
+
+    th, td {
+      border: 1px solid #333;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f0f0f0;
+    }
+
+    /* ✅ Turns row red when daily is exceeded */
+    .exceeded {
+      background-color: #ffcccc;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>Scan Parts</h2>
+
+<div style="margin-bottom: 15px;">
+  <input
+    type="text"
+    id="scanPart"
+    placeholder="Scan / Enter Part Number"
+    autocomplete="off"
+  />
+  <input
+    type="number"
+    id="scanQty"
+    placeholder="Qty"
+    min="1"
+    value="1"
+    style="width:80px;"
+  />
+  <button id="addScan">Add</button>
+</div>
+
+<h3>Scan Log</h3>
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Part Number</th>
+      <th>Qty Scanned</th>
+      <th>Time</th>
+    </tr>
+  </thead>
+  <tbody id="scanLog"></tbody>
+</table>
+
+<h3>Totals by Part</h3>
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Part Number</th>
+      <th>Total Qty Scanned</th>
+    </tr>
+  </thead>
+  <tbody id="scanTotals"></tbody>
+</table>
+
+<h2>Total Quantity per Part Number (CSV)</h2>
+<input type="file" id="csvFile" accept=".csv">
+
+<table>
+  <thead>
+    <tr>
+      <th>Part Number</th>
+      <th>Description</th>
+      <th>Total Qty</th>
+    </tr>
+  </thead>
+  <tbody id="results"></tbody>
+</table>
+
+<!-- ✅ Parts database -->
+<script src="js/partsdb.js"></script>
+
+<script>
+"use strict";
+
+/* ================= CSV PROCESSING ================= */
+
+const LOCATIONS = ["pcgrears", "pcgbt1cc", "pcg31xx", "pcgsavan"];
+const PARTS = Object.keys(partsDB);
+
+document.getElementById("csvFile").addEventListener("change", e => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => processCSV(reader.result);
+  reader.readAsText(file);
+});
+
+function processCSV(text) {
+  const totals = {};
+  PARTS.forEach(p => totals[p] = 0);
+
+  const lines = text.split(/\r?\n/);
+
+  for (const line of lines) {
+    const cols = line.split(",");
+    if (cols.length < 3) continue;
+
+    const location = cols[0].trim().toLowerCase();
+    const part = cols[1].trim();
+    const qty = parseFloat(cols[2]);
+
+    if (
+      LOCATIONS.includes(location) &&
+      PARTS.includes(part) &&
+      !isNaN(qty)
+    ) {
+      totals[part] += qty;
+    }
+  }
+
+  renderCSVTotals(totals);
+}
+
+function renderCSVTotals(totals) {
+  const tbody = document.getElementById("results");
+  tbody.innerHTML = "";
+
+  for (const part of PARTS) {
+    const desc = partsDB[part]?.description || "";
+    const total = totals[part] || 0;
+
+    tbody.insertAdjacentHTML(
+      "beforeend",
+      `<tr>
+        <td>${part}</td>
+        <td>${desc}</td>
+        <td>${total.toFixed(2)}</td>
+      </tr>`
+    );
+  }
+}
+
+/* ================= SCAN STATE ================= */
+
+let scanCount = 0;
+const totalsMap = {};
+let waitingForQty = false;
+
+/* ================= ELEMENTS ================= */
+
+const partInput = document.getElementById("scanPart");
+const qtyInput = document.getElementById("scanQty");
+const scanLogBody = document.getElementById("scanLog");
+const scanTotalsBody = document.getElementById("scanTotals");
+
+/* ================= PART SCAN ================= */
+
+partInput.addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    const part = partInput.value.trim();
+    if (!part) return;
+
+    if (!partsDB[part]) {
+      alert("Part not found in database");
+      partInput.value = "";
+      return;
+    }
+
+    waitingForQty = true;
+    qtyInput.focus();
+    qtyInput.select();
+  }
+});
+
+/* ================= QTY SCAN ================= */
+
+qtyInput.addEventListener("keydown", e => {
+  if (e.key === "Enter" && waitingForQty) {
+    const part = partInput.value.trim();
+    const qty = parseFloat(qtyInput.value.trim());
+
+    if (isNaN(qty) || qty <= 0) {
+      alert("Invalid quantity");
+      qtyInput.value = "";
+      return;
+    }
+
+    recordScan(part, qty);
+
+    partInput.value = "";
+    qtyInput.value = "";
+    waitingForQty = false;
+    partInput.focus();
+  }
+});
+
+/* ================= RECORD SCAN ================= */
+
+function recordScan(part, qty) {
+  scanCount++;
+
+  const prevTotal = totalsMap[part] || 0;
+  const newTotal = prevTotal + qty;
+  const daily = partsDB[part]?.daily || 0;
+
+  totalsMap[part] = newTotal;
+  const exceeded = newTotal > daily;
+
+  const time = new Date().toLocaleTimeString();
+
+  scanLogBody.insertAdjacentHTML(
+    "beforeend",
+    `<tr class="${exceeded ? "exceeded" : ""}">
+      <td>${scanCount}</td>
+      <td>${part}</td>
+      <td>${qty}</td>
+      <td>${time}</td>
+    </tr>`
+  );
+
+  renderTotals();
+}
+
+/* ================= RENDER TOTALS ================= */
+
+function renderTotals() {
+  scanTotalsBody.innerHTML = "";
+  let i = 1;
+
+  for (const part in totalsMap) {
+    const total = totalsMap[part];
+    const daily = partsDB[part]?.daily || 0;
+    const exceeded = total > daily;
+
+    scanTotalsBody.insertAdjacentHTML(
+      "beforeend",
+      `<tr class="${exceeded ? "exceeded" : ""}">
+        <td>${i++}</td>
+        <td>${part}</td>
+        <td>${total}</td>
+      </tr>`
+    );
+  }
+}
+
+/* ================= INITIAL FOCUS ================= */
+
+partInput.focus();
+</script>
+
+</body>
+</html>

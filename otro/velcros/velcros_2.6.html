@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velcros Floor Control v2.6</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-container: #d3e3fd;
+            --surface: #fdfbff;
+            --surface-variant: #f1f0f4;
+            --on-surface: #1b1b1f;
+            --outline: #74777f;
+            --error: #ba1a1a;
+            --success: #2e7d32;
+            --warn: #f9a825;
+            --shadow: 0px 2px 4px rgba(0,0,0,0.08);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; font-family: 'Segoe UI', Roboto, sans-serif; background: var(--surface); color: var(--on-surface); }
+
+        header {
+            background: #fff; padding: 0 24px; height: 64px; display: flex;
+            align-items: center; justify-content: space-between;
+            border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 100;
+        }
+        .logo { font-weight: 800; color: var(--primary); font-size: 1.1rem; }
+        nav { display: flex; gap: 5px; }
+        nav button {
+            background: none; border: none; padding: 10px 18px; border-radius: 25px;
+            cursor: pointer; font-weight: 600; color: #555;
+        }
+        nav button.active { background: var(--primary-container); color: var(--primary); }
+
+        .container { padding: 20px; max-width: 1100px; margin: 0 auto; }
+
+        .dashboard { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px; }
+        .stat-card { background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #eee; text-align: center; box-shadow: var(--shadow); }
+        .stat-val { display: block; font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+        .stat-lab { font-size: 0.75rem; text-transform: uppercase; color: #777; }
+
+        .wide-card {
+            background: #fff; border-radius: 12px; margin-bottom: 12px;
+            display: flex; align-items: center; overflow: hidden;
+            border: 1px solid #e0e0e0; box-shadow: var(--shadow);
+            min-height: 90px;
+        }
+        .card-left {
+            background: var(--primary-container); color: var(--primary);
+            padding: 15px 25px; min-width: 220px; display: flex;
+            flex-direction: column; justify-content: center;
+        }
+        .card-right { flex: 1; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .card-main-info { display: flex; flex-direction: column; gap: 4px; }
+        .card-actions { display: flex; gap: 8px; align-items: center; }
+
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-size: 0.8rem; margin-bottom: 5px; color: #666; font-weight: 600; }
+        input, select { 
+            width: 100%; padding: 10px; border-radius: 8px; 
+            border: 1px solid var(--outline); font-size: 1rem;
+        }
+
+        .btn { padding: 10px 20px; border-radius: 50px; border: none; font-weight: 600; cursor: pointer; }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-outline { background: #fff; border: 1px solid var(--outline); }
+        .btn-success { background: var(--success); color: #fff; }
+        .btn-danger { background: var(--error); color: #fff; }
+
+        .urgent { border-left: 8px solid var(--error); }
+        .waiting { border-left: 8px solid var(--warn); }
+        
+        #toast {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: #333; color: #fff; padding: 10px 20px; border-radius: 5px; display: none;
+        }
+
+        .section-header { 
+            background: #f1f0f4; padding: 8px 15px; border-radius: 8px; 
+            margin: 20px 0 15px 0; color: #555; font-size: 0.9rem; font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">VELCROS FLOOR CONTROL</div>
+    <nav>
+        <button id="nav-material" class="active" onclick="setTab('material')">Solicitud</button>
+        <button id="nav-supervisor" onclick="setTab('supervisor')">Supervisor</button>
+        <button id="nav-status" onclick="setTab('status')">Monitor</button>
+        <button id="nav-log" onclick="setTab('log')">Historial</button>
+    </nav>
+</header>
+
+<div class="container">
+    
+    <div id="tab-material">
+        <div style="max-width: 450px; margin: 40px auto;" class="stat-card">
+            <h3>Nueva Solicitud</h3>
+            <div class="input-group"><label>ID Empleado</label><input type="text" id="workerId"></div>
+            <div class="input-group"><label>Área</label><select id="area"><option>Assembly</option><option>Packaging</option><option>Warehouse</option></select></div>
+            <div class="input-group"><label>Material</label><select id="mat" onchange="updateSub()"><option>MiniLoop</option><option>Elastico</option></select></div>
+            <div class="input-group"><label>Subtipo</label><select id="sub"></select></div>
+            <div style="display:flex; gap:10px;">
+                <div class="input-group" style="flex:2"><label>Cant.</label><input type="number" id="qty"></div>
+                <div class="input-group" style="flex:1"><label>Unidad</label><select id="unit"><option>Caja</option><option>Rollo</option></select></div>
+            </div>
+            <button class="btn btn-primary" style="width:100%" onclick="submitOrder()">ENVIAR</button>
+        </div>
+    </div>
+
+    <div id="tab-supervisor" style="display:none;">
+        <div id="sup-login" style="text-align:center; margin-top:50px;">
+            <input type="password" id="supPin" placeholder="PIN Supervisor" style="width:200px; text-align:center;">
+            <button class="btn btn-primary" onclick="loginSup()">Entrar</button>
+        </div>
+        <div id="sup-content" style="display:none;">
+            <div class="dashboard">
+                <div class="stat-card"><span class="stat-val" id="dash-pending">0</span><span class="stat-lab">Pendientes</span></div>
+                <div class="stat-card"><span class="stat-val" id="dash-done">0</span><span class="stat-lab">Surtidos Hoy</span></div>
+                <div class="stat-card"><span class="stat-val" style="color:var(--error)" id="dash-denied">0</span><span class="stat-lab">Rechazados</span></div>
+                <div class="stat-card"><button class="btn btn-outline" style="margin-top:10px" onclick="logout()">Cerrar Sesión</button></div>
+            </div>
+            <h3 id="supAreaTitle">Área</h3>
+            <div id="supGrid"></div>
+        </div>
+    </div>
+
+    <div id="tab-status" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h2>Panel de Surtido</h2>
+            <button class="btn btn-outline btn-small" onclick="lockMonitor()">Bloquear</button>
+        </div>
+        <div class="section-header">SOLICITUDES ACTIVAS</div>
+        <div id="activeGrid"></div>
+        
+        <div class="section-header">COMPLETADOS</div>
+        <div id="doneGrid" style="opacity:0.7"></div>
+    </div>
+
+    <div id="tab-log" style="display:none;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+            <input type="text" id="logSearch" placeholder="Buscar ID..." style="width:300px" oninput="render()">
+            <div>
+                <button class="btn btn-success" onclick="downloadCSV()">Descargar CSV</button>
+                <button class="btn btn-danger" onclick="clearData()">WIPE</button>
+            </div>
+        </div>
+        <div id="logItems"></div>
+    </div>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+    let currentTab = 'material';
+    let orders = JSON.parse(localStorage.getItem('velcro_v25') || '[]');
+    let supervisorArea = null;
+    let monitorUnlocked = false;
+
+    const SUBS = { "MiniLoop": ["Negro 20mm", "Blanco 20mm"], "Elastico": ["Heavy Duty", "Soft-Touch"] };
+    const SUPS = { "1234": "Assembly", "5678": "Packaging", "9012": "Warehouse" };
+
+    function showToast(m) { const t = document.getElementById('toast'); t.innerText = m; t.style.display='block'; setTimeout(()=>t.style.display='none', 2500); }
+
+    function setTab(t) {
+        if(t === 'status' && !monitorUnlocked) {
+            if(prompt("Password de Seguridad:") === 'test') monitorUnlocked = true;
+            else return showToast("Contraseña Incorrecta");
+        }
+        // No password for 'log' tab anymore
+        currentTab = t;
+        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+        document.getElementById(`nav-${t}`).classList.add('active');
+        render();
+    }
+
+    function updateSub() {
+        const m = document.getElementById('mat').value;
+        const s = document.getElementById('sub');
+        s.innerHTML = SUBS[m].map(x => `<option value="${x}">${x}</option>`).join('');
+    }
+
+    function submitOrder() {
+        const o = {
+            id: Date.now(),
+            worker: document.getElementById('workerId').value.trim(),
+            area: document.getElementById('area').value,
+            mat: document.getElementById('mat').value,
+            sub: document.getElementById('sub').value,
+            qty: document.getElementById('qty').value,
+            unit: document.getElementById('unit').value,
+            status: 'PENDING',
+            created: new Date().toISOString()
+        };
+        if(!o.worker || !o.qty) return showToast("Faltan datos");
+        orders.push(o);
+        save();
+        document.getElementById('workerId').value = "";
+        showToast("Solicitud Enviada");
+        render();
+    }
+
+    function loginSup() {
+        const p = document.getElementById('supPin').value;
+        if(SUPS[p]) { supervisorArea = SUPS[p]; render(); }
+        else showToast("PIN Incorrecto");
+    }
+
+    function logout() { supervisorArea = null; render(); }
+    function lockMonitor() { monitorUnlocked = false; setTab('material'); }
+    function save() { localStorage.setItem('velcro_v25', JSON.stringify(orders)); }
+
+    function render() {
+        ['material', 'supervisor', 'status', 'log'].forEach(t => document.getElementById(`tab-${t}`).style.display = 'none');
+        document.getElementById(`tab-${currentTab}`).style.display = 'block';
+
+        if(currentTab === 'supervisor') {
+            document.getElementById('sup-login').style.display = supervisorArea ? 'none' : 'block';
+            document.getElementById('sup-content').style.display = supervisorArea ? 'block' : 'none';
+            if(supervisorArea) {
+                const areaOrders = orders.filter(o => o.area === supervisorArea);
+                document.getElementById('dash-pending').innerText = areaOrders.filter(o => o.status === 'PENDING').length;
+                document.getElementById('dash-done').innerText = areaOrders.filter(o => o.status === 'DONE').length;
+                document.getElementById('dash-denied').innerText = areaOrders.filter(o => o.status === 'DENIED').length;
+                document.getElementById('supAreaTitle').innerText = "Solicitudes: " + supervisorArea;
+                
+                document.getElementById('supGrid').innerHTML = areaOrders.reverse().map(o => `
+                    <div class="wide-card">
+                        <div class="card-left">
+                            <span style="font-size:1.1rem; font-weight:800">${o.mat}</span>
+                            <span>${o.qty} ${o.unit}</span>
+                        </div>
+                        <div class="card-right">
+                            <div class="card-main-info">
+                                <b>ID: ${o.worker}</b>
+                                <span style="font-size:0.8rem; color:#666">Pedido: ${new Date(o.created).toLocaleTimeString()}</span>
+                            </div>
+                            <div class="card-actions">
+                                ${o.status === 'PENDING' ? `
+                                    <button class="btn btn-success" onclick="changeStatus(${o.id},'APPROVED')">APROBAR</button>
+                                    <button class="btn btn-danger" onclick="changeStatus(${o.id},'DENIED')">RECHAZAR</button>
+                                ` : `<b>${o.status}</b>`}
+                            </div>
+                        </div>
+                    </div>`).join('');
+            }
+        }
+
+        if(currentTab === 'status') {
+            const active = document.getElementById('activeGrid');
+            const done = document.getElementById('doneGrid');
+            active.innerHTML = ""; done.innerHTML = "";
+            orders.forEach(o => {
+                if(o.status === 'DENIED') return;
+                const elapsed = Math.floor((Date.now() - new Date(o.created)) / 60000);
+                const cls = elapsed >= 10 ? 'urgent' : elapsed >= 5 ? 'waiting' : '';
+                const htm = `
+                    <div class="wide-card ${cls}">
+                        <div class="card-left">
+                            <span style="font-size:1.1rem; font-weight:800">${o.mat}</span>
+                            <span>${o.qty} ${o.unit}</span>
+                        </div>
+                        <div class="card-right">
+                            <div class="card-main-info">
+                                <b>${o.area} | ID: ${o.worker}</b>
+                                <span style="color:var(--primary)">⏳ ${elapsed} min transcurridos</span>
+                                <span style="font-size:0.75rem; color:#888">Hora: ${new Date(o.created).toLocaleTimeString()}</span>
+                            </div>
+                            <div class="card-actions">
+                                ${o.status === 'APPROVED' ? `<button class="btn btn-primary" onclick="changeStatus(${o.id},'DELIVERED')">SURTIR</button>` : ''}
+                                ${o.status === 'DELIVERED' ? `
+                                    <input type="password" placeholder="Confirmar ID" style="width:120px" onkeydown="if(event.key==='Enter') confirmReceive(${o.id},this)">
+                                ` : ''}
+                                ${o.status === 'DONE' ? `<span>COMPLETADO ✓</span> <button class="btn btn-outline btn-small" onclick="undo(${o.id})">Undo</button>` : ''}
+                            </div>
+                        </div>
+                    </div>`;
+                if(o.status === 'DONE') done.innerHTML = htm + done.innerHTML;
+                else active.innerHTML += htm;
+            });
+        }
+
+        if(currentTab === 'log') {
+            const s = document.getElementById('logSearch').value.toLowerCase();
+            document.getElementById('logItems').innerHTML = orders.filter(o => o.worker.toLowerCase().includes(s))
+                .reverse().map(o => `
+                    <div style="padding:12px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; font-size:0.9rem">
+                        <span>${new Date(o.created).toLocaleString()} | <b>${o.area}</b> | ID: ${o.worker}</span>
+                        <span>${o.qty} ${o.mat} | <b>${o.status}</b></span>
+                    </div>`).join('');
+        }
+    }
+
+    function changeStatus(id, s) { orders = orders.map(o => o.id === id ? {...o, status:s} : o); save(); render(); }
+    function undo(id) { changeStatus(id, 'PENDING'); }
+    function confirmReceive(id, input) {
+        const o = orders.find(x => x.id === id);
+        if(input.value === o.worker) changeStatus(id, 'DONE');
+        else { showToast("ID incorrecto"); input.value = ""; }
+    }
+    
+    function downloadCSV() {
+        let csv = "Fecha,Hora,Area,ID_Empleado,Material,Cantidad,Estado\n";
+        orders.forEach(o => {
+            const d = new Date(o.created);
+            csv += `${d.toLocaleDateString()},${d.toLocaleTimeString()},${o.area},${o.worker},${o.mat},${o.qty},${o.status}\n`;
+        });
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('hidden', '');
+        a.setAttribute('href', url);
+        a.setAttribute('download', 'Reporte_Velcros.csv');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    function clearData() { if(confirm("¿Borrar todo el historial?")) { orders = []; save(); render(); } }
+
+    updateSub();
+    setInterval(() => { if(currentTab === 'status' || currentTab === 'supervisor') render(); }, 15000);
+</script>
+</body>
+</html>

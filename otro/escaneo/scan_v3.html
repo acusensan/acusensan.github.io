@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>./Acu</title>
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/navigationbar.css">
+    <style>
+        body {
+      background: #f4f6f8;
+    }
+    .container{
+      width: 95%;
+    }
+    .scan-card {
+      margin-top: 15px;
+    }
+
+    .two-column {
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+      margin-top: 15px;
+    }
+
+    .column {
+      width: 95%;
+    }
+
+    table {
+      width: 100%;
+      font-size: 14px;
+    }
+
+    thead th {
+      background: #f1f3f5;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #fafafa;
+    }
+
+    .status {
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      display: inline-block;
+    }
+    /* ===== SCAN STATUS INDICATOR ===== */
+
+.scan-status {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.scan-status .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* READY */
+.scan-status.ready {
+  color: #2e7d32;
+}
+
+.scan-status.ready .dot {
+  background: #2e7d32;
+  animation: pulse 1.5s infinite;
+}
+
+/* LOST FOCUS */
+.scan-status.lost {
+  color: #c62828;
+}
+
+.scan-status.lost .dot {
+  background: #c62828;
+  animation: none;
+}
+
+/* Pulse animation */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.1; }
+  100% { opacity: 1; }
+}
+
+/* ===== FOCUS SAFETY BORDER ===== */
+.scan-lost {
+  border: 2px solid #c62828 !important;
+}
+
+    .status.green { background:#d4edda; color: white; }
+    .status.yellow { background:#fff3cd; color:#856404; }
+    .status.red { background:#f8d7da; color:#721c24; }
+    .status.gray { background:#e2e3e5; color:#6c757d; }
+
+    @media (max-width: 900px) {
+      .two-column {
+        flex-direction: column;
+      }
+      .column {
+        width: 100%;
+      }
+    }
+    </style>
+</head>
+<body>
+    <!-- Side Navigation -->
+    <ul id="slide-out" class="sidenav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ajuste.html">Ajuste</a></li>
+        <li><a href="invrack.html">Inventario Racks</a></li>
+        <li><a href="partescompradas.html">Partes Compradas</a></li>
+        <li><a href="table.html">Verficar</a></li>
+        <li><a href="hilos.html">Hilos</a></li>
+        <li><a href="barcode.html">Generar Codigo De Barrar</a></li>
+        <li><a href="reglatres.html">Regla De Tres</a></li>
+        <li><a href="scan.html">Escaneo</a></li>
+    </ul>
+    
+    <!-- Toolbar -->
+    <nav class="blue darken-4">
+        <div class="nav-wrapper">
+            <button class="menu-button sidenav-trigger" data-target="slide-out">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <a href="#" class="brand-logo"><code>Escaneo</code></a>
+            <ul class="right">
+                <li><a href="#settings-modal" class="modal-trigger">☀</a></li>
+                
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <h4 id="dark-mode-text">Modo Oscuro</h4>
+            <p>
+                <label>
+                    <input type="checkbox" id="dark-mode-toggle" />
+                    <a class="btn black lighten-1" id="dark-mode-text">Modo Oscuro</a>
+                    <a class="btn white blue-text" onclick="exportBothCSVs()">Export CSV</a>
+                    <a class="btn red lighten-1" onclick="clearAllData()">Clear</a>
+                </label>
+            </p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        
+    <div class="container">
+    <!--  SCAN INPUT CARD -->
+    <div class="card scan-card">
+      <div id="scanStatus" class="scan-status ready">
+        <span class="dot"></span>
+        <span class="text">Listo Para Escanear</span>
+      </div>
+    </div>
+  </div>
+      <div class="card-content">
+        <span class="card-title">Escaneo de Inventario</span>
+
+        <div class="row">
+          <div class="input-field col s12 m8">
+            <input id="partInput" type="text" autofocus>
+            <label for="partInput">Número de Parte</label>
+          </div>
+
+          <div class="input-field col s12 m4">
+            <input id="qtyInput" type="text" inputmode="numeric" pattern="[0-9]*">
+            <label for="qtyInput">Cantidad</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--  TWO COLUMN LAYOUT -->
+    <div class="two-column">
+
+       <!--  LOG -->
+      <div class="column">
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">Registro de Escaneo</span>
+
+            <!-- UNDO BAR -->
+            <div id="undoBar" class="card-panel yellow lighten-4" style="display:none;">
+              Escaneo borrado.
+              <button class="btn-small" onclick="undoDelete()">Deshacer</button>
+            </div>
+
+            <table class="striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Número de Parte</th>
+                  <th>Cantidad</th>
+                  <th>Hora</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="logTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!--  SUMMARY -->
+      <div class="column">
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">Resumen por Parte</span>
+
+            <table class="striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Número de Parte</th>
+                  <th>Cantidad Total</th>
+                  <th>Status</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="summaryTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<!-- PART INFO MODAL -->
+<div id="partModal" class="modal">
+  <div class="modal-content">
+    <h5>Part Information</h5>
+    <div id="modalContent"></div>
+  </div>
+  <div class="modal-footer">
+    <a class="modal-close btn-flat">Close</a>
+  </div>
+</div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer blue darken-4" style="text-align: center;">
+        <div class="footer-copyright">
+            <div class="container">
+                © <span id="current-year"></span> ./Acu
+            </div>
+        </div>
+    </footer>
+    <script src="js/navigationbar.js"></script>
+    <script src="js/materialize.min.js"></script>
+    <script src="js/parts-data.js"></script>
+    
+</body>
+</html>

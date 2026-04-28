@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>./Acu</title>
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/navigationbar.css">
+    <style>
+       body {
+      background: #f5f5f5;
+    }
+    .card {
+      margin-top: 16px;
+      border-radius: 14px;
+    }
+
+    .barcode-preview {
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 12px;
+      overflow-x: auto;
+    }
+
+    svg {
+      width: 100%;
+    }
+
+   @media (max-width: 500px) {
+        nav .brand-logo {
+        position: absolute;
+        color: #fff;
+        display: inline-block;
+        font-size: 1.5rem;
+        padding: 0;
+}
+}
+    /* Barcode size responsiveness */
+    @media (max-width: 600px) {
+      #barcode {
+        height: 90px;
+      }
+      nav .brand-logo {
+        position: absolute;
+        color: #fff;
+        display: inline-block;
+        font-size: 1.5rem;
+        padding: 0;
+}
+    }
+
+    @media (min-width: 601px) {
+      #barcode {
+        height: 120px;
+      }
+      nav .brand-logo {
+        position: absolute;
+        color: #fff;
+        display: inline-block;
+        font-size: 1.5rem;
+        padding: 0;
+}
+    }
+
+    /* Better tablet focus */
+    @media (min-width: 768px) {
+      .container {
+        max-width: 720px;
+      }
+      nav .brand-logo {
+        position: absolute;
+        color: #fff;
+        display: inline-block;
+        font-size: 1.5rem;
+        padding: 0;
+}
+
+    }
+    </style>
+</head>
+<body>
+     <!-- ==== SIDE NAVIGATION ==== -->
+  <ul id="slide-out" class="sidenav">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="ajuste.html">Ajuste</a></li>
+    <li><a href="invrack.html">Inventario Racks</a></li>
+    <li><a href="partescompradas.html">Partes Compradas</a></li>
+    <li><a href="table.html">Verificar</a></li>
+    <li><a href="hilos.html">Hilos</a></li>
+    <li><a href="barcode.html">Generar Código de Barras</a></li>
+    <li><a href="reglatres.html">Regla de Tres</a></li>
+    <li><a href="scan.html">Escaneo</a></li>
+  </ul>
+
+
+  <!-- ==== TOP NAVIGATION BAR ==== -->
+  <nav class="blue darken-4">
+    <div class="nav-wrapper">
+
+      <!-- Menu Trigger -->
+      <button class="menu-button sidenav-trigger" data-target="slide-out">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+
+      <!-- Brand -->
+      <a href="#" class="brand-logo"><code>Codigos De Barras</code></a>
+
+      <!-- Actions -->
+      <ul class="right">
+        <li>
+          <a href="#settings-modal" class="modal-trigger">☀</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+  <!-- ==== SETTINGS MODAL ==== -->
+  <div id="settings-modal" class="modal">
+    <div class="modal-content">
+
+      <h4>Ajustes</h4>
+
+      <!-- Dark Mode -->
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">Modo Oscuro</span>
+          <label>
+            <input type="checkbox" id="dark-mode-toggle">
+            <span>Modo Oscuro</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">Descargar Codigo</span>
+          <button id="downloadBtn" class="btn green btn-large waves-effect waves-light" style="width:100%" disabled onclick="downloadBarcode()">Descargar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="modal-close btn grey waves-effect waves-light">Cerrar</button>
+    </div>
+  </div>
+
+    <!-- Main Content -->
+    <main>
+      <div class="container" style="padding-bottom: 0px;">
+    <!-- Barcode Preview -->
+    <div class="card">
+      <div class="card-content center-align barcode-preview">
+        <svg id="barcode"></svg>
+      </div>
+    </div>
+
+    <!-- Barcode Input -->
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">Codigo</span>
+
+        <div class="row">
+          <!-- Type Selector -->
+          <div class="input-field col s12 m3">
+            <select id="barcodeType">
+              <option value="" disabled selected>Tipo</option>
+              <option value="L">Localizacion</option>
+              <option value="P">Parte</option>
+              <option value="S">Serie</option>
+              <option value="Q">Cantidad</option>
+            </select>
+            <label>Tipo</label>
+          </div>
+
+          <!-- Value Input -->
+          <div class="input-field col s12 m9">
+            <input id="barcodeValue" type="text" disabled />
+            <label for="barcodeValue">Value</label>
+            <span class="helper-text" id="helperText">
+              Seleccione
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="card">
+      <div class="card-content">
+        <div class="row">
+          
+            <button class="btn red btn-large" style="width:100%" onclick="clearAll()">Borrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    </main>
+
+    <!-- ==== FOOTER ==== -->
+  <footer class="page-footer blue darken-4 center-align">
+    <div class="footer-copyright">
+      <div class="container">
+        © <span id="current-year"></span> Samuel Eduardo Renteria Quintero NCG
+      </div>
+    </div>
+  </footer>
+
+    <script src="js/materialize.min.js"></script>
+    <script src="js/navigationbar.js"></script>
+  <script src="js/JsBarcode.all.min.js"></script>
+  <script src="js/barcode.js"></script>
+</body>
+</html>
