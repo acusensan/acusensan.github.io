@@ -1,0 +1,11 @@
+{
+  "background_color": "#fafafa",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "acusensan.github",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "Partes",
+  "start_url": "/",
+  "theme_color": "#9c0000"
+}
