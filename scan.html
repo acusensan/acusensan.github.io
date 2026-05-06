@@ -1,198 +1,252 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>./Acu</title>
-    <link rel="stylesheet" href="css/materialize.min.css">
-    <link rel="stylesheet" href="css/navigationbar.css">
-</head>
-<style>
-  /* ======== GLOBAL / BASE ======== */
-  body {
-    background: #f4f6f8;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>./Acu</title>
 
-  .container {
-    width: 90%;
-  }
+  <link rel="stylesheet" href="css/materialize.min.css">
+  <link rel="stylesheet" href="css/navigationbar.css">
 
-
-  /* ======== LAYOUT ======== */
-  .scan-card {
-    margin-top: 15px;
-  }
-
-  .two-column {
-    display: flex;
-    gap: 15px;
-    align-items: flex-start;
-    margin-top: 10px;
-  }
-
-  .column {
-    width: 100%;
-  }
-
-
-  /* ======== STICKY HEADER ======== */
-  .sticky-header {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: #f4f6f8;
-    padding-bottom: 10px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-  }
-
-
-  /* ======== CARD ======== */
-  .card .card-title {
-    font-size: 24px;
-    font-weight: 300;
-    padding: 10px;
-  }
-
-
-  /* ======== TABLES ======== */
-  table {
-    width: 100%;
-    font-size: 16px;
-  }
-
-  thead th {
-    background: #f1f3f5;
-    position: sticky;
-    top: 0;
-    z-index: 2;
-  }
-
-  tbody tr:nth-child(even) {
-    background: #fafafa;
-  }
-
-  /* Force exceeded rows */
-  table.striped > tbody > tr.exceeded {
-    background-color: #ffebee !important;
-  }
-
-  table.striped > tbody > tr.exceeded td {
-    font-weight: 600;
-  }
-
-
-  tr.transferred {
-    background-color: #e0e0e0 !important;
-    color: #9e9e9e;
-  }
-
-  tr.transferred td {
-    font-style: italic;
-  }
-
-  /* ======== STATUS BADGES ======== */
-  .status {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 600;
-    text-align: center;
-  }
-
-  .status.green {
-    background: #d4edda;
-    color: #ffffff;
-  }
-
-  .status.yellow {
-    background: #fff3cd;
-    color: #856404;
-  }
-
-  .status.red {
-    background: #f8d7da;
-    color: #721c24;
-  }
-
-  .status.gray {
-    background: #e2e3e5;
-    color: #6c757d;
-  }
-
-
-  /* ======== SCAN STATUS INDICATOR ======== */
-  .scan-status {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px;
-    margin-bottom: 8px;
-    font-size: 13px;
-    font-weight: 600;
-  }
-
-  .scan-status .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-  }
-
-  /* READY */
-  .scan-status.ready {
-    color: #2e7d32;
-  }
-
-  .scan-status.ready .dot {
-    background: #2e7d32;
-    animation: pulse 1.5s infinite;
-  }
-
-  /* WAITING */
-  .scan-status.waiting {
-    color: #f9a825;
-  }
-
-  .scan-status.waiting .dot {
-    background: #f9a825;
-    animation: pulse 1s infinite;
-  }
-
-  /* LOST */
-  .scan-status.lost {
-    color: #c62828;
-  }
-
-  .scan-status.lost .dot {
-    background: #c62828;
-    animation: none;
-  }
-
-
-  /* ======== STATES ======== */
-  .scan-lost {
-    border: 2px solid #c62828 !important;
-  }
-
-
-  /* ======== ANIMATIONS ======== */
-  @keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.1; }
-    100% { opacity: 1; }
-  }
-
-
-  /* ======== RESPONSIVE ======== */
-  @media (max-width: 900px) {
-    .two-column {
-      flex-direction: column;
+  <style>
+    /* ===== GLOBAL ===== */
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #f4f6f8;
     }
-  }
+
+    main {
+      height: calc(100vh - 64px - 56px);
+    }
+    /* ===== Slide up animation ===== */
+    .slide-up {
+      animation: slideUp 0.45s ease forwards;
+      overflow: hidden;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 500px;
+      }
+      to {
+        opacity: 0;
+        transform: translateY(-10px);
+        max-height: 0;
+      }
+    }
+
+    /* ===== MAIN GRID ===== */
+    .main-grid {
+      display: grid;
+
+      /* LEFT | CENTER | RIGHT */
+      grid-template-columns: 400px minmax(600px, 900px) 500px;
+
+      gap: 40px;
+      padding: 12px;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .card {
+      border: 2px solid #e0e0e0;
+      box-shadow: none;
+    }
+    /* ===== PANELS ===== */
+    #partSearchResults tr td {
+      padding: 6px;
+    }
+    .panel {
+      height: 100%;
+      overflow: hidden;
+      min-height: 300px;
+    }
+
+    .panel .card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 16px;
+    }
+
+    .panel .card-content {
+      padding: 16px 18px;
+      flex: 1;
+      overflow-y: auto;
+    }
+    .part-search-panel {
+      overflow-x: hidden;
+      position: relative;
+      z-index: 5;
+    }
+
+    .part-search-panel input {
+      pointer-events: auto;
+    }
+    /* Make Part Search table more compact */
+    .part-search-panel table {
+      font-size: 10px;
+    }
+    /* Smaller title for Part Search */
+    .part-search-panel .card-title {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .part-search-panel th:last-child,
+    .part-search-panel td:last-child {
+      width: 90px;
+      white-space: nowrap;
+    }
+    .part-search-panel .btn {
+      padding: 0 6px;
+      height: 10px;
+      line-height: 26px;
+      font-size: 11px;
+    }
+
+    /* ===== CENTER PANEL ===== */
+    .center-panel {
+      height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #f4f6f8;
+      padding-bottom: 12px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #e0e0e0;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+    }
+
+    .center-scroll {
+      overflow-y: auto;
+      min-height: 0;
+      padding-right: 4px;
+    }
+
+    /* ===== CARDS & TITLES ===== */
+    .card-title {
+      margin-bottom: 10px;
+      font-weight: 400;
+    }
+
+    .card {
+      border-radius: 8px;
+    }
+
+    /* ===== TABLES ===== */
+    table {
+      width: 100%;
+      font-size: 15px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      background: #f1f3f5;
+      z-index: 2;
+    }
+
+    table.striped tbody td {
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+
+    table.striped > tbody > tr.exceeded {
+      background-color: #ffebee !important;
+      font-weight: 600;
+    }
+
+    tr.transferred {
+      background-color: #e0e0e0 !important;
+      color: #9e9e9e;
+      font-style: italic;
+    }
+
+     /* ======== SCAN STATUS INDICATOR ======== */
+    .scan-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .scan-status .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    /* READY */
+    .scan-status.ready {
+      color: #2e7d32;
+    }
+
+    .scan-status.ready .dot {
+      background: #2e7d32;
+      animation: pulse 1.5s infinite;
+    }
+
+    /* WAITING */
+    .scan-status.waiting {
+      color: #f9a825;
+    }
+
+    .scan-status.waiting .dot {
+      background: #f9a825;
+      animation: pulse 1s infinite;
+    }
+
+    /* LOST */
+    .scan-status.lost {
+      color: #c62828;
+    }
+
+    .scan-status.lost .dot {
+      background: #c62828;
+      animation: none;
+    }
+
+
+    /* ======== STATES ======== */
+    .scan-lost {
+      border: 2px solid #c62828 !important;
+    }
+
+
+    /* ======== ANIMATIONS ======== */
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.1; }
+      100% { opacity: 1; }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1200px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
+</head>
+
 <body>
 
-  <!-- ==== SIDE NAVIGATION ==== -->
+ <!-- ==== SIDE NAVIGATION ==== -->
   <ul id="slide-out" class="sidenav">
     <li><a href="index.html">Home</a></li>
     <li><a href="ajuste.html">Ajuste</a></li>
@@ -286,67 +340,83 @@
     </div>
   </div>
 
+<!-- ===== MAIN ===== -->
+<main>
+    <div class="main-grid">
 
-  <!-- ==== MAIN CONTENT ==== -->
-  <main>
-    <div class="container">
-
-      <!-- Sticky Header -->
-      <div class="sticky-header">
-
-        <!-- CSV Upload -->
-        <div class="card-content">
-          <div class="file-field input-field">
-            <div class="btn green waves-effect waves-light">3.6.24.20
-              <input type="file" id="csvFile" accept=".csv">
+      <!-- LEFT: BÚSQUEDA DE PARTES -->
+      <div class="panel">
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">Búsqueda de Partes</span>
+            <div class="input-field">
+              <input id="partSearchInput" type="text" autocomplete="off">
+              <label for="partSearchInput">Buscar número de parte</label>
             </div>
-            <div class="file-path-wrapper">
-              <input class="file-path validate" type="text" placeholder="Subir totales 3.6.24.20">
-            </div>
+            <table class="striped">
+              <thead>
+                <tr>
+                  <th>Tipo</th>
+                  <th>Parte</th>
+                  <th>Loc</th>
+                  <th>Pack</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="partSearchResults"></tbody>
+               <!-- dynamically filled -->
+            </table>
           </div>
         </div>
-
-        <!-- Scan Input -->
-        <div class="column">
-          <div class="card">
-
-            <div id="scanStatus" class="scan-status ready">
-              <span class="dot"></span>
-              <span class="text">Listo Para Escanear</span>
-            </div>
-
-            <span class="card-title">Escanear Parte</span>
-
-            <div class="row">
-              <div class="input-field col s12 m8">
-                <input id="scanPart" type="text" class="scan-input" autocomplete="off">
-                <label for="scanPart">Numero De Parte</label>
-              </div>
-              <div class="input-field col s12 m4">
-                <input id="scanQty" type="text" inputmode="numeric" autocomplete="off">
-                <label for="scanQty">Cantidad</label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button class="btn blue darken-2  waves-effect waves-light modal-trigger" data-target="scan-summary-modal" onclick="renderScanSummary()">Registro de escaneo</button>
-        <button class="btn purple darken-2 modal-trigger" data-target="part-search-modal"onclick="initPartSearch()">Buscar Parte</button>
       </div>
 
-      <!-- ==== SCAN RESULTS (TWO COLUMNS) ==== -->
-      <div class="two-column">
+      <!-- CENTER: SCAN & REGISTRO -->
+      <div class="center-panel">
 
-        <!-- Scan Log -->
-        <div class="column">
+        <div class="sticky-header">
+          <div class="card-content">
+
+            <div class="file-field input-field">
+              <div class="btn green">Archivo<input type="file" id="csvFile" accept=".csv"></div>
+              <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="Subir 3.6.24.20">
+              </div>
+            </div>
+
+            <div class="card">
+              <div id="scanStatus" class="scan-status ready">
+                <span class="dot"></span>
+                <span class="text">Listo Para Escanear</span>
+              </div>
+
+              <span class="card-title">Escanear Parte</span>
+
+              <div class="row">
+                <div class="input-field col s8">
+                  <input id="scanPart" type="text" class="scan-input" autocomplete="off">
+                  <label for="scanPart">Número de Parte</label>
+                </div>
+                <div class="input-field col s4">
+                  <input id="scanQty" type="text" inputmode="numeric" autocomplete="off">
+                  <label for="scanQty">Cantidad</label>
+                </div>
+              </div>
+            </div>
+              <button class="btn blue darken-2 waves-effect waves-light modal-trigger" data-target="scan-summary-modal"onclick="renderScanSummary()">Registro de escaneo</button>
+          </div>
+        </div>
+
+        <div class="center-scroll">
+
           <div class="card">
             <div class="card-content">
-              <span class="card-title">Registro De Escaneo</span>
+              <span class="card-title">Registro de Escaneo</span>
               <table class="striped">
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Numero De Parte</th>
-                    <th>Cantidad</th>
+                    <th>Parte</th>
+                    <th>Qty</th>
                     <th>Hora</th>
                     <th></th>
                   </tr>
@@ -355,125 +425,92 @@
               </table>
             </div>
           </div>
-        </div>
 
-        <!-- Totals -->
-        <div class="column">
           <div class="card">
             <div class="card-content">
-              <span class="card-title">Total De Numero De Parte</span>
+              <span class="card-title">Partes Transferidas</span>
               <table class="striped">
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Numero De Parte</th>
-                    <th>Total Escaneado</th>
-                    <th>Daily</th>
-                    <th>Produccion</th>
+                    <th>Parte</th>
+                    <th>Qty</th>
+                    <th>Hora</th>
                   </tr>
                 </thead>
-                <tbody id="scanTotals"></tbody>
+                <tbody id="scanTransferred"></tbody>
               </table>
             </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT: TOTALES -->
+      <div class="panel">
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">Totales</span>
+            <table class="striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Parte</th>
+                  <th>Total</th>
+                  <th>Daily</th>
+                  <th>Prod</th>
+                </tr>
+              </thead>
+              <tbody id="scanTotals"></tbody>
+            </table>
           </div>
         </div>
       </div>
 
-       <!-- ==== TRANSFERED PARTS ==== -->
-      <div class="card">
-        <div class="card-content">
-          <span class="card-title">Partes transferidas</span>
-          <table class="striped">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Parte</th>
-                <th>Cantidad</th>
-                <th>Hora</th>
-              </tr>
-            </thead>
-            <tbody id="scanTransferred"></tbody>
-          </table>
-        </div>
-      </div>
+  </div>
+</main>
 
-      <div id="scan-summary-modal" class="modal">
-        <div class="modal-content">
-          <h4>Registro de escaneo</h4>
-          <table class="striped">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Número de Parte</th>
-                <th>Total Escaneado</th>
-                <th>Copiar</th>
-              </tr>
-            </thead>
-            <tbody id="scanSummaryBody"><!-- Filled dynamically --></tbody>
-          </table>
-        </div>
+  <!-- ===== SCAN SUMMARY MODAL ===== -->
+<div id="scan-summary-modal" class="modal modal-fixed-footer">
+  <div class="modal-content">
+    <h4>Registro de escaneo</h4>
 
-        <div class="center-align" style="margin-bottom: 10px;">
-          <button class="btn green darken-2 waves-effect waves-light" onclick="copyAllScanTotals()">Copiar todo</button>
-          <button class="btn red darken-2 waves-effect waves-light" onclick="sendScanLogToBottom()">Enviar a partes transferidas</button>
-        </div>
-
-        <div class="modal-footer">
-          <button class="modal-close btn grey waves-effect waves-light">Cerrar</button>
-        </div>
-      </div>
-      
-    </div>
-  </main>
-
-  <!-- ==== PART SEARCH MODAL ==== -->
-  <div id="part-search-modal" class="modal modal-fixed-footer">
-    <div class="modal-content">
-      <h4>Búsqueda de Partes</h4>
-
-      <div class="input-field">
-        <input id="partSearchInput" type="text" autocomplete="off">
-        <label for="partSearchInput">Buscar número de parte</label>
-      </div>
-
-      <table class="striped">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Tipo</th>
-            <th>Parte</th>
-            <th>Location</th>
-            <th>Pack</th>
-            <th>Copiar</th>
-          </tr>
-        </thead>
-        <tbody id="partSearchResults">
-          <!-- dynamically filled -->
-        </tbody>
-      </table>
+    <div class="center-align" style="margin-bottom: 12px;">
+      <button class="btn green darken-2 waves-effect waves-light"onclick="copyAllScanTotals()">Copiar todo</button>
+      <button class="btn red darken-2 waves-effect waves-light"onclick="sendScanLogToBottom()">Enviar a partes transferidas</button>
     </div>
 
-    <div class="modal-footer">
-      <button class="modal-close btn grey">Cerrar</button>
-    </div>
+    <table class="striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Número de Parte</th>
+          <th>Total Escaneado</th>
+          <th>Copiar</th>
+        </tr>
+      </thead>
+      <tbody id="scanSummaryBody"></tbody>
+    </table>
   </div>
 
-   <!-- ==== FOOTER ==== -->
-  <footer class="page-footer blue darken-4 center-align">
-    <div class="footer-copyright">
-      <div class="container">
-        © <span id="current-year"></span> Samuel Eduardo Renteria Quintero NCG
-      </div>
-    </div>
-  </footer>
+  <div class="modal-footer">
+    <button class="modal-close btn grey waves-effect waves-light">Cerrar</button>
+  </div>
+</div>
 
+<!-- ===== FOOTER ===== -->
+<footer class="page-footer blue darken-4 center-align">
+  <div class="container center-align ">
+    © <span id="current-year"></span> Samuel Eduardo Renteria Quintero NCG
+  </div>
+</footer>
 
-  <!-- ==== SCRIPTS ==== -->
-  <script src="js/materialize.min.js"></script>
-  <script src="js/navigationbar.js"></script>
-  <script src="js/partsdb.js"></script>
-  <script src="js/hilosdb.js"></script>
-  <script src="js/scan.js"></script>
+<!-- ===== SCRIPTS ===== -->
+<script src="js/materialize.min.js"></script>
+<script src="js/navigationbar.js"></script>
+<script src="js/partsdb.js"></script>
+<script src="js/hilosdb.js"></script>
+<script src="js/scan.js"></script>
 
 </body>
 </html>

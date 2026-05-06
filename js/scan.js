@@ -4,6 +4,12 @@
 document.addEventListener("DOMContentLoaded", () => {
   if (window.M) M.AutoInit();
 });
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.getElementById("partSearchInput")) {
+    initPartSearch();
+  }
+});
+``
 
 /*=== CONSTANTS / CONFIG ===*/
 const STORAGE_KEY = "scan_state_v1";
@@ -22,6 +28,8 @@ let waitingForQty = false;
 let focusTimer = null;
 let lastDeletedScan = null;
 let undoTimer = null;
+let partSearchClearTimer = null;
+
 
 /*=== DOM ELEMENTS ===*/
 const partInput = document.getElementById("scanPart");
@@ -126,16 +134,23 @@ qtyInput.addEventListener("keydown", e => {
 
   const isKnownPart = !!partsDB[part];
   const isHilo = !!hilosDB[part];
+  
   //HILO SCAN (always quantity = 1)
 if (isHilo) {
-  recordScan(part, 1);
+  const qty = Number(qtyInput.value.trim());
+
+  if (isNaN(qty) || qty <= 0) {
+    M.toast({ html: "Cantidad inválida", classes: "red darken-2" });
+    return;
+  }
+
+  recordScan(part, qty);
 
   M.toast({
-    html: `🧵 ${part} +1 (HILO)`,
+    html: `${part} +${qty} (HILO)`,
     classes: "blue darken-2"
   });
 
-  // Reset inputs
   partInput.value = "";
   qtyInput.value = "";
   waitingForQty = false;
@@ -165,7 +180,8 @@ if (isHilo) {
   }
   // CASE 2: Manual quantity (known OR unknown part)
   else {
-    const qty = Number(inputValue);
+    const normalized = inputValue.replace(/,/g, "");
+    const qty = Number(normalized);
     if (isNaN(qty) || qty <= 0) {
       M.toast({ html: "Cantidad inválida", classes: "orange darken-2" });
       return;
@@ -178,7 +194,7 @@ if (isHilo) {
     M.toast({
       html: isKnownPart
         ? ` ${part} +${finalQty} agregado`
-        : `⚠️ ${part} +${finalQty} (NO está en DB)`,
+        : `${part} +${finalQty} (NO está en DB)`,
       classes: isKnownPart ? "green darken-2" : "orange darken-2",
       displayLength: 3000
     });
@@ -597,9 +613,32 @@ function initPartSearch() {
   input.focus();
 
   input.oninput = () => {
-    const term = input.value.trim().toUpperCase();
-    renderPartSearchResults(term);
-  };
+  const term = input.value.trim().toUpperCase();
+  renderPartSearchResults(term);
+
+  // Reset existing timer
+  if (partSearchClearTimer) {
+    clearTimeout(partSearchClearTimer);
+  }
+
+  partSearchClearTimer = setTimeout(() => {
+    // Apply slide-up animation
+    input.classList.add("slide-up");
+    results.classList.add("slide-up");
+
+    // Clear AFTER animation
+    setTimeout(() => {
+      input.value = "";
+      results.innerHTML = "";
+
+      // Reset styles for next use
+      input.classList.remove("slide-up");
+      results.classList.remove("slide-up");
+    }, 450); // must match animation duration
+  }, 10000);
+};
+
+
 }
 
 function renderPartSearchResults(term) {
@@ -635,8 +674,8 @@ function renderPartSearchResults(term) {
       results.insertAdjacentHTML(
         "beforeend",
         `
+        <!-- DATA ROW -->
         <tr>
-          <td>${index++}</td>
           <td>
             <span class="chip ${type === "PARTE" ? "green" : "blue"} white-text">
               ${type}
@@ -645,9 +684,16 @@ function renderPartSearchResults(term) {
           <td><strong>${key}</strong></td>
           <td>${location}</td>
           <td>${pack}</td>
-          <td>
-            <button class="btn tiny blue" onclick="copyText('${key}')">Parte</button>
+          <td></td>
+        </tr>
+
+
+        <!-- BUTTON ROW -->
+        <tr class="grey lighten-4">
+          <td colspan="6" class="center-align">
             <button class="btn tiny orange" onclick="copyText('${location}')">Loc</button>
+            <button class="btn tiny blue" onclick="copyText('${key}')">Parte</button>
+            <button class="btn tiny green" onclick="copyText('${pack}')">Qty</button>
             ${
               type === "PARTE"
                 ? `<button class="btn tiny purple" onclick="addPartFromSearch('${key}')">Agregar</button>`
@@ -657,6 +703,7 @@ function renderPartSearchResults(term) {
         </tr>
         `
       );
+
     });
 }
 
