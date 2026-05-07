@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
     <title>A-Scan</title>
     <link rel="stylesheet" href="css/materialize.min.css">
     <link rel="stylesheet" href="css/navigationbar.css">
@@ -22,22 +23,24 @@
       padding-top: 8px;
       padding-bottom: 12px;
     }
-
-    /* ===== Main layout ===== */
-    .layout {
-      display: grid;
-      grid-template-columns: 300px 1fr;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    /* ===== Left side panel ===== */
+    /* ===== Sticky Acciones panel ===== */
     .side-panel {
       background: #f4f6f8;
       padding: 12px;
       overflow-y: auto;
-    }
 
+      position: sticky;
+      top: 18px;              /* height of top Materialize nav */
+      z-index: 40;
+
+      align-self: start;      /* IMPORTANT for grid layouts */
+    }
+    /* ===== Main layout ===== */
+    .layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      overflow: hidden;
+    }
     .side-title {
       margin: 0 0 12px 0;
     }
@@ -68,7 +71,13 @@
       border-radius: 14px;
       overflow: hidden;
     }
-
+    td, th {
+      padding: 1px 5px;
+      display: table-cell;
+      text-align: left;
+      vertical-align: middle;
+      border-radius: 2px;
+  }
     table td[contenteditable] {
       background: #fffde7;
     }
@@ -78,7 +87,9 @@
       top: 0;
       background: #fafafa;
       z-index: 5;
+      
     }
+
     /* ===== Centered input form ===== */
     .form-wrapper {
       width: 100%;
@@ -88,13 +99,14 @@
 
     .centered-form {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;     
       justify-content: center;
+      overflow-x: auto;       
     }
 
     /* Inputs width */
     .centered-form .input-field {
-      width: 260px;
+      width: 150px;
       margin: 8px;
     }
     /* ===== Rounded corners ===== */
@@ -129,20 +141,54 @@
         max-height: none;
       }
     }
+    /* ===== Tablet / Small screen: fixed grid action bar ===== */
+    @media (max-width: 1024px) {
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .side-panel {
+        position: sticky;
+        z-index: 30;
+      }
+
+      .side-panel .card {
+        margin: 0;
+      }
+
+      .side-panel .card-title {
+        display: none; /* hide "Acciones" */
+      }
+
+      .side-panel .card-content {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3 buttons per row */
+        gap: 8px;
+        padding: 6px;
+      }
+
+      .acciones-btn {
+        width: 100%;
+        font-size: 13px;
+        padding: 0 6px;
+      }
+    }
     </style>
 </head>
 <body>
      <!-- ==== SIDE NAVIGATION ==== -->
   <ul id="slide-out" class="sidenav">
     <li><a href="index.html">Home</a></li>
+    <li><a href="ascan.html">A-Scan</a></li>
     <li><a href="ajuste.html">Ajuste</a></li>
+    <li><a href="scan.html">Escaneo</a></li>
+    <li><a href="barcode.html">Generar Código de Barras</a></li>
+    <li><a href="hilos.html">Hilos</a></li>
     <li><a href="invrack.html">Inventario Racks</a></li>
     <li><a href="partescompradas.html">Partes Compradas</a></li>
-    <li><a href="table.html">Verificar</a></li>
-    <li><a href="hilos.html">Hilos</a></li>
-    <li><a href="barcode.html">Generar Código de Barras</a></li>
     <li><a href="reglatres.html">Regla de Tres</a></li>
-    <li><a href="scan.html">Escaneo</a></li>
+    <li><a href="table.html">Verificar</a></li>
   </ul>
 
 
@@ -202,8 +248,6 @@
     <!-- ACCIONES -->
     <div class="card">
       <div class="card-content">
-        <span class="card-title">Acciones</span>
-
         <button class="btn blue acciones-btn" onclick="abrirConfiguracion()">Nueva lista</button>
         <button class="btn grey acciones-btn" id="btnCopiar" disabled onclick="copiarLista()">Copiar</button>
         <button class="btn grey acciones-btn" id="btnPivot" disabled onclick="abrirPivot()">Resumen</button>
@@ -222,6 +266,7 @@
       
       <!-- FORM (CENTERED) -->
 <div class="form-wrapper">
+  <div style="text-align:center;font-size:12px;color:#2e7d32">Escaneo listo</div>
   <div class="card">
     <div class="card-content">
       <!-- LISTAS -->
@@ -233,6 +278,7 @@
       <div style="text-align:center">
         <button class="btn" onclick="agregarFila()">Agregar</button>
       </div>
+
     </div>
   </div>
 </div>
@@ -350,11 +396,15 @@ let listas = [], listaActiva = null
 const STORAGE_KEY='scanner_inventario_datos'
 
 /* ===== SCANNER AUTO FOCUS ===== */
-function enfocarCampoActivo(){
-  if(!listaActiva || document.querySelector('.modal.open')) return
-  const inputs=[...document.querySelectorAll('#formEscaneo input')]
-  const target=inputs.find(i=>!i.value.trim())||inputs[inputs.length-1]
-  if(target){target.focus();target.select()}
+function enfocarCampoActivo() {
+  if (!listaActiva || document.querySelector('.modal.open')) return;
+
+  const inputs = [...document.querySelectorAll('#formEscaneo input')];
+  if (!inputs.length) return;
+
+  const target = inputs.find(i => !i.value.trim()) || inputs[inputs.length - 1];
+  target.focus();
+  target.select();
 }
 
 /* ===== STORAGE ===== */
@@ -445,13 +495,22 @@ function construirFormulario(){
     col.className='input-field col s12'
     const inp=document.createElement('input')
     inp.id=c.key;inp.type=c.type
-    inp.onkeydown=e=>{
-      if(e.key==='Enter'){
-        e.preventDefault()
-        const ins=[...formEscaneo.querySelectorAll('input')]
-        i<ins.length-1?ins[i+1].focus():(agregarFila(),setTimeout(enfocarCampoActivo,50))
-      }
+    inp.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+
+    const inputs = [...formEscaneo.querySelectorAll('input')];
+
+    // last input → auto add row
+    if (i === inputs.length - 1) {
+      agregarFila();
+      setTimeout(enfocarCampoActivo, 50);
+    } else {
+      inputs[i + 1].focus();
+      inputs[i + 1].select();
     }
+  }
+});
     const lbl=document.createElement('label')
     lbl.htmlFor=c.key;lbl.textContent=c.label
     col.append(inp,lbl);formEscaneo.appendChild(col)
