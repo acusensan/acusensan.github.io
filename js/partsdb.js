@@ -1587,14 +1587,14 @@ partsDB["5CC-DF6SLSEP"] = {
 };
 
 partsDB["L0672525AA01"] = {
-  "description": "WELT-PLASTIC",
-  "pack": 0,
-  "cost": 2000,
-  "weight": 0.09,
-  "piecesPerUnit": 0,
+  "description": "WELT-PLASTIC, 124830;",
+  "pack": 2000,
+  "cost": 0.0900,
+  "weight": null,
+  "piecesPerUnit": 20,
   "line": "Misc",
-  "daily": 0,
-  "kanban": 177.2,
+  "daily": 164.6,
+  "kanban": 1,
   "location": "APC0203",
   "productionLine": "PCGREARS"
 };
@@ -1912,16 +1912,16 @@ partsDB["L0797678AA01"] = {
 };
 
 partsDB["L0797679AA01"] = {
-  "description": "RETAINER -J",
-  "pack": 0,
-  "cost": 100,
-  "weight": 0.1324,
-  "piecesPerUnit": 1145,
-  "line": "Misc",
-  "daily": 0,
-  "kanban": 447.4,
+  "description": "RETAINER -J,305 W26.67MM",
+  "pack": 100,
+  "cost": 0.1324,
+  "weight": 1145,
+  "piecesPerUnit": 20,
+  "line": "SUV",
+  "daily": 362.0,
+  "kanban": 2,
   "location": "APC0211",
-  "productionLine": "PPCGREARS"
+  "productionLine": "PCGREARS"
 };
 
 partsDB["L0654899AA01"] = {
