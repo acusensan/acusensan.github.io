@@ -1,13 +1,13 @@
 {
-  "background_color": "#ffffff",
+  "background_color": "#fafafa",
   "dir": "ltr",
-  "display": "standalone",
+  "display": "fullscreen",
   "name": "acusensan.github",
-  "orientation": "any",
+  "orientation": "portrait",
   "scope": "/",
   "short_name": "acusensan",
   "start_url": "/index.html",
-  "theme_color": "#ffffff",
+  "theme_color": "#ff0000",
   "id": "main",
   "description": "Inventory assist tool",
   "icons": [
@@ -21,6 +21,11 @@
       "sizes": "512x512",
       "type": "image/png"
     }
+  ],
+  "lang": "es",
+  "categories": [
+    "finance",
+    "productivity",
+    "utilities"
   ]
-
 }
