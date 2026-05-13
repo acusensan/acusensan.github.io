@@ -17,6 +17,14 @@ document.addEventListener('DOMContentLoaded', () => {
   populateMenu2();    // dynamic categories
   updateRackOptions();
   updateMenu3();
+
+const qtyInput = document.getElementById('quantity');
+  qtyInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addEntry();
+    }
+  });
 });
 
 
@@ -149,13 +157,15 @@ function addEntry() {
   deleteButton.innerText = 'Borrar';
   deleteButton.className = 'btn red delete-button';
   deleteButton.onclick = () => {
-    entryList.removeChild(newEntry);
-    M.toast({
-      html: 'Borrado',
-      classes: 'red lighten-1',
-      displayLength: 2000
-    });
-  };
+  entryList.removeChild(newEntry);
+  saveEntriesToLocalStorage();
+
+  M.toast({
+    html: 'Borrado',
+    classes: 'red lighten-1',
+    displayLength: 2000
+  });
+};
 
   newEntry.appendChild(deleteButton);
   entryList.insertBefore(newEntry, entryList.firstChild);
@@ -241,7 +251,6 @@ function selectPartFromModal(partNumber, category, type) {
   const menu2 = document.getElementById('menu2');
   const menu3 = document.getElementById('menu3');
 
-  //  Decide source
   if (type === 'HILOS') {
     menu2.value = 'HILOS';
   } else {
@@ -249,10 +258,15 @@ function selectPartFromModal(partNumber, category, type) {
   }
 
   updateMenu3();
-
-  //  Select item
   menu3.value = partNumber;
   updateSelectedItems();
+
+  // AUTO-FOCUS quantity
+  const qty = document.getElementById('quantity');
+  setTimeout(() => {
+    qty.focus();
+    qty.select();
+  }, 100);
 
   document.getElementById('modalPartSearch').value = '';
   document.getElementById('modalSearchResults').innerHTML = '';
@@ -366,3 +380,39 @@ function clearAllEntries() {
     displayLength: 2000
   });
 }
+
+function showTotals() {
+  const entryList = document.getElementById('entry-list');
+  const totalsList = document.getElementById('totals-list');
+  const grandTotalEl = document.getElementById('grand-total');
+
+  totalsList.innerHTML = '';
+
+  const totals = {};
+  let grandTotal = 0;
+
+  Array.from(entryList.children).forEach(li => {
+    const text = li.childNodes[0].nodeValue.trim();
+    const parts = text.trim().split(/\s+/); // APC0123 PART123 5
+
+    if (parts.length >= 3) {
+      const partNumber = parts[1];
+      const qty = parseInt(parts[2], 10);
+
+      if (!isNaN(qty)) {
+        totals[partNumber] = (totals[partNumber] || 0) + qty;
+        grandTotal += qty;
+      }
+    }
+  });
+
+  Object.entries(totals).forEach(([part, qty]) => {
+    const li = document.createElement('li');
+    li.className = 'collection-item';
+    li.innerHTML = `<strong>${part}</strong> <span class="right">${qty}</span>`;
+    totalsList.appendChild(li);
+  });
+
+  grandTotalEl.textContent = grandTotal;
+}
+

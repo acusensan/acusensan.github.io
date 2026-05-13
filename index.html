@@ -6,7 +6,6 @@
     <title>./Acu</title>
     <link rel="stylesheet" href="css/materialize.min.css">
     <link rel="stylesheet" href="css/navigationbar.css">
-    <link  rel="manifest" href="manifest.json"/>
     <style>
         body {
             display: flex;
@@ -46,6 +45,25 @@
 }   
     
 }
+.sidenav-flex {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidenav-content {
+  flex: 1;
+}
+
+.sidenav-footer {
+  padding: 10px 0;
+}
+
+.sidenav-footer a {
+  padding: 0 32px;
+  display: block;
+  line-height: 48px;
+}
+``
     </style>
 </head>
 <body>
@@ -61,6 +79,17 @@
     <li><a href="partescompradas.html">Partes Compradas</a></li>
     <li><a href="reglatres.html">Regla de Tres</a></li>
     <li><a href="table.html">Verificar</a></li>
+
+    <li><div class="divider"></div></li>
+    
+    <li class="sidenav-footer">
+        <a href="velcros_3.1_Super.html">Velcros - Normal</a>
+        <a href="velcros_3.1_noSuper.html">Velcros - No Supervisor</a>
+        <a href="partsdbgen.html">Generador json de partes</a>
+    </li>
+    <li class="sidenav-footer">
+        <a href="codegen.html"></a>
+    </li>
   </ul>
 
 

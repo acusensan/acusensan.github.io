@@ -131,6 +131,13 @@ button,input,optgroup,select,textarea {
 
       <div class="card">
         <div class="card-content">
+            <span class="card-title">Totales</span>
+            <button class="btn purple modal-trigger" data-target="totals-modal" onclick="showTotals()">Ver Totales</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
           <span class="card-title">Descargar Archivo</span>
           <button class="btn blue waves-effect waves-light" onclick="downloadData()">Descargar</button>
         </div>
@@ -197,8 +204,27 @@ button,input,optgroup,select,textarea {
             <div class="nav-buttons col s12 center-align">
                 <button class="btn blue waves-effect waves-light" onclick="addEntry()">Agregar</button>
             </div>
+
         </div>
     </main>
+    <!-- ==== MODALS ==== -->
+
+    <!-- TOTALS MODAL-->
+    <div id="totals-modal" class="modal">
+      <div class="modal-content">
+        <h5>Total de Partes</h5>
+
+        <ul id="totals-list" class="collection"></ul>
+
+        <h6 class="right-align">
+          Total General: <strong id="grand-total">0</strong>
+        </h6>
+      </div>
+
+      <div class="modal-footer">
+        <button class="modal-close btn grey">Cerrar</button>
+      </div>
+    </div>
 
     <!-- ==== FOOTER ==== -->
   <footer class="page-footer blue darken-4 center-align">
