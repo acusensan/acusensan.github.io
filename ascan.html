@@ -252,6 +252,22 @@
           </label>
         </div>
       </div>
+
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">Limpiar todos los datos </span>
+          <button class="btn red " onclick="borrarTodosLosDatos()">Borrar</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-content">
+          <span class="card-title">Limpiar todos los datos </span>
+          <button class="btn green waves-effect waves-light" id="btnExportar" disabled onclick="exportarLista()">Descargar Lista</button>
+        </div>
+      </div>
+    </div>
     </div>
 
     <div class="modal-footer">
@@ -271,8 +287,8 @@
         <button class="btn blue acciones-btn" onclick="abrirConfiguracion()">Nueva lista</button>
         <button class="btn green acciones-btn" id="btnCopiar" disabled onclick="copiarLista()">Copiar</button>
         <button class="btn green acciones-btn" id="btnPivot" disabled onclick="abrirPivot()">Resumen</button>
-        <button class="btn green acciones-btn" id="btnExportar" disabled onclick="exportarLista()">Descargar Lista</button>
-        <button class="btn red acciones-btn" onclick="borrarTodosLosDatos()">Borrar todo</button>
+        
+        
       </div>
     </div>
     <div id="autosaveIndicator" class="autosave">Guardado</div>
@@ -716,18 +732,39 @@ function copiarTexto(){
 
 function abrirPivot(){
   syncTablaConDatos()
-  tituloPivot.textContent=`Resumen – ${listaActiva.nombre}`
-  const t={},l=['Parte\tCantidad']
-  listaActiva.filas.forEach(r=>{
+  tituloPivot.textContent = `Resumen – ${listaActiva.nombre}`
+
+  const t = {}
+  const l = ['Parte\tEscaneos\tCantidad']  // headers
+
+  listaActiva.filas.forEach(r => {
     const p = (r.parte || '').trim().toUpperCase()
     const q = parseFloat(r.cantidad || 0)
-    if(!p) return
-    t[p]=(t[p]||0)+q
+
+    if (!p) return
+
+    if (!t[p]) {
+      t[p] = {
+        count: 0,
+        sum: 0
+      }
+    }
+
+    // COUNT scans
+    t[p].count += 1
+
+    // SUM quantity
+    t[p].sum += q
   })
-  Object.keys(t).forEach(p=>l.push(`${p}\t${t[p]}`))
-  textoPivot.value=l.join('\n')
+
+  Object.keys(t).forEach(p => {
+    l.push(`${p}\t${t[p].count}\t${t[p].sum}`)
+  })
+
+  textoPivot.value = l.join('\n')
   M.Modal.getInstance(modalPivot).open()
 }
+``
 
 function copiarPivot(){
   syncTablaConDatos()

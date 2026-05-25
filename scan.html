@@ -51,7 +51,10 @@
       height: 100%;
       min-height: 0;
     }
-
+    .restored {
+    background-color: #fff9c4; /* soft yellow */
+    transition: background 0.3s;
+    }
     .card {
       border: 2px solid #e0e0e0;
       box-shadow: none;
@@ -168,10 +171,19 @@
       font-weight: 600;
     }
 
-    tr.transferred {
-      background-color: #e0e0e0 !important;
-      color: #9e9e9e;
-      font-style: italic;
+    tr.transferred { 
+      background-color: #e3f2fd;
+      color: #0d47a1;
+      font-weight: 500;
+      border-radius: 6px;
+    }
+
+    .transferred:hover {
+      filter: brightness(0.95);
+      transition: 0.2s;
+    }
+    #undoBtn {
+      cursor: pointer;
     }
 
      /* ======== SCAN STATUS INDICATOR ======== */
@@ -349,11 +361,16 @@
       <div class="panel">
         <div class="card">
           <div class="card-content">
+            <div id="searchStatus" class="chip green white-text">Auto-Limpiar Activo</div>
             <span class="card-title">Búsqueda de Partes</span>
             <div class="input-field">
               <input id="partSearchInput" type="text" autocomplete="off">
               <label for="partSearchInput">Buscar número de parte</label>
             </div>
+            <div style="margin-bottom:10px;">
+              <button id="toggleSearchPause" class="btn small grey">Pausar Auto-Limpiar</button>
+            </div>
+
             <table class="striped">
               <thead>
                 <tr>
@@ -404,6 +421,7 @@
               </div>
             </div>
               <button class="btn blue darken-2 waves-effect waves-light modal-trigger" data-target="scan-summary-modal"onclick="renderScanSummary()">Registro de escaneo</button>
+              <button class="btn grey" onclick="openTransferredModal()">Ver Transferidos</button>
           </div>
         </div>
 
@@ -427,8 +445,8 @@
             </div>
           </div>
 
-          <div class="card">
-            <div class="card-content">
+          <div id="transferredModal" class="modal modal-fixed-footer">
+            <div class="modal-content">
               <span class="card-title">Partes Transferidas</span>
               <table class="striped">
                 <thead>
@@ -441,6 +459,9 @@
                 </thead>
                 <tbody id="scanTransferred"></tbody>
               </table>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-close btn grey">Cerrar</a>
             </div>
           </div>
 

@@ -29,7 +29,8 @@ let focusTimer = null;
 let lastDeletedScan = null;
 let undoTimer = null;
 let partSearchClearTimer = null;
-
+let isSearchPaused = false;
+let lastTransferredBatch = [];
 
 /*=== DOM ELEMENTS ===*/
 const partInput = document.getElementById("scanPart");
@@ -252,7 +253,7 @@ function renderScanLog() {
       scanLogBody.insertAdjacentHTML(
         "beforeend",
         `
-        <tr>
+        <tr class="${e.justRestored ? "restored" : ""}">
           <td>${activeIndex++}</td>
           <td>
   <input 
@@ -479,12 +480,16 @@ function sendScanLogToBottom() {
 
   if (!pending.length) {
     M.toast({
-      html: " No hay escaneos para transferir",
+      html: "No hay escaneos para transferir",
       classes: "blue grey darken-1"
     });
     return;
   }
 
+  //  SAVE batch for undo
+  lastTransferredBatch = [...pending];
+
+  //  MOVE them
   pending.forEach(e => {
     e.transferred = true;
   });
@@ -492,10 +497,42 @@ function sendScanLogToBottom() {
   renderScanLog();
   saveState();
 
+  //  TOAST WITH UNDO BUTTON
   M.toast({
-    html: "Escaneos enviados a partes transferidas",
-    classes: "green darken-2"
+    html: `
+      ${pending.length} transferidos
+      <button class="btn-flat white-text" onclick="undoTransfer()">
+        UNDO
+      </button>
+    `,
+    classes: "green darken-2",
+    displayLength: 10000
   });
+}
+function undoTransfer() {
+  if (!lastTransferredBatch.length) return;
+
+  lastTransferredBatch.forEach(e => {
+    e.transferred = false;
+    e.justRestored = true; // highlight
+  });
+
+  renderScanLog();
+  saveState();
+
+  M.toast({
+    html: "Transferencia deshecha",
+    classes: "orange darken-2"
+  });
+
+  //  clear batch
+  lastTransferredBatch = [];
+
+  //  remove highlight after 2s
+  setTimeout(() => {
+    scanLogData.forEach(e => delete e.justRestored);
+    renderScanLog();
+  }, 2000);
 }
 
 /*=== FOCUS & INIT ===*/
@@ -612,41 +649,81 @@ function getActiveScanTotals() {
 ========================= */
 
 function initPartSearch() {
+  const statusChip = document.getElementById("searchStatus");
+  const pauseBtn = document.getElementById("toggleSearchPause");
   const input = document.getElementById("partSearchInput");
   const results = document.getElementById("partSearchResults");
+
+  //  INITIAL STATE (fixed)
+  if (isSearchPaused) {
+    statusChip.textContent = "Auto-Limpiar Pausado";
+    statusChip.classList.remove("green");
+    statusChip.classList.add("red");
+
+    pauseBtn.textContent = "Reanudar Auto-Limpiar";
+    pauseBtn.classList.remove("grey");
+    pauseBtn.classList.add("green");
+  }
+
+  //  BUTTON TOGGLE
+  pauseBtn.onclick = () => {
+    isSearchPaused = !isSearchPaused;
+
+    pauseBtn.textContent = isSearchPaused
+      ? "Reanudar Auto-Limpiar"
+      : "Pausar Auto-Limpiar";
+
+    pauseBtn.classList.toggle("green", isSearchPaused);
+    pauseBtn.classList.toggle("grey", !isSearchPaused);
+
+    //  STATUS CHIP UPDATE
+    if (isSearchPaused) {
+      statusChip.textContent = "Auto-Limpiar Pausado";
+      statusChip.classList.remove("green");
+      statusChip.classList.add("red");
+    } else {
+      statusChip.textContent = "Auto-Limpiar Activo";
+      statusChip.classList.remove("red");
+      statusChip.classList.add("green");
+    }
+
+    //  CANCEL TIMER IF PAUSED
+    if (isSearchPaused && partSearchClearTimer) {
+      clearTimeout(partSearchClearTimer);
+      partSearchClearTimer = null;
+    }
+  };
 
   input.value = "";
   results.innerHTML = "";
   input.focus();
 
+  //  INPUT HANDLER
   input.oninput = () => {
-  const term = input.value.trim().toUpperCase();
-  renderPartSearchResults(term);
+    const term = input.value.trim().toUpperCase();
+    renderPartSearchResults(term);
 
-  // Reset existing timer
-  if (partSearchClearTimer) {
-    clearTimeout(partSearchClearTimer);
-  }
+    if (partSearchClearTimer) {
+      clearTimeout(partSearchClearTimer);
+    }
 
-  partSearchClearTimer = setTimeout(() => {
-    // Apply slide-up animation
-    input.classList.add("slide-up");
-    results.classList.add("slide-up");
+    if (!isSearchPaused) {
+      partSearchClearTimer = setTimeout(() => {
+        input.classList.add("slide-up");
+        results.classList.add("slide-up");
 
-    // Clear AFTER animation
-    setTimeout(() => {
-      input.value = "";
-      results.innerHTML = "";
+        setTimeout(() => {
+          input.value = "";
+          results.innerHTML = "";
+          input.classList.remove("slide-up");
+          results.classList.remove("slide-up");
+        }, 450);
 
-      // Reset styles for next use
-      input.classList.remove("slide-up");
-      results.classList.remove("slide-up");
-    }, 450); // must match animation duration
-  }, 10000);
-};
-
-
+      }, 10000);
+    }
+  };
 }
+
 
 function renderPartSearchResults(term) {
   const results = document.getElementById("partSearchResults");
@@ -969,4 +1046,11 @@ function updatePartEdit(index, value) {
     classes: "blue darken-2"
   });
 }
-``
+function openTransferredModal() {
+  const modal = M.Modal.getInstance(
+    document.getElementById("transferredModal")
+  );
+
+  renderScanLog();
+  modal.open();
+}
