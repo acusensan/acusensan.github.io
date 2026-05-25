@@ -254,13 +254,20 @@ function renderScanLog() {
         `
         <tr>
           <td>${activeIndex++}</td>
-          <td>${e.part}</td>
-          <td>${e.qty}</td>
+          <td>
+  <input 
+    type="text"
+    value="${e.part}"
+    style="width:200px; text-align:center;"
+    onclick="this.select()"
+    onkeydown="handlePartEdit(event, ${i})"
+    onchange="updatePartEdit(${i}, this.value)"
+  >
+</td>
+          <td><input type="number" min="1" value="${e.qty}" style="width:70px; text-align:center;" onclick="this.select()" onkeydown="handleQtyEdit(event, ${i})" onchange="updateQtyEdit(${i}, this.value)"></td>
           <td>${e.time}</td>
           <td>
-            <button class="btn red" onclick="deleteScan(${i})">
-              Borrar
-            </button>
+            <button class="btn red" onclick="deleteScan(${i})">Borrar</button>
           </td>
         </tr>
         `
@@ -730,8 +737,9 @@ function copyText(text) {
    ADD FROM SEARCH MODAL
 ========================= */
 
+let modalSelectedPart = null;
+
 function addPartFromSearch(part) {
-  // Explicit validation
   if (!partsDB[part]) {
     M.toast({
       html: `Parte no válida: ${part}`,
@@ -740,34 +748,103 @@ function addPartFromSearch(part) {
     return;
   }
 
-  const qty = partsDB[part]?.pack;
+  const pack = partsDB[part].pack;
 
-  if (!qty || qty <= 0) {
+  modalSelectedPart = part;
+
+  document.getElementById("modalPartTitle").textContent = part;
+  document.getElementById("modalPackInfo").textContent =
+    `Standard Pack: ${pack}`;
+
+  const input = document.getElementById("modalQtyInput");
+  input.value = 1;
+
+  updateModalTotal();
+
+  const modal = M.Modal.getInstance(document.getElementById("addPartModal"));
+  modal.open();
+
+  // Focus input
+  setTimeout(() => {
+    input.focus();
+    input.select();
+  }, 200);
+}
+
+/* === +/- BUTTONS === */
+function changeModalQty(change) {
+  const input = document.getElementById("modalQtyInput");
+
+  let value = Number(input.value) || 1;
+  value += change;
+
+  if (value < 1) value = 1;
+
+  input.value = value;
+
+  updateModalTotal();
+}
+
+/* === LIVE TOTAL === */
+function updateModalTotal() {
+  if (!modalSelectedPart) return;
+
+  const pack = partsDB[modalSelectedPart].pack;
+  const qty = Number(document.getElementById("modalQtyInput").value) || 1;
+
+  const total = pack * qty;
+
+  document.getElementById("modalTotal").textContent =
+    `Total: ${total}`;
+}
+
+/* === CONFIRM === */
+function confirmAddFromModal() {
+  if (!modalSelectedPart) return;
+
+  const pack = partsDB[modalSelectedPart].pack;
+
+  if (!pack || pack <= 0) {
     M.toast({
-      html: `Pack inválido para ${part}`,
+      html: "Pack inválido",
       classes: "red darken-2"
     });
     return;
   }
 
-  // Record exactly like a valid scan
-  recordScan(part, qty);
+  const qty = Number(document.getElementById("modalQtyInput").value) || 1;
+  const totalQty = pack * qty;
+
+  recordScan(modalSelectedPart, totalQty);
 
   M.toast({
-    html: `Agregado: ${part} +${qty} (Pack)`,
+    html: `${modalSelectedPart} +${totalQty} (${qty} packs)`,
     classes: "green darken-2"
   });
 
-  // Close search modal
-  const modalEl = document.getElementById("part-search-modal");
-  const instance = M.Modal.getInstance(modalEl);
-  if (instance) instance.close();
+  M.Modal.getInstance(document.getElementById("addPartModal")).close();
 
-  // Restore scan-ready state
-  waitingForQty = false;
+  modalSelectedPart = null;
+
   setScanStatus("ready", "Listo para escanear");
   focusPartInput(100);
 }
+
+/* === INPUT EVENTS (TYPE + ENTER) === */
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("modalQtyInput");
+
+  if (!input) return;
+
+  input.addEventListener("input", updateModalTotal);
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      confirmAddFromModal();
+    }
+  });
+});
 
 /* =========================
    NAVIGATION PASSWORD LOCK
@@ -814,3 +891,82 @@ function checkNavPassword() {
     input.select();
   }
 }
+
+function handleQtyEdit(event, index) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    updateQtyEdit(index, event.target.value);
+    event.target.blur(); // remove focus (clean UX)
+  }
+}
+function handlePartEdit(event, index) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    updatePartEdit(index, event.target.value);
+    event.target.blur();
+  }
+}
+
+function updateQtyEdit(index, value) {
+  const entry = scanLogData[index];
+  if (!entry) return;
+
+  const newQty = Number(value);
+
+  if (isNaN(newQty) || newQty <= 0) {
+    M.toast({
+      html: "Cantidad inválida",
+      classes: "red darken-2"
+    });
+    return;
+  }
+
+  // remove old qty
+  totalsMap[entry.part] -= entry.qty;
+
+  // update
+  entry.qty = newQty;
+
+  // add new qty
+  totalsMap[entry.part] = (totalsMap[entry.part] || 0) + newQty;
+
+  renderScanLog();
+  renderTotals();
+  saveState();
+}
+function updatePartEdit(index, value) {
+  const entry = scanLogData[index];
+  if (!entry) return;
+
+  const newPart = value.trim().toUpperCase();
+
+  if (!newPart) {
+    M.toast({
+      html: "Parte inválida",
+      classes: "red darken-2"
+    });
+    return;
+  }
+
+  const oldPart = entry.part;
+
+  // remove old qty from old part
+  totalsMap[oldPart] -= entry.qty;
+  if (totalsMap[oldPart] <= 0) delete totalsMap[oldPart];
+
+  // update part
+  entry.part = newPart;
+
+  // add qty to new part
+  totalsMap[newPart] = (totalsMap[newPart] || 0) + entry.qty;
+
+  renderScanLog();
+  renderTotals();
+  saveState();
+
+  M.toast({
+    html: `Parte actualizada: ${newPart}`,
+    classes: "blue darken-2"
+  });
+}
+``

@@ -44,18 +44,24 @@ function generateBarcode() {
     return;
   }
 
-  const fullValue = type + val;
+  //  Add the "L" prefix for the barcode
+  const fullValue = "L" + val.toUpperCase();
 
   JsBarcode("#barcode", fullValue, {
     format: "CODE128",
     height: window.innerWidth < 600 ? 90 : 120,
     displayValue: true,
-    fontSize: 16,
+
+    // Show WITHOUT the added "L"
+    text: val.toUpperCase(),
+
+    fontSize: 50,
     margin: 10
   });
 
   downloadBtn.disabled = false;
 }
+
 
 /* Clear everything */
 function clearAll() {
@@ -85,7 +91,8 @@ function downloadBarcode() {
   const url = URL.createObjectURL(svgBlob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = "barcode.svg";
+  const fileName = valueInput.value.trim() || "barcode";
+  link.download = fileName + ".svg";
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);

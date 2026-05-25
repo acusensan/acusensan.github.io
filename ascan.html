@@ -14,6 +14,24 @@
         .autosave{
           text-align: center;
         }
+        .new-row {
+          background: #e8f5e9 !important;
+          transition: background 1s ease;
+        }
+        input {
+        font-size: 20px !important;
+        height: 50px;
+      }
+
+      .btn {
+        height: 45px;
+        font-size: 16px;
+      }
+
+      td:focus {
+        outline: 2px solid #1976d2;
+        background: #e3f2fd;
+      }
     /* ===== Sticky input form ===== */
     .form-wrapper {
       position: sticky;
@@ -79,7 +97,6 @@
       border-radius: 2px;
   }
     table td[contenteditable] {
-      background: #fffde7;
     }
 
     thead th {
@@ -110,7 +127,10 @@
       margin: 8px;
     }
     /* ===== Rounded corners ===== */
-    .card { border-radius: 8px; }
+    .card {
+      box-shadow: none;
+      border: 1px solid #e0e0e0;
+    }
     .modal { border-radius: 18px; }
     input, textarea { border-radius: 10px !important; }
     .chip { border-radius: 999px; }
@@ -249,9 +269,9 @@
     <div class="card">
       <div class="card-content">
         <button class="btn blue acciones-btn" onclick="abrirConfiguracion()">Nueva lista</button>
-        <button class="btn grey acciones-btn" id="btnCopiar" disabled onclick="copiarLista()">Copiar</button>
-        <button class="btn grey acciones-btn" id="btnPivot" disabled onclick="abrirPivot()">Resumen</button>
-        <button class="btn grey acciones-btn" id="btnExportar" disabled onclick="exportarLista()">Descargar Lista</button>
+        <button class="btn green acciones-btn" id="btnCopiar" disabled onclick="copiarLista()">Copiar</button>
+        <button class="btn green acciones-btn" id="btnPivot" disabled onclick="abrirPivot()">Resumen</button>
+        <button class="btn green acciones-btn" id="btnExportar" disabled onclick="exportarLista()">Descargar Lista</button>
         <button class="btn red acciones-btn" onclick="borrarTodosLosDatos()">Borrar todo</button>
       </div>
     </div>
@@ -266,17 +286,15 @@
       
       <!-- FORM (CENTERED) -->
 <div class="form-wrapper">
-  <div style="text-align:center;font-size:12px;color:#2e7d32">Escaneo listo</div>
   <div class="card">
     <div class="card-content">
       <!-- LISTAS -->
     <div class="section" id="tabs"></div>
-      <span class="card-title">Captura</span>
+    <div id="scanStatus" style="text-align:left;font-size:30px;color:#2e7d32">Escaneo listo</div>
 
       <div id="formEscaneo" class="row centered-form"></div>
 
       <div style="text-align:center">
-        <button class="btn" onclick="agregarFila()">Agregar</button>
       </div>
 
     </div>
@@ -429,17 +447,34 @@ function abrirConfiguracion(){M.Modal.getInstance(modalConfig).open()}
 function crearLista(){
   const checks=[...modalConfig.querySelectorAll('input[type=checkbox]:checked')]
   const campos=checks.map(c=>({key:c.value,...defs[c.value]}))
+
   const extra=campoPersonalizado.value.trim()
-  if(extra) campos.splice(campos.length-1,0,{key:'c_'+Date.now(),label:extra,type:'text'})
-  listas.push({id:Date.now(),nombre:`Lista ${listas.length+1}`,campos,filas:[]})
+  if(extra){
+    campos.splice(campos.length-1,0,{
+      key:'c_'+Date.now(),
+      label:extra,
+      type:'text'
+    })
+  }
+
+  listas.push({
+    id: Date.now(),
+    nombre:`Lista ${listas.length+1}`,
+    campos: JSON.parse(JSON.stringify(campos)), // ✅ correct place
+    filas:[]
+  })
+
   campoPersonalizado.value=''
   guardarDatos()
   seleccionarLista(listas[listas.length-1].id)
+
   M.Modal.getInstance(modalConfig).close()
 }
 
+
 /* ===== TABS ===== */
 function renderTabs() {
+  syncTablaConDatos()
   tabs.innerHTML = ''
 
   listas.forEach(l => {
@@ -460,10 +495,21 @@ function renderTabs() {
   })
 }
 function seleccionarLista(id){
-  listaActiva=listas.find(l=>l.id===id)
-  btnCopiar.disabled=btnPivot.disabled=btnExportar.disabled=!listaActiva
-  renderTabs();construirFormulario();renderTabla();guardarDatos()
-  setTimeout(enfocarCampoActivo,100)
+  syncTablaConDatos()
+
+  listaActiva = listas.find(l => l.id === id)
+
+// CLEAR UI BEFORE SYNC
+  cuerpoTabla.innerHTML = ''
+
+  btnCopiar.disabled = btnPivot.disabled = btnExportar.disabled = !listaActiva
+
+  renderTabs()
+  construirFormulario()
+  renderTabla()
+  guardarDatos()
+
+  setTimeout(enfocarCampoActivo, 100)
 }
 function eliminarLista(id){
   materialConfirm('¿Eliminar la lista completa?','Eliminar lista').then(ok=>{
@@ -475,6 +521,7 @@ function eliminarLista(id){
 }
 
 function renombrarLista(id) {
+  syncTablaConDatos()
   const lista = listas.find(l => l.id === id)
   if (!lista) return
 
@@ -497,20 +544,24 @@ function construirFormulario(){
     inp.id=c.key;inp.type=c.type
     inp.addEventListener('keydown', e => {
   if (e.key === 'Enter') {
-    e.preventDefault();
+    e.preventDefault()
 
-    const inputs = [...formEscaneo.querySelectorAll('input')];
+    const inputs = [...formEscaneo.querySelectorAll('input')]
 
-    // last input → auto add row
+    // If last field → auto add row
     if (i === inputs.length - 1) {
-      agregarFila();
-      setTimeout(enfocarCampoActivo, 50);
+
+      //  AUTO ADD
+      agregarFila()
+
+      setTimeout(enfocarCampoActivo, 50)
+
     } else {
-      inputs[i + 1].focus();
-      inputs[i + 1].select();
+      inputs[i + 1].focus()
+      inputs[i + 1].select()
     }
   }
-});
+})
     const lbl=document.createElement('label')
     lbl.htmlFor=c.key;lbl.textContent=c.label
     col.append(inp,lbl);formEscaneo.appendChild(col)
@@ -521,19 +572,52 @@ function construirFormulario(){
 }
 
 /* ===== ROWS ===== */
+function syncTablaConDatos() {
+  if (!listaActiva) return
+
+  const rows = document.querySelectorAll('#cuerpoTabla tr')
+
+  rows.forEach((tr, i) => {
+    if (!listaActiva.filas[i]) return
+
+    const fila = listaActiva.filas[i]
+    const celdas = tr.querySelectorAll('td[contenteditable]')
+
+    celdas.forEach((td, j) => {
+      const campo = listaActiva.campos[j]
+      if (!campo) return
+
+      const key = campo.key
+      const valorDOM = td.textContent.trim()
+
+      if (fila[key] !== valorDOM) {
+        fila[key] = valorDOM
+      }
+    })
+  })
+
+  guardarDatos()
+}
 function agregarFila(){
+  syncTablaConDatos()
+  // Force save current edit
+  if (document.activeElement) {
+    document.activeElement.blur()
+  }
+
   if(!listaActiva)return
   const fila={}
   for (const c of listaActiva.campos) {
-  const v = document.getElementById(c.key).value.trim()
-
-  if ((c.key === 'parte' || c.key === 'cantidad') && !v) return
-
-  fila[c.key] = v
-}
-  fila.tiempo=new Date().toISOString()
+    const v = document.getElementById(c.key).value.trim()
+    if ((c.key === 'parte' || c.key === 'cantidad') && !v) return
+    fila[c.key] = v
+  }
+  fila.tiempo = new Date().toISOString()
   listaActiva.filas.unshift(fila)
-  guardarDatos();construirFormulario();renderTabla()
+  guardarDatos()
+  construirFormulario()
+  renderTabla()
+  showScanStatus("Escaneado")
 }
 
 /* ===== TABLE ===== */
@@ -542,16 +626,62 @@ function renderTabla(){
   if(!listaActiva)return
   listaActiva.filas.forEach((r,i)=>{
     const tr=document.createElement('tr')
+    if (i === 0) {
+  tr.classList.add('new-row')
+
+  setTimeout(() => {
+    tr.classList.remove('new-row')
+  }, 1200)
+}
     listaActiva.campos.forEach(c=>{
-      const td=document.createElement('td')
-      td.contentEditable=true
-      td.textContent=r[c.key]||''
-      td.onblur = () => {
+      const td = document.createElement('td')
+
+// IMPORTANT: prevents line breaks and HTML
+td.setAttribute('contenteditable', 'plaintext-only')
+
+td.textContent = r[c.key] ?? ''
+
+// SAVE WHILE TYPING
+td.oninput = () => {
   const val = td.textContent.trim()
   r[c.key] = val
   guardarDatos()
 }
-      tr.appendChild(td)
+
+// ENTER = SAVE + EXIT + RETURN TO INPUT FORM
+td.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault()
+    e.stopPropagation()
+
+    // remove any accidental line breaks
+    td.textContent = td.textContent.replace(/\n/g, '').trim()
+
+    const val = td.textContent
+    r[c.key] = val
+    guardarDatos()
+
+    td.blur()
+
+    //  go back to scanner input
+    setTimeout(() => {
+      enfocarCampoActivo()
+    }, 20)
+  }
+
+  //  ESC = cancel edit and return
+  if (e.key === 'Escape') {
+    e.preventDefault()
+
+    td.textContent = r[c.key] ?? ''
+    td.blur()
+
+    setTimeout(() => {
+      enfocarCampoActivo()
+    }, 20)
+  }
+})
+  tr.appendChild(td)
     })
     tr.innerHTML+=`<td>${new Date(r.tiempo).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'})}</td>`
     const b=document.createElement('button')
@@ -572,6 +702,7 @@ function renderTabla(){
 
 /* ===== UTIL ===== */
 function copiarLista(){
+  syncTablaConDatos()
   tituloCopiar.textContent=`Copiar – ${listaActiva.nombre}`
   const l=[listaActiva.campos.map(c=>c.label).join('\t')]
   listaActiva.filas.forEach(r=>l.push(listaActiva.campos.map(c=>r[c.key]||'').join('\t')))
@@ -584,11 +715,13 @@ function copiarTexto(){
 }
 
 function abrirPivot(){
+  syncTablaConDatos()
   tituloPivot.textContent=`Resumen – ${listaActiva.nombre}`
   const t={},l=['Parte\tCantidad']
   listaActiva.filas.forEach(r=>{
-    const p=r.parte,q=parseFloat(r.cantidad||0)
-    if(!p||isNaN(q))return
+    const p = (r.parte || '').trim().toUpperCase()
+    const q = parseFloat(r.cantidad || 0)
+    if(!p) return
     t[p]=(t[p]||0)+q
   })
   Object.keys(t).forEach(p=>l.push(`${p}\t${t[p]}`))
@@ -597,12 +730,14 @@ function abrirPivot(){
 }
 
 function copiarPivot(){
+  syncTablaConDatos()
   navigator.clipboard.writeText(textoPivot.value)
 }
 
 
 /* ===== EXPORT CSV ===== */
 function exportarLista(){
+  syncTablaConDatos()
   if(!listaActiva)return
   const headers=listaActiva.campos.map(c=>`"${c.label}"`)
   const rows=listaActiva.filas.map(r=>listaActiva.campos.map(c=>`"${r[c.key]||''}"`).join(','))
@@ -643,6 +778,7 @@ function materialConfirm(msg, title = 'Confirmar') {
 let listaARenombrar = null
 
 function abrirRenombrarLista(id) {
+  syncTablaConDatos()
   listaARenombrar = listas.find(l => l.id === id)
   if (!listaARenombrar) return
 
@@ -653,6 +789,7 @@ function abrirRenombrarLista(id) {
 }
 
 function confirmarRenombrar() {
+  syncTablaConDatos()
   if (!listaARenombrar) return
 
   const nombre = nuevoNombreLista.value.trim()
@@ -665,6 +802,15 @@ function confirmarRenombrar() {
   renderTabs()
 
   M.Modal.getInstance(modalRenombrar).close()
+}
+
+function showScanStatus(msg) {
+  const el = document.getElementById('scanStatus')
+  el.textContent = msg
+
+  setTimeout(() => {
+    el.textContent = "Escaneo listo"
+  }, 1000)
 }
 
 /* ===== Clean ===== */
