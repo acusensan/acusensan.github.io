@@ -110,7 +110,9 @@
       <!-- Actions -->
       <ul class="right">
         <li>
-          <a href="#settings-modal" class="modal-trigger">☀</a>
+          <a href="#settings-modal" class="modal-trigger">
+            <img src="icons/settings.svg" alt="Settings" class="nav-icon">
+          </a>
         </li>
       </ul>
     </div>
@@ -217,7 +219,7 @@
   <footer class="page-footer blue darken-4 center-align">
     <div class="footer-copyright">
       <div class="container">
-        © <span id="current-year"></span> Samuel Eduardo Renteria Quintero NCG
+        © <span id="current-year"></span> Samuel Eduardo Renteria Quintero NCG v10.1
       </div>
     </div>
   </footer>
@@ -243,6 +245,14 @@
                 }
             });
         });
+
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js')
+              .then(() => console.log('Service Worker Registered'))
+              .catch(err => console.log('Error:', err));
+          });
+        }
     </script>
 </body>
 </html>

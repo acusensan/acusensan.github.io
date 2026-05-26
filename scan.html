@@ -298,7 +298,9 @@
       <!-- Actions -->
       <ul class="right">
         <li>
-          <a href="#settings-modal" class="modal-trigger">☀</a>
+          <a href="#settings-modal" class="modal-trigger">
+            <img src="icons/settings.svg" alt="Settings" class="nav-icon">
+          </a>
         </li>
       </ul>
     </div>
@@ -484,14 +486,14 @@
             <span class="card-title">Totales</span>
             <table class="striped">
               <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Parte</th>
-                  <th>Total</th>
-                  <th>Daily</th>
-                  <th>Prod</th>
-                </tr>
-              </thead>
+              <tr>
+                <th onclick="sortTotals('color')">Status</th>
+                <th onclick="sortTotals('part')">Parte</th>
+                <th onclick="sortTotals('scanned')">Total</th>
+                <th onclick="sortTotals('daily')">Daily</th>
+                <th onclick="sortTotals('prod')">Prod</th>
+              </tr>
+            </thead>
               <tbody id="scanTotals"></tbody>
             </table>
           </div>

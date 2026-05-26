@@ -3,19 +3,28 @@
 /*=== MATERIALIZE INITIALIZATION ===*/
 document.addEventListener("DOMContentLoaded", () => {
   if (window.M) M.AutoInit();
-});
-document.addEventListener("DOMContentLoaded", () => {
+
   if (document.getElementById("partSearchInput")) {
     initPartSearch();
   }
+
+  loadState();
+  renderScanLog();
+  renderTotals();
+  updateTotalsHeaderIcons();
+
+  focusPartInput(100);
+  setScanStatus("ready", "Listo para escanear");
+
+  initGlobalEvents(); // NEW
 });
-``
+
 
 /*=== CONSTANTS / CONFIG ===*/
 const STORAGE_KEY = "scan_state_v1";
 const AUTO_EXPORT_EVERY = 20;
 const LOCATIONS = ["pcgrears", "pcgbt1cc", "pcg31xx", "pcgsavan"];
-const PARTS = Object.keys(partsDB);
+const PARTS = Object.keys(partsDB || {});
 
 /*=== GLOBAL STATE ===*/
 const scanLogData = [];
@@ -31,6 +40,12 @@ let undoTimer = null;
 let partSearchClearTimer = null;
 let isSearchPaused = false;
 let lastTransferredBatch = [];
+
+let totalsSort = {
+  column: "color",   // default column
+  direction: "asc"  // or "desc"
+};
+
 
 /*=== DOM ELEMENTS ===*/
 const partInput = document.getElementById("scanPart");
@@ -60,16 +75,23 @@ csvFileInput.addEventListener("change", e => {
 function processCSV(text) {
   PARTS.forEach(p => (csvTotalsMap[p] = 0));
 
-  text.split(/\r?\n/).forEach(line => {
-    const [location, part, qty] = line.split(",");
-    if (
-      LOCATIONS.includes(location?.trim().toLowerCase()) &&
-      PARTS.includes(part?.trim()) &&
-      !isNaN(qty)
-    ) {
-      csvTotalsMap[part.trim()] += Number(qty);
+  const lines = text.split(/\r?\n/);
+
+  for (let i = 0; i < lines.length; i++) {
+    const [location, part, qty] = lines[i].split(",");
+
+    if (!location || !part || !qty) continue;
+
+    const loc = location.trim().toLowerCase();
+    const p = part.trim();
+
+    if (LOCATIONS.includes(loc) && PARTS.includes(p)) {
+      const num = Number(qty);
+      if (!isNaN(num)) {
+        csvTotalsMap[p] += num;
+      }
     }
-  });
+  }
 
   renderTotals();
   saveState();
@@ -213,22 +235,26 @@ if (isHilo) {
 function recordScan(part, qty) {
   scanCount++;
 
-  const shift = getCurrentShift();
-
-  scanLogData.push({
+  const entry = {
     part,
     qty,
     time: new Date().toLocaleTimeString(),
-    shift
-  });
+    shift: getCurrentShift()
+  };
+
+  scanLogData.push(entry);
 
   totalsMap[part] = (totalsMap[part] || 0) + qty;
 
-  renderScanLog();
+  // Instead of full re-render
+  renderScanLog();  // keep for now (safe version)
   renderTotals();
+
   saveState();
 
-  if (scanCount % AUTO_EXPORT_EVERY === 0) autoExportScanLog();
+  if (scanCount % AUTO_EXPORT_EVERY === 0) {
+    autoExportScanLog();
+  }
 }
 
 
@@ -293,28 +319,67 @@ function renderScanLog() {
 }
 
 function renderTotals() {
-  scanTotalsBody.innerHTML = "";
-  let i = 1;
+  const fragment = document.createDocumentFragment();
 
-  Object.keys(totalsMap).forEach(part => {
+  let rows = [];
+
+  // Build rows array FIRST (required for sorting)
+  for (const part in totalsMap) {
     const scanned = totalsMap[part] || 0;
     const daily = partsDB[part]?.daily || 0;
-    const csv = csvTotalsMap[part] || 0;
-    const exceeded = scanned + csv > daily;
+    const prod = csvTotalsMap[part] || 0;
 
-    scanTotalsBody.insertAdjacentHTML(
-      "beforeend",
-      `
-      <tr class="${exceeded ? "exceeded" : ""}">
-        <td>${i++}</td>
-        <td>${part}</td>
-        <td>${scanned}</td>
-        <td>${daily}</td>
-        <td>${csv}</td>
-      </tr>
-    `
-    );
+    rows.push({
+      part,
+      scanned,
+      daily,
+      prod,
+      exceeded: scanned + prod > daily
+    });
+  }
+
+  // SORTING (RESTORED)
+  rows.sort((a, b) => {
+    if (totalsSort.column === "color") {
+      return totalsSort.direction === "asc"
+        ? (b.exceeded - a.exceeded)
+        : (a.exceeded - b.exceeded);
+    }
+
+    let valA = a[totalsSort.column];
+    let valB = b[totalsSort.column];
+
+    if (typeof valA === "string") {
+      valA = valA.toUpperCase();
+      valB = valB.toUpperCase();
+    }
+
+    if (valA < valB) return totalsSort.direction === "asc" ? -1 : 1;
+    if (valA > valB) return totalsSort.direction === "asc" ? 1 : -1;
+    return 0;
   });
+
+  // BUILD TABLE
+  let i = 1;
+
+  rows.forEach(row => {
+    const tr = document.createElement("tr");
+
+    if (row.exceeded) tr.classList.add("exceeded");
+
+    tr.innerHTML = `
+      <td>${i++}</td>
+      <td>${row.part}</td>
+      <td>${row.scanned}</td>
+      <td>${row.daily}</td>
+      <td>${row.prod}</td>
+    `;
+
+    fragment.appendChild(tr);
+  });
+
+  scanTotalsBody.innerHTML = "";
+  scanTotalsBody.appendChild(fragment);
 }
 
 /*=== DELETE / UNDO ===*/
@@ -558,16 +623,6 @@ document.addEventListener("click", () => {
   });
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  loadState();
-  renderScanLog();
-  renderTotals();
-  focusPartInput(100);
-  setScanStatus("ready", "Listo para escanear");
-});
-
-window.addEventListener("beforeunload", saveState);
-
 /*=== Summar ===*/
 function renderScanSummary() {
   const body = document.getElementById("scanSummaryBody");
@@ -702,9 +757,15 @@ function initPartSearch() {
   input.focus();
 
   //  INPUT HANDLER
-  input.oninput = () => {
+  let searchTimer;
+
+input.oninput = () => {
+  clearTimeout(searchTimer);
+
+  searchTimer = setTimeout(() => {
     const term = input.value.trim().toUpperCase();
     renderPartSearchResults(term);
+  }, 200);
 
     if (partSearchClearTimer) {
       clearTimeout(partSearchClearTimer);
@@ -1056,4 +1117,48 @@ function openTransferredModal() {
 
   renderScanLog();
   modal.open();
+}
+function sortTotals(column) {
+  if (totalsSort.column === column) {
+    totalsSort.direction =
+      totalsSort.direction === "asc" ? "desc" : "asc";
+  } else {
+    totalsSort.column = column;
+    totalsSort.direction = "asc";
+  }
+
+  updateTotalsHeaderIcons(); //  add this
+  renderTotals();
+}
+function getSortIcon(column) {
+  if (totalsSort.column !== column) return "";
+  return totalsSort.direction === "asc" ? " ▲" : " ▼";
+}
+function updateTotalsHeaderIcons() {
+  const headers = {
+    part: document.querySelector('th[onclick="sortTotals(\'part\')"]'),
+    scanned: document.querySelector('th[onclick="sortTotals(\'scanned\')"]'),
+    daily: document.querySelector('th[onclick="sortTotals(\'daily\')"]'),
+    prod: document.querySelector('th[onclick="sortTotals(\'prod\')"]')
+  };
+
+  Object.keys(headers).forEach(key => {
+    const th = headers[key];
+    if (!th) return;
+
+    let label = th.textContent.replace(/ ▲| ▼/g, ""); // clean old icons
+
+    if (totalsSort.column === key) {
+      label += totalsSort.direction === "asc" ? " ▲" : " ▼";
+    }
+
+    th.innerHTML = label;
+  });
+}
+function initGlobalEvents() {
+  window.addEventListener("beforeunload", () => {
+    if (focusTimer) clearTimeout(focusTimer);
+    if (partSearchClearTimer) clearTimeout(partSearchClearTimer);
+    saveState();
+  });
 }
