@@ -25,7 +25,15 @@
       animation: slideUp 0.45s ease forwards;
       overflow: hidden;
     }
+    .time-scan {
+      color: #2e7d32; /* green */
+      font-weight: 600;
+    }
 
+    .time-transfer {
+      color: #c62828; /* red */
+      font-weight: 600;
+    }
     @keyframes slideUp {
       from {
         opacity: 1;
@@ -454,7 +462,8 @@
                     <th>#</th>
                     <th>Parte</th>
                     <th>Qty</th>
-                    <th>Hora</th>
+                    <th>Hora Escaneo</th>
+                    <th>Hora Transferido</th>
                   </tr>
                 </thead>
                 <tbody id="scanTransferred"></tbody>

@@ -109,13 +109,13 @@ partInput.addEventListener("keydown", e => {
     return;
   }
 
-  if (!partsDB[part]) {
+  /*===if (!partsDB[part]) {
     M.toast({
       html: `${part} no está en la base de datos`,
       classes: "orange darken-2",
       displayLength: 2500
     });
-  }
+  }===*/
 
   waitingForQty = true;
   qtyInput.focus();
@@ -195,7 +195,7 @@ if (isHilo) {
     M.toast({
       html: isKnownPart
         ? ` ${part} +${finalQty} agregado`
-        : `${part} +${finalQty} (NO está en DB)`,
+        : `${part} +${finalQty} (NO está en Base de datos)`,
       classes: isKnownPart ? "green darken-2" : "orange darken-2",
       displayLength: 3000
     });
@@ -266,7 +266,7 @@ function renderScanLog() {
   >
 </td>
           <td><input type="number" min="1" value="${e.qty}" style="width:70px; text-align:center;" onclick="this.select()" onkeydown="handleQtyEdit(event, ${i})" onchange="updateQtyEdit(${i}, this.value)"></td>
-          <td>${e.time}</td>
+          <td>${e.transferTime || e.time}</td>
           <td>
             <button class="btn red" onclick="deleteScan(${i})">Borrar</button>
           </td>
@@ -283,7 +283,8 @@ function renderScanLog() {
           <td>${transferredIndex++}</td>
           <td>${e.part}</td>
           <td>${e.qty}</td>
-          <td>${e.time}</td>
+          <td style="color: green; font-weight: 600;">${e.time}</td>
+          <td style="color: red; font-weight: 600;">${e.transferTime || "-"}</td>
         </tr>
         `
       );
@@ -492,7 +493,9 @@ function sendScanLogToBottom() {
   //  MOVE them
   pending.forEach(e => {
     e.transferred = true;
+    e.transferTime = new Date().toLocaleTimeString();
   });
+
 
   renderScanLog();
   saveState();
