@@ -119,7 +119,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   APC0114: [
     "L001797262NCPAA",
-    "L002171015NCPAA"
+    "L002171015NCPAA",
+    "L001637636NCPAA",
+    "L001676232NCPAA",
+    "L001797260NCPAA",
+    "L0637636AA01",
+    "L0639918AA01",
+    "L0676232AA01",
+    "L0797260AA01"
   ],
 
   APC0115: [

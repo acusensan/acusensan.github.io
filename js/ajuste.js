@@ -2,6 +2,8 @@ let optionsMap = {};
 let allPartsIndex = [];
 let partSearchModalInstance = null;
 let fullMenu3List = [];
+let itemToDelete = null;
+
 const STORAGE_KEY = 'ajuste_entries';
 document.addEventListener('DOMContentLoaded', () => {
   M.updateTextFields();
@@ -24,6 +26,27 @@ const qtyInput = document.getElementById('quantity');
       e.preventDefault();
       addEntry();
     }
+  });
+  document
+  .getElementById('confirm-delete-btn')
+  .addEventListener('click', () => {
+    if (itemToDelete) {
+      itemToDelete.remove();
+      saveEntriesToLocalStorage();
+
+      M.toast({
+        html: 'Borrado',
+        classes: 'red lighten-1',
+        displayLength: 2000
+      });
+
+      itemToDelete = null;
+    }
+
+    const modal = M.Modal.getInstance(
+      document.getElementById('delete-confirm-modal')
+    );
+    modal.close();
   });
 });
 
@@ -130,6 +153,17 @@ function updateSelectedItems() {
     document.getElementById('selected-items').innerText = `${section}, ${rack}, ${menu2}, ${menu3}, ${quantity}`;
 
 }
+function calculateBoxes() {
+  const partNumber = document.getElementById('menu3').value;
+  const quantity = parseFloat(document.getElementById('quantity').value);
+
+  if (!partNumber || !quantity) return null;
+
+  const partData = partsDB[partNumber];
+  if (!partData || !partData.pack) return null;
+
+  return quantity / partData.pack;
+}
 function addEntry() {
   const rack = document.getElementById('rack').value;
   const menu3 = document.getElementById('menu3').value;
@@ -145,7 +179,9 @@ function addEntry() {
     return;
   }
 
-  const selectedItems = `${rack} ${menu3} ${quantity}`;
+  const boxes = calculateBoxes();
+  const boxesText = boxes ? ` | Cajas: ${boxes.toFixed(2)}` : '';
+  const selectedItems = `${rack} ${menu3} ${quantity}${boxesText}`;
   const entryList = document.getElementById('entry-list');
 
   const newEntry = document.createElement('li');
@@ -154,17 +190,16 @@ function addEntry() {
 
   // Delete button
   const deleteButton = document.createElement('button');
-  deleteButton.innerText = 'Borrar';
-  deleteButton.className = 'btn red delete-button';
-  deleteButton.onclick = () => {
-  entryList.removeChild(newEntry);
-  saveEntriesToLocalStorage();
+deleteButton.innerText = 'Borrar';
+deleteButton.className = 'btn red delete-button';
 
-  M.toast({
-    html: 'Borrado',
-    classes: 'red lighten-1',
-    displayLength: 2000
-  });
+deleteButton.onclick = () => {
+  itemToDelete = newEntry;
+
+  const modal = M.Modal.getInstance(
+    document.getElementById('delete-confirm-modal')
+  );
+  modal.open();
 };
 
   newEntry.appendChild(deleteButton);
@@ -360,9 +395,14 @@ function loadEntriesFromLocalStorage() {
     deleteButton.innerText = 'Borrar';
     deleteButton.className = 'btn red delete-button';
     deleteButton.onclick = () => {
-      entryList.removeChild(li);
-      saveEntriesToLocalStorage();
-    };
+  itemToDelete = li;
+
+  const modal = M.Modal.getInstance(
+    document.getElementById('delete-confirm-modal')
+  );
+  modal.open();
+};
+
 
     li.appendChild(deleteButton);
     entryList.appendChild(li);

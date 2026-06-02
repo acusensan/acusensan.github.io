@@ -1,11 +1,24 @@
 const partsDB = {};
 
+partsDB["10686"] = {
+  "description": "BW/WIRE ZP (3mm/2.5K.G)",
+  "pack": 2.5,
+  "cost": 73.7478,
+  "weight": 2703,
+  "piecesPerUnit": 0,
+  "line": "Misc",
+  "daily": 0.8,
+  "kanban": 1,
+  "location": "APC0203",
+  "productionLine": "PCGREARS"
+};
+
 partsDB["170480"] = {
   "description": "VELCRO HOOK 1\" BLACK",
   "pack": 250,
   "cost": 0.2973,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Velcro",
   "daily": 0,
   "kanban": 1,
@@ -18,9 +31,9 @@ partsDB["190562"] = {
   "pack": 500,
   "cost": 0.2385,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Velcro",
-  "daily": 390.2,
+  "daily": 388.6,
   "kanban": 1,
   "location": "APC0110",
   "productionLine": "PCGREARS"
@@ -31,7 +44,7 @@ partsDB["346779"] = {
   "pack": 300,
   "cost": 0.5,
   "weight": 4035,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Misc",
   "daily": 0,
   "kanban": 1,
@@ -44,9 +57,9 @@ partsDB["346803"] = {
   "pack": 300,
   "cost": 0.5,
   "weight": 4035,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Misc",
-  "daily": 579.2,
+  "daily": 678.2,
   "kanban": 1,
   "location": "APC0203",
   "productionLine": "PCGSAVAN"
@@ -59,7 +72,7 @@ partsDB["L002316235NCPAB"] = {
   "weight": 381,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 1532.4,
+  "daily": 1514.8,
   "kanban": 5,
   "location": "APC0101",
   "productionLine": "PCG31XX"
@@ -72,7 +85,7 @@ partsDB["L002401087NCPAC"] = {
   "weight": 102,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 3065.6,
+  "daily": 3026.8,
   "kanban": 1,
   "location": "APC0101",
   "productionLine": "PCG31XX"
@@ -85,7 +98,7 @@ partsDB["L002401088NCPAC"] = {
   "weight": 106,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 1532.8,
+  "daily": 1513.4,
   "kanban": 1,
   "location": "APC0101",
   "productionLine": "PCG31XX"
@@ -98,7 +111,7 @@ partsDB["L002401089NCPAD"] = {
   "weight": 175,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 1532.8,
+  "daily": 1513.4,
   "kanban": 1,
   "location": "APC0101",
   "productionLine": "PCG31XX"
@@ -111,7 +124,7 @@ partsDB["L002401090NCPAD"] = {
   "weight": 165,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 1532.8,
+  "daily": 1513.4,
   "kanban": 1,
   "location": "APC0101",
   "productionLine": "PCG31XX"
@@ -124,7 +137,7 @@ partsDB["L002401091NCPAB"] = {
   "weight": 70,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 767.2,
+  "daily": 757.4,
   "kanban": 1,
   "location": "APC0101",
   "productionLine": "PCG31XX"
@@ -137,7 +150,7 @@ partsDB["L002316236NCPAA"] = {
   "weight": 153,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 1532.4,
+  "daily": 1514.8,
   "kanban": 1,
   "location": "APC0102",
   "productionLine": "PCG31XX"
@@ -150,7 +163,7 @@ partsDB["L002316237NCPAA"] = {
   "weight": 263,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 2024.6,
+  "daily": 1954.8,
   "kanban": 1,
   "location": "APC0102",
   "productionLine": "PCG31XX"
@@ -163,7 +176,7 @@ partsDB["L002316238NCPAA"] = {
   "weight": 200,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 766.2,
+  "daily": 757.4,
   "kanban": 1,
   "location": "APC0102",
   "productionLine": "PCG31XX"
@@ -176,7 +189,7 @@ partsDB["L002316951NCPAC"] = {
   "weight": 2791,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 293.6,
+  "daily": 353.6,
   "kanban": 2,
   "location": "APC0102",
   "productionLine": "PCG31XX"
@@ -189,7 +202,7 @@ partsDB["L002401092NCPAA"] = {
   "weight": 819,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 767.2,
+  "daily": 757.4,
   "kanban": 1,
   "location": "APC0102",
   "productionLine": "PCG31XX"
@@ -202,7 +215,7 @@ partsDB["L002481117NCPAA"] = {
   "weight": 286,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 293.6,
+  "daily": 353.6,
   "kanban": 1,
   "location": "APC0102",
   "productionLine": "PCG31XX"
@@ -213,9 +226,9 @@ partsDB["5CC-CH-PLF8-645D"] = {
   "pack": 766,
   "cost": 0.7315,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
-  "daily": 699.4,
+  "daily": 498,
   "kanban": 1,
   "location": "APC0103",
   "productionLine": "PCGREARS"
@@ -226,9 +239,9 @@ partsDB["L00144987006HAA"] = {
   "pack": 766,
   "cost": 0.7315,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
-  "daily": 82.2,
+  "daily": 55.4,
   "kanban": 1,
   "location": "APC0103",
   "productionLine": "PCG31XX"
@@ -239,9 +252,9 @@ partsDB["L001449870U52AA"] = {
   "pack": 766,
   "cost": 0.6401,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
-  "daily": 2698,
+  "daily": 2832.2,
   "kanban": 3,
   "location": "APC0103",
   "productionLine": "PCGREARS"
@@ -254,7 +267,7 @@ partsDB["L002401093NCPAA"] = {
   "weight": 459,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 765.6,
+  "daily": 756,
   "kanban": 1,
   "location": "APC0103",
   "productionLine": "PCG31XX"
@@ -265,9 +278,9 @@ partsDB["255S5-195A"] = {
   "pack": 766,
   "cost": 0.2164,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
-  "daily": 45.4,
+  "daily": 47,
   "kanban": 1,
   "location": "APC0103",
   "productionLine": "PCGSAVAN"
@@ -278,9 +291,9 @@ partsDB["L00180249345DAA"] = {
   "pack": 1000,
   "cost": 0.278,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
-  "daily": 0,
+  "daily": 12.8,
   "kanban": 2,
   "location": "APC0104",
   "productionLine": "PCGREARS"
@@ -291,9 +304,9 @@ partsDB["L001802493GKAAA"] = {
   "pack": 1000,
   "cost": 0.278,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
-  "daily": 507.2,
+  "daily": 460.8,
   "kanban": 2,
   "location": "APC0104",
   "productionLine": "PCGREARS"
@@ -304,9 +317,9 @@ partsDB["L0816049AA0109X"] = {
   "pack": 1000,
   "cost": 0.255,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
-  "daily": 264,
+  "daily": 260.8,
   "kanban": 1,
   "location": "APC0104",
   "productionLine": "PCGREARS"
@@ -317,9 +330,9 @@ partsDB["L0816049AA0145D"] = {
   "pack": 1000,
   "cost": 0.255,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
-  "daily": 541.6,
+  "daily": 461.6,
   "kanban": 2,
   "location": "APC0104",
   "productionLine": "PCGREARS"
@@ -330,9 +343,9 @@ partsDB["L0816049AA01GKA"] = {
   "pack": 1000,
   "cost": 0.255,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
-  "daily": 10116.4,
+  "daily": 10143.6,
   "kanban": 5,
   "location": "APC0104",
   "productionLine": "PCGREARS"
@@ -345,7 +358,7 @@ partsDB["L0571635AA01"] = {
   "weight": 52,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 7924,
+  "daily": 7584,
   "kanban": 1,
   "location": "APC0105",
   "productionLine": "PCGREARS"
@@ -358,7 +371,7 @@ partsDB["L0571636AA01"] = {
   "weight": 91,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 4754.4,
+  "daily": 4550.4,
   "kanban": 1,
   "location": "APC0105",
   "productionLine": "PCGREARS"
@@ -371,7 +384,7 @@ partsDB["L0572828AA03"] = {
   "weight": 377,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 1584.8,
+  "daily": 1516.8,
   "kanban": 1,
   "location": "APC0105",
   "productionLine": "PCGREARS"
@@ -384,7 +397,7 @@ partsDB["L0591424AA01"] = {
   "weight": 94,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 1584.8,
+  "daily": 1516.8,
   "kanban": 1,
   "location": "APC0105",
   "productionLine": "PCGREARS"
@@ -397,7 +410,7 @@ partsDB["L0668944AA01"] = {
   "weight": 104,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 3169.6,
+  "daily": 3033.6,
   "kanban": 1,
   "location": "APC0105",
   "productionLine": "PCGREARS"
@@ -410,7 +423,7 @@ partsDB["L002866832NCPAA"] = {
   "weight": 375,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 2820,
+  "daily": 2818,
   "kanban": 2,
   "location": "APC0106",
   "productionLine": "PCGREARS"
@@ -423,7 +436,7 @@ partsDB["L002890609NCPAA"] = {
   "weight": 371,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 2820,
+  "daily": 2818,
   "kanban": 2,
   "location": "APC0106",
   "productionLine": "PCGREARS"
@@ -436,7 +449,7 @@ partsDB["L0571668AA01"] = {
   "weight": 159,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 5686.8,
+  "daily": 6167.2,
   "kanban": 1,
   "location": "APC0106",
   "productionLine": "PCGREARS"
@@ -449,7 +462,7 @@ partsDB["L0592046AA01"] = {
   "weight": 66,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 6339.2,
+  "daily": 6067.2,
   "kanban": 1,
   "location": "APC0106",
   "productionLine": "PCGREARS"
@@ -462,7 +475,7 @@ partsDB["L0676165AA01"] = {
   "weight": 128,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 7331.2,
+  "daily": 7750.4,
   "kanban": 1,
   "location": "APC0106",
   "productionLine": "PCGREARS"
@@ -475,8 +488,8 @@ partsDB["L002866833NCPAA"] = {
   "weight": 844,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 2832.4,
-  "kanban": 4,
+  "daily": 2810.8,
+  "kanban": 5,
   "location": "APC0107",
   "productionLine": "PCGREARS"
 };
@@ -488,8 +501,8 @@ partsDB["L002890610NCPAA"] = {
   "weight": 811,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 2832.4,
-  "kanban": 4,
+  "daily": 2810.8,
+  "kanban": 5,
   "location": "APC0107",
   "productionLine": "PCGREARS"
 };
@@ -501,7 +514,7 @@ partsDB["L0676192AA01"] = {
   "weight": 124,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 3339.6,
+  "daily": 3225.2,
   "kanban": 1,
   "location": "APC0107",
   "productionLine": "PCGREARS"
@@ -514,7 +527,7 @@ partsDB["L0676195AA01"] = {
   "weight": 152,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 5539.2,
+  "daily": 5516.8,
   "kanban": 1,
   "location": "APC0107",
   "productionLine": "PCGREARS"
@@ -527,7 +540,7 @@ partsDB["1561-305SAA"] = {
   "weight": 290,
   "piecesPerUnit": 20,
   "line": "Savana",
-  "daily": 642.6,
+  "daily": 694,
   "kanban": 1,
   "location": "APC0108",
   "productionLine": "PCGSAVAN"
@@ -540,7 +553,7 @@ partsDB["1561-345SAA"] = {
   "weight": 324,
   "piecesPerUnit": 20,
   "line": "Savana",
-  "daily": 642.6,
+  "daily": 694,
   "kanban": 1,
   "location": "APC0108",
   "productionLine": "PCGSAVAN"
@@ -553,7 +566,7 @@ partsDB["2232B910F00MA"] = {
   "weight": 1364,
   "piecesPerUnit": 20,
   "line": "Savana",
-  "daily": 644.8,
+  "daily": 700.8,
   "kanban": 5,
   "location": "APC0108",
   "productionLine": "PCGSAVAN"
@@ -566,7 +579,7 @@ partsDB["STFR-415X122FAC"] = {
   "weight": 766,
   "piecesPerUnit": 20,
   "line": "Savana",
-  "daily": 608.6,
+  "daily": 545.4,
   "kanban": 2,
   "location": "APC0108",
   "productionLine": "PCGSAVAN"
@@ -577,9 +590,9 @@ partsDB["L002162447NCPAA"] = {
   "pack": 144,
   "cost": 0.3706,
   "weight": 1346,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Misc",
-  "daily": 96.8,
+  "daily": 95.2,
   "kanban": 1,
   "location": "APC0109",
   "productionLine": "PCGREARS"
@@ -590,9 +603,9 @@ partsDB["L0575410AA01"] = {
   "pack": 1000,
   "cost": 0.2446,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Velcro",
-  "daily": 1112.2,
+  "daily": 1197.6,
   "kanban": 1,
   "location": "APC0109",
   "productionLine": "PCGREARS"
@@ -603,9 +616,9 @@ partsDB["L0633654AA01"] = {
   "pack": 328,
   "cost": 0.0582,
   "weight": 974,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Velcro",
-  "daily": 5134.6,
+  "daily": 4930,
   "kanban": 5,
   "location": "APC0109",
   "productionLine": "PCGREARS"
@@ -616,9 +629,9 @@ partsDB["KRG25LTCA"] = {
   "pack": 500,
   "cost": 0.1876,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Velcro",
-  "daily": 55.4,
+  "daily": 50.2,
   "kanban": 1,
   "location": "APC0110",
   "productionLine": "PCGREARS"
@@ -629,9 +642,9 @@ partsDB["L0429142AA02"] = {
   "pack": 2000,
   "cost": 0.1533,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Velcro",
-  "daily": 2962.2,
+  "daily": 2939,
   "kanban": 2,
   "location": "APC0110",
   "productionLine": "PCGREARS"
@@ -642,9 +655,9 @@ partsDB["L0495624AA01"] = {
   "pack": 720,
   "cost": 0.8637,
   "weight": 1011,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Misc",
-  "daily": 426,
+  "daily": 419,
   "kanban": 1,
   "location": "APC0110",
   "productionLine": "PCGREARS"
@@ -654,10 +667,10 @@ partsDB["L0549303AA01"] = {
   "description": "WELT-PLASTIC 701156",
   "pack": 2624.672,
   "cost": 0.2165,
-  "weight": 1823,
-  "piecesPerUnit": 20,
+  "weight": 1989,
+  "piecesPerUnit": 0,
   "line": "Misc",
-  "daily": 5841.2,
+  "daily": 7112.6,
   "kanban": 2,
   "location": "APC0110",
   "productionLine": "PCGREARS"
@@ -668,9 +681,9 @@ partsDB["L0575409AA01"] = {
   "pack": 1050,
   "cost": 0.254,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Velcro",
-  "daily": 144.6,
+  "daily": 130.4,
   "kanban": 1,
   "location": "APC0110",
   "productionLine": "PCGREARS"
@@ -683,7 +696,7 @@ partsDB["L001434100NCPAA"] = {
   "weight": 57,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 4600,
+  "daily": 4541.6,
   "kanban": 1,
   "location": "APC0111",
   "productionLine": "PCG31XX"
@@ -696,7 +709,7 @@ partsDB["L001518304NCPAA"] = {
   "weight": 64,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 1532.8,
+  "daily": 1513.4,
   "kanban": 1,
   "location": "APC0111",
   "productionLine": "PCG31XX"
@@ -709,7 +722,7 @@ partsDB["L002312383NCPAC"] = {
   "weight": 264,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 765.6,
+  "daily": 756,
   "kanban": 1,
   "location": "APC0111",
   "productionLine": "PCG31XX"
@@ -722,7 +735,7 @@ partsDB["L002479502NCPAA"] = {
   "weight": 147,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 1534.4,
+  "daily": 1514.8,
   "kanban": 1,
   "location": "APC0111",
   "productionLine": "PCG31XX"
@@ -735,7 +748,7 @@ partsDB["L002618780NCPAA"] = {
   "weight": 263,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 766.2,
+  "daily": 757.4,
   "kanban": 1,
   "location": "APC0111",
   "productionLine": "PCG31XX"
@@ -748,7 +761,7 @@ partsDB["L0430654AA01"] = {
   "weight": 32,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 4598.4,
+  "daily": 4540.2,
   "kanban": 1,
   "location": "APC0111",
   "productionLine": "PCG31XX"
@@ -761,7 +774,7 @@ partsDB["L002215045NCPAA"] = {
   "weight": 122,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 293.6,
+  "daily": 353.6,
   "kanban": 1,
   "location": "APC0112",
   "productionLine": "PCG31XX"
@@ -774,7 +787,7 @@ partsDB["L002312377NCPAA"] = {
   "weight": 284,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 1532.8,
+  "daily": 1513.4,
   "kanban": 1,
   "location": "APC0112",
   "productionLine": "PCG31XX"
@@ -787,7 +800,7 @@ partsDB["L002312378NCPAA"] = {
   "weight": 298,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 1532.8,
+  "daily": 1513.4,
   "kanban": 1,
   "location": "APC0112",
   "productionLine": "PCG31XX"
@@ -800,7 +813,7 @@ partsDB["L002312379NCPAC"] = {
   "weight": 509,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 767.2,
+  "daily": 757.4,
   "kanban": 1,
   "location": "APC0112",
   "productionLine": "PCG31XX"
@@ -813,7 +826,7 @@ partsDB["L002396469NCPAA"] = {
   "weight": 91,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 766.2,
+  "daily": 757.4,
   "kanban": 1,
   "location": "APC0112",
   "productionLine": "PCG31XX"
@@ -826,7 +839,7 @@ partsDB["L002479499NCPAA"] = {
   "weight": 82,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 472.6,
+  "daily": 406.2,
   "kanban": 1,
   "location": "APC0112",
   "productionLine": "PCG31XX"
@@ -837,9 +850,9 @@ partsDB["255S5-184D"] = {
   "pack": 766,
   "cost": 0.2164,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
-  "daily": 877,
+  "daily": 959.2,
   "kanban": 1,
   "location": "APC0113",
   "productionLine": "PCGSAVAN"
@@ -852,7 +865,7 @@ partsDB["L002215046NCPAA"] = {
   "weight": 86,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 1531.2,
+  "daily": 1512,
   "kanban": 1,
   "location": "APC0113",
   "productionLine": "PCG31XX"
@@ -865,7 +878,7 @@ partsDB["L002316914NCPAA"] = {
   "weight": 37,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 587.2,
+  "daily": 707.2,
   "kanban": 1,
   "location": "APC0113",
   "productionLine": "PCG31XX"
@@ -878,7 +891,7 @@ partsDB["L002316915NCPAA"] = {
   "weight": 191,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 293.6,
+  "daily": 353.6,
   "kanban": 1,
   "location": "APC0113",
   "productionLine": "PCG31XX"
@@ -889,9 +902,9 @@ partsDB["L0449870AA0102F"] = {
   "pack": 766,
   "cost": 0.7315,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
-  "daily": 134.2,
+  "daily": 154.4,
   "kanban": 1,
   "location": "APC0113",
   "productionLine": "PCGREARS"
@@ -902,9 +915,9 @@ partsDB["L0449870AA0164D"] = {
   "pack": 766,
   "cost": 0.7315,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
-  "daily": 166.4,
+  "daily": 185.8,
   "kanban": 1,
   "location": "APC0113",
   "productionLine": "PCGREARS"
@@ -917,7 +930,7 @@ partsDB["L001466311NCPAA"] = {
   "weight": 74,
   "piecesPerUnit": 20,
   "line": "Colorado",
-  "daily": 293.6,
+  "daily": 353.6,
   "kanban": 1,
   "location": "APC0113",
   "productionLine": "PCG31XX"
@@ -930,7 +943,7 @@ partsDB["L001797262NCPAA"] = {
   "weight": 114,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 16636.6,
+  "daily": 16496.6,
   "kanban": 2,
   "location": "APC0114",
   "productionLine": "PCGREARS"
@@ -943,10 +956,101 @@ partsDB["L002171015NCPAA"] = {
   "weight": 176,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 10922,
+  "daily": 10859.6,
   "kanban": 2,
   "location": "APC0114",
   "productionLine": "PCGREARS"
+};
+
+partsDB["L001637636NCPAA"] = {
+  "description": "J-RET 25.4X335MM",
+  "pack": 700,
+  "cost": 0.0949,
+  "weight": null,
+  "piecesPerUnit": 20,
+  "line": "BT1 Old",
+  "daily": 99.2,
+  "kanban": 1,
+  "location": "APC0114",
+  "productionLine": "PCGBT1CC"
+};
+
+partsDB["L001676232NCPAA"] = {
+  "description": "J-RET D3167 25.4X320MM",
+  "pack": 800,
+  "cost": 0.0561,
+  "weight": 310,
+  "piecesPerUnit": 20,
+  "line": "BT1 Old",
+  "daily": 103.6,
+  "kanban": 1,
+  "location": "APC0114",
+  "productionLine": "PCGBT1CC"
+};
+
+partsDB["L001797260NCPAA"] = {
+  "description": "J-RET D3167 25.4X720MM",
+  "pack": 350,
+  "cost": 0.1015,
+  "weight": 960,
+  "piecesPerUnit": 20,
+  "line": "BT1 Old",
+  "daily": 83.4,
+  "kanban": 1,
+  "location": "APC0114",
+  "productionLine": "PCGBT1CC"
+};
+
+partsDB["L0637636AA01"] = {
+  "description": "J-RET 25.4X335MM",
+  "pack": 700,
+  "cost": 0.0745,
+  "weight": 330,
+  "piecesPerUnit": 20,
+  "line": "BT1 Old",
+  "daily": 13.8,
+  "kanban": 1,
+  "location": "APC0114",
+  "productionLine": "PCGBT1CC"
+};
+
+partsDB["L0639918AA01"] = {
+  "description": "J-RET D976 25.4X735MM",
+  "pack": 300,
+  "cost": 0.1515,
+  "weight": 810,
+  "piecesPerUnit": 20,
+  "line": "BT1 Old",
+  "daily": 83.4,
+  "kanban": 1,
+  "location": "APC0114",
+  "productionLine": "PCGBT1CC"
+};
+
+partsDB["L0676232AA01"] = {
+  "description": "J-RET D3167 25.4X320MM",
+  "pack": 700,
+  "cost": 0.0542,
+  "weight": 310,
+  "piecesPerUnit": 20,
+  "line": "BT1 Old",
+  "daily": 0,
+  "kanban": 1,
+  "location": "APC0114",
+  "productionLine": "PCGBT1CC"
+};
+
+partsDB["L0797260AA01"] = {
+  "description": "J-RET D3167 25.4X720MM",
+  "pack": 400,
+  "cost": 0.1184,
+  "weight": 960,
+  "piecesPerUnit": 20,
+  "line": "BT1 Old",
+  "daily": 0,
+  "kanban": 1,
+  "location": "APC0114",
+  "productionLine": "PCGBT1CC"
 };
 
 partsDB["L0571640AA01"] = {
@@ -956,7 +1060,7 @@ partsDB["L0571640AA01"] = {
   "weight": 20,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 3169.6,
+  "daily": 3033.6,
   "kanban": 1,
   "location": "APC0115",
   "productionLine": "PCGREARS"
@@ -969,7 +1073,7 @@ partsDB["L0592042AA01"] = {
   "weight": 40,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 3169.6,
+  "daily": 3033.6,
   "kanban": 1,
   "location": "APC0115",
   "productionLine": "PCGREARS"
@@ -982,7 +1086,7 @@ partsDB["L0592045AA04"] = {
   "weight": 98,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 3169.6,
+  "daily": 3033.6,
   "kanban": 1,
   "location": "APC0115",
   "productionLine": "PCGREARS"
@@ -995,7 +1099,7 @@ partsDB["L0597009AA02"] = {
   "weight": 57,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 2832.4,
+  "daily": 2810.8,
   "kanban": 1,
   "location": "APC0115",
   "productionLine": "PCGREARS"
@@ -1008,7 +1112,7 @@ partsDB["L0682843AA01"] = {
   "weight": 143,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 125.6,
+  "daily": 116.8,
   "kanban": 1,
   "location": "APC0115",
   "productionLine": "PCGREARS"
@@ -1021,7 +1125,7 @@ partsDB["L001802491NCPAA"] = {
   "weight": 162,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 253.6,
+  "daily": 230.4,
   "kanban": 1,
   "location": "APC0116",
   "productionLine": "PCGREARS"
@@ -1034,7 +1138,7 @@ partsDB["L001802492NCPAA"] = {
   "weight": 156,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 253.6,
+  "daily": 230.4,
   "kanban": 1,
   "location": "APC0116",
   "productionLine": "PCGREARS"
@@ -1047,7 +1151,7 @@ partsDB["L0681545AA01"] = {
   "weight": 98,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 512,
+  "daily": 467.2,
   "kanban": 1,
   "location": "APC0116",
   "productionLine": "PCGREARS"
@@ -1060,7 +1164,7 @@ partsDB["L0681546AA01"] = {
   "weight": 142,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 128,
+  "daily": 116.8,
   "kanban": 1,
   "location": "APC0116",
   "productionLine": "PCGREARS"
@@ -1073,7 +1177,7 @@ partsDB["L0681547AA01"] = {
   "weight": 127,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 128,
+  "daily": 116.8,
   "kanban": 1,
   "location": "APC0116",
   "productionLine": "PCGREARS"
@@ -1086,7 +1190,7 @@ partsDB["L0685445AA01"] = {
   "weight": 222,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 3169.6,
+  "daily": 3033.6,
   "kanban": 2,
   "location": "APC0116",
   "productionLine": "PCGREARS"
@@ -1099,7 +1203,7 @@ partsDB["L0649100AA01"] = {
   "weight": 56,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 5579.8,
+  "daily": 6069.2,
   "kanban": 1,
   "location": "APC0117",
   "productionLine": "PCGREARS"
@@ -1112,7 +1216,7 @@ partsDB["L0649101AA01"] = {
   "weight": 121,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 1993,
+  "daily": 2114,
   "kanban": 1,
   "location": "APC0117",
   "productionLine": "PCGREARS"
@@ -1125,7 +1229,7 @@ partsDB["L0676166AA01"] = {
   "weight": 93,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 1141.6,
+  "daily": 1202.4,
   "kanban": 1,
   "location": "APC0117",
   "productionLine": "PCGREARS"
@@ -1138,7 +1242,7 @@ partsDB["L0676168AA01"] = {
   "weight": 125,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 3424.8,
+  "daily": 3607.2,
   "kanban": 2,
   "location": "APC0117",
   "productionLine": "PCGREARS"
@@ -1151,7 +1255,7 @@ partsDB["L0676177AA01"] = {
   "weight": 142,
   "piecesPerUnit": 20,
   "line": "Fix-Storage",
-  "daily": 2283.2,
+  "daily": 2404.8,
   "kanban": 1,
   "location": "APC0117",
   "productionLine": "PCGREARS"
@@ -1164,7 +1268,7 @@ partsDB["L002460234NCPAA"] = {
   "weight": 500,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 13.4,
+  "daily": 4.6,
   "kanban": 1,
   "location": "APC0118",
   "productionLine": "PCGBT1CC"
@@ -1177,7 +1281,7 @@ partsDB["L002798840NCPAB"] = {
   "weight": 102,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 54,
+  "daily": 18.8,
   "kanban": 1,
   "location": "APC0118",
   "productionLine": "PCGBT1CC"
@@ -1190,7 +1294,7 @@ partsDB["L002798841NCPAB"] = {
   "weight": 108,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 27,
+  "daily": 9.4,
   "kanban": 1,
   "location": "APC0118",
   "productionLine": "PCGBT1CC"
@@ -1203,7 +1307,7 @@ partsDB["L002806946NCPAA"] = {
   "weight": 132,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 26.8,
+  "daily": 9.2,
   "kanban": 1,
   "location": "APC0118",
   "productionLine": "PCGBT1CC"
@@ -1216,7 +1320,7 @@ partsDB["L002806947NCPAA"] = {
   "weight": 150,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 38,
+  "daily": 14.8,
   "kanban": 1,
   "location": "APC0118",
   "productionLine": "PCGBT1CC"
@@ -1229,7 +1333,7 @@ partsDB["L002807250NCPAA"] = {
   "weight": 486,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 11.2,
+  "daily": 5.6,
   "kanban": 1,
   "location": "APC0118",
   "productionLine": "PCGBT1CC"
@@ -1242,7 +1346,7 @@ partsDB["L002907223NCPAA"] = {
   "weight": 76,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 13.6,
+  "daily": 4.4,
   "kanban": 1,
   "location": "APC0118",
   "productionLine": "PCGBT1CC"
@@ -1255,7 +1359,7 @@ partsDB["794-100SAA"] = {
   "weight": 129,
   "piecesPerUnit": 20,
   "line": "Savana",
-  "daily": 644.8,
+  "daily": 700.8,
   "kanban": 1,
   "location": "APC0119",
   "productionLine": "PCGSAVAN"
@@ -1268,7 +1372,7 @@ partsDB["L00180970202FAA"] = {
   "weight": 12,
   "piecesPerUnit": 20,
   "line": "Misc",
-  "daily": 97.4,
+  "daily": 112,
   "kanban": 1,
   "location": "APC0119",
   "productionLine": "PCGREARS"
@@ -1281,7 +1385,7 @@ partsDB["L00180970206HAA"] = {
   "weight": 12,
   "piecesPerUnit": 20,
   "line": "Misc",
-  "daily": 59.6,
+  "daily": 40.2,
   "kanban": 1,
   "location": "APC0119",
   "productionLine": "PCGREARS"
@@ -1307,7 +1411,7 @@ partsDB["L00180970245DAA"] = {
   "weight": 12,
   "piecesPerUnit": 20,
   "line": "Misc",
-  "daily": 510,
+  "daily": 369.8,
   "kanban": 1,
   "location": "APC0119",
   "productionLine": "PCGREARS"
@@ -1320,7 +1424,7 @@ partsDB["L00180970264DAA"] = {
   "weight": 12,
   "piecesPerUnit": 20,
   "line": "Misc",
-  "daily": 118.4,
+  "daily": 125.2,
   "kanban": 1,
   "location": "APC0119",
   "productionLine": "PCGREARS"
@@ -1333,7 +1437,7 @@ partsDB["L001809702GKAAA"] = {
   "weight": 12,
   "piecesPerUnit": 20,
   "line": "Misc",
-  "daily": 3290,
+  "daily": 3570.2,
   "kanban": 1,
   "location": "APC0119",
   "productionLine": "PCGREARS"
@@ -1346,7 +1450,7 @@ partsDB["L001809702HXWAA"] = {
   "weight": 12,
   "piecesPerUnit": 20,
   "line": "Misc",
-  "daily": 327.8,
+  "daily": 329.8,
   "kanban": 1,
   "location": "APC0119",
   "productionLine": "PCGREARS"
@@ -1357,9 +1461,9 @@ partsDB["L002618822NCPAA"] = {
   "pack": 1000,
   "cost": 0.0491,
   "weight": 1082,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Misc",
-  "daily": 1736.2,
+  "daily": 1714.8,
   "kanban": 2,
   "location": "APC0119",
   "productionLine": "PCGREARS"
@@ -1370,9 +1474,9 @@ partsDB["WRG16HMAA"] = {
   "pack": 500,
   "cost": 0.2054,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Velcro",
-  "daily": 1795.2,
+  "daily": 1772.6,
   "kanban": 2,
   "location": "APC0120",
   "productionLine": "PCGREARS"
@@ -1383,9 +1487,9 @@ partsDB["WRG16LBAA"] = {
   "pack": 500,
   "cost": 0.3533,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Velcro",
-  "daily": 1091.8,
+  "daily": 1059.8,
   "kanban": 2,
   "location": "APC0120",
   "productionLine": "PCGREARS"
@@ -1396,9 +1500,9 @@ partsDB["WRG25LBAA"] = {
   "pack": 500,
   "cost": 0.4018,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Velcro",
-  "daily": 2336.4,
+  "daily": 2339,
   "kanban": 2,
   "location": "APC0120",
   "productionLine": "PCGREARS"
@@ -1409,9 +1513,9 @@ partsDB["WRG25MAAA"] = {
   "pack": 1000,
   "cost": 0.3129,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Velcro",
-  "daily": 1229.4,
+  "daily": 1240.6,
   "kanban": 2,
   "location": "APC0120",
   "productionLine": "PCGREARS"
@@ -1424,7 +1528,7 @@ partsDB["L0698195AA01"] = {
   "weight": 150,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 4603.6,
+  "daily": 4908,
   "kanban": 1,
   "location": "APC0201",
   "productionLine": "PCGREARS"
@@ -1437,7 +1541,7 @@ partsDB["L0706492AA02"] = {
   "weight": 132,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 5053.2,
+  "daily": 5394.4,
   "kanban": 1,
   "location": "APC0201",
   "productionLine": "PCGREARS"
@@ -1450,7 +1554,7 @@ partsDB["L0724597AA01"] = {
   "weight": 113,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 6905.4,
+  "daily": 7362,
   "kanban": 1,
   "location": "APC0201",
   "productionLine": "PCGREARS"
@@ -1463,7 +1567,7 @@ partsDB["L0736063AA01"] = {
   "weight": 419,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 2061.2,
+  "daily": 2344.6,
   "kanban": 1,
   "location": "APC0201",
   "productionLine": "PCGREARS"
@@ -1476,7 +1580,7 @@ partsDB["L0736066AA01"] = {
   "weight": 1104,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 447.4,
+  "daily": 362,
   "kanban": 1,
   "location": "APC0201",
   "productionLine": "PCGREARS"
@@ -1489,7 +1593,7 @@ partsDB["L002194708NCPAA"] = {
   "weight": 7,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 5002,
+  "daily": 5390.4,
   "kanban": 2,
   "location": "APC0202",
   "productionLine": "PCGREARS"
@@ -1502,7 +1606,7 @@ partsDB["L0676258AA05"] = {
   "weight": 109,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 5053.2,
+  "daily": 5394.4,
   "kanban": 1,
   "location": "APC0202",
   "productionLine": "PCGREARS"
@@ -1515,7 +1619,7 @@ partsDB["L0706490AA03"] = {
   "weight": 98,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 4564.2,
+  "daily": 5044,
   "kanban": 1,
   "location": "APC0202",
   "productionLine": "PCGREARS"
@@ -1528,7 +1632,7 @@ partsDB["L0706491AA03"] = {
   "weight": 143,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 489,
+  "daily": 372.4,
   "kanban": 1,
   "location": "APC0202",
   "productionLine": "PCGREARS"
@@ -1541,7 +1645,7 @@ partsDB["L0776538AA01"] = {
   "weight": 280,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 878.2,
+  "daily": 718.4,
   "kanban": 1,
   "location": "APC0202",
   "productionLine": "PCGREARS"
@@ -1554,22 +1658,9 @@ partsDB["L0780891AA01"] = {
   "weight": 344,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 1622.8,
+  "daily": 2003.2,
   "kanban": 1,
   "location": "APC0202",
-  "productionLine": "PCGREARS"
-};
-
-partsDB["0010686"] = {
-  "description": "BW/WIRE ZP (3mm/2.5K.G)",
-  "pack": 2.5,
-  "cost": 73.7478,
-  "weight": 2703,
-  "piecesPerUnit": 20,
-  "line": "Misc",
-  "daily": 0.8,
-  "kanban": 1,
-  "location": "APC0203",
   "productionLine": "PCGREARS"
 };
 
@@ -1580,7 +1671,7 @@ partsDB["5CC-DF6SLSEP"] = {
   "weight": 129,
   "piecesPerUnit": 20,
   "line": "Misc",
-  "daily": 5052,
+  "daily": 5392.4,
   "kanban": 3,
   "location": "APC0203",
   "productionLine": "PCGREARS"
@@ -1591,8 +1682,8 @@ partsDB["L0672525AA01"] = {
   "pack": 2000,
   "cost": 0.0900,
   "weight": null,
-  "piecesPerUnit": 20,
-  "line": "Misc",
+  "piecesPerUnit": null,
+  "line": "MISC",
   "daily": 164.6,
   "kanban": 1,
   "location": "APC0203",
@@ -1606,7 +1697,7 @@ partsDB["25ZZ5"] = {
   "weight": 60,
   "piecesPerUnit": 20,
   "line": "Misc",
-  "daily": 1285.2,
+  "daily": 1388,
   "kanban": 1,
   "location": "APC0204",
   "productionLine": "PCGSAVAN"
@@ -1617,9 +1708,9 @@ partsDB["L0148229AA02"] = {
   "pack": 500,
   "cost": 0.04,
   "weight": 103,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 500,
   "line": "Misc",
-  "daily": 608.6,
+  "daily": 545.4,
   "kanban": 1,
   "location": "APC0204",
   "productionLine": "PCGSAVAN"
@@ -1632,7 +1723,7 @@ partsDB["L0269501AA01"] = {
   "weight": 316,
   "piecesPerUnit": 20,
   "line": "Misc",
-  "daily": 608.6,
+  "daily": 545.4,
   "kanban": 2,
   "location": "APC0204",
   "productionLine": "PCGSAVAN"
@@ -1643,9 +1734,9 @@ partsDB["L0617164AA01"] = {
   "pack": 1000,
   "cost": 0.067,
   "weight": 438,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Misc",
-  "daily": 447.4,
+  "daily": 362,
   "kanban": 1,
   "location": "APC0204",
   "productionLine": "PCGREARS"
@@ -1656,9 +1747,9 @@ partsDB["L0697064AA01"] = {
   "pack": 1000,
   "cost": 0.0472,
   "weight": 396,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 1000,
   "line": "Misc",
-  "daily": 1524.8,
+  "daily": 1497.2,
   "kanban": 1,
   "location": "APC0204",
   "productionLine": "PCG31XX"
@@ -1671,7 +1762,7 @@ partsDB["Q010000839"] = {
   "weight": 417,
   "piecesPerUnit": 20,
   "line": "Misc",
-  "daily": 12237.6,
+  "daily": 12623.2,
   "kanban": 1,
   "location": "APC0204",
   "productionLine": "PCGREARS"
@@ -1684,7 +1775,7 @@ partsDB["Q92K204G19"] = {
   "weight": 342,
   "piecesPerUnit": 20,
   "line": "Misc",
-  "daily": 10938.4,
+  "daily": 11110.8,
   "kanban": 1,
   "location": "APC0204",
   "productionLine": "PCGREARS"
@@ -1697,7 +1788,7 @@ partsDB["Q92K204G20"] = {
   "weight": 342,
   "piecesPerUnit": 20,
   "line": "Misc",
-  "daily": 1752.8,
+  "daily": 1330.4,
   "kanban": 1,
   "location": "APC0204",
   "productionLine": "PCGREARS"
@@ -1710,7 +1801,7 @@ partsDB["L002799380NCPAA"] = {
   "weight": 2033,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 13.4,
+  "daily": 4.6,
   "kanban": 1,
   "location": "APC0205",
   "productionLine": "PCGBT1CC"
@@ -1723,7 +1814,7 @@ partsDB["L002806896NCPAA"] = {
   "weight": 86,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 73.8,
+  "daily": 30.6,
   "kanban": 1,
   "location": "APC0205",
   "productionLine": "PCGBT1CC"
@@ -1736,7 +1827,7 @@ partsDB["L002806897NCPAA"] = {
   "weight": 86,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 24.6,
+  "daily": 10.2,
   "kanban": 1,
   "location": "APC0205",
   "productionLine": "PCGBT1CC"
@@ -1749,7 +1840,7 @@ partsDB["L002914716NCPAA"] = {
   "weight": 38,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 24.6,
+  "daily": 10.2,
   "kanban": 1,
   "location": "APC0205",
   "productionLine": "PCGBT1CC"
@@ -1762,7 +1853,7 @@ partsDB["L003142004NCPAA"] = {
   "weight": 261,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 13.4,
+  "daily": 5,
   "kanban": 1,
   "location": "APC0205",
   "productionLine": "PCGBT1CC"
@@ -1775,7 +1866,7 @@ partsDB["L003142005NCPAA"] = {
   "weight": 225,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 26.8,
+  "daily": 10,
   "kanban": 1,
   "location": "APC0205",
   "productionLine": "PCGBT1CC"
@@ -1788,7 +1879,7 @@ partsDB["L001698202NCPAA"] = {
   "weight": 216,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 22.4,
+  "daily": 11.2,
   "kanban": 1,
   "location": "APC0206",
   "productionLine": "PCGBT1CC"
@@ -1801,7 +1892,7 @@ partsDB["L002053089NCPAA"] = {
   "weight": 279,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 24.6,
+  "daily": 10.2,
   "kanban": 1,
   "location": "APC0206",
   "productionLine": "PCGBT1CC"
@@ -1814,7 +1905,7 @@ partsDB["L002799378NCPAA"] = {
   "weight": 46,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 49.2,
+  "daily": 20.4,
   "kanban": 1,
   "location": "APC0206",
   "productionLine": "PCGBT1CC"
@@ -1827,7 +1918,7 @@ partsDB["L002799379NCPAB"] = {
   "weight": 123,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 13.4,
+  "daily": 4.6,
   "kanban": 1,
   "location": "APC0206",
   "productionLine": "PCGBT1CC"
@@ -1840,7 +1931,7 @@ partsDB["L002907225NCPAB"] = {
   "weight": 118,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 27.2,
+  "daily": 8.8,
   "kanban": 1,
   "location": "APC0206",
   "productionLine": "PCGBT1CC"
@@ -1853,7 +1944,7 @@ partsDB["L002914905NCPAA"] = {
   "weight": 114,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 11.2,
+  "daily": 5.6,
   "kanban": 1,
   "location": "APC0206",
   "productionLine": "PCGBT1CC"
@@ -1866,7 +1957,7 @@ partsDB["L0609247AA01"] = {
   "weight": 46,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 13.4,
+  "daily": 4.6,
   "kanban": 1,
   "location": "APC0206",
   "productionLine": "PCGBT1CC"
@@ -1879,7 +1970,7 @@ partsDB["L0698200AA01"] = {
   "weight": 342,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 2501,
+  "daily": 2695.2,
   "kanban": 2,
   "location": "APC0211",
   "productionLine": "PCGREARS"
@@ -1892,7 +1983,7 @@ partsDB["L0698203AA01"] = {
   "weight": 348,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 438.4,
+  "daily": 356.4,
   "kanban": 2,
   "location": "APC0211",
   "productionLine": "PCGREARS"
@@ -1905,7 +1996,7 @@ partsDB["L0797678AA01"] = {
   "weight": 465,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 1622.8,
+  "daily": 2003.2,
   "kanban": 2,
   "location": "APC0211",
   "productionLine": "PCGREARS"
@@ -1918,8 +2009,8 @@ partsDB["L0797679AA01"] = {
   "weight": 1145,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 362.0,
-  "kanban": 2,
+  "daily": 362,
+  "kanban": 4,
   "location": "APC0211",
   "productionLine": "PCGREARS"
 };
@@ -1931,7 +2022,7 @@ partsDB["L0654899AA01"] = {
   "weight": 39,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 878.2,
+  "daily": 718.4,
   "kanban": 1,
   "location": "APC0212",
   "productionLine": "PCGREARS"
@@ -1944,7 +2035,7 @@ partsDB["L0797825AA01"] = {
   "weight": 140,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 447.4,
+  "daily": 362,
   "kanban": 1,
   "location": "APC0212",
   "productionLine": "PCGREARS"
@@ -1957,7 +2048,7 @@ partsDB["L0806941AA01"] = {
   "weight": 317,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 2053.8,
+  "daily": 2346.8,
   "kanban": 1,
   "location": "APC0212",
   "productionLine": "PCGREARS"
@@ -1970,7 +2061,7 @@ partsDB["L0806942AA01"] = {
   "weight": 850,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 489,
+  "daily": 372.4,
   "kanban": 2,
   "location": "APC0212",
   "productionLine": "PCGREARS"
@@ -1983,7 +2074,7 @@ partsDB["L0806943AA01"] = {
   "weight": 135,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 2053.8,
+  "daily": 2346.8,
   "kanban": 1,
   "location": "APC0212",
   "productionLine": "PCGREARS"
@@ -1996,7 +2087,7 @@ partsDB["L0806944AA01"] = {
   "weight": 352,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 489,
+  "daily": 372.4,
   "kanban": 2,
   "location": "APC0212",
   "productionLine": "PCGREARS"
@@ -2009,7 +2100,7 @@ partsDB["L002798842NCPAC"] = {
   "weight": 136,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 54,
+  "daily": 18.8,
   "kanban": 1,
   "location": "APC0213",
   "productionLine": "PCGBT1CC"
@@ -2022,7 +2113,7 @@ partsDB["L0701143AA01"] = {
   "weight": 202,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 35.8,
+  "daily": 15.8,
   "kanban": 1,
   "location": "APC0213",
   "productionLine": "PCGBT1CC"
@@ -2035,7 +2126,7 @@ partsDB["L0753466AA01"] = {
   "weight": 100,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 1342.2,
+  "daily": 1086,
   "kanban": 1,
   "location": "APC0213",
   "productionLine": "PCGREARS"
@@ -2048,7 +2139,7 @@ partsDB["L0802979AA01"] = {
   "weight": 110,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 398.4,
+  "daily": 482.4,
   "kanban": 1,
   "location": "APC0213",
   "productionLine": "PCGREARS"
@@ -2061,7 +2152,7 @@ partsDB["L0802980AA01"] = {
   "weight": 113,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 199.2,
+  "daily": 241.2,
   "kanban": 1,
   "location": "APC0213",
   "productionLine": "PCGREARS"
@@ -2074,7 +2165,7 @@ partsDB["L0802981AA01"] = {
   "weight": 151,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 398.4,
+  "daily": 482.4,
   "kanban": 1,
   "location": "APC0213",
   "productionLine": "PCGREARS"
@@ -2087,7 +2178,7 @@ partsDB["L001423285NCPAA"] = {
   "weight": 55,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 13.4,
+  "daily": 4.6,
   "kanban": 1,
   "location": "APC0214",
   "productionLine": "PCGBT1CC"
@@ -2100,7 +2191,7 @@ partsDB["L001450016NCPAA"] = {
   "weight": 103,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 127.2,
+  "daily": 58.4,
   "kanban": 1,
   "location": "APC0214",
   "productionLine": "PCGBT1CC"
@@ -2113,7 +2204,7 @@ partsDB["L001553609NCPAA"] = {
   "weight": 290,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 51.4,
+  "daily": 19.4,
   "kanban": 1,
   "location": "APC0214",
   "productionLine": "PCGBT1CC"
@@ -2126,7 +2217,7 @@ partsDB["L001614470NCPAA"] = {
   "weight": 100,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 13.4,
+  "daily": 4.6,
   "kanban": 1,
   "location": "APC0214",
   "productionLine": "PCGBT1CC"
@@ -2139,7 +2230,7 @@ partsDB["L001676174NCPAA"] = {
   "weight": 36,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 95.4,
+  "daily": 43.8,
   "kanban": 1,
   "location": "APC0214",
   "productionLine": "PCGBT1CC"
@@ -2152,7 +2243,7 @@ partsDB["L001676224NCPAA"] = {
   "weight": 257,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 13.4,
+  "daily": 4.6,
   "kanban": 1,
   "location": "APC0214",
   "productionLine": "PCGBT1CC"
@@ -2165,7 +2256,7 @@ partsDB["L003141998NCPAA"] = {
   "weight": 384,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 13.6,
+  "daily": 4.4,
   "kanban": 2,
   "location": "APC0215",
   "productionLine": "PCGBT1CC"
@@ -2178,7 +2269,7 @@ partsDB["L003141999NCPAA"] = {
   "weight": 348,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 13.6,
+  "daily": 4.4,
   "kanban": 2,
   "location": "APC0215",
   "productionLine": "PCGBT1CC"
@@ -2191,7 +2282,7 @@ partsDB["L003142000NCPAA"] = {
   "weight": 226,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 13.6,
+  "daily": 4.4,
   "kanban": 1,
   "location": "APC0215",
   "productionLine": "PCGBT1CC"
@@ -2204,7 +2295,7 @@ partsDB["L003142001NCPAA"] = {
   "weight": 220,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 27,
+  "daily": 9.4,
   "kanban": 1,
   "location": "APC0215",
   "productionLine": "PCGBT1CC"
@@ -2217,7 +2308,7 @@ partsDB["L003142002NCPAA"] = {
   "weight": 50,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 13.6,
+  "daily": 4.4,
   "kanban": 1,
   "location": "APC0215",
   "productionLine": "PCGBT1CC"
@@ -2230,7 +2321,7 @@ partsDB["L003142003NCPAA"] = {
   "weight": 69,
   "piecesPerUnit": 20,
   "line": "BT1",
-  "daily": 13.6,
+  "daily": 4.4,
   "kanban": 1,
   "location": "APC0215",
   "productionLine": "PCGBT1CC"
@@ -2256,20 +2347,7 @@ partsDB["L001597009NCPAA"] = {
   "weight": 27,
   "piecesPerUnit": 20,
   "line": "BT1 Old",
-  "daily": 31.6,
-  "kanban": 0,
-  "location": "BODPATIO",
-  "productionLine": "PCGBT1CC"
-};
-
-partsDB["L001637636NCPAA"] = {
-  "description": "J-RET 25.4X335MM",
-  "pack": 700,
-  "cost": 0.0949,
-  "weight": null,
-  "piecesPerUnit": 20,
-  "line": "BT1 Old",
-  "daily": 100.8,
+  "daily": 14.2,
   "kanban": 0,
   "location": "BODPATIO",
   "productionLine": "PCGBT1CC"
@@ -2308,7 +2386,7 @@ partsDB["L001676165NCPAA"] = {
   "weight": 128,
   "piecesPerUnit": 20,
   "line": "BT1 Old",
-  "daily": 190.8,
+  "daily": 87.6,
   "kanban": 0,
   "location": "BODPATIO",
   "productionLine": "PCGBT1CC"
@@ -2321,7 +2399,7 @@ partsDB["L001676166NCPAA"] = {
   "weight": 93,
   "piecesPerUnit": 20,
   "line": "BT1 Old",
-  "daily": 31.8,
+  "daily": 14.6,
   "kanban": 0,
   "location": "BODPATIO",
   "productionLine": "PCGBT1CC"
@@ -2334,7 +2412,7 @@ partsDB["L001676177NCPAA"] = {
   "weight": 142,
   "piecesPerUnit": 20,
   "line": "BT1 Old",
-  "daily": 63.6,
+  "daily": 29.2,
   "kanban": 0,
   "location": "BODPATIO",
   "productionLine": "PCGBT1CC"
@@ -2347,7 +2425,7 @@ partsDB["L001676192NCPAA"] = {
   "weight": 124,
   "piecesPerUnit": 20,
   "line": "BT1 Old",
-  "daily": 31.6,
+  "daily": 14.2,
   "kanban": 0,
   "location": "BODPATIO",
   "productionLine": "PCGBT1CC"
@@ -2360,85 +2438,7 @@ partsDB["L001676195NCPAA"] = {
   "weight": 152,
   "piecesPerUnit": 20,
   "line": "BT1 Old",
-  "daily": 63.2,
-  "kanban": 0,
-  "location": "BODPATIO",
-  "productionLine": "PCGBT1CC"
-};
-
-partsDB["L001676232NCPAA"] = {
-  "description": "J-RET D3167 25.4X320MM",
-  "pack": 800,
-  "cost": 0.0561,
-  "weight": 310,
-  "piecesPerUnit": 20,
-  "line": "BT1 Old",
-  "daily": 103.2,
-  "kanban": 0,
-  "location": "BODPATIO",
-  "productionLine": "PCGBT1CC"
-};
-
-partsDB["L001797260NCPAA"] = {
-  "description": "J-RET D3167 25.4X720MM",
-  "pack": 350,
-  "cost": 0.1015,
-  "weight": 960,
-  "piecesPerUnit": 20,
-  "line": "BT1 Old",
-  "daily": 82.6,
-  "kanban": 0,
-  "location": "BODPATIO",
-  "productionLine": "PCGBT1CC"
-};
-
-partsDB["L0637636AA01"] = {
-  "description": "J-RET 25.4X335MM",
-  "pack": 700,
-  "cost": 0.0745,
-  "weight": 330,
-  "piecesPerUnit": 20,
-  "line": "BT1 Old",
-  "daily": 30,
-  "kanban": 0,
-  "location": "BODPATIO",
-  "productionLine": "PCGBT1CC"
-};
-
-partsDB["L0639918AA01"] = {
-  "description": "J-RET D976 25.4X735MM",
-  "pack": 300,
-  "cost": 0.1515,
-  "weight": 810,
-  "piecesPerUnit": 20,
-  "line": "BT1 Old",
-  "daily": 82.6,
-  "kanban": 0,
-  "location": "BODPATIO",
-  "productionLine": "PCGBT1CC"
-};
-
-partsDB["L0676232AA01"] = {
-  "description": "J-RET D3167 25.4X320MM",
-  "pack": 700,
-  "cost": 0.0542,
-  "weight": 310,
-  "piecesPerUnit": 20,
-  "line": "BT1 Old",
-  "daily": 0,
-  "kanban": 0,
-  "location": "BODPATIO",
-  "productionLine": "PCGBT1CC"
-};
-
-partsDB["L0797260AA01"] = {
-  "description": "J-RET D3167 25.4X720MM",
-  "pack": 400,
-  "cost": 0.1184,
-  "weight": 960,
-  "piecesPerUnit": 20,
-  "line": "BT1 Old",
-  "daily": 0,
+  "daily": 28.4,
   "kanban": 0,
   "location": "BODPATIO",
   "productionLine": "PCGBT1CC"

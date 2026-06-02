@@ -628,11 +628,20 @@ function renderScanSummary() {
   const body = document.getElementById("scanSummaryBody");
   body.innerHTML = "";
 
-  const activeTotals = getActiveScanTotals();
+  const totals = {};
+
+  // 🔹 Build totals per part (ONLY active scans)
+  scanLogData.forEach(e => {
+    if (e.transferred) return;
+
+    totals[e.part] = (totals[e.part] || 0) + e.qty;
+  });
+
   let index = 1;
 
-  Object.keys(activeTotals).forEach(part => {
-    const total = activeTotals[part];
+  // 🔹 Render rows (one per part)
+  Object.keys(totals).forEach(part => {
+    const total = totals[part];
 
     body.insertAdjacentHTML(
       "beforeend",
