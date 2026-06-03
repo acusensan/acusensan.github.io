@@ -26,7 +26,6 @@ const STATIC_ASSETS = [
   // Pages
   '/ascan.html',
   '/ajuste.html',
-  '/scan.html',
   '/barcode.html',
   '/codegen.html',
   '/hilos.html',
@@ -39,7 +38,7 @@ const STATIC_ASSETS = [
   '/velcros_3.1_Super.html',
 
   // Icons
-  '/icons/setiings.svg',
+  '/icons/settings.svg',
   '/icons/icon-192.png',
   '/icons/icon-512.png'
 ];
@@ -49,9 +48,14 @@ self.addEventListener('install', event => {
   self.skipWaiting();
 
   event.waitUntil(
-    caches.open(STATIC_CACHE)
-      .then(cache => cache.addAll(STATIC_ASSETS))
-  );
+  caches.open(STATIC_CACHE).then(cache => {
+    return Promise.all(
+      STATIC_ASSETS.map(url =>
+        cache.add(url).catch(err => console.warn('Failed to cache:', url))
+      )
+    );
+  })
+);
 });
 
 // ACTIVATE
@@ -70,6 +74,15 @@ self.addEventListener('activate', event => {
 
   self.clients.claim();
 });
+function limitCacheSize(name, size) {
+  caches.open(name).then(cache => {
+    cache.keys().then(keys => {
+      if (keys.length > size) {
+        cache.delete(keys[0]).then(() => limitCacheSize(name, size));
+      }
+    });
+  });
+}
 
 // FETCH
 self.addEventListener('fetch', event => {
@@ -77,11 +90,13 @@ self.addEventListener('fetch', event => {
 
   const request = event.request;
 
-  // Pages
+  // Handle page navigation
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
         .then(response => {
+          if (!response || response.status !== 200) return response;
+
           return caches.open(DYNAMIC_CACHE).then(cache => {
             cache.put(request, response.clone());
             return response;
@@ -94,12 +109,17 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Static files
+  // Static files (cache first)
   event.respondWith(
     caches.match(request).then(cached => {
-      return cached || fetch(request).then(response => {
+      if (cached) return cached;
+
+      return fetch(request).then(response => {
+        if (!response || response.status !== 200) return response;
+
         return caches.open(DYNAMIC_CACHE).then(cache => {
           cache.put(request, response.clone());
+          limitCacheSize(DYNAMIC_CACHE, 50);
           return response;
         });
       });
