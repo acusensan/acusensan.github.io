@@ -271,41 +271,58 @@ async function shareData() {
 
   const timestamp = getFormattedTimestamp();
   const filename = `Ajuste_${timestamp}.csv`;
-
   const blob = new Blob([csvContent], { type: 'text/csv' });
-
-  // Try sharing file (modern browsers)
   const file = new File([blob], filename, { type: 'text/csv' });
 
+  // 1. Try file sharing (may fail in PWA)
   if (navigator.share) {
     try {
       await navigator.share({
         title: 'Ajuste File',
         text: 'Archivo generado',
-        files: [file]   // will work only if supported
+        files: [file]
       });
 
       M.toast({
-        html: `Compartido: ${filename}`,
+        html: `Compartido archivo`,
         classes: 'green'
       });
       return;
     } catch (err) {
-      console.log('Share cancelled or failed');
+      console.log('File share failed, trying fallback...');
     }
   }
 
-  // FALLBACK for mobile (VERY IMPORTANT)
-  const url = URL.createObjectURL(blob);
+  // 2. Fallback: share TEXT (works in PWA)
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: 'Ajuste Data',
+        text: csvContent.substring(0, 2000) // limit for safety
+      });
 
-  await navigator.share({
-    title: 'Ajuste File',
-    text: `Descargar archivo:\n${url}`
-  });
+      M.toast({
+        html: 'Compartido como texto',
+        classes: 'blue'
+      });
+      return;
+    } catch (err) {
+      console.log('Text share failed');
+    }
+  }
+
+  // 3. FINAL fallback → download
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 
   M.toast({
-    html: 'Compartido como enlace (fallback)',
-    classes: 'blue'
+    html: 'Archivo descargado',
+    classes: 'orange'
   });
 }
 
