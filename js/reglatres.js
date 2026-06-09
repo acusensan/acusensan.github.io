@@ -169,6 +169,16 @@ function clearHistory() {
 // --------------------
 // Download CSV
 // --------------------
+
+function getFormattedTimestamp() {
+  const now = new Date();
+
+  const date = now.toLocaleDateString('sv-SE'); // YYYY-MM-DD
+  const time = now.toLocaleTimeString('en-GB'); // HH:MM:SS
+
+  return `${date}_${time.replace(/:/g, '-')}`;
+}
+
 function downloadHistory() {
   if (historyData.length === 0) {
     M.toast({ html: "No hay datos para descargar" });
@@ -181,15 +191,7 @@ function downloadHistory() {
     csv += `${row.partNumber},${row.input},${row.result}\n`;
   });
 
-  const now = new Date();
-  const timestamp =
-    now.getFullYear() + "-" +
-    String(now.getMonth() + 1).padStart(2, "0") + "-" +
-    String(now.getDate()).padStart(2, "0") + "_" +
-    String(now.getHours()).padStart(2, "0") + "-" +
-    String(now.getMinutes()).padStart(2, "0") + "-" +
-    String(now.getSeconds()).padStart(2, "0");
-
+  const timestamp = getFormattedTimestamp();
   const filename = `regla_de_tres_${timestamp}.csv`;
 
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -198,8 +200,53 @@ function downloadHistory() {
   const link = document.createElement("a");
   link.href = url;
   link.download = filename;
-
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+
+  M.toast({
+    html: `Descargado: ${filename}`,
+    classes: 'blue'
+  });
+}
+async function shareHistory() {
+  if (historyData.length === 0) {
+    M.toast({ html: "No hay datos para compartir" });
+    return;
+  }
+
+  let csv = "Parte,Input,Resultado\n";
+
+  historyData.forEach(row => {
+    csv += `${row.partNumber},${row.input},${row.result}\n`;
+  });
+
+  const timestamp = getFormattedTimestamp();
+  const filename = `regla_de_tres_${timestamp}.csv`;
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const file = new File([blob], filename, { type: "text/csv" });
+
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({
+        title: "Regla de Tres",
+        text: `Archivo generado: ${filename}`,
+        files: [file]
+      });
+
+      M.toast({
+        html: `Compartido: ${filename}`,
+        classes: 'green'
+      });
+
+    } catch (err) {
+      console.log("Share cancelled");
+    }
+  } else {
+    M.toast({
+      html: "Compartir no disponible",
+      classes: "orange"
+    });
+  }
 }

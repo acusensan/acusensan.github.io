@@ -215,45 +215,91 @@ deleteButton.onclick = () => {
   });
 }
 
-function downloadData() {
-    const entryList = document.getElementById('entry-list');
-    let csvContent = "Localizacion,Numero De Parte,Cantidad\n"; // CSV headers
+function getFormattedTimestamp() {
+  const now = new Date();
 
-    for (let i = 0; i < entryList.children.length; i++) {
-        const entryText = entryList.children[i].childNodes[0].nodeValue.trim();
-        const values = entryText.split(' '); // Assumes space-separated values
-        if (values.length >= 3) {
-            csvContent += `${values[0]},${values[1]},${values[2]}\n`;
-        }
-    }
+  const date = now.toISOString().slice(0, 10); // YYYY-MM-DD
 
-    // Show toast notification
-   M.toast({
-  html: 'Descargado',
-  displayLength: 2000,  // ms
-  inDuration: 300,      // ms (fade in)
-  outDuration: 375,     // ms (fade out)
-  classes: 'blue lighten-1',   // space-separated class list
-  completeCallback: () => { console.log('Toast closed'); }
-});
+  const time = now.toTimeString().slice(0, 8); // HH:MM:SS
+  const safeTime = time.replace(/:/g, '-');    // HH-MM-SS
 
-    // Generate filename with date and time
-    const now = new Date();
-    const formattedDate = now.toISOString().slice(0, 10); // YYYY-MM-DD
-    const formattedTime = now.toTimeString().slice(0, 8).replace(/:/g, '-'); // HH-MM-SS
-    const filename = `Ajuste_${formattedDate}_${formattedTime}.csv`;
-
-    // Create and trigger download
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+  return `${date}_${safeTime}`;
 }
+
+function downloadData() {
+  const entryList = document.getElementById('entry-list');
+  let csvContent = "Localizacion,Numero De Parte,Cantidad\n";
+
+  for (let i = 0; i < entryList.children.length; i++) {
+    const entryText = entryList.children[i].childNodes[0].nodeValue.trim();
+    const values = entryText.split(' ');
+    if (values.length >= 3) {
+      csvContent += `${values[0]},${values[1]},${values[2]}\n`;
+    }
+  }
+
+  const timestamp = getFormattedTimestamp();
+  const filename = `Ajuste_${timestamp}.csv`;
+
+  const blob = new Blob([csvContent], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  M.toast({
+    html: `Descargado: ${filename}`,
+    classes: 'blue'
+  });
+}
+
+async function shareData() {
+  const entryList = document.getElementById('entry-list');
+  let csvContent = "Localizacion,Numero De Parte,Cantidad\n";
+
+  for (let i = 0; i < entryList.children.length; i++) {
+    const entryText = entryList.children[i].childNodes[0].nodeValue.trim();
+    const values = entryText.split(' ');
+    if (values.length >= 3) {
+      csvContent += `${values[0]},${values[1]},${values[2]}\n`;
+    }
+  }
+
+  const timestamp = getFormattedTimestamp();
+  const filename = `Ajuste_${timestamp}.csv`;
+
+  const blob = new Blob([csvContent], { type: 'text/csv' });
+  const file = new File([blob], filename, { type: 'text/csv' });
+
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({
+        title: 'Ajuste File',
+        text: `Archivo generado: ${filename}`,
+        files: [file]
+      });
+
+      M.toast({
+        html: `Compartido: ${filename}`,
+        classes: 'green'
+      });
+
+    } catch (err) {
+      console.log('Share cancelled');
+    }
+  } else {
+    M.toast({
+      html: 'Compartir no disponible',
+      classes: 'orange'
+    });
+  }
+}
+
+
 function modalSearchParts() {
   const input = document
     .getElementById('modalPartSearch')

@@ -265,7 +265,8 @@
     <div class="card">
         <div class="card-content">
           <span class="card-title">Descargar Archivo</span>
-          <button class="btn green waves-effect waves-light" id="btnExportar" disabled onclick="exportarLista()">Descargar</button>
+          <button class="btn blue waves-effect waves-light" id="btnExportar" disabled onclick="exportarLista()">Descargar</button>
+          <button class="btn green waves-effect waves-light" id="btnCompartir" disabled onclick="shareLista()">Compartir</button>
         </div>
       </div>
     </div>
@@ -519,7 +520,7 @@ function seleccionarLista(id){
 // CLEAR UI BEFORE SYNC
   cuerpoTabla.innerHTML = ''
 
-  btnCopiar.disabled = btnPivot.disabled = btnExportar.disabled = !listaActiva
+  btnCopiar.disabled = btnPivot.disabled = btnExportar.disabled = btnCompartir.disabled = !listaActiva
 
   renderTabs()
   construirFormulario()
@@ -774,18 +775,87 @@ function copiarPivot(){
 
 
 /* ===== EXPORT CSV ===== */
-function exportarLista(){
-  syncTablaConDatos()
-  if(!listaActiva)return
-  const headers=listaActiva.campos.map(c=>`"${c.label}"`)
-  const rows=listaActiva.filas.map(r=>listaActiva.campos.map(c=>`"${r[c.key]||''}"`).join(','))
-  const csv=[headers.join(','),...rows].join('\n')
-  const blob=new Blob([csv],{type:'text/csv'})
-  const a=document.createElement('a')
-  a.href=URL.createObjectURL(blob)
-  a.download=`${listaActiva.nombre}.csv`
-  a.click()
+
+function getFormattedTimestamp() {
+  const now = new Date();
+
+  const date = now.toLocaleDateString('sv-SE'); // YYYY-MM-DD
+  const time = now.toLocaleTimeString('en-GB'); // HH:MM:SS
+
+  return `${date}_${time.replace(/:/g, '-')}`;
 }
+
+function exportarLista() {
+  syncTablaConDatos()
+  if (!listaActiva) return
+
+  const headers = listaActiva.campos.map(c => `"${c.label}"`)
+  const rows = listaActiva.filas.map(r =>
+    listaActiva.campos.map(c => `"${r[c.key] || ''}"`).join(',')
+  )
+
+  const csv = [headers.join(','), ...rows].join('\n')
+
+  const timestamp = getFormattedTimestamp()
+  const filename = `${listaActiva.nombre}_${timestamp}.csv`
+
+  const blob = new Blob([csv], { type: 'text/csv' })
+  const url = URL.createObjectURL(blob)
+
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+
+  M.toast({
+    html: `Descargado: ${filename}`,
+    classes: 'blue'
+  })
+}
+
+async function shareLista() {
+  syncTablaConDatos()
+  if (!listaActiva) return
+
+  const headers = listaActiva.campos.map(c => `"${c.label}"`)
+  const rows = listaActiva.filas.map(r =>
+    listaActiva.campos.map(c => `"${r[c.key] || ''}"`).join(',')
+  )
+
+  const csv = [headers.join(','), ...rows].join('\n')
+
+  const timestamp = getFormattedTimestamp()
+  const filename = `${listaActiva.nombre}_${timestamp}.csv`
+
+  const blob = new Blob([csv], { type: 'text/csv' })
+  const file = new File([blob], filename, { type: 'text/csv' })
+
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({
+        title: 'A-Scan Export',
+        text: `Archivo generado: ${filename}`,
+        files: [file]
+      })
+
+      M.toast({
+        html: `Compartido: ${filename}`,
+        classes: 'green'
+      })
+
+    } catch (err) {
+      console.log('Share cancelled')
+    }
+  } else {
+    M.toast({
+      html: 'Compartir no disponible',
+      classes: 'orange'
+    })
+  }
+}
+
 
 /* ===== CONFIRM ===== */
 function materialConfirm(msg, title = 'Confirmar') {

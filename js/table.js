@@ -382,6 +382,17 @@ function addRow() {
   //M.FormSelect.init(document.querySelectorAll('select'));
 }
 
+
+function getFormattedTimestamp() {
+  const now = new Date();
+
+  const date = now.toLocaleDateString('sv-SE'); // YYYY-MM-DD
+  const time = now.toLocaleTimeString('en-GB'); // HH:MM:SS
+
+  return `${date}_${time.replace(/:/g, '-')}`;
+}
+
+
 function downloadCSV() {
   const collapsible = document.querySelector('.collapsible');
   if (!collapsible) return;
@@ -389,6 +400,7 @@ function downloadCSV() {
   let csv = 'Localizacion,Numero De Parte,Qty\n';
 
   const groups = collapsible.querySelectorAll('li');
+
   groups.forEach(group => {
     const groupLabel = group.querySelector('.collapsible-header')?.textContent.trim();
     const rows = group.querySelectorAll('tbody tr');
@@ -396,6 +408,7 @@ function downloadCSV() {
     rows.forEach(row => {
       const cells = row.querySelectorAll('td');
       let loc, part, qty;
+
       if (groupLabel === 'User Added Data') {
         loc = cells[0]?.querySelector('input')?.value || cells[0]?.textContent.trim();
         part = cells[1]?.querySelector('input')?.value || cells[1]?.textContent.trim();
@@ -405,20 +418,94 @@ function downloadCSV() {
         part = cells[0]?.querySelector('input')?.value || cells[0]?.textContent.trim();
         qty = cells[1]?.querySelector('input')?.value || cells[1]?.textContent.trim();
       }
+
       if (loc && part && qty) {
         csv += `${loc},${part},${qty}\n`;
       }
     });
   });
 
+  const timestamp = getFormattedTimestamp();
+  const filename = `verificar_${timestamp}.csv`;
+
   const blob = new Blob([csv], { type: 'text/csv' });
   const url = URL.createObjectURL(blob);
+
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'table_data.csv';
+  a.download = filename;
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+
+  M.toast({
+    html: `Descargado: ${filename}`,
+    classes: 'blue'
+  });
 }
+
+async function shareCSV() {
+  const collapsible = document.querySelector('.collapsible');
+  if (!collapsible) return;
+
+  let csv = 'Localizacion,Numero De Parte,Qty\n';
+
+  const groups = collapsible.querySelectorAll('li');
+
+  groups.forEach(group => {
+    const groupLabel = group.querySelector('.collapsible-header')?.textContent.trim();
+    const rows = group.querySelectorAll('tbody tr');
+
+    rows.forEach(row => {
+      const cells = row.querySelectorAll('td');
+      let loc, part, qty;
+
+      if (groupLabel === 'User Added Data') {
+        loc = cells[0]?.querySelector('input')?.value || cells[0]?.textContent.trim();
+        part = cells[1]?.querySelector('input')?.value || cells[1]?.textContent.trim();
+        qty = cells[2]?.querySelector('input')?.value || cells[2]?.textContent.trim();
+      } else {
+        loc = groupLabel;
+        part = cells[0]?.querySelector('input')?.value || cells[0]?.textContent.trim();
+        qty = cells[1]?.querySelector('input')?.value || cells[1]?.textContent.trim();
+      }
+
+      if (loc && part && qty) {
+        csv += `${loc},${part},${qty}\n`;
+      }
+    });
+  });
+
+  const timestamp = getFormattedTimestamp();
+  const filename = `verificar_${timestamp}.csv`;
+
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const file = new File([blob], filename, { type: 'text/csv' });
+
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({
+        title: 'Verificar CSV',
+        text: `Archivo generado: ${filename}`,
+        files: [file]
+      });
+
+      M.toast({
+        html: `Compartido: ${filename}`,
+        classes: 'green'
+      });
+
+    } catch (err) {
+      console.log('Share cancelled');
+    }
+  } else {
+    M.toast({
+      html: 'Compartir no disponible',
+      classes: 'orange'
+    });
+  }
+}
+
 
 function searchTable() {
   const input = document.getElementById('searchInput').value.toLowerCase();

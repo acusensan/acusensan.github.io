@@ -570,7 +570,7 @@ function sendScanLogToBottom() {
     html: `
       ${pending.length} transferidos
       <button class="btn-flat white-text" onclick="undoTransfer()">
-        UNDO
+        Deshacer
       </button>
     `,
     classes: "green darken-2",

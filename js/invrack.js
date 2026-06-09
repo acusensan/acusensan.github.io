@@ -358,42 +358,85 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        function downloadCSV() {
-    let csvContent = "data:text/csv;charset=utf-8,Rack,Item,Amount\n";
-    Object.keys(items).forEach(rack => {
-        items[rack].forEach(item => {
-            const amount = itemAmounts[item] || 0;
-            csvContent += `${rack},${item},${amount}\n`;
-        });
-    });
 
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
+function getFormattedTimestamp() {
+  const now = new Date();
 
-    // Get the current date and time
-    const now = new Date();
-    const dateString = now.toISOString().slice(0, 10); // YYYY-MM-DD
-    const timeString = now.toTimeString().slice(0, 8).replace(/:/g, "-"); // HH-MM-SS
+  const date = now.toLocaleDateString('sv-SE'); // YYYY-MM-DD
+  const time = now.toLocaleTimeString('en-GB'); // HH:MM:SS
 
-    // Set the filename with date and time
-    const filename = `racks_${dateString}_${timeString}.csv`;
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", filename);
-
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    // Show toast notification
-   M.toast({
-  html: 'Descargado',
-  displayLength: 2000,  // ms
-  inDuration: 300,      // ms (fade in)
-  outDuration: 375,     // ms (fade out)
-  classes: 'rounded',   // space-separated class list
-  completeCallback: () => { console.log('Toast closed'); }
-});
+  return `${date}_${time.replace(/:/g, '-')}`;
 }
+
+       function downloadCSV() {
+  let csvContent = "Rack,Item,Amount\n";
+
+  Object.keys(items).forEach(rack => {
+    items[rack].forEach(item => {
+      const amount = itemAmounts[item] || 0;
+      csvContent += `${rack},${item},${amount}\n`;
+    });
+  });
+
+  const timestamp = getFormattedTimestamp();
+  const filename = `Racks_${timestamp}.csv`;
+
+  const blob = new Blob([csvContent], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  M.toast({
+    html: `Descargado: ${filename}`,
+    classes: 'blue'
+  });
+}
+
+async function shareCSV() {
+  let csvContent = "Rack,Item,Amount\n";
+
+  Object.keys(items).forEach(rack => {
+    items[rack].forEach(item => {
+      const amount = itemAmounts[item] || 0;
+      csvContent += `${rack},${item},${amount}\n`;
+    });
+  });
+
+  const timestamp = getFormattedTimestamp();
+  const filename = `Racks_${timestamp}.csv`;
+
+  const blob = new Blob([csvContent], { type: 'text/csv' });
+  const file = new File([blob], filename, { type: 'text/csv' });
+
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({
+        title: 'Inventario Racks',
+        text: `Archivo generado: ${filename}`,
+        files: [file]
+      });
+
+      M.toast({
+        html: `Compartido: ${filename}`,
+        classes: 'green'
+      });
+
+    } catch (err) {
+      console.log('Share cancelled');
+    }
+  } else {
+    M.toast({
+      html: 'Compartir no disponible',
+      classes: 'orange'
+    });
+  }
+}
+
 
 document.getElementById('columnSelect').addEventListener('change', updateRacks);
 document.getElementById('rackSelect').addEventListener('change', displayItems);
