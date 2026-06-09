@@ -273,31 +273,42 @@ async function shareData() {
   const filename = `Ajuste_${timestamp}.csv`;
 
   const blob = new Blob([csvContent], { type: 'text/csv' });
+
+  // Try sharing file (modern browsers)
   const file = new File([blob], filename, { type: 'text/csv' });
 
-  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+  if (navigator.share) {
     try {
       await navigator.share({
         title: 'Ajuste File',
-        text: `Archivo generado: ${filename}`,
-        files: [file]
+        text: 'Archivo generado',
+        files: [file]   // will work only if supported
       });
 
       M.toast({
         html: `Compartido: ${filename}`,
         classes: 'green'
       });
-
+      return;
     } catch (err) {
-      console.log('Share cancelled');
+      console.log('Share cancelled or failed');
     }
-  } else {
-    M.toast({
-      html: 'Compartir no disponible',
-      classes: 'orange'
-    });
   }
+
+  // FALLBACK for mobile (VERY IMPORTANT)
+  const url = URL.createObjectURL(blob);
+
+  await navigator.share({
+    title: 'Ajuste File',
+    text: `Descargar archivo:\n${url}`
+  });
+
+  M.toast({
+    html: 'Compartido como enlace (fallback)',
+    classes: 'blue'
+  });
 }
+
 
 
 function modalSearchParts() {
