@@ -1,252 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Created by Samuel Eduardo Renteria Quintero 2025-->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajuste</title>
-    <link rel="stylesheet" href="css/materialize.min.css">
-    <link rel="stylesheet" href="css/navigationbar.css">
-    <link rel="manifest" href="manifest.json">
-    <style>
-    /* General layout fixes */
-/* General layout */
-body {
-  background-color: white;
-  margin: 0;
-}
+  <!-- Created by Samuel Eduardo Renteria Quintero 2025 -->
 
-#table-container {
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-  overflow-x: auto;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajuste</title>
 
-/* Sticky headers and footers */
-.sticky-top {
-  position: sticky;
-  top: 0;
-  background-color: white;
-  padding: 10px 0;
-  border-bottom: 1px solid #ccc;
-}
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/materialize.min.css">
+  <link rel="stylesheet" href="css/navigationbar.css">
+  <link rel="manifest" href="manifest.json">
 
-.sticky-bottom {
-  position: sticky;
-  bottom: 0;
-  background-color: white;
-  padding: 15px 0;
-  border-top: 1px solid #ccc;
-}
-
-/* Table styling */
-table {
-  margin-top: 20px;
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
-}
-
-th, td {
-  padding: 15px;
-  text-align: center;
-  border-radius: 2px;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  white-space: normal;
-}
-
-.search {
-    padding-top: 10px;
-}
-
-/* Collapsible body and table */
-.collapsible-body {
-  width: 100%;
-  overflow-x: auto;
-  padding: 10px;
-  box-sizing: border-box;
-}
-
-.collapsible-body table {
-  width: 100%;
-  min-width: 600px;
-  table-layout: fixed;
-}
-
-/* Row states */
-.grayed-out {
-  background-color: #2e7d32 !important;
-  color: white !important;
-  opacity: 0.9;
-}
-
-.editing {
-  outline: 2px dashed #fbc02d;
-  background-color: #fffde7 !important;
-}
-
-/* Button styling */
-.action-btn {
-  margin-top: 10px;
-  text-align: center;
-}
-
-/* Responsive layout */
-@media only screen and (max-width: 1024px) {
-  .row .col.m3{
-  width: 100%;
-  margin-left: auto;
-  left: auto;
-  right: auto;
+  <style>
+    /* ===== GLOBAL ===== */
+    body {
+      background-color: #f5f7fa;
+      margin: 0;
+      font-family: sans-serif;
     }
-  #add-row-container {
-    padding: 5px 40px;
-    width: 100%;
-  }
+    .top-controls {
+      position: fixed;
+      top: 64px;   /* below navbar */
+      left: 0;
+      width: 100%;
 
-  #add-row-container .row {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  #add-row-container .input-field,
-  #add-row-container .col {
-    margin: 10px 0;
-    padding: 0;
-  }
-
-  #add-row-container input {
-    height: 30px;
-    font-size: 14px;
-  }
-
-  #add-row-container .action-btn {
-    width: 100%;
-    font-size: 20px;
-    padding: 4px 0;
-  }
-
-  .flex-container {
-    display: flex;
-    gap: 5px;
-  }
-
-  .input-field {
-    flex: 2;
-  }
-
-  .collapsible-body {
-    overflow-x: auto;
-  }
-
-  .collapsible-body table {
-    min-width: 100%;
-  }
-
-  th, td {
-    font-size: 15px;
-    padding: 1px;
-  }
-
-.btn-small {
-    height: 35px;
-    line-height: 32.4px;
-    font-size: 20px;
-}
-
-.action-btn {
-  width: 60%;          /* choose any width */
-  display: inline-flex;  /* keeps icon/text aligned */
-  align-items: center;   /* vertically center icon */
-  justify-content: center;
-}
-#qty{
-    width: 100% !important;
-    flex: 1 0 100%;
-}
-@media only screen and (max-width: 600px) {
-  .row .col.m3{
-  width: 100%;
-  margin-left: auto;
-  left: auto;
-  right: auto;
+      background: #f5f7fa;
+      z-index: 900;
+      margin-bottom: 5px;
+      padding: 10px;
     }
-  #add-row-container {
-    padding: 5px 40px;
-    width: 100%;
-  }
 
-  #add-row-container .row {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-  }
+    .location-bar {
+      background: white;
+      padding: 10px;
 
-  #add-row-container .input-field,
-  #add-row-container .col {
-    margin: 10px 0;
-    padding: 0;
-  }
+      font-weight: bold;
+      text-align: center;
 
-  #add-row-container input {
-    height: 30px;
-    font-size: 14px;
-  }
+      border-radius: 8px;
 
-  #add-row-container .action-btn {
-    width: 100%;
-    font-size: 20px;
-    padding: 4px 0;
-  }
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
 
-  .flex-container {
-    display: flex;
-    gap: 5px;
-  }
+    /* ===== OFFSET CONTENT BELOW FIXED HEADER ===== */
+    .main-content {
+      padding-top: 220px;  /* space for fixed controls */
+      padding-bottom: 120px; /* space for footer */
+    }
 
-  .input-field {
-    flex: 2;
-  }
+    .nav-footer {
+      backdrop-filter: blur(8px);
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: white;
+      padding: 10px;
+      display: flex;
+      gap: 8px;
+      box-shadow: 0 -3px 8px rgba(0,0,0,0.15);
+      z-index: 900;
+    }
 
-  .collapsible-body {
-    overflow-x: auto;
-  }
+    .nav-footer button {
+      flex: 1;
+      height: 55px;
+      font-size: 15px;
+    }
+    /* ===== DATA TABLE CONTAINER ===== */
+    .data-wrapper {
+      background: white;
+      border-radius: 10px;
+      padding: 10px;
+      height: 65vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      -webkit-overflow-scrolling: touch;
+    }
 
-  .collapsible-body table {
-    min-width: 100%;
-  }
+    #table-container {
+      width: 100%;
+      padding: 10px;
+    }
 
-  th, td {
-    font-size: 12px;
-    padding: 1px;
-  }
+    #locationJump {
+      position: sticky;
+      top: 60px;
+      z-index: 10;
+      background: white;
+    }
 
-.btn-small {
-    height: 32.4px;
-    line-height: 32.4px;
-    font-size: 11px;
-}
+    /* ===== MOBILE CARD STYLE ===== */
+    .mobile-card {
+      background: white;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
 
-.action-btn {
-  width: 60%;          /* choose any width */
-  display: inline-flex;  /* keeps icon/text aligned */
-  align-items: center;   /* vertically center icon */
-  justify-content: center;
-}
-#qty{
-    width: 100% !important;
-    flex: 1 0 100%;
-}
+    .mobile-card h6 {
+      margin: 0 0 8px 0;
+      font-weight: bold;
+    }
 
-    </style>
+    .mobile-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    
+    
+    .mobile-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .mobile-actions button {
+      flex: 1 1 45%;
+      height: 44px;
+    }
+
+    .mobile-actions button:last-child {
+      flex: 1 1 100%;
+    }
+
+
+
+    /* ===== BUTTONS ===== */
+    .btn,
+    .btn-small {
+      height: 44px;
+      line-height: 44px;
+      font-size: 14px;
+    }
+
+    /* ===== LOCATION TITLE ===== */
+    .location-header {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    /* ===== NAV BUTTONS ===== */
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .nav-buttons button {
+      flex: 1;
+      height: 45px;
+    }
+
+    /* ===== STATES ===== */
+    .grayed-out {
+      background-color: #2e7d32 !important;
+      color: white !important;
+    }
+
+    .editing {
+      border: 2px dashed #fbc02d;
+    }
+
+    /* ===== MOBILE OPTIMIZATION ===== */
+    @media (max-width: 600px) {
+      .nav-wrapper {
+        padding: 0 10px;
+      }
+
+      .brand-logo {
+        font-size: 16px !important;
+      }
+    }
+  </style>
 </head>
+
 <body>
-     <!-- ==== SIDE NAVIGATION ==== -->
+
+  <!-- ===== SIDE NAVIGATION ===== -->
   <ul id="slide-out" class="sidenav">
     <li><a href="index.html">Home</a></li>
     <li><a href="ascan.html">A-Scan</a></li>
@@ -260,12 +197,11 @@ th, td {
     <li><a href="table.html">Verificar</a></li>
   </ul>
 
-
-  <!-- ==== TOP NAVIGATION BAR ==== -->
+  <!-- ===== TOP NAVBAR ===== -->
   <nav class="blue darken-4">
     <div class="nav-wrapper">
 
-      <!-- Menu Trigger -->
+      <!-- Menu Button -->
       <button class="menu-button sidenav-trigger" data-target="slide-out">
         <span class="bar"></span>
         <span class="bar"></span>
@@ -275,7 +211,7 @@ th, td {
       <!-- Brand -->
       <a href="#" class="brand-logo"><code>Verificar</code></a>
 
-      <!-- Actions -->
+      <!-- Settings Icon -->
       <ul class="right">
         <li>
           <a href="#settings-modal" class="modal-trigger">
@@ -283,11 +219,11 @@ th, td {
           </a>
         </li>
       </ul>
+
     </div>
   </nav>
 
-
-  <!-- ==== SETTINGS MODAL ==== -->
+  <!-- ===== SETTINGS MODAL ===== -->
   <div id="settings-modal" class="modal">
     <div class="modal-content">
 
@@ -304,21 +240,24 @@ th, td {
         </div>
       </div>
 
+      <!-- Download -->
       <div class="card">
         <div class="card-content">
           <span class="card-title">Descargar Archivo</span>
           <button class="btn blue action-btn" onclick="downloadCSV()">Descargar</button>
           <button class="btn green action-btn" onclick="shareCSV()">Compartir</button>
-
         </div>
       </div>
 
+      <!-- Reset -->
       <div class="card">
         <div class="card-content">
           <span class="card-title">Resetear Verficar</span>
-          <button class="btn red darken-2 action-btn waves-effect waves-light" onclick="clearStoredData()">Limpiar</button>
+          <button class="btn red darken-2 action-btn waves-effect waves-light"
+            onclick="clearStoredData()">Limpiar</button>
         </div>
       </div>
+
     </div>
 
     <div class="modal-footer">
@@ -326,95 +265,72 @@ th, td {
     </div>
   </div>
 
-    <!-- Main -->
-    <main>
-        <div class="container" style="padding-bottom: 40px;">
+  <!-- ===== MAIN CONTENT ===== -->
+  <main>
+    <div class="container main-content">
 
+  <div class="top-controls">
+    
+    <!-- File Upload -->
     <div class="file-field input-field center-align">
       <div class="btn blue">
-        <span>Elegir  CSV</span>
-        <input type="file" id="csvFile" accept=".csv" />
+        <span>Elegir CSV</span>
+        <input type="file" id="csvFile" accept=".csv">
       </div>
       <div class="file-path-wrapper">
-        <input class="file-path validate" type="text" placeholder="Subir Archivo CSV" />
+        <input class="file-path validate" type="text" placeholder="Subir Archivo CSV">
       </div>
     </div>
 
-    <div id="search-bar-container" class="sticky-top center-align">
-      <div class="input-field" style="margin: 0 auto; max-width: 400px;">
-        <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Buscar Numero De Parte..." />
+    <!-- Location Jump -->
+    <div class="input-field">
+      <select id="locationJump"></select>
+      <label>Ir a ubicación</label>
+    </div>
+      <div id="locationHeader" class="location-bar"></div>
+  </div>
+
+  <!-- SCROLLABLE DATA -->
+  <div class="data-wrapper">
+    <div id="table-container"></div>
+  </div>
+
+    <!-- Qty Modal -->
+    <div id="qty-modal" class="modal">
+      <div class="modal-content">
+
+        <h5>Add Part</h5>
+        <p id="selected-part-label"></p>
+
+        <div class="input-field">
+          <input id="modalQty" type="number">
+          <label for="modalQty">Qty</label>
+        </div>
+
+        <div class="input-field">
+          <select id="modalLoc">
+            <option value="" disabled selected>Select Location</option>
+          </select>
+          <label>Location (optional)</label>
+        </div>
+
       </div>
-    </div>
 
-    <div id="table-container" class="responsive-table"></div>
-  </div>
- <!-- <div id="add-row-container" class="sticky-bottom center-align">-->
-  <div id="add-row-container">
-  <div class="row" style="margin: 0px;">
-    <!-- Rack -->
-    <div class="flex-container">
-    <div class="input-field col s12 m2">
-      <select id="rackSelect">
-        <option value="" disabled selected>Seleccione</option>
-        <option value="Rack 1">Rack 1</option>
-        <option value="Rack 2">Rack 2</option>
-        <option value="Rack 3">Rack 3</option>
-      </select>
-      <label>Rack</label>
-    </div>
-
-    <!-- Localizacion -->
-    <div class="input-field col s12 m2">
-      <select id="newLoc">
-        <option id="op" value="" disabled selected>Seleccione</option>
-      </select>
-      <label>Localizacion</label>
-    </div>
-    </div>
-    <div class="flex-container">
-    <!-- Categoria -->
-    <div class="input-field col s12 m2">
-      <select id="categorySelect">
-        <option value="" disabled selected>Seleccione</option>
-        <option value="BT1">BT1</option>
-        <option value="COLORADO">COLORADO</option>
-        <option value="FIX-STORAGE">FIX-STORAGE</option>
-        <option value="SUV">SUV</option>
-        <option value="SAVANA">SAVANA</option>
-        <option value="VELCRO">VELCROS</option>
-        <option value="BT1 OLD">BT1 OLD</option>
-        <option value="ZIPPER">ZIPPER</option>
-        <option value="MISC">MISC</option>
-      </select>
-      <label>Categoria</label>
-    </div>
-    <!-- Created by Samuel Eduardo Renteria Quintero 2025-->
-
-    <!-- Numero de Parte -->
-    <div class="input-field col s12 m2">
-      <select id="newPart">
-        <option value="" disabled selected>Seleccione</option>
-      </select>
-      <label>Numero De Parte</label>
-    </div>
-
-    </div>
-    <!-- Cantidad -->
-    <div class="input-field col s12 m3 l1" id="qty">
-      <input type="text" id="newQty" placeholder="Cantidad" />
-    </div>
-
-  <div class="col s12 m3">
-    <button class="btn green action-btn modal-trigger waves-effect waves-light" data-target="part-search-modal" style="margin-top:25px;">Buscar</button>
-  </div>
-    <!-- Buttons -->
-      <!-- Search Button -->
-      <button class="btn blue action-btn waves-effect waves-light" onclick="addRow()">Agregar</button>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close btn grey">Cancel</a>
+        <a href="#!" id="confirm-add-btn" class="btn blue">Add</a>
       </div>
     </div>
   </main>
 
-    <!-- ==== FOOTER ==== -->
+    <!-- Buttons -->
+    <div class="nav-footer">
+      <button id="backBtn" class="btn blue">Back</button>
+      <button class="btn green modal-trigger"data-target="part-search-modal">🔍 Buscar</button>
+      <button id="nextBtn" class="btn blue">Next</button>
+    </div>
+
+  <!-- ===== FOOTER ===== -->
   <footer class="page-footer blue darken-4 center-align">
     <div class="footer-copyright">
       <div class="container">
@@ -423,49 +339,49 @@ th, td {
     </div>
   </footer>
 
-<!-- Part Search Modal -->
-<div id="part-search-modal" class="modal">
-  <div class="modal-content">
-    <h5>Buscar Numero De Parte</h5>
+  <!-- ===== PART SEARCH MODAL ===== -->
+  <div id="part-search-modal" class="modal">
+    <div class="modal-content">
+      <h5>Buscar Numero De Parte</h5>
 
-    <div class="input-field">
-      <input type="text" id="partSearchInput" placeholder="Buscar (parcial o completo)">
+      <div class="input-field">
+        <input type="text" id="partSearchInput" placeholder="Buscar (parcial o completo)">
+      </div>
+
+      <ul id="partSearchResults" class="collection" style="max-height:300px; overflow-y:auto;"></ul>
     </div>
 
-    <ul id="partSearchResults" class="collection" style="max-height:300px; overflow-y:auto;"></ul>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close btn-flat">Cerrar</a>
+    </div>
   </div>
 
-  <div class="modal-footer">
-    <a href="#!" class="modal-close btn-flat">
-      Cerrar
-    </a>
-  </div>
-</div>
+  <!-- ===== DELETE CONFIRM MODAL ===== -->
+  <div id="delete-confirm-modal" class="modal">
+    <div class="modal-content">
 
-    <!-- Delete Confirmation Modal -->
-<div id="delete-confirm-modal" class="modal">
-  <div class="modal-content">
-    <h5>Confirmar eliminación</h5>
+      <h5>Confirmar eliminación</h5>
+      <p>Esta fila será eliminada:</p>
 
-    <p>Esta fila será eliminada:</p>
+      <div id="delete-preview" class="card-panel grey lighten-4"></div>
 
-    <div id="delete-preview" class="card-panel grey lighten-4">
-      <!-- Filled dynamically -->
+      <p class="red-text">
+        <strong>Esta acción no se puede deshacer.</strong>
+      </p>
+
     </div>
 
-    <p class="red-text"><strong>Esta acción no se puede deshacer.</strong></p>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect btn-flat">Cancelar</a>
+      <a href="#!" id="confirm-delete-btn" class="waves-effect waves-red btn red">Borrar</a>
+    </div>
   </div>
 
-  <div class="modal-footer">
-  <a href="#!" class="modal-close waves-effect btn-flat">Cancelar</a>
-  <a href="#!" id="confirm-delete-btn" class="waves-effect waves-red btn red">Borrar</a>
-</div>
+  <!-- ===== SCRIPTS ===== -->
+  <script src="js/materialize.min.js"></script>
+  <script src="js/navigationbar.js"></script>
+  <script src="js/partsdb.js"></script>
+  <script src="js/table.js"></script>
 
-
-<!-- Created by Samuel Eduardo Renteria Quintero 2025-->
-    <script src="js/materialize.min.js"></script>
-    <script src="js/navigationbar.js"></script>
-    <script src="js/partsdb.js"></script>
-    <script src="js/table.js"></script>
 </body>
 </html>
