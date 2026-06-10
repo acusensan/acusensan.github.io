@@ -19,6 +19,27 @@
       margin: 0;
       font-family: sans-serif;
     }
+    .container {
+      width: 100%;
+      max-width: 100%;
+      padding: 1px;
+    }
+
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      width: 100%;
+    }
+
+    .card {
+      width: 100%;
+    }
+    .card .card-content {
+    padding: 2px;
+    border-radius: 0 0 2px 2px;
+}
+
     .top-controls {
       position: fixed;
       top: 64px;   /* below navbar */
@@ -72,7 +93,7 @@
     .data-wrapper {
       background: white;
       border-radius: 10px;
-      padding: 10px;
+      padding: 1px;
       height: 65vh;
       overflow-y: auto;
       overflow-x: hidden;
@@ -82,7 +103,7 @@
 
     #table-container {
       width: 100%;
-      padding: 10px;
+      padding: 1px;
     }
 
     #locationJump {
@@ -134,9 +155,10 @@
     /* ===== BUTTONS ===== */
     .btn,
     .btn-small {
-      height: 44px;
-      line-height: 44px;
-      font-size: 14px;
+      font-size: 12px;     /* shrink text */
+      padding: 2px 6px;    /* reduce space inside */
+      height: auto;        /* prevent tall buttons */
+      line-height: 1.2;    /* keeps it compact */
     }
 
     /* ===== LOCATION TITLE ===== */
