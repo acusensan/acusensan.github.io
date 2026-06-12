@@ -1,202 +1,344 @@
+let currentIndex = 0;
+let shouldScroll = false;
+let allParts = [];
+
 window.checkedState = {};
-// ===============================
-// GLOBAL STATE
-// ===============================
+
+// ===== STATE =====
 let groupedData = {};
 let orderedLocations = [];
-let currentIndex = 0;
-let rowPendingDelete = null;
-let modalSelectedPart = null;
-
 const STORAGE_KEY = "verificar_data";
 
+// ===== SAVE / LOAD =====
 function saveData() {
-  const data = {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({
     groupedData,
     orderedLocations,
-    currentIndex,
-    checkedState: window.checkedState
-  };
-
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    checkedState
+  }));
 }
 
 function loadData() {
   const saved = localStorage.getItem(STORAGE_KEY);
-
   if (!saved) return;
 
-  try {
-    const data = JSON.parse(saved);
+  const data = JSON.parse(saved);
+  groupedData = data.groupedData || {};
+  orderedLocations = data.orderedLocations || [];
+  window.checkedState = data.checkedState || {};
 
-    groupedData = data.groupedData || {};
-    orderedLocations = data.orderedLocations || [];
-    currentIndex = data.currentIndex || 0;
-    window.checkedState = data.checkedState || {};
+  renderOne();
+}
 
-    if (orderedLocations.length > 0) {
-      renderGroup(currentIndex);
+// ===== RENDER =====
+function renderOne() {
+  const container = document.getElementById('table-container');
+  const fixedSearchContainer = document.getElementById('fixed-search');
+
+  container.innerHTML = '';
+  fixedSearchContainer.innerHTML = '';
+
+  if (orderedLocations.length === 0) return;
+
+  const loc = orderedLocations[currentIndex];
+  if (!window.checkedState[loc]) {
+  window.checkedState[loc] = [];
+}
+  const items = groupedData[loc] || [];
+
+  let doneCount = (window.checkedState[loc] || []).filter(v => v).length;
+
+  // =============================
+  //  HEADER
+  // =============================
+  const header = document.createElement('div');
+  header.className = 'location-header';
+
+  header.innerHTML = `
+    Locatizacion ${currentIndex + 1}/${orderedLocations.length} - ${loc}
+    <div class="progress">${doneCount}/${items.length} done</div>
+  `;
+
+  //  LOCATION SELECTOR
+  header.onclick = () => {
+    const menu = document.createElement('div');
+    menu.style.position = 'fixed';
+    menu.style.top = '0';
+    menu.style.left = '0';
+    menu.style.width = '100%';
+    menu.style.height = '100%';
+    menu.style.background = '#f5f7fa';
+    menu.style.zIndex = '9999';
+    menu.style.display = 'flex';
+    menu.style.flexDirection = 'column';
+
+    const topBar = document.createElement('div');
+    topBar.textContent = "Select Location";
+    topBar.style.padding = '15px';
+    topBar.style.background = '#1976d2';
+    topBar.style.color = 'white';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = 'Cerrar';
+    closeBtn.style.float = "right";
+    closeBtn.onclick = () => document.body.removeChild(menu);
+
+    topBar.appendChild(closeBtn);
+    menu.appendChild(topBar);
+
+    const list = document.createElement('div');
+    list.style.flex = '1';
+    list.style.overflowY = 'auto';
+
+    orderedLocations.forEach((l, i) => {
+      const item = document.createElement('div');
+      item.textContent = `${i + 1}. ${l}`;
+      item.style.padding = '15px';
+
+      if (i === currentIndex) {
+        item.style.background = '#e3f2fd';
+      }
+
+      item.onclick = () => {
+        currentIndex = i;
+        shouldScroll = true;
+        document.body.removeChild(menu);
+        renderOne();
+      };
+
+      list.appendChild(item);
+    });
+
+    menu.appendChild(list);
+    document.body.appendChild(menu);
+  };
+
+  container.appendChild(header);
+
+  // =============================
+  //  CARD TABLE
+  // =============================
+  const card = document.createElement('div');
+  card.className = 'location-card';
+
+  const table = document.createElement('table');
+  const tbody = document.createElement('tbody');
+
+  items.forEach(([part, qty], i) => {
+    const tr = document.createElement('tr');
+
+    if (window.checkedState[loc]?.[i]) {
+      tr.classList.add('done');
     }
 
-    M.toast({ html: "Data restored", classes: "green" });
-  } catch (e) {
-    console.error("Error loading data", e);
+    const partTd = document.createElement('td');
+    partTd.textContent = part;
+    partTd.onclick = () => makeEditable(partTd, loc, i, 0);
+
+    const qtyTd = document.createElement('td');
+    qtyTd.textContent = qty;
+    qtyTd.onclick = () => makeEditable(qtyTd, loc, i, 1);
+
+    const actionTd = document.createElement('td');
+
+    const doneBtn = document.createElement('button');
+doneBtn.className = 'done-btn';
+doneBtn.textContent = window.checkedState[loc]?.[i] ? 'Undo' : '✓';
+
+    doneBtn.onclick = () => {
+      window.checkedState[loc][i] = !window.checkedState[loc][i];
+      saveData();
+      renderOne();
+    };
+
+    const delBtn = document.createElement('button');
+delBtn.className = 'delete-btn';
+delBtn.textContent = 'Borrar';
+    delBtn.onclick = () => {
+  groupedData[loc].splice(i, 1);
+
+  if (window.checkedState[loc]) {
+    window.checkedState[loc].splice(i, 1);
   }
-}
 
-// ===============================
-// INIT
-// ===============================
-document.addEventListener('DOMContentLoaded', function () {
-  setTimeout(loadData, 100);
-  const jumpSelect = document.getElementById('locationJump');
-  const backBtn = document.getElementById('backBtn');
-  const nextBtn = document.getElementById('nextBtn');
+  saveData();
+  renderOne();
+};
 
-if (backBtn) {
-  backBtn.addEventListener('click', () => {
-    if (currentIndex > 0) {
-      currentIndex--;
-      renderGroup(currentIndex);
-    }
+    actionTd.appendChild(doneBtn);
+    actionTd.appendChild(delBtn);
+
+    tr.appendChild(partTd);
+    tr.appendChild(qtyTd);
+    tr.appendChild(actionTd);
+
+    tbody.appendChild(tr);
   });
-}
 
-if (nextBtn) {
-  nextBtn.addEventListener('click', () => {
-    if (currentIndex < orderedLocations.length - 1) {
-      currentIndex++;
-      renderGroup(currentIndex);
-    }
-  });
-}
-if (jumpSelect) {
-  jumpSelect.addEventListener('change', function () {
-    const index = parseInt(this.value);
-    if (!isNaN(index)) {
-      currentIndex = index;
-      renderGroup(currentIndex);
-    }
-  });
-}
-  M.Modal.init(document.querySelectorAll('.modal'));
+  table.appendChild(tbody);
+  card.appendChild(table);
+  container.appendChild(card);
 
-  // ===============================
-  // SEARCH LOGIC
-  // ===============================
-  const input = document.getElementById('partSearchInput');
-  const results = document.getElementById('partSearchResults');
+  // =============================
+  //  FIXED SEARCH (FINAL)
+  // =============================
+  const globalAdd = document.createElement('div');
+  globalAdd.className = 'add-inline';
+  globalAdd.style.position = 'relative';
 
-  const allParts = Object.keys(window.partsDB || {});
+  const searchInput = document.createElement('input');
+  searchInput.placeholder = "Search part...";
 
-  input.addEventListener('input', () => {
+  const inputQty = document.createElement('input');
+  inputQty.type = 'number';
+  inputQty.placeholder = "Qty";
 
-    const q = input.value.toLowerCase().trim();
+  const results = document.createElement('div');
+  results.style.position = 'absolute';
+  results.style.bottom = '50px';
+  results.style.left = '0';
+  results.style.width = '100%';
+  results.style.maxHeight = '200px';
+  results.style.overflowY = 'auto';
+  results.style.background = 'white';
+  results.style.border = '1px solid #ccc';
+  results.style.borderTop = 'none';
+  results.style.boxShadow = '0 -2px 6px rgba(0,0,0,0.2)';
+  results.style.zIndex = '999';
+
+  let selectedPart = null;
+
+  searchInput.oninput = () => {
+    const q = searchInput.value.toLowerCase().trim();
     results.innerHTML = '';
+    selectedPart = null;
 
     if (!q) return;
 
-    const matches = allParts.filter(p => p.toLowerCase().includes(q));
+    const matches = allParts
+      .filter(p => {
+        const pLower = p.toLowerCase();
+        return pLower.startsWith(q) || pLower.includes(q);
+      })
+      .slice(0, 10);
 
     matches.forEach(part => {
-      const li = document.createElement('li');
-      li.className = 'collection-item';
-      li.textContent = part;
+      const item = document.createElement('div');
+      item.textContent = part;
+      item.style.padding = '10px';
 
-      li.onclick = () => openQtyModal(part);
+      item.onmouseenter = () => item.style.background = '#e3f2fd';
+      item.onmouseleave = () => item.style.background = 'white';
 
-      results.appendChild(li);
+      item.onclick = () => {
+        searchInput.value = part;
+        selectedPart = part;
+        results.innerHTML = '';
+        inputQty.focus();
+      };
+
+      results.appendChild(item);
     });
-  });
+  };
 
-});
+  const addBtn = document.createElement('button');
+  addBtn.className = 'btn green';
+  addBtn.textContent = 'Agregar';
 
-// ===============================
-// OPEN QTY MODAL
-// ===============================
-function openQtyModal(part) {
+  addBtn.onclick = () => {
+    const part = selectedPart || searchInput.value;
 
-  modalSelectedPart = part;
-
-  document.getElementById('selected-part-label').textContent = `Part: ${part}`;
-  document.getElementById('modalQty').value = '';
-
-  const locSelect = document.getElementById('modalLoc');
-  locSelect.innerHTML = '<option value="" disabled selected>Select Location</option>';
-
-  // existing locations
-  orderedLocations.forEach(loc => {
-    const opt = document.createElement('option');
-    opt.value = loc;
-    opt.textContent = loc;
-    locSelect.appendChild(opt);
-  });
-
-  M.FormSelect.init(locSelect);
-
-  M.Modal.getInstance(document.getElementById('qty-modal')).open();
-  M.Modal.getInstance(document.getElementById('part-search-modal')).close();
+    if (!part || !inputQty.value) {
+  alert("Enter part and quantity");
+  return;
 }
 
-// ===============================
-// CONFIRM ADD
-// ===============================
-document.getElementById('confirm-add-btn').addEventListener('click', () => {
+    groupedData[loc].push([part, inputQty.value]);
+    window.checkedState[loc].push(false);
 
-  const qty = document.getElementById('modalQty').value.trim();
-  const selectedLoc = document.getElementById('modalLoc').value;
+    searchInput.value = "";
+    inputQty.value = "";
+    results.innerHTML = "";
+    selectedPart = null;
 
-  if (!modalSelectedPart || !qty) {
-    M.toast({ html: 'Enter quantity', classes: 'red' });
-    return;
-  }
+    saveData();
+    renderOne();
 
-  let targetLoc = selectedLoc || orderedLocations[currentIndex];
+    setTimeout(() => searchInput.focus(), 50);
+  };
 
-  if (!groupedData[targetLoc]) {
-    groupedData[targetLoc] = [];
-    orderedLocations.push(targetLoc);
-    window.checkedState[targetLoc] = [];
-  }
+  //  ENTER FLOW
+  searchInput.onkeydown = (e) => {
+    if (e.key === 'Enter') {
+      const first = results.firstChild;
 
-  groupedData[targetLoc].push([modalSelectedPart, qty]);
-  saveData();
-  window.checkedState[targetLoc].push(false);
+      if (first) {
+        first.click();
+      } else if ((selectedPart || searchInput.value) && inputQty.value) {
+        addBtn.click();
+      }
+    }
+  };
 
-  renderGroup(currentIndex);
+  inputQty.onkeydown = (e) => {
+    if (e.key === 'Enter') addBtn.click();
+  };
 
-  M.Modal.getInstance(document.getElementById('qty-modal')).close();
+  globalAdd.appendChild(searchInput);
+  globalAdd.appendChild(inputQty);
+  globalAdd.appendChild(addBtn);
+  globalAdd.appendChild(results);
 
-  M.toast({
-    html: `Added ${modalSelectedPart} (${qty})`,
-    classes: 'green'
-  });
+  fixedSearchContainer.appendChild(globalAdd);
 
-  modalSelectedPart = null;
-});
+  // =============================
+  //  NAV STATE
+  // =============================
+  const backBtn = document.getElementById('backBtn');
+  const nextBtn = document.getElementById('nextBtn');
 
-// ===============================
-// CSV WORKFLOW
-// ===============================
+  if (backBtn) backBtn.disabled = currentIndex === 0;
+  if (nextBtn) nextBtn.disabled = currentIndex === orderedLocations.length - 1;
+}
+
+// ===== EDIT =====
+function makeEditable(td, loc, rowIndex, colIndex) {
+  const input = document.createElement('input');
+  input.value = td.textContent;
+
+  td.innerHTML = '';
+  td.appendChild(input);
+
+  input.focus();
+
+  input.onblur = () => {
+    groupedData[loc][rowIndex][colIndex] = input.value.trim();
+    saveData();
+    renderOne();
+  };
+
+  input.onkeydown = (e) => {
+    if (e.key === 'Enter') input.blur();
+  };
+}
+
+// ===== CSV IMPORT =====
 document.getElementById('csvFile').addEventListener('change', function (e) {
-
   const file = e.target.files[0];
   if (!file) return;
 
   const reader = new FileReader();
 
   reader.onload = function (e) {
-
-    const rows = e.target.result.trim().split('\n');
+    const rows = e.target.result.split('\n');
 
     groupedData = {};
     orderedLocations = [];
-    currentIndex = 0;
     window.checkedState = {};
 
     rows.slice(1).forEach(row => {
+      const [loc, part, qty] = row.split(/[,;\t]/).map(v => v?.trim());
 
-      const [loc, part, qty] = row.split(/[,;\t]/).map(c => c.trim());
       if (!loc || !part || !qty) return;
 
       if (!groupedData[loc]) {
@@ -205,280 +347,111 @@ document.getElementById('csvFile').addEventListener('change', function (e) {
         window.checkedState[loc] = [];
       }
 
-      groupedData[loc].push([part, qty]);
-    });
-    saveData();
-
-    const container = document.getElementById('table-container');
-    container.innerHTML = '';
-
-    const workflowDiv = document.createElement('div');
-
-    window.renderGroup = function renderGroup(index) {
-// UPDATE DROPDOWN
-
-
-
-const backBtn = document.getElementById('backBtn');
-const nextBtn = document.getElementById('nextBtn');
-
-if (backBtn) backBtn.disabled = index === 0;
-if (nextBtn) nextBtn.disabled = index === orderedLocations.length - 1;
-const select = document.getElementById('locationJump');
-
-if (select) {
-  const currentValue = select.value;
-
-  if (select.options.length !== orderedLocations.length) {
-    select.innerHTML = '';
-
-    orderedLocations.forEach((loc, i) => {
-      const opt = document.createElement('option');
-      opt.value = i;
-      opt.textContent = `(${i + 1}) ${loc}`;
-      select.appendChild(opt);
+      groupedData[loc].push([part.trim(), qty.trim()]);
+      window.checkedState[loc].push(false);
     });
 
-    M.FormSelect.init(select);
-  }
-
-  select.value = currentIndex;
-}
-
-      workflowDiv.innerHTML = '';
-
-      const loc = orderedLocations[index];
-      const items = groupedData[loc];
-const header = document.getElementById('locationHeader');
-
-if (header) {
-  header.textContent = `Location ${index + 1} of ${orderedLocations.length}: ${loc}`;
-}
-      const card = document.createElement('div');
-      card.className = 'card';
-
-      card.innerHTML = `
-        <div class="card-content">
-        </div>
-      `;
-
-      const table = document.createElement('table');
-      table.className = 'highlight';
-
-      table.innerHTML = `
-        <thead>
-          <tr>
-            <th>Part</th>
-            <th>Qty</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-      `;
-
-      const tbody = document.createElement('tbody');
-
-      items.forEach(([part, qty], rowIndex) => {
-
-  const tr = document.createElement('tr');
-
-  // normal cells
-  [part, qty].forEach(text => {
-    const td = document.createElement('td');
-    td.textContent = text;
-    tr.appendChild(td);
-  });
-
-  // ACTION CELL
-  const actionCell = document.createElement('td');
-
-  // EDIT BUTTON
-  const editBtn = document.createElement('button');
-  editBtn.className = 'btn-small green';
-  editBtn.textContent = 'Editar';
-
-  editBtn.onclick = () => {
-    toggleEdit(tr, loc, rowIndex);
-  };
-
-  // DELETE BUTTON (keep your existing logic)
-  const deleteBtn = document.createElement('button');
-  deleteBtn.className = 'btn-small red';
-  deleteBtn.textContent = 'Borrar';
-
-  deleteBtn.onclick = () => {
-    rowPendingDelete = { loc, rowIndex };
-
-    document.getElementById('delete-preview').innerHTML =
-      `<p>${loc}</p><p>${part}</p><p>${qty}</p>`;
-
-    M.Modal.getInstance(
-      document.getElementById('delete-confirm-modal')
-    ).open();
-  };
-
-  // OK BUTTON
-  const okBtn = document.createElement('button');
-  okBtn.className = 'btn-small grey';
-  okBtn.textContent = 'OK';
-
-  okBtn.onclick = () => {
     saveData();
-    const state = tr.classList.toggle('grayed-out');
-    okBtn.textContent = state ? 'Undo' : 'OK';
-    window.checkedState[loc][rowIndex] = state;
-  };
-
-  // append buttons
-  actionCell.appendChild(editBtn);
-  actionCell.appendChild(deleteBtn);
-  actionCell.appendChild(okBtn);
-
-  tr.appendChild(actionCell);
-
-  // restore state (VERY IMPORTANT)
-  if (window.checkedState[loc]?.[rowIndex]) {
-    tr.classList.add('grayed-out');
-    okBtn.textContent = 'Undo';
-  }
-
-  tbody.appendChild(tr);
-});
-
-      table.appendChild(tbody);
-
-      card.querySelector('.card-content').appendChild(table);
-
-      workflowDiv.appendChild(card);
-    };
-
-    container.appendChild(workflowDiv);
-    renderGroup(0);
+    renderOne();
   };
 
   reader.readAsText(file);
 });
 
-// ===============================
-// DELETE CONFIRM
-// ===============================
-document.getElementById('confirm-delete-btn').addEventListener('click', () => {
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
 
-  if (!rowPendingDelete) return;
+  const partsDB = window.partsDB || {};
+  const hilosDB = window.hilosDB || {};
 
-  const { loc, rowIndex } = rowPendingDelete;
+  allParts = [
+    ...Object.keys(partsDB),
+    ...Object.keys(hilosDB)
+  ];
 
-  groupedData[loc].splice(rowIndex, 1);
-  saveData();
-  window.checkedState[loc].splice(rowIndex, 1);
+  loadData();
 
-  renderGroup(currentIndex);
+  const backBtn = document.getElementById('backBtn');
+  const nextBtn = document.getElementById('nextBtn');
 
-  rowPendingDelete = null;
-
-  M.Modal.getInstance(document.getElementById('delete-confirm-modal')).close();
-});
-function toggleEdit(row, loc, rowIndex) {
-
-  const editing = row.classList.toggle('editing');
-  const cells = row.querySelectorAll('td');
-
-  cells.forEach((cell, i) => {
-    if (i < 2) {
-
-      if (editing) {
-
-        const input = document.createElement('input');
-        input.value = cell.textContent;
-        cell.innerHTML = '';
-        cell.appendChild(input);
-
-        input.addEventListener('keydown', e => {
-          if (e.key === 'Enter') toggleEdit(row, loc, rowIndex);
-        });
-
-      } else {
-
-        const input = cell.querySelector('input');
-        if (!input) return;
-
-        const val = input.value.trim();
-        cell.textContent = val;
-
-        groupedData[loc][rowIndex][i] = val;
-        saveData();
+  if (backBtn) {
+    backBtn.onclick = () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        shouldScroll = true;
+        renderOne();
       }
-    }
-  });
-}
-// ===============================
-// DOWNLOAD CSV
-// ===============================
+    };
+  }
+
+  if (nextBtn) {
+    nextBtn.onclick = () => {
+      if (currentIndex < orderedLocations.length - 1) {
+        currentIndex++;
+        shouldScroll = true;
+        renderOne();
+      }
+    };
+  }
+});
+
+// ===== DOWNLOAD CSV =====
 function downloadCSV() {
   let csv = "Location,Part,Qty\n";
 
-  Object.keys(groupedData).forEach(loc => {
-    groupedData[loc].forEach(([part, qty]) => {
+  orderedLocations.forEach(loc => {
+    const items = groupedData[loc] || [];
+    items.forEach(([part, qty]) => {
       csv += `${loc},${part},${qty}\n`;
     });
   });
 
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const blob = new Blob([csv], { type: "text/csv" });
   const url = URL.createObjectURL(blob);
 
-  const link = document.createElement("a");
-  link.setAttribute("href", url);
-  link.setAttribute("download", "verificar.csv");
-  link.click();
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "verificar_data.csv";
+  a.click();
 
-  M.toast({ html: "CSV downloaded", classes: "green" });
+  URL.revokeObjectURL(url);
 }
 
-// ===============================
-// SHARE CSV (mobile)
-// ===============================
-async function shareCSV() {
+// ===== SHARE CSV (mobile-friendly) =====
+function shareCSV() {
   let csv = "Location,Part,Qty\n";
 
-  Object.keys(groupedData).forEach(loc => {
-    groupedData[loc].forEach(([part, qty]) => {
+  orderedLocations.forEach(loc => {
+    const items = groupedData[loc] || [];
+    items.forEach(([part, qty]) => {
       csv += `${loc},${part},${qty}\n`;
     });
   });
 
-  const file = new File([csv], "verificar.csv", {
-    type: "text/csv",
-  });
+  const blob = new Blob([csv], { type: "text/csv" });
+  const file = new File([blob], "verificar_data.csv", { type: "text/csv" });
 
   if (navigator.share) {
-    try {
-      await navigator.share({
-        title: "Verificar CSV",
-        text: "Archivo generado",
-        files: [file]
-      });
-    } catch (err) {
-      M.toast({ html: "Share cancelled", classes: "orange" });
-    }
+    navigator.share({
+      files: [file],
+      title: "Verificar Data",
+      text: "Here is the CSV file"
+    }).catch(err => console.log(err));
   } else {
-    M.toast({ html: "Sharing not supported", classes: "red" });
+    alert("Sharing not supported on this device");
   }
 }
 
-// ===============================
-// CLEAR DATA
-// ===============================
+// ===== CLEAR DATA =====
 function clearStoredData() {
-  if (!confirm("Are you sure you want to clear everything?")) return;
+  if (!confirm("Are you sure you want to delete all data?")) return;
 
   localStorage.removeItem(STORAGE_KEY);
 
   groupedData = {};
   orderedLocations = [];
-  currentIndex = 0;
   window.checkedState = {};
+  currentIndex = 0;
 
-  document.getElementById("table-container").innerHTML = "";
-
-  M.toast({ html: "Data cleared", classes: "red" });
+  renderOne();
 }
-
