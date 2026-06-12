@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Parts DB Generator</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f4f6f8; padding:20px; }
+    h1 { color:#0d47a1; }
+    textarea { width:100%; min-height:160px; margin:10px 0; font-family: monospace; }
+    button { padding:10px 16px; font-size:16px; background:#0d47a1; color:#fff; border:none; cursor:pointer; }
+    button:hover { background:#08306b; }
+    pre { background:#212121; color:#e0e0e0; padding:15px; overflow:auto; }
+  </style>
+</head>
+<body>
+
+<h1>Parts DB Generator</h1>
+
+<p>Paste Excel or CSV data (with headers):</p>
+<textarea id="input"></textarea>
+
+<button onclick="generatepartes()">Generate Partes DB</button>
+<button onclick="generatehilos()">Generate Hilos DB</button>
+
+<h2>Generated <code>partsDB</code></h2>
+<pre id="output"></pre>
+
+<script>
+  //Gen Partes
+function generatepartes() {
+  const text = document.getElementById('input').value.trim();
+  if (!text) return;
+
+  const lines = text.split(/\r?\n/);
+  const headers = lines.shift().split(/,|\t/).map(h => h.trim());
+
+  const map = {};
+
+  lines.forEach(line => {
+    if (!line.trim()) return;
+    const cols = line.split(/,|\t/);
+
+    const get = name => cols[headers.indexOf(name)]?.trim();
+
+    const part = get('Numero De Parte');
+    if (!part) return;
+
+    map[part.toUpperCase()] = {
+    description: get('Descripción'),
+    pack: Number(get('Standard Pack')) || 0,
+    cost: Number(get('Costo')?.replace('$','')) || 0,
+    weight: Number(get('Peso')) || null,
+    piecesPerUnit: Number(get('Pzs')) || 0,
+    line: get('Línea'),
+    daily: Number(get('Daily')) || 0,
+    kanban: Number(get('Kanban')) || 0,
+    location: get('Localización'),
+    productionLine: get('Linea')
+};
+
+  });
+
+  let out = 'const partsDB = {};\n\n';
+  Object.entries(map).forEach(([key, val]) => {
+    out += `partsDB["${key}"] = ${JSON.stringify(val, null, 2)};\n\n`;
+  });
+
+  out += 'window.partsDB = partsDB;';
+  document.getElementById('output').textContent = out;
+}
+
+ //Gen Hilos
+
+function generatehilos() {
+  const text = document.getElementById('input').value.trim();
+  if (!text) return;
+
+  // Split lines
+  const lines = text.split(/\r?\n/);
+
+  // Read headers
+  const headers = lines.shift()
+    .split(/,|\t/)
+    .map(h => h.trim());
+
+  const hilosDB = {};
+
+  lines.forEach(line => {
+    if (!line.trim()) return;
+
+    const cols = line.split(/,|\t/);
+    const get = name => cols[headers.indexOf(name)]?.trim();
+
+    const part = get('Numero De Parte');
+    if (!part) return;
+
+    hilosDB[part.toUpperCase()] = {
+      description: get('Descripcion'),
+      calibre: get('Calibre'),
+      color: get('Color'),
+      um: get('Um'),
+      kanban: Number(get('Kanban')) || 0,
+      location: get('Localización'),
+      productionLine: get('Linea')
+    };
+  });
+
+  // Output JS code
+  let out = 'const hilosDB = {};\n\n';
+  Object.entries(hilosDB).forEach(([key, val]) => {
+    out += `hilosDB["${key}"] = ${JSON.stringify(val, null, 2)};\n\n`;
+  });
+
+  out += 'window.hilosDB = hilosDB;';
+  document.getElementById('output').textContent = out;
+}
+
+</script>
+
+</body>
+</html>
