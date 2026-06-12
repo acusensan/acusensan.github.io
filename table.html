@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Created by Samuel Eduardo Renteria Quintero 2025 -->
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajuste</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/materialize.min.css">
+  <link rel="stylesheet" href="css/navigationbar.css">
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    /* ===== GLOBAL ===== */
+    body {
+      background-color: #f5f7fa;
+      margin: 0;
+      font-family: sans-serif;
+    }
+    .container {
+      width: 100%;
+      max-width: 100%;
+      padding: 1px;
+    }
+
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      width: 100%;
+    }
+
+    .card {
+      width: 100%;
+    }
+    .card .card-content {
+    padding: 2px;
+    border-radius: 0 0 2px 2px;
+}
+
+    .top-controls {
+      position: fixed;
+      top: 64px;   /* below navbar */
+      left: 0;
+      width: 100%;
+
+      background: #f5f7fa;
+      z-index: 900;
+      margin-bottom: 5px;
+      padding: 10px;
+    }
+
+    .location-bar {
+      background: white;
+      padding: 10px;
+
+      font-weight: bold;
+      text-align: center;
+
+      border-radius: 8px;
+
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    /* ===== OFFSET CONTENT BELOW FIXED HEADER ===== */
+    .main-content {
+      padding-top: 220px; 
+      padding-bottom: 120px; 
+    }
+
+    .nav-footer {
+      backdrop-filter: blur(8px);
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: white;
+      padding: 10px;
+      display: flex;
+      gap: 8px;
+      box-shadow: 0 -3px 8px rgba(0,0,0,0.15);
+      z-index: 900;
+    }
+
+    .nav-footer button {
+      flex: 1;
+      height: 55px;
+      font-size: 15px;
+    }
+    /* ===== DATA TABLE CONTAINER ===== */
+    .data-wrapper {
+      background: white;
+      border-radius: 10px;
+      padding: 1px;
+      height: 65vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #table-container {
+      width: 100%;
+      padding: 1px;
+    }
+
+    #locationJump {
+      position: sticky;
+      top: 60px;
+      z-index: 10;
+      background: white;
+    }
+
+    /* ===== MOBILE CARD STYLE ===== */
+    .mobile-card {
+      background: white;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .mobile-card h6 {
+      margin: 0 0 8px 0;
+      font-weight: bold;
+    }
+
+    .mobile-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    
+    
+    .mobile-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .mobile-actions button {
+      flex: 1 1 45%;
+      height: 44px;
+    }
+
+    .mobile-actions button:last-child {
+      flex: 1 1 100%;
+    }
+
+
+
+    /* ===== BUTTONS ===== */
+    .btn,
+    .btn-small {
+      font-size: 12px;     /* shrink text */
+      padding: 5px 5px;    /* reduce space inside */
+      height: auto;        /* prevent tall buttons */
+      line-height: 1.5;    /* keeps it compact */
+    }
+
+    /* ===== LOCATION TITLE ===== */
+    .location-header {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    /* ===== NAV BUTTONS ===== */
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .nav-buttons button {
+      flex: 1;
+      height: 45px;
+    }
+
+    /* ===== STATES ===== */
+    .grayed-out {
+      background-color: #2e7d32 !important;
+      color: white !important;
+    }
+
+    .editing {
+      border: 2px dashed #fbc02d;
+    }
+
+    /* ===== MOBILE OPTIMIZATION ===== */
+    @media (max-width: 600px) {
+      .nav-wrapper {
+        padding: 0 10px;
+      }
+
+      .brand-logo {
+        font-size: 16px !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ===== SIDE NAVIGATION ===== -->
+  <ul id="slide-out" class="sidenav">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="ascan.html">A-Scan</a></li>
+    <li><a href="ajuste.html">Ajuste</a></li>
+    <li><a href="scan.html">Escaneo</a></li>
+    <li><a href="barcode.html">Generar Código de Barras</a></li>
+    <li><a href="hilos.html">Hilos</a></li>
+    <li><a href="invrack.html">Inventario Racks</a></li>
+    <li><a href="partescompradas.html">Partes Compradas</a></li>
+    <li><a href="reglatres.html">Regla de Tres</a></li>
+    <li><a href="table.html">Verificar</a></li>
+  </ul>
+
+  <!-- ===== TOP NAVBAR ===== -->
+  <nav class="blue darken-4">
+    <div class="nav-wrapper">
+
+      <!-- Menu Button -->
+      <button class="menu-button sidenav-trigger" data-target="slide-out">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+
+      <!-- Brand -->
+      <a href="#" class="brand-logo"><code>Verificar</code></a>
+
+      <!-- Settings Icon -->
+      <ul class="right">
+        <li>
+          <a href="#settings-modal" class="modal-trigger">
+            <img src="icons/settings.svg" alt="Settings" class="nav-icon">
+          </a>
+        </li>
+      </ul>
+
+    </div>
+  </nav>
+
+  <!-- ===== SETTINGS MODAL ===== -->
+  <div id="settings-modal" class="modal">
+    <div class="modal-content">
+
+      <h4>Ajustes</h4>
+
+      <!-- Dark Mode -->
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">Modo Oscuro</span>
+          <label>
+            <input type="checkbox" id="dark-mode-toggle">
+            <span>Modo Oscuro</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Download -->
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">Descargar Archivo</span>
+          <button class="btn blue action-btn" onclick="downloadCSV()">Descargar</button>
+          <button class="btn green action-btn" onclick="shareCSV()">Compartir</button>
+        </div>
+      </div>
+
+      <!-- Reset -->
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">Resetear Verficar</span>
+          <button class="btn red darken-2 action-btn waves-effect waves-light"
+            onclick="clearStoredData()">Limpiar</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="modal-close btn grey waves-effect waves-light">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main>
+    <div class="container main-content">
+
+  <div class="top-controls">
+    
+    <!-- File Upload -->
+    <div class="file-field input-field center-align">
+      <div class="btn blue">
+        <span>Elegir CSV</span>
+        <input type="file" id="csvFile" accept=".csv">
+      </div>
+      <div class="file-path-wrapper">
+        <input class="file-path validate" type="text" placeholder="Subir Archivo CSV">
+      </div>
+    </div>
+
+    <!-- Location Jump -->
+    <div class="input-field">
+      <select id="locationJump"></select>
+      <label>Ir a ubicación</label>
+    </div>
+      <div id="locationHeader" class="location-bar"></div>
+  </div>
+
+  <!-- SCROLLABLE DATA -->
+  <div class="data-wrapper">
+    <div id="table-container"></div>
+  </div>
+
+    <!-- Qty Modal -->
+    <div id="qty-modal" class="modal">
+      <div class="modal-content">
+
+        <h5>Add Part</h5>
+        <p id="selected-part-label"></p>
+
+        <div class="input-field">
+          <input id="modalQty" type="number">
+          <label for="modalQty">Qty</label>
+        </div>
+
+        <div class="input-field">
+          <select id="modalLoc">
+            <option value="" disabled selected>Select Location</option>
+          </select>
+          <label>Location (optional)</label>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <a href="#!" class="modal-close btn grey">Cancel</a>
+        <a href="#!" id="confirm-add-btn" class="btn blue">Add</a>
+      </div>
+    </div>
+  </main>
+
+    <!-- Buttons -->
+    <div class="nav-footer">
+      <button id="backBtn" class="btn blue">Back</button>
+      <button class="btn green modal-trigger"data-target="part-search-modal">🔍Agregar</button>
+      <button id="nextBtn" class="btn blue">Next</button>
+    </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="page-footer blue darken-4 center-align">
+    <div class="footer-copyright">
+      <div class="container">
+        © <span id="current-year"></span> Samuel Eduardo Renteria Quintero NCG
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== PART SEARCH MODAL ===== -->
+  <div id="part-search-modal" class="modal">
+    <div class="modal-content">
+      <h5>Buscar Numero De Parte</h5>
+
+      <div class="input-field">
+        <input type="text" id="partSearchInput" placeholder="Buscar (parcial o completo)">
+      </div>
+
+      <ul id="partSearchResults" class="collection" style="max-height:300px; overflow-y:auto;"></ul>
+    </div>
+
+    <div class="modal-footer">
+      <a href="#!" class="modal-close btn-flat">Cerrar</a>
+    </div>
+  </div>
+
+  <!-- ===== DELETE CONFIRM MODAL ===== -->
+  <div id="delete-confirm-modal" class="modal">
+    <div class="modal-content">
+
+      <h5>Confirmar eliminación</h5>
+      <p>Esta fila será eliminada:</p>
+
+      <div id="delete-preview" class="card-panel grey lighten-4"></div>
+
+      <p class="red-text">
+        <strong>Esta acción no se puede deshacer.</strong>
+      </p>
+
+    </div>
+
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect btn-flat">Cancelar</a>
+      <a href="#!" id="confirm-delete-btn" class="waves-effect waves-red btn red">Borrar</a>
+    </div>
+  </div>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script src="js/materialize.min.js"></script>
+  <script src="js/navigationbar.js"></script>
+  <script src="js/partsdb.js"></script>
+  <script src="js/table.js"></script>
+
+</body>
+</html>
