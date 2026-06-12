@@ -354,22 +354,24 @@ document.getElementById('csvFile').addEventListener('change', function (e) {
     window.checkedState = {};
 
     rows.slice(1).forEach(row => {
-      const [loc, part, qty] = row.split(/[,;\t]/).map(v => v?.trim());
+    const [loc, part, qty] = row.split(/[,;\t]/).map(v => v?.trim());
+    if (!loc || !part || !qty) return;
 
-      if (!loc || !part || !qty) return;
+    if (!groupedData[loc]) {
+      groupedData[loc] = [];
+      orderedLocations.push(loc);
+      window.checkedState[loc] = [];
+    }
 
-      if (!groupedData[loc]) {
-        groupedData[loc] = [];
-        orderedLocations.push(loc);
-        window.checkedState[loc] = [];
-      }
+    groupedData[loc].push([part.trim(), qty.trim()]);
+    window.checkedState[loc].push(false);
+  });
 
-      groupedData[loc].push([part.trim(), qty.trim()]);
-      window.checkedState[loc].push(false);
-    });
+  // ✅ SORT LOCATIONS HERE
+  orderedLocations.sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
 
-    saveData();
-    renderOne();
+  saveData();
+  renderOne();
   };
 
   reader.readAsText(file);
@@ -377,6 +379,47 @@ document.getElementById('csvFile').addEventListener('change', function (e) {
 
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
+  // ===== ADD LOCATION =====
+const addLocationBtn = document.getElementById('add-location-btn');
+
+if (addLocationBtn) {
+  addLocationBtn.onclick = () => {
+    const input = document.getElementById('new-location');
+    const loc = input.value.trim();
+
+    if (!loc) {
+      alert("Enter a location name");
+      return;
+    }
+
+    if (groupedData[loc]) {
+      alert("Location already exists");
+      return;
+    }
+
+    // Create new location
+    groupedData[loc] = [];
+    orderedLocations.push(loc);
+    window.checkedState[loc] = [];
+
+    // Keep sorting consistent with CSV logic
+    orderedLocations.sort((a, b) =>
+      a.localeCompare(b, undefined, { numeric: true })
+    );
+
+    // Move to the new location
+    currentIndex = orderedLocations.indexOf(loc);
+
+    input.value = "";
+    saveData();
+    renderOne();
+  };
+}
+
+document.getElementById('new-location').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') addLocationBtn.click();
+});
+
 M.Modal.init(document.querySelectorAll('.modal'));
   const partsDB = window.partsDB || {};
   const hilosDB = window.hilosDB || {};
