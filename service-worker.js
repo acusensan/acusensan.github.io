@@ -1,15 +1,15 @@
-const STATIC_CACHE = 'static-v2';
-const DYNAMIC_CACHE = 'dynamic-v2';
+const VERSION = 'v5';
+
+const STATIC_CACHE = 'static-' + VERSION;
+const DYNAMIC_CACHE = 'dynamic-' + VERSION;
 
 const STATIC_ASSETS = [
   '/',
   '/index.html',
 
-  // CSS
   '/css/materialize.min.css',
   '/css/navigationbar.css',
 
-  // JS
   '/js/materialize.min.js',
   '/js/navigationbar.js',
   '/js/ajuste.js',
@@ -23,7 +23,6 @@ const STATIC_ASSETS = [
   '/js/scan.js',
   '/js/table.js',
 
-  // Pages
   '/ascan.html',
   '/ajuste.html',
   '/barcode.html',
@@ -37,7 +36,6 @@ const STATIC_ASSETS = [
   '/velcros_3.1_noSuper.html',
   '/velcros_3.1_Super.html',
 
-  // Icons
   '/icons/settings.svg',
   '/icons/icon-192.png',
   '/icons/icon-512.png'
@@ -48,32 +46,30 @@ self.addEventListener('install', event => {
   self.skipWaiting();
 
   event.waitUntil(
-  caches.open(STATIC_CACHE).then(cache => {
-    return Promise.all(
-      STATIC_ASSETS.map(url =>
-        cache.add(url).catch(err => console.warn('Failed to cache:', url))
-      )
-    );
-  })
-);
+    caches.open(STATIC_CACHE).then(cache => {
+      return cache.addAll(STATIC_ASSETS);
+    })
+  );
 });
 
 // ACTIVATE
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
+    caches.keys().then(keys => {
+      return Promise.all(
         keys.map(key => {
           if (key !== STATIC_CACHE && key !== DYNAMIC_CACHE) {
             return caches.delete(key);
           }
         })
-      )
-    )
+      );
+    })
   );
 
   self.clients.claim();
 });
+
+// LIMIT CACHE SIZE
 function limitCacheSize(name, size) {
   caches.open(name).then(cache => {
     cache.keys().then(keys => {
@@ -90,33 +86,27 @@ self.addEventListener('fetch', event => {
 
   const request = event.request;
 
-  // Handle page navigation
+  // ALWAYS get fresh HTML
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
-        .then(response => {
-          if (!response || response.status !== 200) return response;
-
+        .then(res => {
           return caches.open(DYNAMIC_CACHE).then(cache => {
-            cache.put(request, response.clone());
-            return response;
+            cache.put(request, res.clone());
+            return res;
           });
         })
-        .catch(() =>
-          caches.match(request).then(res => res || caches.match('/index.html'))
-        )
+        .catch(() => caches.match('/index.html'))
     );
     return;
   }
 
-  // Static files (cache first)
+  // STATIC: cache first
   event.respondWith(
     caches.match(request).then(cached => {
       if (cached) return cached;
 
       return fetch(request).then(response => {
-        if (!response || response.status !== 200) return response;
-
         return caches.open(DYNAMIC_CACHE).then(cache => {
           cache.put(request, response.clone());
           limitCacheSize(DYNAMIC_CACHE, 50);
