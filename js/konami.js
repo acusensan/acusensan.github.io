@@ -1,4 +1,23 @@
 /* =========================
+   ⚙️ SETTINGS
+========================= */
+let konamiEnabled = localStorage.getItem("konamiEnabled") !== "false";
+
+/* =========================
+   🎮 TOGGLE FUNCTION
+========================= */
+function toggleKonami() {
+  konamiEnabled = !konamiEnabled;
+  localStorage.setItem("konamiEnabled", konamiEnabled);
+
+  showKonamiHint(
+    konamiEnabled
+      ? "✅ Easter egg ON"
+      : "⛔ Easter egg OFF"
+  );
+}
+
+/* =========================
    🎮 KONAMI CODE (DESKTOP)
 ========================= */
 const konamiSequence = [
@@ -12,13 +31,14 @@ const konamiSequence = [
 let userInput = [];
 
 document.addEventListener("keydown", (e) => {
+  if (!konamiEnabled) return; // ✅ DISABLE LOGIC
+
   const key = e.key.toLowerCase();
 
-  // 👉 Hint system
   if (userInput.length === 0) {
-    showKonamiHint("👀 Something is happening...");
+    showKonamiHint("👀 Algo está pasando...");
   } else {
-    showKonamiHint("Keep going...");
+    showKonamiHint("Sigue adelante...");
   }
 
   userInput.push(key);
@@ -41,7 +61,6 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-
 /* =========================
    📱 KONAMI (MOBILE SWIPE)
 ========================= */
@@ -54,16 +73,19 @@ const touchSequence = [
 ];
 
 let touchInput = [];
-
 let startX = 0;
 let startY = 0;
 
 document.addEventListener("touchstart", (e) => {
+  if (!konamiEnabled) return;
+
   startX = e.touches[0].clientX;
   startY = e.touches[0].clientY;
 });
 
 document.addEventListener("touchend", (e) => {
+  if (!konamiEnabled) return;
+
   const endX = e.changedTouches[0].clientX;
   const endY = e.changedTouches[0].clientY;
 
@@ -80,7 +102,6 @@ document.addEventListener("touchend", (e) => {
     }
   }
 
-  // Hint system (mobile)
   if (touchInput.length === 0) {
     showKonamiHint("👀 Secret input...");
   } else {
@@ -98,7 +119,6 @@ document.addEventListener("touchend", (e) => {
     touchInput = [];
   }
 });
-
 
 /* =========================
    ✨ HINT UI
@@ -121,7 +141,6 @@ function showKonamiHint(text) {
   }, 1200);
 }
 
-
 /* =========================
    🔥 BUTTON SMASH EFFECT
 ========================= */
@@ -130,6 +149,7 @@ function triggerButtonSmash(key) {
   div.className = "key-flash";
   div.textContent = formatKey(key);
   document.body.appendChild(div);
+
   setTimeout(() => div.remove(), 400);
 }
 
@@ -142,10 +162,8 @@ function formatKey(key) {
     b: "B",
     a: "A"
   };
-
   return map[key] || key;
 }
-
 
 /* =========================
    💥 ACTIVATION
@@ -154,7 +172,6 @@ function activateEasterEgg() {
   document.body.style.animation = "screenFlash 0.4s 3, shake 0.2s";
   startSnakeGame();
 }
-
 
 /* =========================
    🐍 SNAKE GAME
@@ -172,12 +189,11 @@ function startSnakeGame() {
   const text = document.createElement("p");
   text.innerText = "Use arrows • ESC to exit";
   text.style.color = "#0f0";
-  gameContainer.appendChild(text);
 
+  gameContainer.appendChild(text);
   document.body.appendChild(gameContainer);
 
   const ctx = canvas.getContext("2d");
-
   const grid = 20;
   let count = 0;
 
@@ -201,6 +217,7 @@ function startSnakeGame() {
 
   function loop() {
     requestAnimationFrame(loop);
+
     if (++count < 4) return;
     count = 0;
 
@@ -225,6 +242,7 @@ function startSnakeGame() {
     ctx.fillRect(apple.x, apple.y, grid - 1, grid - 1);
 
     ctx.fillStyle = "#0f0";
+
     snake.cells.forEach((cell, index) => {
       ctx.fillRect(cell.x, cell.y, grid - 1, grid - 1);
 
@@ -235,9 +253,10 @@ function startSnakeGame() {
       }
 
       for (let i = index + 1; i < snake.cells.length; i++) {
-        if (cell.x === snake.cells[i].x &&
-            cell.y === snake.cells[i].y) {
-
+        if (
+          cell.x === snake.cells[i].x &&
+          cell.y === snake.cells[i].y
+        ) {
           snake = {
             x: 160,
             y: 160,
@@ -251,24 +270,20 @@ function startSnakeGame() {
     });
   }
 
-  document.addEventListener("keydown", function(e) {
+  document.addEventListener("keydown", function (e) {
     if (e.key === "ArrowLeft" && snake.dx === 0) {
       snake.dx = -grid;
       snake.dy = 0;
-    } 
-    else if (e.key === "ArrowUp" && snake.dy === 0) {
+    } else if (e.key === "ArrowUp" && snake.dy === 0) {
       snake.dy = -grid;
       snake.dx = 0;
-    } 
-    else if (e.key === "ArrowRight" && snake.dx === 0) {
+    } else if (e.key === "ArrowRight" && snake.dx === 0) {
       snake.dx = grid;
       snake.dy = 0;
-    } 
-    else if (e.key === "ArrowDown" && snake.dy === 0) {
+    } else if (e.key === "ArrowDown" && snake.dy === 0) {
       snake.dy = grid;
       snake.dx = 0;
-    } 
-    else if (e.key === "Escape") {
+    } else if (e.key === "Escape") {
       gameContainer.remove();
     }
   });

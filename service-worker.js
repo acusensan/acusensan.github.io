@@ -1,4 +1,4 @@
-const VERSION = 'v6';
+const VERSION = 'v7';
 
 const STATIC_CACHE = 'static-' + VERSION;
 const DYNAMIC_CACHE = 'dynamic-' + VERSION;
@@ -116,3 +116,78 @@ self.addEventListener('fetch', event => {
     })
   );
 });
+// BACKGROUND SYNC
+self.addEventListener('sync', event => {
+  if (event.tag === 'sync-data') {
+    event.waitUntil(syncPendingData());
+  }
+});
+
+// Function to retry sending stored requests
+async function syncPendingData() {
+  // Example: get stored data from IndexedDB (you must implement it)
+  const data = await getStoredRequests();
+
+  for (let item of data) {
+    try {
+      await fetch('/api/save', {
+        method: 'POST',
+        body: JSON.stringify(item),
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      await deleteStoredRequest(item.id); // remove if success
+    } catch (err) {
+      console.log('Sync failed, will retry later');
+    }
+  }
+}
+
+async function sendData(data) {
+  try {
+    await fetch('/api/save', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'application/json' }
+    });
+  } catch (err) {
+    const reg = await navigator.serviceWorker.ready;
+
+    await saveRequestLocally(data); // store in IndexedDB
+
+    await reg.sync.register('sync-data');
+  }
+}
+
+// PERIODIC SYNC
+self.addEventListener('periodicsync', event => {
+  if (event.tag === 'update-data') {
+    event.waitUntil(updateCachedData());
+  }
+});
+
+async function updateCachedData() {
+  try {
+    const response = await fetch('/api/data');
+    const cache = await caches.open(DYNAMIC_CACHE);
+    cache.put('/api/data', response.clone());
+  } catch (err) {
+    console.log('Periodic sync failed');
+  }
+}
+
+async function registerPeriodicSync() {
+  const reg = await navigator.serviceWorker.ready;
+
+  if ('periodicSync' in reg) {
+    const status = await navigator.permissions.query({
+      name: 'periodic-background-sync'
+    });
+
+    if (status.state === 'granted') {
+      await reg.periodicSync.register('update-data', {
+        minInterval: 24 * 60 * 60 * 1000 // 1 day
+      });
+    }
+  }
+}

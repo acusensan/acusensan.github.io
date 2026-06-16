@@ -161,7 +161,7 @@ delBtn.onclick = () => {
 
   const [part, qty] = groupedData[loc][i];
 
-  // ✅ Set text inside modal
+  //  Set text inside modal
   const text = document.getElementById('delete-text');
   
 text.innerHTML = `
@@ -367,7 +367,7 @@ document.getElementById('csvFile').addEventListener('change', function (e) {
     window.checkedState[loc].push(false);
   });
 
-  // ✅ SORT LOCATIONS HERE
+  //  SORT LOCATIONS HERE
   orderedLocations.sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
 
   saveData();
