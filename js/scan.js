@@ -201,17 +201,27 @@ if (isHilo) {
       classes: "green darken-2"
     });
   }
-  // CASE 2: Manual quantity (known OR unknown part)
-  else {
+  // CASE 2: Manual quantity (FIXED)
+else {
+
+  // BLANK → default to 1
+  if (!inputValue) {
+    finalQty = 1;
+  } else {
     const normalized = inputValue.replace(/,/g, "");
-    const qty = Number(normalized);
+
+    const match = normalized.match(/[\d.]+/);
+	const qty = match ? Number(match[0]) : NaN;
+
     if (isNaN(qty) || qty <= 0) {
       M.toast({ html: "Cantidad inválida", classes: "orange darken-2" });
       return;
     }
 
     finalQty = qty;
-    recordScan(part, finalQty);
+  }
+
+  recordScan(part, finalQty);
 
     //  Different toast for unknown parts
     M.toast({
@@ -246,8 +256,7 @@ function recordScan(part, qty) {
 
   totalsMap[part] = (totalsMap[part] || 0) + qty;
 
-  // Instead of full re-render
-  renderScanLog();  // keep for now (safe version)
+  renderScanLog(); 
   renderTotals();
 
   saveState();
@@ -323,7 +332,7 @@ function renderTotals() {
 
   let rows = [];
 
-  // Build rows array FIRST (required for sorting)
+  // Build rows array FIRST
   for (const part in totalsMap) {
     const scanned = totalsMap[part] || 0;
     const daily = partsDB[part]?.daily || 0;
@@ -338,7 +347,7 @@ function renderTotals() {
     });
   }
 
-  // SORTING (RESTORED)
+  // SORTING 
   rows.sort((a, b) => {
     if (totalsSort.column === "color") {
       return totalsSort.direction === "asc"
@@ -470,7 +479,7 @@ function getCurrentShift(date = new Date()) {
   const SHIFT1_START = 6 * 60;        // 06:00
   const SHIFT1_END   = 15 * 60 + 30;  // 15:30
   const SHIFT2_START = 15 * 60 + 35;  // 15:35
-  const SHIFT2_END   = 25 * 60;       // 01:00 next day (treated as 25:00)
+  const SHIFT2_END   = 25 * 60;       // 01:00 next day 
 
   // Normalize after midnight
   const normalizedMinutes = minutes < 60 ? minutes + 24 * 60 : minutes;
@@ -506,7 +515,7 @@ function startAutoRefocus(delay = 5000) {
 }
 
 function clearForNextShift() {
-  // Optional confirmation (recommended)
+  // Optional confirmation 
   if (!confirm("¿Seguro que desea limpiar todo para el siguiente turno?")) {
     return;
   }
@@ -630,7 +639,7 @@ function renderScanSummary() {
 
   const totals = {};
 
-  // 🔹 Build totals per part (ONLY active scans)
+  //  Build totals per part (ONLY active scans)
   scanLogData.forEach(e => {
     if (e.transferred) return;
 
@@ -639,7 +648,7 @@ function renderScanSummary() {
 
   let index = 1;
 
-  // 🔹 Render rows (one per part)
+  //  Render rows (one per part)
   Object.keys(totals).forEach(part => {
     const total = totals[part];
 
@@ -661,7 +670,7 @@ function renderScanSummary() {
   });
 }
 function copyScanItem(part, total) {
-  const text = `${part}\t${total}`; // 👈 TAB between columns
+  const text = `${part}\t${total}`; 
 
   navigator.clipboard.writeText(text).then(() => {
     M.toast({
@@ -1046,7 +1055,7 @@ function handleQtyEdit(event, index) {
   if (event.key === "Enter") {
     event.preventDefault();
     updateQtyEdit(index, event.target.value);
-    event.target.blur(); // remove focus (clean UX)
+    event.target.blur(); // remove focus
   }
 }
 function handlePartEdit(event, index) {
@@ -1136,7 +1145,7 @@ function sortTotals(column) {
     totalsSort.direction = "asc";
   }
 
-  updateTotalsHeaderIcons(); //  add this
+  updateTotalsHeaderIcons(); 
   renderTotals();
 }
 function getSortIcon(column) {
@@ -1155,7 +1164,7 @@ function updateTotalsHeaderIcons() {
     const th = headers[key];
     if (!th) return;
 
-    let label = th.textContent.replace(/ ▲| ▼/g, ""); // clean old icons
+    let label = th.textContent.replace(/ ▲| ▼/g, "");
 
     if (totalsSort.column === key) {
       label += totalsSort.direction === "asc" ? " ▲" : " ▼";
