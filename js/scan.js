@@ -573,6 +573,10 @@ function sendScanLogToBottom() {
 
   renderScanLog();
   saveState();
+  
+  const modalElem = document.querySelector('.modal.open');
+  const instance = M.Modal.getInstance(modalElem);
+  instance.close();
 
   //  TOAST WITH UNDO BUTTON
   M.toast({

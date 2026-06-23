@@ -96,7 +96,7 @@ partSelect.addEventListener("change", () => {
 
   infoContainer.innerHTML = `
     <div class="info-line"><b>Descripción:</b> ${part.description || "n/a"}</div>
-    <div class="info-line"><b>Piezas (Pack):</b> ${part.pack ?? "n/a"}</div>
+    <div class="info-line"><b>Piezas (Pack):</b> ${part.piecesPerUnit ?? "n/a"}</div>
     <div class="info-line"><b>Peso:</b> ${part.weight ?? "n/a"}</div>
   `;
 });

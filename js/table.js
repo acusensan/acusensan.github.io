@@ -96,6 +96,8 @@ function renderOne() {
       item.textContent = `${i + 1}. ${l}`;
       item.style.padding = '15px';
 
+	  item.classList.add('location-item');
+	  
       if (i === currentIndex) {
         item.style.background = '#e3f2fd';
       }
