@@ -125,9 +125,25 @@ function renderOne() {
   card.className = 'location-card';
 
   const table = document.createElement('table');
+  const thead = document.createElement('thead');
+thead.innerHTML = `
+<tr>
+  <th>Part</th>
+  <th>Qty</th>
+  <th>Packs</th>
+  <th></th>
+</tr>`;
+table.appendChild(thead);
   const tbody = document.createElement('tbody');
 
   items.forEach(([part, qty], i) => {
+	  let divided = "";
+const partData = (window.partsDB || {})[part];
+
+if (partData && partData.pack && qty) {
+  const result = parseFloat(qty) / parseFloat(partData.pack);
+  divided = result.toFixed(2);
+}
     const tr = document.createElement('tr');
 
     if (window.checkedState[loc]?.[i]) {
@@ -141,6 +157,8 @@ function renderOne() {
     const qtyTd = document.createElement('td');
     qtyTd.textContent = qty;
     qtyTd.onclick = () => makeEditable(qtyTd, loc, i, 1);
+	const divTd = document.createElement('td');
+divTd.textContent = divided || "-";
 
     const actionTd = document.createElement('td');
 
@@ -189,6 +207,7 @@ text.innerHTML = `
 
     tr.appendChild(partTd);
     tr.appendChild(qtyTd);
+	tr.appendChild(divTd)
     tr.appendChild(actionTd);
 
     tbody.appendChild(tr);
