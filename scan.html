@@ -297,7 +297,13 @@
 
       <!-- Actions -->
       <ul class="right">
-        <li>
+		<li>
+		<button class="btn-small red darken-2 waves-effect waves-light" onclick="clearForNextShift()">Limpiar</button>
+		|
+          <button class="btn-small blue darken-2 waves-effect waves-light" onclick="exportScanLogCSV()">Exportar registro de escaneo</button>
+		  <button class="btn-small blue darken-2 waves-effect waves-light" onclick="exportTotalsCSV()">Exportar totales</button>
+        </li>
+		<li>
           <a href="#settings-modal" class="modal-trigger">
             <img src="icons/settings.svg" alt="Settings" class="nav-icon">
           </a>
@@ -338,7 +344,7 @@
         </div>
       </div>
 
-      <div class="card">
+      <!--<div class="card">
         <div class="card-content">
           <span class="card-title">Descargar Archivo</span>
           <button class="btn blue darken-2 waves-effect waves-light" onclick="exportScanLogCSV()">Exportar registro de escaneo</button>
@@ -346,7 +352,7 @@
         </div>
       </div>
 
-      <!-- Export Options -->
+      <!-- Export Options 
       <div class="card">
         <div class="card-content">
           <span class="card-title">Resetear Escaneo</span>
@@ -354,7 +360,7 @@
             <button class="btn red darken-2 waves-effect waves-light" onclick="clearForNextShift()">Limpiar</button>
           </div>
         </div>
-      </div>
+      </div> -->
 
     </div>
 
@@ -556,14 +562,17 @@
     <button class="modal-close btn grey">Cancelar</button>
   </div>
 </div>
-
-
+ 
 <!-- ===== FOOTER ===== -->
+
 <footer class="page-footer blue darken-4 center-align">
-  <div class="container center-align ">
-    © <span id="current-year"></span> Samuel Eduardo Renteria Quintero NCG
+  <div class="container center-align">
+    © <span id="current-year"></span>
+    Samuel Eduardo Renteria Quintero NCG
+    <span id="version"></span>
   </div>
 </footer>
+
 
 <!-- ===== SCRIPTS ===== -->
 <script src="js/materialize.min.js"></script>

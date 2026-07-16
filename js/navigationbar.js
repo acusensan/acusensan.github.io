@@ -56,3 +56,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+document.getElementById("current-year").textContent =
+    new Date().getFullYear();
+
+const version = getComputedStyle(document.documentElement)
+    .getPropertyValue("--app-version")
+    .replace(/"/g, "")
+    .trim();
+
+document.getElementById("version").textContent = version;

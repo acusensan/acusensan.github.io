@@ -261,9 +261,9 @@ function recordScan(part, qty) {
 
   saveState();
 
-  if (scanCount % AUTO_EXPORT_EVERY === 0) {
+  /*===if (scanCount % AUTO_EXPORT_EVERY === 0) {
     autoExportScanLog();
-  }
+  }===*/
 }
 
 
@@ -409,11 +409,20 @@ function deleteScan(index) {
 /*=== EXPORTS ===*/
 function downloadCSV(filename, rows) {
   const csv = rows.map(r => r.map(v => `"${v}"`).join(",")).join("\n");
+
   const blob = new Blob([csv], { type: "text/csv" });
   const a = document.createElement("a");
+
   a.href = URL.createObjectURL(blob);
   a.download = filename;
   a.click();
+
+  // Download notification
+  M.toast({
+    html: `Descargado: ${filename}`,
+    classes: "green darken-2",
+    displayLength: 3000
+  });
 }
 
 function exportScanLogCSV() {
@@ -468,7 +477,20 @@ function autoExportScanLog() {
 /*=== UTILITIES ===*/
 function getTimestamp() {
   const d = new Date();
-  return d.toISOString().replace(/[:.]/g, "-");
+
+  const date =
+    d.getFullYear() + "-" +
+    String(d.getMonth() + 1).padStart(2, "0") + "-" +
+    String(d.getDate()).padStart(2, "0");
+
+  const time = d.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true
+  })
+  .replace(" ", "");
+
+  return `${date}_${time}`;
 }
 
 function getCurrentShift(date = new Date()) {
