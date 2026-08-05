@@ -72,7 +72,7 @@
       overflow-y: auto;
       background: white;
       border-radius: 10px;
-      padding: 10px;
+      padding: 5px;
     }
 
     /*  Keep buttons fixed */
@@ -104,12 +104,16 @@
       text-align: right;
     }
     td, th {
-        padding: 20px 5px;
+        padding: 15px 2px;
         display: table-cell;
         text-align: left;
         vertical-align: middle;
         border-radius: 2px;
     }
+	th{
+		padding: 5px;
+	tr {
+		font-size: 14px;
     .done {
       background-color: #2e7d32 !important;
       color: white;
@@ -225,27 +229,22 @@
             <input class="file-path" placeholder="Upload CSV">
           </div>
         </div>
-        
-
-        
-      
-<div class="input-field" style="margin-top:10px; display:flex; gap:10px; align-items:center;">
-  <input id="new-location" type="text" placeholder="New Location">
-  <button id="add-location-btn" class="btn blue">Add</button>
-</div>
-
-
+       
+	<div class="input-field" style="margin-top:10px; display:flex; gap:10px; align-items:center;">
+	  <input id="new-location" type="text" placeholder="New Location">
+	  <button id="add-location-btn" class="btn blue">Add</button>
+	</div>
 
         <!-- DATA -->
         <div class="data-wrapper">
           <div id="table-container"></div>
-        </div>
+		</div>
         <div id="fixed-search" class="fixed-search"></div>
 
         <div class="nav-buttons">
-        <a id="backBtn" class="btn waves-effect waves-light blue-grey">Back</a>
-        <a id="nextBtn" class="btn waves-effect waves-light blue">Next</a>
-      </div>
+			<a id="backBtn" class="btn waves-effect waves-light blue-grey">Back</a>
+			<a id="nextBtn" class="btn waves-effect waves-light blue">Next</a>
+		</div>
 
     </div>
 

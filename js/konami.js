@@ -1,10 +1,10 @@
 /* =========================
-   ⚙️ SETTINGS
+    SETTINGS
 ========================= */
 let konamiEnabled = localStorage.getItem("konamiEnabled") !== "false";
 
 /* =========================
-   🎮 TOGGLE FUNCTION
+    TOGGLE FUNCTION
 ========================= */
 function toggleKonami() {
   konamiEnabled = !konamiEnabled;
@@ -12,13 +12,13 @@ function toggleKonami() {
 
   showKonamiHint(
     konamiEnabled
-      ? "✅ Easter egg ON"
-      : "⛔ Easter egg OFF"
+      ? "Easter egg ON"
+      : "Easter egg OFF"
   );
 }
 
 /* =========================
-   🎮 KONAMI CODE (DESKTOP)
+    KONAMI CODE (DESKTOP)
 ========================= */
 const konamiSequence = [
   "arrowup","arrowup",
@@ -31,12 +31,12 @@ const konamiSequence = [
 let userInput = [];
 
 document.addEventListener("keydown", (e) => {
-  if (!konamiEnabled) return; // ✅ DISABLE LOGIC
+  if (!konamiEnabled) return; //  DISABLE LOGIC
 
   const key = e.key.toLowerCase();
 
   if (userInput.length === 0) {
-    showKonamiHint("👀 Algo está pasando...");
+    showKonamiHint("Algo está pasando...");
   } else {
     showKonamiHint("Sigue adelante...");
   }
@@ -62,7 +62,7 @@ document.addEventListener("keydown", (e) => {
 });
 
 /* =========================
-   📱 KONAMI (MOBILE SWIPE)
+    KONAMI (MOBILE SWIPE)
 ========================= */
 const touchSequence = [
   "up","up",
@@ -103,7 +103,7 @@ document.addEventListener("touchend", (e) => {
   }
 
   if (touchInput.length === 0) {
-    showKonamiHint("👀 Secret input...");
+    showKonamiHint("Secret input...");
   } else {
     showKonamiHint("...");
   }
@@ -121,7 +121,7 @@ document.addEventListener("touchend", (e) => {
 });
 
 /* =========================
-   ✨ HINT UI
+   HINT UI
 ========================= */
 function showKonamiHint(text) {
   let hint = document.getElementById("konami-hint");
@@ -142,7 +142,7 @@ function showKonamiHint(text) {
 }
 
 /* =========================
-   🔥 BUTTON SMASH EFFECT
+   BUTTON SMASH EFFECT
 ========================= */
 function triggerButtonSmash(key) {
   const div = document.createElement("div");
@@ -166,7 +166,7 @@ function formatKey(key) {
 }
 
 /* =========================
-   💥 ACTIVATION
+   ACTIVATION
 ========================= */
 function activateEasterEgg() {
   document.body.style.animation = "screenFlash 0.4s 3, shake 0.2s";
@@ -174,7 +174,7 @@ function activateEasterEgg() {
 }
 
 /* =========================
-   🐍 SNAKE GAME
+   SNAKE GAME
 ========================= */
 function startSnakeGame() {
   const gameContainer = document.createElement("div");

@@ -658,7 +658,7 @@ document.addEventListener("click", () => {
   });
 });
 
-/*=== Summar ===*/
+/*=== Summary ===*/
 function renderScanSummary() {
   const body = document.getElementById("scanSummaryBody");
   body.innerHTML = "";

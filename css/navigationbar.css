@@ -1,5 +1,5 @@
 :root {
-    --app-version: "v1.3";
+    --app-version: "v1.4";
 	
 }
 
@@ -25,6 +25,7 @@ nav {
     top: 0;
     width: 100%;
     z-index: 1000; /* Ensure it stays above other elements */
+	
 }
 
   .no-select {
@@ -149,9 +150,13 @@ main {
 .dark-mode #itemDisplay ul,
 .dark-mode #itemDisplay li,
 .dark-mode #itemDisplay li,
-.dark-mode .collection-item {
+.dark-mode .collection-item 
+table.striped > tbody > tr.exceeded{
     background-color: #1e1e1e;
     color: #ffffff !important;
+}
+.dark-mode .exceeded {
+	background-color: red;
 }
 
 .dark-mode .input-field select,

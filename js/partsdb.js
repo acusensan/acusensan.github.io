@@ -1,11 +1,10 @@
 const partsDB = {};
 
 partsDB["10686"] = {
-  "description": "BW/WIRE ZP (3mm/2.5K.G)",
   "pack": 2.5,
   "cost": 73.7478,
   "weight": 2703,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 2.5,
   "line": "Misc",
   "daily": 0.8,
   "kanban": 1,
@@ -14,11 +13,10 @@ partsDB["10686"] = {
 };
 
 partsDB["170480"] = {
-  "description": "VELCRO HOOK 1\" BLACK",
   "pack": 250,
   "cost": 0.2973,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Velcro",
   "daily": 0,
   "kanban": 1,
@@ -27,11 +25,10 @@ partsDB["170480"] = {
 };
 
 partsDB["190562"] = {
-  "description": "HOOK 088-0199",
   "pack": 500,
   "cost": 0.2385,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Velcro",
   "daily": 388.6,
   "kanban": 1,
@@ -40,11 +37,10 @@ partsDB["190562"] = {
 };
 
 partsDB["346779"] = {
-  "description": "BINDING FOLD 1 1/8\" 195A",
   "pack": 300,
   "cost": 0.5,
   "weight": 4035,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 300,
   "line": "Misc",
   "daily": 0,
   "kanban": 1,
@@ -53,11 +49,10 @@ partsDB["346779"] = {
 };
 
 partsDB["346803"] = {
-  "description": "BINDING FOLD 1 1/8\" 110D",
   "pack": 300,
   "cost": 0.5,
   "weight": 4035,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 300,
   "line": "Misc",
   "daily": 678.2,
   "kanban": 1,
@@ -66,7 +61,6 @@ partsDB["346803"] = {
 };
 
 partsDB["L002316235NCPAB"] = {
-  "description": "BEADED TIE-DOWN 25X955MM",
   "pack": 500,
   "cost": 0.2328,
   "weight": 381,
@@ -79,7 +73,6 @@ partsDB["L002316235NCPAB"] = {
 };
 
 partsDB["L002401087NCPAC"] = {
-  "description": "RET FLAT 5258 25X245MM",
   "pack": 1000,
   "cost": 0.0386,
   "weight": 102,
@@ -92,7 +85,6 @@ partsDB["L002401087NCPAC"] = {
 };
 
 partsDB["L002401088NCPAC"] = {
-  "description": "RET FLAT 5258 25X255MM",
   "pack": 1000,
   "cost": 0.0402,
   "weight": 106,
@@ -105,7 +97,6 @@ partsDB["L002401088NCPAC"] = {
 };
 
 partsDB["L002401089NCPAD"] = {
-  "description": "TIE-DOWN 5258 25X430MM",
   "pack": 1000,
   "cost": 0.0778,
   "weight": 175,
@@ -118,7 +109,6 @@ partsDB["L002401089NCPAD"] = {
 };
 
 partsDB["L002401090NCPAD"] = {
-  "description": "TIE-DOWN 5258 25X420MM",
   "pack": 1000,
   "cost": 0.076,
   "weight": 165,
@@ -131,7 +121,6 @@ partsDB["L002401090NCPAD"] = {
 };
 
 partsDB["L002401091NCPAB"] = {
-  "description": "TIE-DOWN 5258 30X160MM",
   "pack": 1000,
   "cost": 0.0264,
   "weight": 70,
@@ -144,7 +133,6 @@ partsDB["L002401091NCPAB"] = {
 };
 
 partsDB["L002316236NCPAA"] = {
-  "description": "J-RET D1805 24X120 MM",
   "pack": 1800,
   "cost": 0.0326,
   "weight": 153,
@@ -157,7 +145,6 @@ partsDB["L002316236NCPAA"] = {
 };
 
 partsDB["L002316237NCPAA"] = {
-  "description": "J-RET D1805 24X200 MM",
   "pack": 1000,
   "cost": 0.0556,
   "weight": 263,
@@ -170,7 +157,6 @@ partsDB["L002316237NCPAA"] = {
 };
 
 partsDB["L002316238NCPAA"] = {
-  "description": "J-RET D1697 21.7X250 MM",
   "pack": 1200,
   "cost": 0.0576,
   "weight": 200,
@@ -183,7 +169,6 @@ partsDB["L002316238NCPAA"] = {
 };
 
 partsDB["L002316951NCPAC"] = {
-  "description": "STIFFENER PP 260X320MM",
   "pack": 80,
   "cost": 0.6008,
   "weight": 2791,
@@ -196,7 +181,6 @@ partsDB["L002316951NCPAC"] = {
 };
 
 partsDB["L002401092NCPAA"] = {
-  "description": "J-RET 721 28.5X625MM",
   "pack": 350,
   "cost": 0.2262,
   "weight": 819,
@@ -209,7 +193,6 @@ partsDB["L002401092NCPAA"] = {
 };
 
 partsDB["L002481117NCPAA"] = {
-  "description": "J-RET D721 28.5X240 MM",
   "pack": 1100,
   "cost": 0.0643,
   "weight": 286,
@@ -222,11 +205,10 @@ partsDB["L002481117NCPAA"] = {
 };
 
 partsDB["5CC-CH-PLF8-645D"] = {
-  "description": "ZIPPER CHAIN 5CC-CH-PLF8",
   "pack": 766,
   "cost": 0.7315,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
   "daily": 498,
   "kanban": 1,
@@ -235,11 +217,10 @@ partsDB["5CC-CH-PLF8-645D"] = {
 };
 
 partsDB["L00144987006HAA"] = {
-  "description": "ZIPPER CHAIN 5CC-CH-PLF8",
   "pack": 766,
   "cost": 0.7315,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
   "daily": 55.4,
   "kanban": 1,
@@ -248,11 +229,10 @@ partsDB["L00144987006HAA"] = {
 };
 
 partsDB["L001449870U52AA"] = {
-  "description": "ZIPPER CHAIN U52 BLACK",
   "pack": 766,
   "cost": 0.6401,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
   "daily": 2832.2,
   "kanban": 3,
@@ -261,7 +241,6 @@ partsDB["L001449870U52AA"] = {
 };
 
 partsDB["L002401093NCPAA"] = {
-  "description": "J-RET D1805 28.5X370 MM",
   "pack": 650,
   "cost": 0.1258,
   "weight": 459,
@@ -274,11 +253,10 @@ partsDB["L002401093NCPAA"] = {
 };
 
 partsDB["255S5-195A"] = {
-  "description": "ZIPPER CHAIN YKK ITEM",
   "pack": 766,
   "cost": 0.2164,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
   "daily": 47,
   "kanban": 1,
@@ -287,11 +265,10 @@ partsDB["255S5-195A"] = {
 };
 
 partsDB["L00180249345DAA"] = {
-  "description": "ZIPPER ASSEM L435MM 45D",
   "pack": 1000,
   "cost": 0.278,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
   "daily": 12.8,
   "kanban": 2,
@@ -300,11 +277,10 @@ partsDB["L00180249345DAA"] = {
 };
 
 partsDB["L001802493GKAAA"] = {
-  "description": "ZIPPER ASSEM L435MM GKA",
   "pack": 1000,
   "cost": 0.278,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
   "daily": 460.8,
   "kanban": 2,
@@ -313,11 +289,10 @@ partsDB["L001802493GKAAA"] = {
 };
 
 partsDB["L0816049AA0109X"] = {
-  "description": "ZIPPER 5/8 W32.5.L535MM",
   "pack": 1000,
   "cost": 0.255,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
   "daily": 260.8,
   "kanban": 1,
@@ -326,11 +301,10 @@ partsDB["L0816049AA0109X"] = {
 };
 
 partsDB["L0816049AA0145D"] = {
-  "description": "ZIPPER 5/8 W32.5.L535MM",
   "pack": 1000,
   "cost": 0.255,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
   "daily": 461.6,
   "kanban": 2,
@@ -339,11 +313,10 @@ partsDB["L0816049AA0145D"] = {
 };
 
 partsDB["L0816049AA01GKA"] = {
-  "description": "ZIPPER 5/8 W32.5.L535MM",
   "pack": 1000,
   "cost": 0.255,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
   "daily": 10143.6,
   "kanban": 5,
@@ -352,7 +325,6 @@ partsDB["L0816049AA01GKA"] = {
 };
 
 partsDB["L0571635AA01"] = {
-  "description": "J-RET D3497 22.4X45MM",
   "pack": 5000,
   "cost": 0.0114,
   "weight": 52,
@@ -365,7 +337,6 @@ partsDB["L0571635AA01"] = {
 };
 
 partsDB["L0571636AA01"] = {
-  "description": "J-RET D3497 22.4X80MM",
   "pack": 3000,
   "cost": 0.017,
   "weight": 91,
@@ -378,7 +349,6 @@ partsDB["L0571636AA01"] = {
 };
 
 partsDB["L0572828AA03"] = {
-  "description": "RET FLT STRP 67X270MM",
   "pack": 750,
   "cost": 0.0947,
   "weight": 377,
@@ -391,7 +361,6 @@ partsDB["L0572828AA03"] = {
 };
 
 partsDB["L0591424AA01"] = {
-  "description": "J-RET 1588 28.95X80MM",
   "pack": 1500,
   "cost": 0.0173,
   "weight": 94,
@@ -404,7 +373,6 @@ partsDB["L0591424AA01"] = {
 };
 
 partsDB["L0668944AA01"] = {
-  "description": "J-RET D2140 35X60MM",
   "pack": 1500,
   "cost": 0.0217,
   "weight": 104,
@@ -417,7 +385,6 @@ partsDB["L0668944AA01"] = {
 };
 
 partsDB["L002866832NCPAA"] = {
-  "description": "J-RET 30.1X335MM",
   "pack": 500,
   "cost": 0.0915,
   "weight": 375,
@@ -430,7 +397,6 @@ partsDB["L002866832NCPAA"] = {
 };
 
 partsDB["L002890609NCPAA"] = {
-  "description": "J-RET D975 30.1X320MM",
   "pack": 500,
   "cost": 0.0874,
   "weight": 371,
@@ -443,7 +409,6 @@ partsDB["L002890609NCPAA"] = {
 };
 
 partsDB["L0571668AA01"] = {
-  "description": "A-RET D2384 25X100MM",
   "pack": 1000,
   "cost": 0.0269,
   "weight": 159,
@@ -456,7 +421,6 @@ partsDB["L0571668AA01"] = {
 };
 
 partsDB["L0592046AA01"] = {
-  "description": "J-RET D976 25X60MM BLK",
   "pack": 4700,
   "cost": 0.0152,
   "weight": 66,
@@ -469,7 +433,6 @@ partsDB["L0592046AA01"] = {
 };
 
 partsDB["L0676165AA01"] = {
-  "description": "RET FLT STRP 25X290MM",
   "pack": 2000,
   "cost": 0.0442,
   "weight": 128,
@@ -482,7 +445,6 @@ partsDB["L0676165AA01"] = {
 };
 
 partsDB["L002866833NCPAA"] = {
-  "description": "J-RET D975 30.1X735MM",
   "pack": 150,
   "cost": 0.2007,
   "weight": 844,
@@ -495,7 +457,6 @@ partsDB["L002866833NCPAA"] = {
 };
 
 partsDB["L002890610NCPAA"] = {
-  "description": "J-RET D975 30.1X720MM",
   "pack": 150,
   "cost": 0.1966,
   "weight": 811,
@@ -508,7 +469,6 @@ partsDB["L002890610NCPAA"] = {
 };
 
 partsDB["L0676192AA01"] = {
-  "description": "RET FLT STRP 25X285MM",
   "pack": 2000,
   "cost": 0.0436,
   "weight": 124,
@@ -521,7 +481,6 @@ partsDB["L0676192AA01"] = {
 };
 
 partsDB["L0676195AA01"] = {
-  "description": "RET FLT STRP 25X350MM",
   "pack": 1800,
   "cost": 0.0537,
   "weight": 152,
@@ -534,7 +493,6 @@ partsDB["L0676195AA01"] = {
 };
 
 partsDB["1561-305SAA"] = {
-  "description": "J RET 1561 305MM",
   "pack": 950,
   "cost": 0.1099,
   "weight": 290,
@@ -547,7 +505,6 @@ partsDB["1561-305SAA"] = {
 };
 
 partsDB["1561-345SAA"] = {
-  "description": "J RET 1561 345MM",
   "pack": 750,
   "cost": 0.094,
   "weight": 324,
@@ -560,7 +517,6 @@ partsDB["1561-345SAA"] = {
 };
 
 partsDB["2232B910F00MA"] = {
-  "description": "J-RET FABRIC 910mm BLK",
   "pack": 175,
   "cost": 0.1758,
   "weight": 1364,
@@ -573,7 +529,6 @@ partsDB["2232B910F00MA"] = {
 };
 
 partsDB["STFR-415X122FAC"] = {
-  "description": "STIFFENER 415X122 MM",
   "pack": 300,
   "cost": 0.2248,
   "weight": 766,
@@ -586,11 +541,10 @@ partsDB["STFR-415X122FAC"] = {
 };
 
 partsDB["L002162447NCPAA"] = {
-  "description": "BRIDED POLY/NEO 12.700MM",
   "pack": 144,
   "cost": 0.3706,
   "weight": 1346,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 144,
   "line": "Misc",
   "daily": 95.2,
   "kanban": 1,
@@ -599,11 +553,10 @@ partsDB["L002162447NCPAA"] = {
 };
 
 partsDB["L0575410AA01"] = {
-  "description": "VELCRO LOOP BLK TAPE 1\"",
   "pack": 1000,
   "cost": 0.2446,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Velcro",
   "daily": 1197.6,
   "kanban": 1,
@@ -612,11 +565,10 @@ partsDB["L0575410AA01"] = {
 };
 
 partsDB["L0633654AA01"] = {
-  "description": "VELCRO LOOP 30MM WIDE",
   "pack": 328,
   "cost": 0.0582,
   "weight": 974,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 109.33,
   "line": "Velcro",
   "daily": 4930,
   "kanban": 5,
@@ -625,11 +577,10 @@ partsDB["L0633654AA01"] = {
 };
 
 partsDB["KRG25LTCA"] = {
-  "description": "TRICOT LOOP PROTECTOR",
   "pack": 500,
   "cost": 0.1876,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Velcro",
   "daily": 50.2,
   "kanban": 1,
@@ -638,11 +589,10 @@ partsDB["KRG25LTCA"] = {
 };
 
 partsDB["L0429142AA02"] = {
-  "description": "TRICOT PROTECT KRG25LTCA",
   "pack": 2000,
   "cost": 0.1533,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Velcro",
   "daily": 2939,
   "kanban": 2,
@@ -651,11 +601,10 @@ partsDB["L0429142AA02"] = {
 };
 
 partsDB["L0495624AA01"] = {
-  "description": "ELASTIC 1\" BLK BRAIDDE",
   "pack": 720,
   "cost": 0.8637,
   "weight": 1011,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 45,
   "line": "Misc",
   "daily": 419,
   "kanban": 1,
@@ -664,11 +613,10 @@ partsDB["L0495624AA01"] = {
 };
 
 partsDB["L0549303AA01"] = {
-  "description": "WELT-PLASTIC 701156",
   "pack": 2624.672,
   "cost": 0.2165,
   "weight": 1989,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 874.89,
   "line": "Misc",
   "daily": 7112.6,
   "kanban": 2,
@@ -677,11 +625,10 @@ partsDB["L0549303AA01"] = {
 };
 
 partsDB["L0575409AA01"] = {
-  "description": "VELCRO HOOK MUSHRM 1\"X2\"",
   "pack": 1050,
   "cost": 0.254,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Velcro",
   "daily": 130.4,
   "kanban": 1,
@@ -690,7 +637,6 @@ partsDB["L0575409AA01"] = {
 };
 
 partsDB["L001434100NCPAA"] = {
-  "description": "J-RET D1805 24X45MM",
   "pack": 4400,
   "cost": 0.0127,
   "weight": 57,
@@ -703,7 +649,6 @@ partsDB["L001434100NCPAA"] = {
 };
 
 partsDB["L001518304NCPAA"] = {
-  "description": "J-RET 721 28.5X55MM 31XX",
   "pack": 3000,
   "cost": 0.0197,
   "weight": 64,
@@ -716,7 +661,6 @@ partsDB["L001518304NCPAA"] = {
 };
 
 partsDB["L002312383NCPAC"] = {
-  "description": "J-RET D1805 24X290 MM",
   "pack": 700,
   "cost": 0.1249,
   "weight": 264,
@@ -729,7 +673,6 @@ partsDB["L002312383NCPAC"] = {
 };
 
 partsDB["L002479502NCPAA"] = {
-  "description": "RET-ARROW 687 15X308MM",
   "pack": 1900,
   "cost": 0.0517,
   "weight": 147,
@@ -742,7 +685,6 @@ partsDB["L002479502NCPAA"] = {
 };
 
 partsDB["L002618780NCPAA"] = {
-  "description": "J-RET 1697 21.7x330MM",
   "pack": 900,
   "cost": 0.1031,
   "weight": 263,
@@ -755,7 +697,6 @@ partsDB["L002618780NCPAA"] = {
 };
 
 partsDB["L0430654AA01"] = {
-  "description": "J-RET 1805 W24MM; L25MM",
   "pack": 5000,
   "cost": 0.007,
   "weight": 32,
@@ -768,7 +709,6 @@ partsDB["L0430654AA01"] = {
 };
 
 partsDB["L002215045NCPAA"] = {
-  "description": "ARROW RET 687 W15XL240MM",
   "pack": 2500,
   "cost": 0.0549,
   "weight": 122,
@@ -781,7 +721,6 @@ partsDB["L002215045NCPAA"] = {
 };
 
 partsDB["L002312377NCPAA"] = {
-  "description": "J-RET D1805 24X290 MM LH",
   "pack": 700,
   "cost": 0.1158,
   "weight": 284,
@@ -794,7 +733,6 @@ partsDB["L002312377NCPAA"] = {
 };
 
 partsDB["L002312378NCPAA"] = {
-  "description": "J-RET D1805 24X290 MM RH",
   "pack": 700,
   "cost": 0.1158,
   "weight": 298,
@@ -807,7 +745,6 @@ partsDB["L002312378NCPAA"] = {
 };
 
 partsDB["L002312379NCPAC"] = {
-  "description": "J-RET D1805 24X580 MM",
   "pack": 375,
   "cost": 0.2365,
   "weight": 509,
@@ -820,7 +757,6 @@ partsDB["L002312379NCPAC"] = {
 };
 
 partsDB["L002396469NCPAA"] = {
-  "description": "STIFFENER PP 180X20MM",
   "pack": 2600,
   "cost": 0.0423,
   "weight": 91,
@@ -833,7 +769,6 @@ partsDB["L002396469NCPAA"] = {
 };
 
 partsDB["L002479499NCPAA"] = {
-  "description": "J-RET D1805 24X65MM",
   "pack": 3600,
   "cost": 0.0326,
   "weight": 82,
@@ -846,11 +781,10 @@ partsDB["L002479499NCPAA"] = {
 };
 
 partsDB["255S5-184D"] = {
-  "description": "ZIPPER CHAIN YKK ITEM",
   "pack": 766,
   "cost": 0.2164,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
   "daily": 959.2,
   "kanban": 1,
@@ -859,7 +793,6 @@ partsDB["255S5-184D"] = {
 };
 
 partsDB["L002215046NCPAA"] = {
-  "description": "ARROW RET 687 W15XL170MM",
   "pack": 3500,
   "cost": 0.0304,
   "weight": 86,
@@ -872,7 +805,6 @@ partsDB["L002215046NCPAA"] = {
 };
 
 partsDB["L002316914NCPAA"] = {
-  "description": "J-RET D1697 21.7X45 MM",
   "pack": 6700,
   "cost": 0.0145,
   "weight": 37,
@@ -885,7 +817,6 @@ partsDB["L002316914NCPAA"] = {
 };
 
 partsDB["L002316915NCPAA"] = {
-  "description": "J-RET D721 28.5X55 MM",
   "pack": 1200,
   "cost": 0.041,
   "weight": 191,
@@ -898,11 +829,10 @@ partsDB["L002316915NCPAA"] = {
 };
 
 partsDB["L0449870AA0102F"] = {
-  "description": "ZIPPER CHAIN 5CC-CH-PLF8",
   "pack": 766,
   "cost": 0.7315,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
   "daily": 154.4,
   "kanban": 1,
@@ -911,11 +841,10 @@ partsDB["L0449870AA0102F"] = {
 };
 
 partsDB["L0449870AA0164D"] = {
-  "description": "ZIPPER CHAIN 5CC-CH-PLF8",
   "pack": 766,
   "cost": 0.7315,
   "weight": null,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 0,
   "line": "Zipper",
   "daily": 185.8,
   "kanban": 1,
@@ -924,7 +853,6 @@ partsDB["L0449870AA0164D"] = {
 };
 
 partsDB["L001466311NCPAA"] = {
-  "description": "ARROW RET W15XL155MM",
   "pack": 3000,
   "cost": 0.0198,
   "weight": 74,
@@ -937,7 +865,6 @@ partsDB["L001466311NCPAA"] = {
 };
 
 partsDB["L001797262NCPAA"] = {
-  "description": "RET FLAT STRIP 25X265MM",
   "pack": 2000,
   "cost": 0.0385,
   "weight": 114,
@@ -950,7 +877,6 @@ partsDB["L001797262NCPAA"] = {
 };
 
 partsDB["L002171015NCPAA"] = {
-  "description": "RET FLAT STRIP 25X420MM",
   "pack": 1000,
   "cost": 0.0611,
   "weight": 176,
@@ -963,7 +889,6 @@ partsDB["L002171015NCPAA"] = {
 };
 
 partsDB["L001637636NCPAA"] = {
-  "description": "J-RET 25.4X335MM",
   "pack": 700,
   "cost": 0.0949,
   "weight": null,
@@ -976,7 +901,6 @@ partsDB["L001637636NCPAA"] = {
 };
 
 partsDB["L001676232NCPAA"] = {
-  "description": "J-RET D3167 25.4X320MM",
   "pack": 800,
   "cost": 0.0561,
   "weight": 310,
@@ -989,7 +913,6 @@ partsDB["L001676232NCPAA"] = {
 };
 
 partsDB["L001797260NCPAA"] = {
-  "description": "J-RET D3167 25.4X720MM",
   "pack": 350,
   "cost": 0.1015,
   "weight": 960,
@@ -1002,7 +925,6 @@ partsDB["L001797260NCPAA"] = {
 };
 
 partsDB["L0637636AA01"] = {
-  "description": "J-RET 25.4X335MM",
   "pack": 700,
   "cost": 0.0745,
   "weight": 330,
@@ -1015,7 +937,6 @@ partsDB["L0637636AA01"] = {
 };
 
 partsDB["L0639918AA01"] = {
-  "description": "J-RET D976 25.4X735MM",
   "pack": 300,
   "cost": 0.1515,
   "weight": 810,
@@ -1028,7 +949,6 @@ partsDB["L0639918AA01"] = {
 };
 
 partsDB["L0676232AA01"] = {
-  "description": "J-RET D3167 25.4X320MM",
   "pack": 700,
   "cost": 0.0542,
   "weight": 310,
@@ -1041,7 +961,6 @@ partsDB["L0676232AA01"] = {
 };
 
 partsDB["L0797260AA01"] = {
-  "description": "J-RET D3167 25.4X720MM",
   "pack": 400,
   "cost": 0.1184,
   "weight": 960,
@@ -1054,7 +973,6 @@ partsDB["L0797260AA01"] = {
 };
 
 partsDB["L0571640AA01"] = {
-  "description": "RET FLT STRP 25X50MM",
   "pack": 10000,
   "cost": 0.0088,
   "weight": 20,
@@ -1067,7 +985,6 @@ partsDB["L0571640AA01"] = {
 };
 
 partsDB["L0592042AA01"] = {
-  "description": "J-RET D3497 22.4X35MM",
   "pack": 6000,
   "cost": 0.0094,
   "weight": 40,
@@ -1080,7 +997,6 @@ partsDB["L0592042AA01"] = {
 };
 
 partsDB["L0592045AA04"] = {
-  "description": "RET FLT STRP 25.4X250MM",
   "pack": 3000,
   "cost": 0.0322,
   "weight": 98,
@@ -1093,7 +1009,6 @@ partsDB["L0592045AA04"] = {
 };
 
 partsDB["L0597009AA02"] = {
-  "description": "RET FLT STRP 154X42MM",
   "pack": 5000,
   "cost": 0.0486,
   "weight": 57,
@@ -1106,7 +1021,6 @@ partsDB["L0597009AA02"] = {
 };
 
 partsDB["L0682843AA01"] = {
-  "description": "RET FLAT STRIP 25X330MM",
   "pack": 1700,
   "cost": 0.0494,
   "weight": 143,
@@ -1119,7 +1033,6 @@ partsDB["L0682843AA01"] = {
 };
 
 partsDB["L001802491NCPAA"] = {
-  "description": "RET FLAT STRIP 25X380MM",
   "pack": 1000,
   "cost": 0.058,
   "weight": 162,
@@ -1132,7 +1045,6 @@ partsDB["L001802491NCPAA"] = {
 };
 
 partsDB["L001802492NCPAA"] = {
-  "description": "RET FLAT STRIP 25X360MM",
   "pack": 1000,
   "cost": 0.055,
   "weight": 156,
@@ -1145,7 +1057,6 @@ partsDB["L001802492NCPAA"] = {
 };
 
 partsDB["L0681545AA01"] = {
-  "description": "RET FLAT SRIP 25MMX220MM",
   "pack": 2800,
   "cost": 0.0339,
   "weight": 98,
@@ -1158,7 +1069,6 @@ partsDB["L0681545AA01"] = {
 };
 
 partsDB["L0681546AA01"] = {
-  "description": "RET FLAT SRIP 25MMX325MM",
   "pack": 1500,
   "cost": 0.0491,
   "weight": 142,
@@ -1171,7 +1081,6 @@ partsDB["L0681546AA01"] = {
 };
 
 partsDB["L0681547AA01"] = {
-  "description": "RET FLAT SRIP 25MMX305MM",
   "pack": 1500,
   "cost": 0.0463,
   "weight": 127,
@@ -1184,7 +1093,6 @@ partsDB["L0681547AA01"] = {
 };
 
 partsDB["L0685445AA01"] = {
-  "description": "FLT STRP STIFF 20X310MM",
   "pack": 1300,
   "cost": 0.0528,
   "weight": 222,
@@ -1197,7 +1105,6 @@ partsDB["L0685445AA01"] = {
 };
 
 partsDB["L0649100AA01"] = {
-  "description": "A-RET D2384 25X35MM",
   "pack": 3000,
   "cost": 0.0112,
   "weight": 56,
@@ -1210,7 +1117,6 @@ partsDB["L0649100AA01"] = {
 };
 
 partsDB["L0649101AA01"] = {
-  "description": "A-RET D2384 25X75MM",
   "pack": 1400,
   "cost": 0.0239,
   "weight": 121,
@@ -1223,7 +1129,6 @@ partsDB["L0649101AA01"] = {
 };
 
 partsDB["L0676166AA01"] = {
-  "description": "RET FLT STRP 25X220MM",
   "pack": 2300,
   "cost": 0.0488,
   "weight": 93,
@@ -1236,7 +1141,6 @@ partsDB["L0676166AA01"] = {
 };
 
 partsDB["L0676168AA01"] = {
-  "description": "RET FLT STRP 25X290MM",
   "pack": 1750,
   "cost": 0.0609,
   "weight": 125,
@@ -1249,7 +1153,6 @@ partsDB["L0676168AA01"] = {
 };
 
 partsDB["L0676177AA01"] = {
-  "description": "RET FLT STRP 25X325MM",
   "pack": 2000,
   "cost": 0.0489,
   "weight": 142,
@@ -1262,7 +1165,6 @@ partsDB["L0676177AA01"] = {
 };
 
 partsDB["L002460234NCPAA"] = {
-  "description": "J RETAINER 26.67X270MM",
   "pack": 800,
   "cost": 0.1308,
   "weight": 500,
@@ -1275,7 +1177,6 @@ partsDB["L002460234NCPAA"] = {
 };
 
 partsDB["L002798840NCPAB"] = {
-  "description": "OKIE TIEDOWN FL 30X290MM",
   "pack": 2100,
   "cost": 0.0521,
   "weight": 102,
@@ -1288,7 +1189,6 @@ partsDB["L002798840NCPAB"] = {
 };
 
 partsDB["L002798841NCPAB"] = {
-  "description": "OKIE TIEDOWN FL 30X310MM",
   "pack": 2400,
   "cost": 0.0557,
   "weight": 108,
@@ -1301,7 +1201,6 @@ partsDB["L002798841NCPAB"] = {
 };
 
 partsDB["L002806946NCPAA"] = {
-  "description": "J RETAINER 26.7X70MM",
   "pack": 2000,
   "cost": 0.0333,
   "weight": 132,
@@ -1314,7 +1213,6 @@ partsDB["L002806946NCPAA"] = {
 };
 
 partsDB["L002806947NCPAA"] = {
-  "description": "RET J 305 26.7X80MM",
   "pack": 1800,
   "cost": 0.0389,
   "weight": 150,
@@ -1327,7 +1225,6 @@ partsDB["L002806947NCPAA"] = {
 };
 
 partsDB["L002807250NCPAA"] = {
-  "description": "RET J 305 26.7X260MM",
   "pack": 500,
   "cost": 0.126,
   "weight": 486,
@@ -1340,7 +1237,6 @@ partsDB["L002807250NCPAA"] = {
 };
 
 partsDB["L002907223NCPAA"] = {
-  "description": "ARROW RET 267 25.4X100MM",
   "pack": 1000,
   "cost": 0.0425,
   "weight": 76,
@@ -1353,7 +1249,6 @@ partsDB["L002907223NCPAA"] = {
 };
 
 partsDB["794-100SAA"] = {
-  "description": "J-RET D794 100mm  BLK",
   "pack": 1500,
   "cost": 0.0395,
   "weight": 129,
@@ -1366,7 +1261,6 @@ partsDB["794-100SAA"] = {
 };
 
 partsDB["L00180970202FAA"] = {
-  "description": "PULLSTRAP 9.5X70MM 02F",
   "pack": 2000,
   "cost": 0.0911,
   "weight": 12,
@@ -1379,7 +1273,6 @@ partsDB["L00180970202FAA"] = {
 };
 
 partsDB["L00180970206HAA"] = {
-  "description": "PULLSTRAP 9.5X70MM 06H",
   "pack": 2000,
   "cost": 0.1384,
   "weight": 12,
@@ -1392,7 +1285,6 @@ partsDB["L00180970206HAA"] = {
 };
 
 partsDB["L00180970209XAA"] = {
-  "description": "PULLSTRAP 9.5X70MM 09X",
   "pack": 2000,
   "cost": 0.0911,
   "weight": 12,
@@ -1405,7 +1297,6 @@ partsDB["L00180970209XAA"] = {
 };
 
 partsDB["L00180970245DAA"] = {
-  "description": "PULLSTRAP 9.5X70MM 45D",
   "pack": 2000,
   "cost": 0.0911,
   "weight": 12,
@@ -1418,7 +1309,6 @@ partsDB["L00180970245DAA"] = {
 };
 
 partsDB["L00180970264DAA"] = {
-  "description": "PULLSTRAP 9.5X70MM 64D",
   "pack": 2000,
   "cost": 0.0911,
   "weight": 12,
@@ -1431,7 +1321,6 @@ partsDB["L00180970264DAA"] = {
 };
 
 partsDB["L001809702GKAAA"] = {
-  "description": "PULLSTRAP 9.5X70MM GKA",
   "pack": 2000,
   "cost": 0.0911,
   "weight": 12,
@@ -1444,7 +1333,6 @@ partsDB["L001809702GKAAA"] = {
 };
 
 partsDB["L001809702HXWAA"] = {
-  "description": "PULLSTRAP 9.5X70MM HXW",
   "pack": 2000,
   "cost": 0.0911,
   "weight": 12,
@@ -1457,11 +1345,10 @@ partsDB["L001809702HXWAA"] = {
 };
 
 partsDB["L002618822NCPAA"] = {
-  "description": "PIPING CORE 1MM ROLL",
   "pack": 1000,
   "cost": 0.0491,
   "weight": 1082,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 1000,
   "line": "Misc",
   "daily": 1714.8,
   "kanban": 2,
@@ -1470,7 +1357,6 @@ partsDB["L002618822NCPAA"] = {
 };
 
 partsDB["WRG16HMAA"] = {
-  "description": "APLIX HOOK 16MM",
   "pack": 500,
   "cost": 0.2054,
   "weight": null,
@@ -1483,7 +1369,6 @@ partsDB["WRG16HMAA"] = {
 };
 
 partsDB["WRG16LBAA"] = {
-  "description": "LOOP 5/8",
   "pack": 500,
   "cost": 0.3533,
   "weight": null,
@@ -1496,7 +1381,6 @@ partsDB["WRG16LBAA"] = {
 };
 
 partsDB["WRG25LBAA"] = {
-  "description": "VELCRO LOOP BLK TAPE 1\"",
   "pack": 500,
   "cost": 0.4018,
   "weight": null,
@@ -1509,7 +1393,6 @@ partsDB["WRG25LBAA"] = {
 };
 
 partsDB["WRG25MAAA"] = {
-  "description": "VELCRO HOOK MUSHRM 1\"X2\"",
   "pack": 1000,
   "cost": 0.3129,
   "weight": null,
@@ -1522,7 +1405,6 @@ partsDB["WRG25MAAA"] = {
 };
 
 partsDB["L0698195AA01"] = {
-  "description": "FLAT RET D5258 W30 L365",
   "pack": 800,
   "cost": 0.0416,
   "weight": 150,
@@ -1535,7 +1417,6 @@ partsDB["L0698195AA01"] = {
 };
 
 partsDB["L0706492AA02"] = {
-  "description": "RET FLAT D5258 30X300MM",
   "pack": 1500,
   "cost": 0.0431,
   "weight": 132,
@@ -1548,7 +1429,6 @@ partsDB["L0706492AA02"] = {
 };
 
 partsDB["L0724597AA01"] = {
-  "description": "RET FLAT 5258 W25 L265mm",
   "pack": 2000,
   "cost": 0.0307,
   "weight": 113,
@@ -1561,7 +1441,6 @@ partsDB["L0724597AA01"] = {
 };
 
 partsDB["L0736063AA01"] = {
-  "description": "J-RET 3127 W29XL240",
   "pack": 700,
   "cost": 0.0767,
   "weight": 419,
@@ -1574,7 +1453,6 @@ partsDB["L0736063AA01"] = {
 };
 
 partsDB["L0736066AA01"] = {
-  "description": "J-RET 3127 W29XL680",
   "pack": 125,
   "cost": 0.2138,
   "weight": 1104,
@@ -1587,7 +1465,6 @@ partsDB["L0736066AA01"] = {
 };
 
 partsDB["L002194708NCPAA"] = {
-  "description": "STF RET 25X30MM BLACK PP",
   "pack": 3300,
   "cost": 0.0152,
   "weight": 7,
@@ -1600,7 +1477,6 @@ partsDB["L002194708NCPAA"] = {
 };
 
 partsDB["L0676258AA05"] = {
-  "description": "RET FLAT STIF 108X142MM",
   "pack": 2600,
   "cost": 0.056,
   "weight": 109,
@@ -1613,7 +1489,6 @@ partsDB["L0676258AA05"] = {
 };
 
 partsDB["L0706490AA03"] = {
-  "description": "RET FLAT D5258 25X255MM",
   "pack": 2000,
   "cost": 0.0348,
   "weight": 98,
@@ -1626,7 +1501,6 @@ partsDB["L0706490AA03"] = {
 };
 
 partsDB["L0706491AA03"] = {
-  "description": "RET FLAT D5258 25X370MM",
   "pack": 1500,
   "cost": 0.0504,
   "weight": 143,
@@ -1639,7 +1513,6 @@ partsDB["L0706491AA03"] = {
 };
 
 partsDB["L0776538AA01"] = {
-  "description": "J-RET D3890 W25.6 L160MM",
   "pack": 500,
   "cost": 0.0652,
   "weight": 280,
@@ -1652,7 +1525,6 @@ partsDB["L0776538AA01"] = {
 };
 
 partsDB["L0780891AA01"] = {
-  "description": "J-RET D305 W26.67 L190MM",
   "pack": 750,
   "cost": 0.0627,
   "weight": 344,
@@ -1665,7 +1537,6 @@ partsDB["L0780891AA01"] = {
 };
 
 partsDB["5CC-DF6SLSEP"] = {
-  "description": "ZIPPER SLIDER CD391 2013",
   "pack": 3000,
   "cost": 0.17,
   "weight": 129,
@@ -1678,12 +1549,11 @@ partsDB["5CC-DF6SLSEP"] = {
 };
 
 partsDB["L0672525AA01"] = {
-  "description": "WELT-PLASTIC, 124830;",
   "pack": 2000,
-  "cost": 0.0900,
+  "cost": 0.09,
   "weight": null,
   "piecesPerUnit": null,
-  "line": "MISC",
+  "line": "Misc",
   "daily": 164.6,
   "kanban": 1,
   "location": "APC0203",
@@ -1691,7 +1561,6 @@ partsDB["L0672525AA01"] = {
 };
 
 partsDB["25ZZ5"] = {
-  "description": "ZIPPER SLIDER 580 BLACK",
   "pack": 6000,
   "cost": 0.0348,
   "weight": 60,
@@ -1704,7 +1573,6 @@ partsDB["25ZZ5"] = {
 };
 
 partsDB["L0148229AA02"] = {
-  "description": "AIR BAG TAG GM PROGRAMS",
   "pack": 500,
   "cost": 0.04,
   "weight": 103,
@@ -1717,7 +1585,6 @@ partsDB["L0148229AA02"] = {
 };
 
 partsDB["L0269501AA01"] = {
-  "description": "ELGIN CLIP ASSY 11X46MM",
   "pack": 750,
   "cost": 0.2425,
   "weight": 316,
@@ -1730,11 +1597,10 @@ partsDB["L0269501AA01"] = {
 };
 
 partsDB["L0617164AA01"] = {
-  "description": "LABEL ISO CHILD 40.6X44",
   "pack": 1000,
   "cost": 0.067,
   "weight": 438,
-  "piecesPerUnit": 20,
+  "piecesPerUnit": 1000,
   "line": "Misc",
   "daily": 362,
   "kanban": 1,
@@ -1743,7 +1609,6 @@ partsDB["L0617164AA01"] = {
 };
 
 partsDB["L0697064AA01"] = {
-  "description": "LABEL SAFETY TAG 20X64MM",
   "pack": 1000,
   "cost": 0.0472,
   "weight": 396,
@@ -1756,7 +1621,6 @@ partsDB["L0697064AA01"] = {
 };
 
 partsDB["Q010000839"] = {
-  "description": "ISO BUTTON BACK WHITE",
   "pack": 1000,
   "cost": 0.0306,
   "weight": 417,
@@ -1769,7 +1633,6 @@ partsDB["Q010000839"] = {
 };
 
 partsDB["Q92K204G19"] = {
-  "description": "ISO BUTTON CHARCOAL",
   "pack": 1000,
   "cost": 0.024,
   "weight": 342,
@@ -1782,7 +1645,6 @@ partsDB["Q92K204G19"] = {
 };
 
 partsDB["Q92K204G20"] = {
-  "description": "ISO BUTTON G20 A. BROWN",
   "pack": 1000,
   "cost": 0.024,
   "weight": 342,
@@ -1795,7 +1657,6 @@ partsDB["Q92K204G20"] = {
 };
 
 partsDB["L002799380NCPAA"] = {
-  "description": "STIFFENER 325X248 PP",
   "pack": 110,
   "cost": 0.8675,
   "weight": 2033,
@@ -1808,7 +1669,6 @@ partsDB["L002799380NCPAA"] = {
 };
 
 partsDB["L002806896NCPAA"] = {
-  "description": "OKIE TIEDOWN FL 25X250MM",
   "pack": 3000,
   "cost": 0.0375,
   "weight": 86,
@@ -1821,7 +1681,6 @@ partsDB["L002806896NCPAA"] = {
 };
 
 partsDB["L002806897NCPAA"] = {
-  "description": "OKIE TIEDOWN FL 25X255MM",
   "pack": 3000,
   "cost": 0.0382,
   "weight": 86,
@@ -1834,7 +1693,6 @@ partsDB["L002806897NCPAA"] = {
 };
 
 partsDB["L002914716NCPAA"] = {
-  "description": "STIFFENER PP 28X55MM 1.5",
   "pack": 5000,
   "cost": 0.0121,
   "weight": 38,
@@ -1847,7 +1705,6 @@ partsDB["L002914716NCPAA"] = {
 };
 
 partsDB["L003142004NCPAA"] = {
-  "description": "ARROW RET 15.5X452MM",
   "pack": 900,
   "cost": 0.0808,
   "weight": 261,
@@ -1860,7 +1717,6 @@ partsDB["L003142004NCPAA"] = {
 };
 
 partsDB["L003142005NCPAA"] = {
-  "description": "ARROW RET 15.5X396MM",
   "pack": 1000,
   "cost": 0.0708,
   "weight": 225,
@@ -1873,7 +1729,6 @@ partsDB["L003142005NCPAA"] = {
 };
 
 partsDB["L001698202NCPAA"] = {
-  "description": "RET J 305 W26.67 L115MM",
   "pack": 900,
   "cost": 0.05,
   "weight": 216,
@@ -1886,7 +1741,6 @@ partsDB["L001698202NCPAA"] = {
 };
 
 partsDB["L002053089NCPAA"] = {
-  "description": "RET J POLY 26.67X155MM",
   "pack": 1000,
   "cost": 0.0747,
   "weight": 279,
@@ -1899,7 +1753,6 @@ partsDB["L002053089NCPAA"] = {
 };
 
 partsDB["L002799378NCPAA"] = {
-  "description": "STIFFENER 30X72MM PP",
   "pack": 6500,
   "cost": 0.0402,
   "weight": 46,
@@ -1912,7 +1765,6 @@ partsDB["L002799378NCPAA"] = {
 };
 
 partsDB["L002799379NCPAB"] = {
-  "description": "STIFFENER 78.5X67.7 PP",
   "pack": 1700,
   "cost": 0.0482,
   "weight": 123,
@@ -1925,7 +1777,6 @@ partsDB["L002799379NCPAB"] = {
 };
 
 partsDB["L002907225NCPAB"] = {
-  "description": "OKIE TIEDOWN 30X335MM",
   "pack": 2000,
   "cost": 0.0588,
   "weight": 118,
@@ -1938,7 +1789,6 @@ partsDB["L002907225NCPAB"] = {
 };
 
 partsDB["L002914905NCPAA"] = {
-  "description": "RET J 305 W26.67 L60MM",
   "pack": 2000,
   "cost": 0.0285,
   "weight": 114,
@@ -1951,7 +1801,6 @@ partsDB["L002914905NCPAA"] = {
 };
 
 partsDB["L0609247AA01"] = {
-  "description": "J-RET D305 25MM BLACK",
   "pack": 6500,
   "cost": 0.0055,
   "weight": 46,
@@ -1964,7 +1813,6 @@ partsDB["L0609247AA01"] = {
 };
 
 partsDB["L0698200AA01"] = {
-  "description": "J RET D305 W26.67 175MM",
   "pack": 600,
   "cost": 0.0376,
   "weight": 342,
@@ -1977,7 +1825,6 @@ partsDB["L0698200AA01"] = {
 };
 
 partsDB["L0698203AA01"] = {
-  "description": "RET J 305 W26.67 L185MM",
   "pack": 550,
   "cost": 0.0398,
   "weight": 348,
@@ -1990,7 +1837,6 @@ partsDB["L0698203AA01"] = {
 };
 
 partsDB["L0797678AA01"] = {
-  "description": "RETAINER  J 305 W26.67MM",
   "pack": 450,
   "cost": 0.0522,
   "weight": 465,
@@ -2003,20 +1849,18 @@ partsDB["L0797678AA01"] = {
 };
 
 partsDB["L0797679AA01"] = {
-  "description": "RETAINER -J,305 W26.67MM",
   "pack": 100,
   "cost": 0.1324,
   "weight": 1145,
   "piecesPerUnit": 20,
   "line": "SUV",
-  "daily": 362,
-  "kanban": 4,
+  "daily": 459.2,
+  "kanban": 3,
   "location": "APC0211",
   "productionLine": "PCGREARS"
 };
 
 partsDB["L0654899AA01"] = {
-  "description": "J RET D976 W25.4MM L35MM",
   "pack": 7500,
   "cost": 0.0054,
   "weight": 39,
@@ -2029,7 +1873,6 @@ partsDB["L0654899AA01"] = {
 };
 
 partsDB["L0797825AA01"] = {
-  "description": "FLAT RET STFR W98 L195MM",
   "pack": 1200,
   "cost": 0.0703,
   "weight": 140,
@@ -2042,7 +1885,6 @@ partsDB["L0797825AA01"] = {
 };
 
 partsDB["L0806941AA01"] = {
-  "description": "J-RET 721 28.5X300MM",
   "pack": 850,
   "cost": 0.0775,
   "weight": 317,
@@ -2055,7 +1897,6 @@ partsDB["L0806941AA01"] = {
 };
 
 partsDB["L0806942AA01"] = {
-  "description": "J-RET 721 28.5X750MM",
   "pack": 250,
   "cost": 0.1933,
   "weight": 850,
@@ -2068,7 +1909,6 @@ partsDB["L0806942AA01"] = {
 };
 
 partsDB["L0806943AA01"] = {
-  "description": "A-RET 687 15X285MM",
   "pack": 2000,
   "cost": 0.0435,
   "weight": 135,
@@ -2081,7 +1921,6 @@ partsDB["L0806943AA01"] = {
 };
 
 partsDB["L0806944AA01"] = {
-  "description": "A-RET 687 15X735MM",
   "pack": 400,
   "cost": 0.1125,
   "weight": 352,
@@ -2094,7 +1933,6 @@ partsDB["L0806944AA01"] = {
 };
 
 partsDB["L002798842NCPAC"] = {
-  "description": "OKIE TIEDOWN FL 30X375MM",
   "pack": 2000,
   "cost": 0.0776,
   "weight": 136,
@@ -2107,7 +1945,6 @@ partsDB["L002798842NCPAC"] = {
 };
 
 partsDB["L0701143AA01"] = {
-  "description": "J-RET D305 100 MM",
   "pack": 1000,
   "cost": 0.0204,
   "weight": 202,
@@ -2120,7 +1957,6 @@ partsDB["L0701143AA01"] = {
 };
 
 partsDB["L0753466AA01"] = {
-  "description": "FLAT RET D5258 W25 L245",
   "pack": 2000,
   "cost": 0.0278,
   "weight": 100,
@@ -2133,7 +1969,6 @@ partsDB["L0753466AA01"] = {
 };
 
 partsDB["L0802979AA01"] = {
-  "description": "RET FLT STRP 5258 25X265",
   "pack": 2000,
   "cost": 0.0373,
   "weight": 110,
@@ -2146,7 +1981,6 @@ partsDB["L0802979AA01"] = {
 };
 
 partsDB["L0802980AA01"] = {
-  "description": "RET FLT STRP 5258 25X265",
   "pack": 2000,
   "cost": 0.0373,
   "weight": 113,
@@ -2159,7 +1993,6 @@ partsDB["L0802980AA01"] = {
 };
 
 partsDB["L0802981AA01"] = {
-  "description": "RET FLT STRP 5258 25X365",
   "pack": 1500,
   "cost": 0.0515,
   "weight": 151,
@@ -2172,7 +2005,6 @@ partsDB["L0802981AA01"] = {
 };
 
 partsDB["L001423285NCPAA"] = {
-  "description": "RET J 305 26.67X30MM",
   "pack": 5000,
   "cost": 0.0186,
   "weight": 55,
@@ -2185,7 +2017,6 @@ partsDB["L001423285NCPAA"] = {
 };
 
 partsDB["L001450016NCPAA"] = {
-  "description": "ARROW 2384 W25MM L70MM",
   "pack": 2000,
   "cost": 0.0544,
   "weight": 103,
@@ -2198,7 +2029,6 @@ partsDB["L001450016NCPAA"] = {
 };
 
 partsDB["L001553609NCPAA"] = {
-  "description": "RET J D305 26.67X160MM",
   "pack": 850,
   "cost": 0.076,
   "weight": 290,
@@ -2211,7 +2041,6 @@ partsDB["L001553609NCPAA"] = {
 };
 
 partsDB["L001614470NCPAA"] = {
-  "description": "RET J 305 W26.67 L50MM",
   "pack": 2000,
   "cost": 0.0258,
   "weight": 100,
@@ -2224,7 +2053,6 @@ partsDB["L001614470NCPAA"] = {
 };
 
 partsDB["L001676174NCPAA"] = {
-  "description": "RET FLT STRP 25.4X80MM",
   "pack": 7800,
   "cost": 0.0148,
   "weight": 36,
@@ -2237,7 +2065,6 @@ partsDB["L001676174NCPAA"] = {
 };
 
 partsDB["L001676224NCPAA"] = {
-  "description": "RET J D305 26.76X140MM",
   "pack": 1000,
   "cost": 0.0698,
   "weight": 257,
@@ -2250,7 +2077,6 @@ partsDB["L001676224NCPAA"] = {
 };
 
 partsDB["L003141998NCPAA"] = {
-  "description": "ARROW RET 15.50X660MM",
   "pack": 200,
   "cost": 0.118,
   "weight": 384,
@@ -2263,7 +2089,6 @@ partsDB["L003141998NCPAA"] = {
 };
 
 partsDB["L003141999NCPAA"] = {
-  "description": "ARROW RET 15.50X596MM",
   "pack": 200,
   "cost": 0.1066,
   "weight": 348,
@@ -2276,7 +2101,6 @@ partsDB["L003141999NCPAA"] = {
 };
 
 partsDB["L003142000NCPAA"] = {
-  "description": "ARROW RET 15.50X390MM",
   "pack": 1200,
   "cost": 0.0697,
   "weight": 226,
@@ -2289,7 +2113,6 @@ partsDB["L003142000NCPAA"] = {
 };
 
 partsDB["L003142001NCPAA"] = {
-  "description": "ARROW RET 15.50X380MM",
   "pack": 1200,
   "cost": 0.068,
   "weight": 220,
@@ -2302,7 +2125,6 @@ partsDB["L003142001NCPAA"] = {
 };
 
 partsDB["L003142002NCPAA"] = {
-  "description": "ARROW RET 15.50X80MM",
   "pack": 5000,
   "cost": 0.014,
   "weight": 50,
@@ -2315,7 +2137,6 @@ partsDB["L003142002NCPAA"] = {
 };
 
 partsDB["L003142003NCPAA"] = {
-  "description": "ARROW RET 15.50X110MM",
   "pack": 5000,
   "cost": 0.0192,
   "weight": 69,
@@ -2328,7 +2149,6 @@ partsDB["L003142003NCPAA"] = {
 };
 
 partsDB["L001571668NCPAA"] = {
-  "description": "A-RET D2384 25X100MM",
   "pack": 1000,
   "cost": 0.0262,
   "weight": 170,
@@ -2341,7 +2161,6 @@ partsDB["L001571668NCPAA"] = {
 };
 
 partsDB["L001597009NCPAA"] = {
-  "description": "RET FLT STRP 154X42MM",
   "pack": 5000,
   "cost": 0.0451,
   "weight": 27,
@@ -2354,7 +2173,6 @@ partsDB["L001597009NCPAA"] = {
 };
 
 partsDB["L001649100NCPAA"] = {
-  "description": "A-RET D2384 25X35MM",
   "pack": 4500,
   "cost": 0.0133,
   "weight": 56,
@@ -2367,7 +2185,6 @@ partsDB["L001649100NCPAA"] = {
 };
 
 partsDB["L001649101NCPAA"] = {
-  "description": "A-RET D2384 25X75MM",
   "pack": 1400,
   "cost": 0.0233,
   "weight": 121,
@@ -2380,7 +2197,6 @@ partsDB["L001649101NCPAA"] = {
 };
 
 partsDB["L001676165NCPAA"] = {
-  "description": "RET FLT STRP 25X290MM",
   "pack": 2000,
   "cost": 0.0471,
   "weight": 128,
@@ -2393,7 +2209,6 @@ partsDB["L001676165NCPAA"] = {
 };
 
 partsDB["L001676166NCPAA"] = {
-  "description": "RET FLT STRP 25X220MM",
   "pack": 2300,
   "cost": 0.0488,
   "weight": 93,
@@ -2406,7 +2221,6 @@ partsDB["L001676166NCPAA"] = {
 };
 
 partsDB["L001676177NCPAA"] = {
-  "description": "RET FLT STRP 25X325MM",
   "pack": 2000,
   "cost": 0.0541,
   "weight": 142,
@@ -2419,7 +2233,6 @@ partsDB["L001676177NCPAA"] = {
 };
 
 partsDB["L001676192NCPAA"] = {
-  "description": "RET FLT STRP 25X285MM",
   "pack": 2000,
   "cost": 0.0497,
   "weight": 124,
@@ -2432,7 +2245,6 @@ partsDB["L001676192NCPAA"] = {
 };
 
 partsDB["L001676195NCPAA"] = {
-  "description": "RET FLT STRP 25X350MM",
   "pack": 1800,
   "cost": 0.0583,
   "weight": 152,
