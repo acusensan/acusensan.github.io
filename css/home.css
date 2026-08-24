@@ -1,0 +1,340 @@
+/* Home page only. All selectors are scoped to .home-page so this file can coexist
+   with the shared navigationbar.css without changing the appearance of other pages. */
+.home-page {
+    --home-bg: #f4f7fb;
+    --home-surface: #ffffff;
+    --home-text: #172033;
+    --home-muted: #667085;
+    --home-border: #e4e9f2;
+    --home-primary: #0d47a1;
+    --home-primary-soft: #eaf2ff;
+    --home-shadow: 0 10px 30px rgba(22, 34, 51, 0.08);
+    background: var(--home-bg);
+    color: var(--home-text);
+}
+.home-page main {
+    padding-top: 64px;
+}
+.home-page .home-nav .nav-wrapper {
+    padding: 0 clamp(8px, 3vw, 28px);
+}
+.home-page .home-brand {
+    font-weight: 700;
+    letter-spacing: -0.04em;
+}
+.home-page .home-brand code {
+    color: #fff;
+    font-family: inherit;
+}
+.home-page .nav-icon {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    filter: brightness(0) invert(1);
+}
+.home-page .nav-action {
+    display: grid;
+    place-items: center;
+    min-width: 56px;
+}
+.home-page .skip-link {
+    position: fixed;
+    z-index: 2000;
+    top: 8px;
+    left: 8px;
+    transform: translateY(-150%);
+    background: #fff;
+    color: #0d47a1;
+    padding: 10px 14px;
+    border-radius: 8px;
+}
+.home-page .skip-link:focus {
+    transform: translateY(0);
+}
+.home-page .home-shell {
+    width: min(1180px, calc(100% - 32px));
+    padding: 42px 0 48px;
+}
+.home-page .home-hero {
+    padding: 26px 0 34px;
+}
+.home-page .eyebrow {
+    color: var(--home-primary);
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+.home-page .home-hero h1 {
+    font-size: clamp(2rem, 5vw, 3.35rem);
+    font-weight: 750;
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+    margin: 9px 0 12px;
+}
+.home-page .home-hero p,
+.home-page .section-heading p {
+    color: var(--home-muted);
+    font-size: 1.06rem;
+    margin: 0;
+}
+.home-page .section-heading {
+    align-items: end;
+    display: flex;
+    gap: 24px;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+.home-page .section-heading h2 {
+    font-size: 1.45rem;
+    font-weight: 700;
+    margin: 0 0 3px;
+}
+.home-page .tool-search {
+    margin: 0;
+    width: min(340px, 100%);
+}
+.home-page .tool-search input[type="search"] {
+    box-sizing: border-box;
+    height: 46px;
+    margin: 0;
+    padding: 0 16px;
+    border: 1px solid var(--home-border);
+    border-radius: 12px;
+    background: var(--home-surface);
+    color: var(--home-text);
+    box-shadow: none;
+    font-size: 1rem;
+}
+.home-page .tool-search input[type="search"]:focus {
+    border-color: var(--home-primary) !important;
+    box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.12) !important;
+}
+.home-page .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+.home-page .tool-card {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 14px;
+    min-height: 112px;
+    padding: 20px;
+    border: 1px solid var(--home-border);
+    border-radius: 16px;
+    background: var(--home-surface);
+    color: var(--home-text);
+    box-shadow: 0 2px 8px rgba(22, 34, 51, 0.035);
+    transition: transform 0.18s ease, box-shadow 0.18s ease,
+        border-color 0.18s ease;
+}
+.home-page .tool-card:hover,
+.home-page .tool-card:focus-visible {
+    color: var(--home-text);
+    border-color: #b9cef0;
+    box-shadow: var(--home-shadow);
+    transform: translateY(-3px);
+}
+.home-page .tool-card:focus-visible {
+    outline: 3px solid rgba(13, 71, 161, 0.22);
+    outline-offset: 2px;
+}
+.home-page .tool-icon {
+    align-items: center;
+    background: var(--home-primary-soft);
+    border-radius: 13px;
+    color: var(--home-primary);
+    display: flex;
+    font-size: 0.82rem;
+    font-weight: 800;
+    height: 48px;
+    justify-content: center;
+    letter-spacing: 0.03em;
+    width: 48px;
+}
+.home-page .tool-card strong,
+.home-page .tool-card small {
+    display: block;
+}
+.home-page .tool-card strong {
+    font-size: 1.05rem;
+    line-height: 1.25;
+    margin-bottom: 5px;
+}
+.home-page .tool-card small {
+    color: var(--home-muted);
+    font-size: 0.88rem;
+    line-height: 1.35;
+}
+.home-page .tool-arrow {
+    color: #98a2b3;
+    font-size: 1.8rem;
+    line-height: 1;
+}
+.home-page .empty-state {
+    padding: 36px;
+    text-align: center;
+    border: 1px dashed var(--home-border);
+    border-radius: 16px;
+    color: var(--home-muted);
+    background: var(--home-surface);
+}
+.home-page .page-footer {
+    margin: 0;
+    font-size: 0.88rem;
+}
+.home-page .footer-dot {
+    padding: 0 7px;
+    opacity: 0.7;
+}
+.home-page .sidenav {
+    padding-top: 12px;
+}
+.home-page .sidenav-heading {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    padding: 15px 24px 20px;
+}
+.home-page .sidenav-heading small {
+    color: #667085;
+    display: block;
+    font-size: 0.75rem;
+}
+.home-page .sidenav-mark {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: #0d47a1;
+    color: white;
+    font-weight: 800;
+}
+.home-page .sidenav-section-label {
+    color: #98a2b3;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    padding: 18px 32px 6px;
+    text-transform: uppercase;
+}
+.home-page .settings-modal {
+    border-radius: 18px;
+    max-width: 560px;
+}
+.home-page .modal-heading,
+.home-page .setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+.home-page .modal-heading h4 {
+    margin: 2px 0 0;
+    font-weight: 700;
+}
+.home-page .icon-button {
+    border: 0;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font-size: 2rem;
+    line-height: 1;
+}
+.home-page .icon-button:hover {
+    background: rgba(127, 127, 127, 0.12);
+}
+.home-page .setting-row {
+    border-top: 1px solid var(--home-border);
+    padding: 20px 0;
+}
+.home-page .setting-row strong,
+.home-page .setting-row span {
+    display: block;
+}
+.home-page .setting-row div > span {
+    color: var(--home-muted);
+    font-size: 0.87rem;
+    margin-top: 3px;
+}
+.home-page .sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+.home-page.dark-mode {
+    --home-bg: #0f141c;
+    --home-surface: #171e29;
+    --home-text: #f3f6fb;
+    --home-muted: #aab4c4;
+    --home-border: #2b3545;
+    --home-primary-soft: #172d51;
+}
+.home-page.dark-mode .tool-card,
+.home-page.dark-mode .tool-search input,
+.home-page.dark-mode .settings-modal {
+    background: var(--home-surface) !important;
+    color: var(--home-text) !important;
+}
+.home-page.dark-mode .tool-card:hover {
+    border-color: #466891;
+}
+
+@media (max-width: 900px) {
+    .home-page .tool-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+@media (max-width: 600px) {
+    .home-page main {
+        padding-top: 56px;
+    }
+    .home-page .home-shell {
+        width: min(100% - 24px, 1180px);
+        padding-top: 25px;
+    }
+    .home-page .home-hero {
+        padding: 18px 0 26px;
+    }
+    .home-page .section-heading {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 14px;
+    }
+    .home-page .tool-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .home-page .tool-card {
+        min-height: 90px;
+        padding: 16px;
+    }
+    .home-page .tool-search {
+        width: 100%;
+    }
+    .home-page .settings-modal {
+        width: calc(100% - 24px);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .home-page *,
+    .home-page *::before,
+    .home-page *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+    }
+}

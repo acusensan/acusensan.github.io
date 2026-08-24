@@ -570,6 +570,7 @@ function clearForNextShift() {
     html: "Turno reiniciado correctamente",
     classes: "green darken-2"
   });
+  M.Modal.getInstance(document.getElementById('settings-modal')).close();
 }
 
 function sendScanLogToBottom() {

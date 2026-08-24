@@ -1,177 +1,170 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventario Rack</title>
-    <link rel="stylesheet" href="css/materialize.min.css">
-    <link rel="stylesheet" href="css/navigationbar.css">
-    <style>
-        .flex-container {
-            display: flex;
-            gap: 5px; /* Adjust the gap between elements as needed */
-        }
-        .input-field {
-            flex: .5; /* Adjust the flex property as needed */
-        }
-        .right-align-input {
-            float: right;
-            width: 150px; /* Adjust as needed */
-        }
-        .dropdown-content li>a, .dropdown-content li>span {
-        font-size: 16px;
-        color: black;
-        display: block;
-        line-height: 22px;
-        padding: 14px 16px;
-}
-        @media (max-width: 600px) {
-        .nav-buttons,
-        .nav-actions {
-          display: flex;
-          gap: 8px;
-      }
-        .nav-buttons .btn,
-        .nav-actions .btn {
-          flex: 1 1 0;
-          width: 100%;
-        }
-        .input-field {
-            flex: 1; /* Adjust the flex property as needed */
-        }
-        .input-field.inline{
-            display: inline-block;
-            vertical-align: middle;
-            margin-left: 50px;
-}
-        s
-    }
-    </style>
-</head>
-<body>
-    <!-- ==== SIDE NAVIGATION ==== -->
-  <ul id="slide-out" class="sidenav">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="ascan.html">A-Scan</a></li>
-    <li><a href="ajuste.html">Ajuste</a></li>
-    <li><a href="scan.html">Escaneo</a></li>
-    <li><a href="barcode.html">Generar Código de Barras</a></li>
-    <li><a href="hilos.html">Hilos</a></li>
-    <li><a href="invrack.html">Inventario Racks</a></li>
-    <li><a href="partescompradas.html">Partes Compradas</a></li>
-    <li><a href="reglatres.html">Regla de Tres</a></li>
-    <li><a href="table.html">Verificar</a></li>
-  </ul>
-
-
-  <!-- ==== TOP NAVIGATION BAR ==== -->
-  <nav class="blue darken-4">
-    <div class="nav-wrapper">
-
-      <!-- Menu Trigger -->
-      <button class="menu-button sidenav-trigger" data-target="slide-out">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </button>
-
-      <!-- Brand -->
-      <a href="#" class="brand-logo"><code>Inventario</code></a>
-
-      <!-- Actions -->
-      <ul class="right">
-        <li>
-          <a href="#settings-modal" class="modal-trigger">
-            <img src="icons/settings.svg" alt="Settings" class="nav-icon">
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-
-
-  <!-- ==== SETTINGS MODAL ==== -->
-  <div id="settings-modal" class="modal">
-    <div class="modal-content">
-
-      <h4>Ajustes</h4>
-
-      <!-- Dark Mode -->
-      <div class="card">
-        <div class="card-content">
-          <span class="card-title">Modo Oscuro</span>
-          <label>
-            <input type="checkbox" id="dark-mode-toggle">
-            <span>Modo Oscuro</span>
-          </label>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-content">
-          <span class="card-title">Descargar Archivo</span>
-          <button class="btn blue waves-effect waves-light" onclick="downloadCSV()">Descargar</button>
-          <button class="btn green waves-effect waves-light" onclick="shareCSV()">Compartir</button>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-content">
-          <span class="card-title">Resetear Inventario</span>
-          <button class="btn red waves-effect waves-light" onclick="resetData()">Limpiar</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal-footer">
-      <button class="modal-close btn grey waves-effect waves-light">Cerrar</button>
-    </div>
-  </div>
-
-    <!-- Main Content -->
-    <main>
-        <div class="container" style="padding-bottom: 40px; padding-top: 20px;">
-            <div class="flex-container">
-            <div class="input-field">
-                <select id="columnSelect" onchange="updateRacks()">
-                    <option value="" disabled selected>---Seleciona---</option>
-                    <option value="APC01">Rack 1</option>
-                    <option value="APC02">Rack 2</option>
-                </select>
-                <label>Rack Principal</label>
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="theme-color" content="#0d47a1" />
+        <title>Inventario Racks | ./Acu</title>
+        <link rel="stylesheet" href="css/materialize.min.css" />
+        <link rel="stylesheet" href="css/navigationbar.css" />
+        <link rel="stylesheet" href="css/invrack.css" />
+    </head>
+    <body class="invrack-page">
+        <a class="skip-link" href="#main-content">Saltar al contenido</a>
+        <ul id="slide-out" class="sidenav invrack-sidenav" aria-label="Navegacion principal">
+            <li class="sidenav-heading">
+                <span class="sidenav-mark">A</span>
+                <div><strong>./Acu</strong><small>Herramientas de materiales</small></div>
+            </li>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="ascan.html">A-Scan</a></li>
+            <li><a href="ajuste.html">Ajuste</a></li>
+            <li><a href="scan.html">Escaneo</a></li>
+            <li><a href="barcode.html">Generar codigo de barras</a></li>
+            <li><a href="hilos.html">Hilos</a></li>
+            <li class="active"><a href="invrack.html" aria-current="page">Inventario Racks</a></li>
+            <li><a href="partescompradas.html">Partes Compradas</a></li>
+            <li><a href="reglatres.html">Regla de Tres</a></li>
+            <li><a href="table.html">Verificar</a></li>
+        </ul>
+        <nav class="blue darken-4 invrack-nav" aria-label="Barra superior">
+            <div class="nav-wrapper">
+                <button
+                    class="menu-button sidenav-trigger"
+                    data-target="slide-out"
+                    aria-label="Abrir menu"
+                    type="button"
+                >
+                    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                </button>
+                <a href="invrack.html" class="brand-logo invrack-brand"><code>Inventario</code></a>
+                <ul class="right">
+                    <li>
+                        <a href="#settings-modal" class="modal-trigger nav-action" aria-label="Abrir ajustes"
+                            ><img src="icons/settings.svg" alt="" class="nav-icon"
+                        /></a>
+                    </li>
+                </ul>
             </div>
-            <div class="input-field">
-                <select id="rackSelect">
-                    <!-- Options will be populated by JavaScript -->
-                </select>
-                <label>Seleciona Rack</label>
+        </nav>
+
+        <main id="main-content">
+            <div class="container inventory-shell">
+                <header class="page-heading">
+                    <div>
+                        <span class="eyebrow">Conteo por ubicacion</span>
+                        <h1>Inventario de racks</h1>
+                        <p>Selecciona un rack y captura la cantidad encontrada para cada material.</p>
+                    </div>
+                    <div class="progress-summary">
+                        <strong id="completedCount">0</strong><span id="totalCount">de 0 capturados</span>
+                    </div>
+                </header>
+                <section class="rack-toolbar" aria-labelledby="rack-selector-title">
+                    <div class="rack-panel-heading">
+                        <div>
+                            <span class="step-number">1</span>
+                            <h2 id="rack-selector-title">Ubicacion</h2>
+                        </div>
+                        <span id="rackPosition" class="rack-position" aria-live="polite"></span>
+                    </div>
+                    <div class="rack-fields">
+                        <label class="field-label" for="columnSelect">
+                            <span>Area</span>
+                            <select id="columnSelect" class="browser-default">
+                                <option value="APC01">Rack A</option>
+                                <option value="APC02">Rack B</option>
+                            </select>
+                        </label>
+                        <label class="field-label" for="rackSelect">
+                            <span>Rack o ubicacion</span>
+                            <select id="rackSelect" class="browser-default"></select>
+                        </label>
+                    </div>
+                    <div class="rack-stepper">
+                        <button id="prevRackBtn" class="btn-flat" type="button">← Anterior</button>
+                        <button id="nextRackBtn" class="btn-flat" type="button">Siguiente →</button>
+                    </div>
+                </section>
+                <section class="inventory-panel" aria-labelledby="rackTitle">
+                    <div class="inventory-heading">
+                        <div>
+                            <span class="eyebrow">Ubicacion seleccionada</span>
+                            <h2 id="rackTitle">Rack</h2>
+                        </div>
+                        <div class="rack-stats">
+                            <strong id="rackCompleted">0</strong><span id="rackTotal">de 0</span>
+                        </div>
+                    </div>
+                    <div id="emptyRack" class="empty-state" hidden>
+                        <strong>No hay materiales asignados</strong>
+                        <p>Selecciona otra ubicacion.</p>
+                    </div>
+                    <div id="itemDisplay" class="item-list" aria-live="polite"></div>
+                    <div class="bottom-navigation">
+                        <button id="prevRackBottom" class="btn-flat" type="button">← Rack anterior</button
+                        ><button id="nextRackBottom" class="btn blue darken-4" type="button">Siguiente rack →</button>
+                    </div>
+                </section>
             </div>
-            </div>
-            <div class="nav-buttons col s6 center-align">
-                <button class="btn blue" onclick="prevRack()">Anterior</button>
-                <button class="btn blue" onclick="nextRack()">Proximo</button>
-            </div>
-            <div id="itemDisplay" class="section">
-                <!-- Item details will be displayed here -->
-            </div>
-            <div class="nav-buttons col s6 center-align">
-                <button class="btn blue" onclick="prevRack()">Anterior</button>
-                <button class="btn blue" onclick="nextRack()">Proximo</button>
+        </main>
+
+        <div
+            id="settings-modal"
+            class="modal settings-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="settings-title"
+        >
+            <div class="modal-content">
+                <div class="modal-heading">
+                    <div>
+                        <span class="eyebrow">Preferencias y datos</span>
+                        <h4 id="settings-title">Ajustes</h4>
+                    </div>
+                    <button class="modal-close close-button" type="button" aria-label="Cerrar">&times;</button>
+                </div>
+                <div class="setting-row">
+                    <div><strong>Tema</strong><span id="dark-mode-text">Modo Oscuro</span></div>
+                    <div class="switch">
+                        <label><input type="checkbox" id="dark-mode-toggle" /><span class="lever"></span></label>
+                    </div>
+                </div>
+                <div class="setting-row stacked">
+                    <div><strong>Exportar inventario</strong><span>Descarga o comparte el archivo CSV</span></div>
+                    <div class="button-pair">
+                        <button class="btn blue" type="button" onclick="downloadCSV()">Descargar</button
+                        ><button class="btn green" type="button" onclick="shareCSV()">Compartir</button>
+                    </div>
+                </div>
+                <div class="setting-row">
+                    <div>
+                        <strong>Restablecer inventario</strong><span>Elimina todas las cantidades guardadas</span>
+                    </div>
+                    <button class="btn red modal-trigger" data-target="reset-confirm-modal" type="button">
+                        Limpiar
+                    </button>
+                </div>
             </div>
         </div>
-    
-    </main>
-
-     <!-- ==== FOOTER ==== -->
-  <footer class="page-footer blue darken-4 center-align">
-  <div class="container center-align">
-    © <span id="current-year"></span>
-    Samuel Eduardo Renteria Quintero NCG
-    <span id="version"></span>
-  </div>
-</footer>
-
-    <script src="js/materialize.min.js"></script>
-    <script src="js/navigationbar.js"></script>
-    <script src="js/invrack.js"></script>
-</body>
+        <div id="reset-confirm-modal" class="modal confirmation-modal">
+            <div class="modal-content">
+                <h5>Limpiar inventario</h5>
+                <p>Se eliminaran todas las cantidades capturadas. Esta accion no se puede deshacer.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close btn-flat">Cancelar</button
+                ><button id="confirmResetBtn" class="btn red">Limpiar todo</button>
+            </div>
+        </div>
+        <footer class="page-footer blue darken-4">
+            <div class="container">
+                © <span id="current-year"></span> Samuel Eduardo Renteria Quintero NCG
+                <span class="footer-dot">•</span> <span id="version"></span>
+            </div>
+        </footer>
+        <script src="js/materialize.min.js"></script>
+        <script src="js/navigationbar.js"></script>
+        <script src="js/invrack.js"></script>
+    </body>
 </html>

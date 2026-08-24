@@ -1,268 +1,272 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajuste</title>
-    <link rel="stylesheet" href="css/materialize.min.css">
-    <link rel="stylesheet" href="css/navigationbar.css">
-    <style>
-    main{
-    margin-bottom:1px;
-    flex:1;
-    padding-top: 55px;
-    }
-.flex-container {
-    display: flex;
-    gap: 8px; 
-}
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#0d47a1" />
+        <title>Ajuste | ./Acu</title>
+        <link rel="stylesheet" href="css/materialize.min.css" />
+        <link rel="stylesheet" href="css/navigationbar.css" />
+        <link rel="stylesheet" href="css/ajuste.css" />
+    </head>
+    <body class="ajuste-page">
+        <a class="skip-link" href="#main-content">Saltar al contenido</a>
 
-.input-field {
-    flex: 2;
-    font-size: 1.5em;
-    text-align: center;
-    margin-bottom: 0;
-}
+        <ul id="slide-out" class="sidenav ajuste-sidenav" aria-label="Navegacion principal">
+            <li class="sidenav-heading">
+                <span class="sidenav-mark">A</span>
+                <div><strong>./Acu</strong><small>Herramientas de materiales</small></div>
+            </li>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="ascan.html">A-Scan</a></li>
+            <li class="active"><a href="ajuste.html" aria-current="page">Ajuste</a></li>
+            <li><a href="scan.html">Escaneo</a></li>
+            <li><a href="barcode.html">Generar codigo de barras</a></li>
+            <li><a href="hilos.html">Hilos</a></li>
+            <li><a href="invrack.html">Inventario Racks</a></li>
+            <li><a href="partescompradas.html">Partes Compradas</a></li>
+            <li><a href="reglatres.html">Regla de Tres</a></li>
+            <li><a href="table.html">Verificar</a></li>
+        </ul>
 
-.quantity-field {
-    flex: 2;
-    text-align: center;
-}
-
-.scrollable-section {
-    max-height: 450px;
-    overflow-y: auto;
-    border: 1px solid #ccc;
-}
-.search {
-    padding-top: 10px;
-}
-button,input,optgroup,select,textarea {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    line-height: 1.15;
-    margin: 0;
-}
-
-#modalSearchResults .collection-item {
-  cursor: pointer;
-}
-
-#modalSearchResults .collection-item:hover {
-  background-color: #e3f2fd;
-}
-
-@media (max-width: 600px) {
-    .scrollable-section {
-    max-height:300px;
-}
-
-    .nav-buttons,
-    .nav-actions {
-        display: flex;
-        gap: 8px;
-    }
-
-    .nav-buttons .btn,
-    .nav-actions .btn {
-        flex: 1 1 0;
-        width: 100%;
-    }
-
-    button,input,optgroup,select,textarea {
-        font-size: clamp(14px, 2.5vw, 18px);
-    }
-}
-      
-    </style>
-</head>
-<body>
-    <!-- ==== SIDE NAVIGATION ==== -->
-  <ul id="slide-out" class="sidenav">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="ascan.html">A-Scan</a></li>
-    <li><a href="ajuste.html">Ajuste</a></li>
-    <li><a href="scan.html">Escaneo</a></li>
-    <li><a href="barcode.html">Generar Código de Barras</a></li>
-    <li><a href="hilos.html">Hilos</a></li>
-    <li><a href="invrack.html">Inventario Racks</a></li>
-    <li><a href="partescompradas.html">Partes Compradas</a></li>
-    <li><a href="reglatres.html">Regla de Tres</a></li>
-    <li><a href="table.html">Verificar</a></li>
-  </ul>
-
-
-  <!-- ==== TOP NAVIGATION BAR ==== -->
-  <nav class="blue darken-4">
-    <div class="nav-wrapper">
-
-      <!-- Menu Trigger -->
-      <button class="menu-button sidenav-trigger" data-target="slide-out">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </button>
-
-      <!-- Brand -->
-      <a href="#" class="brand-logo"><code>Ajuste</code></a>
-
-      <!-- Actions -->
-      <ul class="right">
-        <li>
-          <a href="#settings-modal" class="modal-trigger">
-            <img src="icons/settings.svg" alt="Settings" class="nav-icon">
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-
-
-  <!-- ==== SETTINGS MODAL ==== -->
-  <div id="settings-modal" class="modal">
-    <div class="modal-content">
-
-      <h4>Ajustes</h4>
-
-      <!-- Dark Mode -->
-      <div class="card">
-        <div class="card-content">
-          <span class="card-title">Tema</span>
-          <label>
-            <input type="checkbox" id="dark-mode-toggle">
-            <span>Modo Oscuro</span>
-          </label>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-content">
-            <span class="card-title">Totales</span>
-            <button class="btn purple modal-trigger" data-target="totals-modal" onclick="showTotals()">Ver Totales</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-content">
-          <span class="card-title">Descargar Archivo</span>
-          <button class="btn blue" onclick="downloadData()">Descargar</button>
-          <button class="btn green" onclick="shareData()">Compartir</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-content">
-          <span class="card-title">Resetear Ajuste</span>
-          <button class="btn red waves-effect waves-light" onclick="clearAllEntries()">Limpiar</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal-footer">
-      <button class="modal-close btn grey waves-effect waves-light">Cerrar</button>
-    </div>
-  </div>
-
-    <main>
-        <div class="container" style="padding-bottom: 0px;">
-            <div class="card scrollable-section">
-                <ul id="entry-list" class="collection"></ul>
+        <nav class="blue darken-4 ajuste-nav" aria-label="Barra superior">
+            <div class="nav-wrapper">
+                <button class="menu-button sidenav-trigger" data-target="slide-out" aria-label="Abrir menu">
+                    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                </button>
+                <a href="ajuste.html" class="brand-logo ajuste-brand"><code>Ajuste</code></a>
+                <ul class="right">
+                    <li>
+                        <a href="#settings-modal" class="modal-trigger nav-action" aria-label="Abrir ajustes"><img src="icons/settings.svg" alt="" class="nav-icon"/></a>
+                    </li>
+                </ul>
             </div>
-            <div class="nav-buttons col s12 center-align">
-                <button class="btn blue waves-effect waves-light" onclick="changeRack(-1)">◀ Rack Anterior</button>
-                <button class="btn blue waves-effect waves-light" onclick="changeRack(1)">Siguiente Rack ▶</button>
-            </div>
-            <div class="flex-container">
-                <div class="input-field">
-                    <label for="section"></label>
-                    <select id="section" class="browser-default" onchange="updateRackOptions()">
-                        <option value="Rack 1">Rack A</option>
-                        <option value="Rack 2">Rack B</option>
-                        <option value="Rack 3">Rack C</option>
-                        <option value="Rack 4">Otra Loc.</option>
-                    </select>
-                </div>
-                <div class="input-field">
-                    <label for="rack"></label>
-                    <select id="rack" class="browser-default""></select>
+        </nav>
+
+        <main id="main-content">
+            <div class="container ajuste-shell">
+                 <header class="page-heading">
+                    <div>
+                        <span class="eyebrow">Captura de inventario</span>
+                        <h1>Nuevo ajuste</h1>
+                        <p>Selecciona una ubicacion, agrega un numero de parte y registra la cantidad.</p>
+                    </div>
+                    <button class="btn-flat summary-button modal-trigger" data-target="totals-modal" type="button" onclick="showTotals()">
+                        <span id="entry-count">0</span> registros
+                    </button>
+                </header>
+
+                <div class="ajuste-layout">
+                    <section class="records-panel" aria-labelledby="records-title">
+                        <div class="records-heading">
+                            <div>
+                                <span class="eyebrow">Sesion actual</span>
+                                <h2 id="records-title">Registros</h2>
+                            </div>
+                            <div class="records-actions">
+                                <button class="preview-button modal-trigger" data-target="export-preview-modal" type="button" onclick="showExportPreview()">Vista previa</button>
+                                <button class="icon-text-button" type="button" onclick="clearAllEntries()">Limpiar</button>
+                            </div>
+                        </div>
+                        <div id="empty-records" class="empty-records">
+                            <span class="empty-icon">+</span><strong>Aun no hay registros</strong>
+                            <p>Los ajustes agregados apareceran aqui.</p>
+                        </div>
+                        <ul id="entry-list" class="record-list" aria-live="polite"></ul>
+                    </section>
+					
+                    <section class="capture-panel" aria-labelledby="capture-title">
+                        <div class="panel-heading">
+                            <div>
+                                <span class="step-number">1</span>
+                                <h2 id="capture-title">Ubicacion</h2>
+                            </div>
+                            <span id="rack-position" class="rack-position" aria-live="polite"></span>
+                        </div>
+						
+                        <div class="field-grid">
+                            <label class="field-label" for="section"><span>Area</span>
+								<select id="section" class="browser-default" onchange="updateRackOptions()">
+                                    <option value="Rack 1">Rack A</option>
+                                    <option value="Rack 2">Rack B</option>
+                                    <option value="Rack 3">Rack C</option>
+                                    <option value="Rack 4">Otra ubicacion</option>
+                                </select>
+							</label>
+							
+                            <label class="field-label" for="rack">
+								<span>Rack o ubicacion</span>
+								<select id="rack" class="browser-default"></select>
+							</label>
+                        </div>
+						
+                        <div class="rack-navigation">
+                            <button class="btn-flat" type="button" onclick="changeRack(-1)">← Anterior</button
+                            ><button class="btn-flat" type="button" onclick="changeRack(1)">Siguiente →</button>
+                        </div>
+
+                        <div class="panel-divider"></div>
+                        <div class="panel-heading">
+                            <div>
+                                <span class="step-number">2</span>
+                                <h2>Parte y cantidad</h2>
+                            </div>
+                        </div>
+                        <div class="add-entry-panel">
+                            <label class="field-label part-search-field" for="selectedPart">
+                                <span>Numero de parte</span>
+                                <input type="search" id="selectedPart" autocomplete="off" autocapitalize="characters" placeholder="Buscar numero de parte..."/>
+                                <div id="partSearchResults" class="part-results"></div>
+                            </label>
+                            <label class="field-label quantity-label" for="quantity">
+                                <span>Cantidad</span>
+                                <input type="number" id="quantity" min="1" step="1" inputmode="numeric" placeholder="0"/>
+                            </label>
+                            <button id="addEntryBtn" class="btn primary-action" type="button">Agregar</button>
+                        </div>
+                    </section>
                 </div>
             </div>
-            <div class="search">
-                <div class="nav-buttons col s12 center-align">
-                    <button class="btn green modal-trigger" data-target="part-search-modal">Buscar Parte</button>
+        </main>
+
+        <div
+            id="settings-modal"
+            class="modal compact-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="settings-title"
+        >
+            <div class="modal-content">
+                <div class="modal-heading">
+                    <div>
+                        <span class="eyebrow">Preferencias y datos</span>
+                        <h4 id="settings-title">Ajustes</h4>
+                    </div>
+                    <button class="modal-close close-button" type="button" aria-label="Cerrar">&times;</button>
+                </div>
+                <div class="setting-row">
+                    <div><strong>Tema</strong><span id="dark-mode-text">Modo Oscuro</span></div>
+                    <div class="switch">
+                        <label><input type="checkbox" id="dark-mode-toggle" /><span class="lever"></span></label>
+                    </div>
+                </div>
+                <div class="setting-row">
+                    <div><strong>Resumen</strong><span>Totales por numero de parte</span></div>
+                    <button class="btn purple modal-trigger" data-target="totals-modal" onclick="showTotals()">
+                        Ver totales
+                    </button>
+                </div>
+                <div class="setting-row stacked">
+                    <div><strong>Exportar registros</strong><span>Descarga o comparte un archivo CSV</span></div>
+                    <div class="button-pair">
+                        <button class="btn blue" onclick="downloadData()">Descargar</button
+                        ><button class="btn green" onclick="shareData()">Compartir</button>
+                    </div>
+                </div>
+                <div class="setting-row">
+                    <div><strong>Restablecer ajuste</strong><span>Elimina todos los registros guardados</span></div>
+                    <button class="btn red" onclick="clearAllEntries()">Limpiar</button>
                 </div>
             </div>
-            <div class="input-field">
-				<input type="text" id="selectedPart">
-				<label class="active" for="selectedPart">Part Number</label>
-			</div>
-
-            <div class="input-field quantity-field">
-                <input type="number" id="quantity" min="1" class="validate">
-                <label for="quantity">Cantidad</label>
-            </div>
-            <div class="nav-buttons col s12 center-align">
-                <button class="btn blue waves-effect waves-light" onclick="addEntry()">Agregar</button>
-            </div>
-
         </div>
-    </main>
-    <!-- ==== MODALS ==== -->
 
-    <!-- TOTALS MODAL-->
-    <div id="totals-modal" class="modal">
-      <div class="modal-content">
-        <h5>Total de Partes</h5>
-
-        <ul id="totals-list" class="collection"></ul>
-
-        <h6 class="right-align">
-          Total General: <strong id="grand-total">0</strong>
-        </h6>
-      </div>
-
-      <div class="modal-footer">
-        <button class="modal-close btn grey">Cerrar</button>
-      </div>
-    </div>
-
-    <!-- DELETE CONFIRM MODAL -->
-    <div id="delete-confirm-modal" class="modal">
-      <div class="modal-content">
-        <h5>Confirmar eliminación</h5>
-        <p>¿Estás seguro de borrar este elemento?</p>
-      </div>
-      <div class="modal-footer">
-        <button class="modal-close btn grey">Cancelar</button>
-        <button id="confirm-delete-btn" class="btn red">Borrar</button>
-      </div>
-    </div>
-
-    <!-- ==== FOOTER ==== -->
-  <footer class="page-footer blue darken-4 center-align">
-  <div class="container center-align">
-    © <span id="current-year"></span>
-    Samuel Eduardo Renteria Quintero NCG
-    <span id="version"></span>
-  </div>
-</footer>
-  
-    <div id="part-search-modal" class="modal">
-        <div class="modal-content">
-            <h5>Search Part Number</h5>
-            <div class="input-field">
-                <input type="text" id="modalPartSearch" placeholder="Numero De Parte..." oninput="modalSearchParts()"autocomplete="off">
+        <div id="export-preview-modal" class="modal export-preview-modal" role="dialog" aria-modal="true" aria-labelledby="export-preview-title">
+            <div class="modal-content">
+                <div class="modal-heading">
+                    <div>
+                        <span class="eyebrow">Archivo CSV</span>
+                        <h4 id="export-preview-title">Vista previa de exportacion</h4>
+                    </div>
+                    <button class="modal-close close-button" type="button" aria-label="Cerrar">&times;</button>
+                </div>
+                <p class="preview-description">Asi se organizaran los registros en el archivo exportado.</p>
+                <label class="preview-search" for="exportPreviewSearch">
+                    <span>Buscar numero de parte</span>
+                    <input id="exportPreviewSearch" type="search" autocomplete="off" placeholder="Buscar numero de parte..." aria-controls="export-preview-list"/>
+                </label>
+                <div class="export-form" aria-label="Vista previa del archivo CSV">
+                    <div class="export-form-header" aria-hidden="true">
+                        <span>Localizacion</span><span>Numero de parte</span><span>Cantidad</span>
+                    </div>
+                    <div id="export-preview-list" class="export-preview-list"></div>
+                    <div id="export-preview-empty" class="export-preview-empty">No hay registros para mostrar.</div>
+                </div>
+                <div class="preview-summary">
+                    <span><strong id="preview-row-count">0</strong> filas</span>
+                    <span>Archivo: <strong id="preview-filename">Ajuste.csv</strong></span>
+                </div>
             </div>
-        <ul id="modalSearchResults" class="collection"></ul>
-    </div>
-	</div>
+            <div class="modal-footer preview-footer">
+                <button class="modal-close btn red" type="button">Cerrar</button>
+                <button class="btn blue" type="button" onclick="downloadData()">Descargar</button>
+                <button class="btn green" type="button" onclick="shareData()">Compartir</button>
+            </div>
+        </div>
 
-    <script src="js/materialize.min.js"></script>
-    <script src="js/navigationbar.js"></script>
+        <div id="totals-modal" class="modal compact-modal">
+            <div class="modal-content">
+                <div class="modal-heading">
+                    <div>
+                        <span class="eyebrow">Resumen</span>
+                        <h4>Totales por parte</h4>
+                    </div>
+                    <button class="modal-close close-button" type="button" aria-label="Cerrar">&times;</button>
+                </div>
+                <ul id="totals-list" class="collection totals-list"></ul>
+                <div class="grand-total"><span>Total general</span><strong id="grand-total">0</strong></div>
+            </div>
+        </div>
 
-    <script src="js/partsdb.js"></script>
-    <script src="js/hilosdb.js"></script>
+        <div id="delete-confirm-modal" class="modal confirmation-modal">
+            <div class="modal-content">
+                <h5>Eliminar registro</h5>
+                <p>Esta accion quitara el registro de la sesion actual.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close btn-flat">Cancelar</button
+                ><button id="confirm-delete-btn" class="btn red">Eliminar</button>
+            </div>
+        </div>
 
-    <script src="js/ajuste.js"></script>
-    
-</body>
+        <div id="clear-confirm-modal" class="modal confirmation-modal">
+            <div class="modal-content">
+                <h5>Limpiar todos los registros</h5>
+                <p>Esta accion no se puede deshacer.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close btn-flat">Cancelar</button
+                ><button id="confirm-clear-btn" class="btn red">Limpiar todo</button>
+            </div>
+        </div>
+
+        <div id="part-search-modal" class="modal search-modal">
+            <div class="modal-content">
+                <div class="modal-heading">
+                    <div>
+                        <span class="eyebrow">Catalogo</span>
+                        <h4>Buscar numero de parte</h4>
+                    </div>
+                    <button class="modal-close close-button" type="button" aria-label="Cerrar">&times;</button>
+                </div>
+                <label class="field-label" for="modalPartSearch"
+                    ><span>Escribe parte del numero</span
+                    ><input type="search" id="modalPartSearch" placeholder="Numero de parte..." autocomplete="off"
+                /></label>
+                <p id="search-hint" class="search-hint">Escribe al menos un caracter para buscar.</p>
+                <ul id="modalSearchResults" class="search-results"></ul>
+            </div>
+        </div>
+
+        <footer class="page-footer blue darken-4">
+            <div class="container">
+                © <span id="current-year"></span> Samuel Eduardo Renteria Quintero NCG
+                <span class="footer-dot">•</span> <span id="version"></span>
+            </div>
+        </footer>
+        <script src="js/materialize.min.js"></script>
+        <script src="js/navigationbar.js"></script>
+        <script src="js/partsdb.js"></script>
+        <script src="js/hilosdb.js"></script>
+        <script src="js/ajuste.js"></script>
+    </body>
 </html>

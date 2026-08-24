@@ -1,467 +1,445 @@
-let optionsMap = {};
 let allPartsIndex = [];
 let partSearchModalInstance = null;
 let itemToDelete = null;
-let selectedPart = '';
-
 const STORAGE_KEY = 'ajuste_entries';
-
-document.addEventListener('DOMContentLoaded', () => {
-  M.updateTextFields();
-  M.Sidenav.init(document.querySelectorAll('.sidenav'));
-  M.Modal.init(document.querySelectorAll('.modal'));
-
-  loadEntriesFromLocalStorage();
-
-  partSearchModalInstance = M.Modal.getInstance(
-    document.getElementById('part-search-modal')
-  );
-
-  buildPartIndex();
-  updateRackOptions();
-
-  document.getElementById('quantity').addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      addEntry();
-    }
-  });
-
-  document
-    .getElementById('confirm-delete-btn')
-    .addEventListener('click', confirmDelete);
-});
-document
-  .getElementById('selectedPart')
-  .addEventListener('input', e => {
-    selectedPart = e.target.value.trim().toUpperCase();
-  });
-
-function confirmDelete() {
-  if (itemToDelete) {
-    itemToDelete.remove();
-    saveEntriesToLocalStorage();
-
-    M.toast({
-      html: 'Borrado',
-      classes: 'red lighten-1',
-      displayLength: 2000
-    });
-
-    itemToDelete = null;
-  }
-
-  M.Modal.getInstance(
-    document.getElementById('delete-confirm-modal')
-  ).close();
-}
-
-function createDeleteButton(entryElement) {
-  const button = document.createElement('button');
-
-  button.innerText = 'Borrar';
-  button.className = 'btn red delete-button';
-
-  button.onclick = () => {
-    itemToDelete = entryElement;
-
-    M.Modal.getInstance(
-      document.getElementById('delete-confirm-modal')
-    ).open();
-  };
-
-  return button;
-}
-
-function updateRackOptions() {
-  const section = document.getElementById('section').value;
-  const rackSelect = document.getElementById('rack');
-
-  rackSelect.innerHTML = '';
-
-  const rackRanges = {
+const rackRanges = {
     'Rack 1': [121, 140],
     'Rack 2': [221, 240],
     'Rack 3': [303, 304],
     'Rack 4': ['Bodpatio', 'Pisopc', 'Velcros', 'Produccion', 'Caja']
-  };
+};
 
-  const range = rackRanges[section];
-
-  if (!Array.isArray(range)) return;
-
-  if (typeof range[0] === 'number') {
-    const [start, end] = range;
-
-    for (let i = start; i <= end; i++) {
-      const option = document.createElement('option');
-      option.value = option.text = `APC0${i}`;
-      rackSelect.appendChild(option);
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.M) {
+        M.updateTextFields();
+        M.Sidenav.init(document.querySelectorAll('.sidenav'));
+        M.Modal.init(document.querySelectorAll('.modal'));
     }
-  } else {
-    range.forEach(item => {
-      const option = document.createElement('option');
-      option.value = option.text = item;
-      rackSelect.appendChild(option);
+    buildPartIndex();
+    updateRackOptions();
+    loadEntriesFromLocalStorage();
+    partSearchModalInstance = M.Modal.getInstance(document.getElementById('part-search-modal'));
+    const selectedPart = document.getElementById('selectedPart');
+    selectedPart.addEventListener('input', e => {
+        e.target.value = e.target.value.toUpperCase();
+        renderInlinePartResults();
     });
-  }
-}
+    selectedPart.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+            const first = document.querySelector('#partSearchResults .part-result');
+            if (first) { e.preventDefault(); first.click(); }
+            else if (document.getElementById('quantity').value) { e.preventDefault(); addEntry(); }
+        }
+        if (e.key === 'Escape') document.getElementById('partSearchResults').innerHTML = '';
+    });
+    document.getElementById('addEntryBtn').addEventListener('click', addEntry);
+    document.addEventListener('click', e => {
+        if (!e.target.closest('.part-search-field')) document.getElementById('partSearchResults').innerHTML = '';
+    });
+    document.getElementById('quantity').addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addEntry();
+        }
+    });
+    document.getElementById('confirm-delete-btn').addEventListener('click', confirmDelete);
+    document.getElementById('confirm-clear-btn').addEventListener('click', confirmClear);
+    document.getElementById('modalPartSearch').addEventListener('input', modalSearchParts);
+    document.getElementById('exportPreviewSearch').addEventListener('input', renderExportPreviewRows);
+});
 
-function changeRack(direction) {
-  const rackSelect = document.getElementById('rack');
-  const newIndex = rackSelect.selectedIndex + direction;
-
-  if (newIndex >= 0 && newIndex < rackSelect.options.length) {
-    rackSelect.selectedIndex = newIndex;
-  }
+function toast(html, classes = 'blue') {
+    if (window.M) M.toast({
+        html,
+        classes,
+        displayLength: 2000
+    });
 }
 
 function buildPartIndex() {
-  optionsMap = {};
-  allPartsIndex = [];
-
-  if (window.partsDB) {
-    Object.entries(window.partsDB).forEach(([partNumber, partData]) => {
-      const category = partData.line.toUpperCase();
-
-      if (!optionsMap[category]) {
-        optionsMap[category] = [];
-      }
-
-      optionsMap[category].push(partNumber);
-
-      allPartsIndex.push({
-        part: partNumber,
-        category,
+    allPartsIndex = [];
+    if (window.partsDB) Object.entries(window.partsDB).forEach(([part, data]) => allPartsIndex.push({
+        part,
+        category: String(data.line || 'PARTES').toUpperCase(),
         type: 'PARTS'
-      });
-    });
-  } else {
-    console.error('partsDB not loaded');
-  }
-
-  if (window.hilosDB) {
-    Object.keys(window.hilosDB).forEach(hiloNumber => {
-      allPartsIndex.push({
-        part: hiloNumber,
+    }));
+    if (window.hilosDB) Object.keys(window.hilosDB).forEach(part => allPartsIndex.push({
+        part,
         category: 'HILOS',
         type: 'HILOS'
-      });
-    });
-  } else {
-    console.error('hilosDB not loaded');
-  }
-
-  Object.keys(optionsMap).forEach(category => {
-    optionsMap[category].sort((a, b) =>
-      a.localeCompare(b, undefined, {
+    }));
+    allPartsIndex.sort((a, b) => a.part.localeCompare(b.part, undefined, {
         numeric: true,
         sensitivity: 'base'
-      })
-    );
-  });
-
-  allPartsIndex.sort((a, b) =>
-    a.part.localeCompare(b.part, undefined, {
-      numeric: true,
-      sensitivity: 'base'
-    })
-  );
+    }));
 }
 
-function calculateBoxes() {
-  const partNumber = document.getElementById('selectedPart').value.trim().toUpperCase();
-  const quantity = parseFloat(document.getElementById('quantity').value);
+function updateRackOptions() {
+    const section = document.getElementById('section').value,
+        select = document.getElementById('rack'),
+        range = rackRanges[section];
+    select.innerHTML = '';
+    if (typeof range[0] === 'number') {
+        for (let i = range[0]; i <= range[1]; i++) select.add(new Option(`APC0${i}`, `APC0${i}`));
+    } else range.forEach(value => select.add(new Option(value, value)));
+    updateRackPosition();
+}
 
-  if (!partNumber || !quantity) return null;
+function updateRackPosition() {
+    const select = document.getElementById('rack'),
+        status = document.getElementById('rack-position');
+    status.textContent = select.options.length ? `${select.selectedIndex+1} de ${select.options.length}` : '';
+}
 
-  const partData = partsDB[partNumber];
+function changeRack(direction) {
+    const select = document.getElementById('rack'),
+        next = select.selectedIndex + direction;
+    if (next >= 0 && next < select.options.length) {
+        select.selectedIndex = next;
+        updateRackPosition();
+    } else toast(direction < 0 ? 'Ya estas en la primera ubicacion' : 'Ya estas en la ultima ubicacion', 'blue-grey');
+}
 
-  if (!partData || !partData.pack) return null;
-
-  return quantity / partData.pack;
+function calculateBoxes(part, quantity) {
+    const data = window.partsDB && window.partsDB[part];
+    return data && Number(data.pack) > 0 ? quantity / Number(data.pack) : null;
 }
 
 function addEntry() {
-  const rack = document.getElementById('rack').value;
-  const partNumber = document.getElementById('selectedPart').value.trim().toUpperCase();
-  const quantity = document.getElementById('quantity').value;
-
-  if (!rack || !partNumber || !quantity) {
-    M.toast({
-      html: 'Por favor llena todos los campos',
-      classes: 'orange lighten-1',
-      displayLength: 2000
-    });
-
-    return;
-  }
-
-  const boxes = calculateBoxes();
-  const boxesText = boxes ? ` | Cajas: ${boxes.toFixed(2)}` : '';
-
-  const text = `${rack} ${partNumber} ${quantity}${boxesText}`;
-
-  const li = document.createElement('li');
-  li.className = 'collection-item';
-  li.innerText = text;
-
-  li.appendChild(createDeleteButton(li));
-
-  const entryList = document.getElementById('entry-list');
-  entryList.insertBefore(li, entryList.firstChild);
-
-  saveEntriesToLocalStorage();
-
-  M.toast({
-    html: `Agregado <strong>${rack} ${partNumber} (${quantity})</strong>`,
-    classes: 'green lighten-1',
-    displayLength: 2000
-  });
-
-  selectedPart = '';
-
-  document.getElementById('selectedPart').value = '';
-  document.getElementById('quantity').value = '';
-
-  M.updateTextFields();
-}
-
-function getFormattedTimestamp() {
-  const now = new Date();
-
-  const date = now.toISOString().slice(0, 10);
-  const time = now.toTimeString().slice(0, 8).replace(/:/g, '-');
-
-  return `${date}_${time}`;
-}
-
-function generateCSV() {
-  const entryList = document.getElementById('entry-list');
-
-  let csvContent = 'Localizacion,Numero De Parte,Cantidad\n';
-
-  Array.from(entryList.children).forEach(li => {
-    const text = li.childNodes[0].nodeValue.trim();
-    const values = text.split(' ');
-
-    if (values.length >= 3) {
-      csvContent += `${values[0]},${values[1]},${values[2]}\n`;
+    const rack = document.getElementById('rack').value,
+        part = document.getElementById('selectedPart').value.trim().toUpperCase(),
+        quantity = Number(document.getElementById('quantity').value);
+    if (!rack || !part || !Number.isFinite(quantity) || quantity <= 0) {
+        toast('Completa la ubicacion, parte y una cantidad valida', 'orange darken-1');
+        return;
     }
-  });
-
-  return csvContent;
+    const boxes = calculateBoxes(part, quantity),
+        entry = {
+            id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+            rack,
+            part,
+            quantity,
+            boxes
+        };
+    renderEntry(entry, true);
+    saveEntriesToLocalStorage();
+    document.getElementById('selectedPart').value = '';
+    document.getElementById('quantity').value = '';
+    document.getElementById('partSearchResults').innerHTML = '';
+    M.updateTextFields();
+    document.getElementById('selectedPart').focus();
+    toast(`Agregado: <strong>${rack} ${part} (${quantity})</strong>`, 'green darken-1');
 }
 
-function downloadData() {
-  const csvContent = generateCSV();
-  const filename = `Ajuste_${getFormattedTimestamp()}.csv`;
-
-  const blob = new Blob([csvContent], {
-    type: 'text/csv'
-  });
-
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-
-  M.toast({
-    html: `Descargado: ${filename}`,
-    classes: 'blue'
-  });
-}
-
-async function shareData() {
-  const csvContent = generateCSV();
-
-  const filename = `Ajuste_${getFormattedTimestamp()}.csv`;
-
-  const blob = new Blob([csvContent], {
-    type: 'text/csv'
-  });
-
-  const file = new File([blob], filename, {
-    type: 'text/csv'
-  });
-
-  if (navigator.share) {
-    try {
-      await navigator.share({
-        title: 'Ajuste File',
-        text: 'Archivo generado',
-        files: [file]
-      });
-
-      M.toast({
-        html: 'Compartido archivo',
-        classes: 'green'
-      });
-
-      return;
-    } catch (err) {
-      console.log('File share failed, trying fallback...');
-    }
-  }
-
-  if (navigator.share) {
-    try {
-      await navigator.share({
-        title: 'Ajuste Data',
-        text: csvContent.substring(0, 2000)
-      });
-
-      M.toast({
-        html: 'Compartido como texto',
-        classes: 'blue'
-      });
-
-      return;
-    } catch (err) {
-      console.log('Text share failed');
-    }
-  }
-
-  downloadData();
-
-  M.toast({
-    html: 'Archivo descargado',
-    classes: 'orange'
-  });
-}
-
-function modalSearchParts() {
-  const input = document
-    .getElementById('modalPartSearch')
-    .value
-    .toLowerCase();
-
-  const resultsList = document.getElementById('modalSearchResults');
-
-  resultsList.innerHTML = '';
-
-  if (!input) return;
-
-  const matches = allPartsIndex
-    .filter(item => item.part.toLowerCase().includes(input))
-    .slice(0, 100);
-
-  matches.forEach(({ part }) => {
+function renderEntry(entry, prepend = false) {
     const li = document.createElement('li');
-
-    li.className = 'collection-item modal-close';
-    li.innerText = part;
-
-    li.onclick = () => selectPartFromModal(part);
-
-    resultsList.appendChild(li);
-  });
+    li.className = 'record-item';
+    li.dataset.entry = JSON.stringify(entry);
+    const main = document.createElement('div');
+    main.className = 'record-main';
+    const location = document.createElement('span');
+    location.className = 'record-location';
+    location.textContent = entry.rack;
+    const copy = document.createElement('span');
+    copy.className = 'record-copy';
+    const title = document.createElement('strong');
+    title.textContent = entry.part;
+    const detail = document.createElement('small');
+    detail.textContent = `Cantidad: ${entry.quantity}${entry.boxes?` · Cajas: ${Number(entry.boxes).toFixed(2)}`:''}`;
+    copy.append(title, detail);
+    main.append(location, copy);
+    const button = document.createElement('button');
+    button.className = 'delete-record';
+    button.type = 'button';
+    button.textContent = 'Eliminar';
+    button.setAttribute('aria-label', `Eliminar ${entry.part} de ${entry.rack}`);
+    button.onclick = () => {
+        itemToDelete = li;
+        M.Modal.getInstance(document.getElementById('delete-confirm-modal')).open();
+    };
+    li.append(main, button);
+    const list = document.getElementById('entry-list');
+    prepend ? list.prepend(li) : list.append(li);
+    updateRecordState();
 }
 
-function selectPartFromModal(partNumber) {
-  selectedPart = partNumber;
+function confirmDelete() {
+    if (itemToDelete) {
+        itemToDelete.remove();
+        itemToDelete = null;
+        saveEntriesToLocalStorage();
+        toast('Registro eliminado', 'red lighten-1');
+    }
+    M.Modal.getInstance(document.getElementById('delete-confirm-modal')).close();
+}
 
-  document.getElementById('selectedPart').value = partNumber;
-
-  const qty = document.getElementById('quantity');
-
-  setTimeout(() => {
-    qty.focus();
-    qty.select();
-  }, 100);
-
-  document.getElementById('modalPartSearch').value = '';
-  document.getElementById('modalSearchResults').innerHTML = '';
-
-  M.updateTextFields();
-
-  if (partSearchModalInstance) {
-    partSearchModalInstance.close();
-  }
+function getEntries() {
+    return [...document.querySelectorAll('#entry-list .record-item')].map(li => JSON.parse(li.dataset.entry));
 }
 
 function saveEntriesToLocalStorage() {
-  const entryList = document.getElementById('entry-list');
-
-  const entries = Array.from(entryList.children).map(
-    li => li.childNodes[0].nodeValue.trim()
-  );
-
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(getEntries()));
+    updateRecordState();
 }
 
 function loadEntriesFromLocalStorage() {
-  const stored = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+        updateRecordState();
+        return;
+    }
+    try {
+        const parsed = JSON.parse(raw);
+        parsed.forEach(item => {
+            if (typeof item === 'string') {
+                const parts = item.split(/\s+/);
+                renderEntry({
+                    id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()),
+                    rack: parts[0],
+                    part: parts[1],
+                    quantity: Number(parts[2]),
+                    boxes: null
+                });
+            } else renderEntry(item);
+        });
+        saveEntriesToLocalStorage();
+    } catch (error) {
+        console.error('Could not load adjustment entries', error);
+        localStorage.removeItem(STORAGE_KEY);
+        updateRecordState();
+    }
+}
 
-  if (!stored) return;
-
-  const entryList = document.getElementById('entry-list');
-
-  JSON.parse(stored).forEach(text => {
-    const li = document.createElement('li');
-
-    li.className = 'collection-item';
-    li.innerText = text;
-
-    li.appendChild(createDeleteButton(li));
-
-    entryList.appendChild(li);
-  });
+function updateRecordState() {
+    const count = document.querySelectorAll('#entry-list .record-item').length;
+    document.getElementById('entry-count').textContent = count;
+    document.getElementById('empty-records').hidden = count > 0;
 }
 
 function clearAllEntries() {
-  if (!confirm('¿Borrar todos los registros?')) return;
+    if (!getEntries().length) {
+        toast('No hay registros para limpiar', 'blue-grey');
+        return;
+    }
+    M.Modal.getInstance(document.getElementById('clear-confirm-modal')).open();
+	
+}
 
-  document.getElementById('entry-list').innerHTML = '';
-  localStorage.removeItem(STORAGE_KEY);
+function confirmClear() {
+    document.getElementById('entry-list').innerHTML = '';
+    localStorage.removeItem(STORAGE_KEY);
+    updateRecordState();
+    M.Modal.getInstance(document.getElementById('clear-confirm-modal')).close();
+    toast('Lista limpiada', 'grey darken-1');
+	M.Modal.getInstance(document.getElementById('settings-modal')).close();
+}
 
-  M.toast({
-    html: 'Lista limpiada',
-    classes: 'grey darken-1',
-    displayLength: 2000
-  });
+function showExportPreview() {
+    const search = document.getElementById('exportPreviewSearch');
+    search.value = '';
+    renderExportPreviewRows();
+    setTimeout(() => search.focus(), 180);
+}
+
+function renderExportPreviewRows() {
+    const entries = getEntries();
+    const query = document.getElementById('exportPreviewSearch').value.trim().toLowerCase();
+    const filteredEntries = query
+        ? entries.filter(entry => String(entry.part).toLowerCase().includes(query))
+        : entries;
+    const list = document.getElementById('export-preview-list');
+    const empty = document.getElementById('export-preview-empty');
+    list.innerHTML = '';
+
+    filteredEntries.forEach(entry => {
+        const row = document.createElement('div');
+        row.className = 'export-form-row';
+
+        const location = document.createElement('output');
+        location.setAttribute('aria-label', 'Localizacion');
+        location.textContent = entry.rack;
+
+        const part = document.createElement('output');
+        part.setAttribute('aria-label', 'Numero de parte');
+        part.textContent = entry.part;
+
+        const quantity = document.createElement('output');
+        quantity.setAttribute('aria-label', 'Cantidad');
+        quantity.textContent = entry.quantity;
+
+        row.append(location, part, quantity);
+        list.append(row);
+    });
+
+    empty.hidden = filteredEntries.length > 0;
+    empty.textContent = entries.length && query
+        ? 'No se encontraron numeros de parte.'
+        : 'No hay registros para mostrar.';
+    document.getElementById('preview-row-count').textContent = filteredEntries.length;
+    document.getElementById('preview-filename').textContent = `Ajuste_${getFormattedTimestamp()}.csv`;
 }
 
 function showTotals() {
-  const entryList = document.getElementById('entry-list');
-  const totalsList = document.getElementById('totals-list');
-  const grandTotalEl = document.getElementById('grand-total');
-
-  totalsList.innerHTML = '';
-
-  const totals = {};
-  let grandTotal = 0;
-
-  Array.from(entryList.children).forEach(li => {
-    const text = li.childNodes[0].nodeValue.trim();
-    const parts = text.split(/\s+/);
-
-    if (parts.length >= 3) {
-      const partNumber = parts[1];
-      const qty = parseInt(parts[2], 10);
-
-      if (!isNaN(qty)) {
-        totals[partNumber] = (totals[partNumber] || 0) + qty;
-        grandTotal += qty;
-      }
+    const totals = {};
+    let grand = 0;
+    getEntries().forEach(({
+        part,
+        quantity
+    }) => {
+        totals[part] = (totals[part] || 0) + Number(quantity);
+        grand += Number(quantity);
+    });
+    const list = document.getElementById('totals-list');
+    list.innerHTML = '';
+    Object.entries(totals).sort(([a], [b]) => a.localeCompare(b, undefined, {
+        numeric: true
+    })).forEach(([part, qty]) => {
+        const li = document.createElement('li');
+        li.className = 'collection-item';
+        const strong = document.createElement('strong');
+        strong.textContent = part;
+        const span = document.createElement('span');
+        span.className = 'right';
+        span.textContent = qty;
+        li.append(strong, span);
+        list.append(li);
+    });
+    if (!Object.keys(totals).length) {
+        const li = document.createElement('li');
+        li.className = 'collection-item';
+        li.textContent = 'No hay registros.';
+        list.append(li);
     }
-  });
+    document.getElementById('grand-total').textContent = grand;
+}
 
-  Object.entries(totals).forEach(([part, qty]) => {
-    const li = document.createElement('li');
+function csvCell(value) {
+    const text = String(value ?? '');
+    return /[",\n]/.test(text) ? `"${text.replace(/"/g,'""')}"` : text;
+}
 
-    li.className = 'collection-item';
-    li.innerHTML =
-      `<strong>${part}</strong>` +
-      `<span class="right">${qty}</span>`;
+function generateCSV() {
+    return ['Localizacion,Numero De Parte,Cantidad', ...getEntries().map(e => [e.rack, e.part, e.quantity].map(csvCell).join(','))].join('\n');
+}
 
-    totalsList.appendChild(li);
-  });
+function getFormattedTimestamp() {
+    const now = new Date(),
+        pad = n => String(n).padStart(2, '0');
+    return `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
+}
 
-  grandTotalEl.textContent = grandTotal;
+function createCSVFile() {
+    const filename = `Ajuste_${getFormattedTimestamp()}.csv`,
+        blob = new Blob(['\ufeff', generateCSV()], {
+            type: 'text/csv;charset=utf-8'
+        });
+    return {
+        filename,
+        blob,
+        file: new File([blob], filename, {
+            type: 'text/csv'
+        })
+    };
+}
+
+function downloadData() {
+    const {
+        filename,
+        blob
+    } = createCSVFile(), url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    toast(`Descargado: ${filename}`, 'blue');
+}
+async function shareData() {
+    const data = createCSVFile();
+    try {
+        if (navigator.canShare && navigator.canShare({
+                files: [data.file]
+            })) {
+            await navigator.share({
+                title: 'Ajuste',
+                text: 'Archivo de ajuste',
+                files: [data.file]
+            });
+            toast('Archivo compartido', 'green');
+            return;
+        }
+        if (navigator.share) {
+            await navigator.share({
+                title: 'Ajuste',
+                text: generateCSV().slice(0, 2000)
+            });
+            toast('Datos compartidos', 'green');
+            return;
+        }
+    } catch (error) {
+        if (error.name === 'AbortError') return;
+    }
+    downloadData();
+}
+
+function renderInlinePartResults() {
+    const input = document.getElementById('selectedPart');
+    const query = input.value.trim().toLowerCase();
+    const results = document.getElementById('partSearchResults');
+    results.innerHTML = '';
+    if (!query) return;
+    allPartsIndex.filter(item => item.part.toLowerCase().includes(query)).slice(0, 20).forEach(item => {
+        const button = document.createElement('button');
+        button.className = 'part-result';
+        button.type = 'button';
+        const strong = document.createElement('strong');
+        strong.textContent = item.part;
+        const small = document.createElement('small');
+        small.textContent = item.category;
+        button.append(strong, small);
+        button.onclick = () => {
+            input.value = item.part;
+            results.innerHTML = '';
+            document.getElementById('quantity').focus();
+        };
+        results.append(button);
+    });
+}
+function modalSearchParts() {
+    const query = document.getElementById('modalPartSearch').value.trim().toLowerCase(),
+        list = document.getElementById('modalSearchResults'),
+        hint = document.getElementById('search-hint');
+    list.innerHTML = '';
+    if (!query) {
+        hint.textContent = 'Escribe al menos un caracter para buscar.';
+        return;
+    }
+    const matches = allPartsIndex.filter(item => item.part.toLowerCase().includes(query)).slice(0, 75);
+    hint.textContent = matches.length ? `${matches.length} resultado${matches.length===1?'':'s'}${matches.length===75?' (mostrando los primeros 75)':''}` : 'No se encontraron coincidencias.';
+    matches.forEach(item => {
+        const li = document.createElement('li');
+        li.className = 'search-result modal-close';
+        li.tabIndex = 0;
+        const strong = document.createElement('strong');
+        strong.textContent = item.part;
+        const small = document.createElement('small');
+        small.textContent = item.category;
+        li.append(strong, small);
+        li.onclick = () => selectPartFromModal(item.part);
+        li.onkeydown = e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                selectPartFromModal(item.part);
+            }
+        };
+        list.append(li);
+    });
+}
+
+function selectPartFromModal(part) {
+    document.getElementById('selectedPart').value = part;
+    document.getElementById('modalPartSearch').value = '';
+    document.getElementById('modalSearchResults').innerHTML = '';
+    M.updateTextFields();
+    if (partSearchModalInstance) partSearchModalInstance.close();
+    setTimeout(() => document.getElementById('quantity').focus(), 100);
 }

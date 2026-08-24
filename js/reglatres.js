@@ -1,252 +1,258 @@
-// ==========================================
-// Regla de Tres - With localStorage + Reset
-// ==========================================
+const STORAGE_KEY = 'reglaTresHistory';
+let historyData = [];
+let partsData = [];
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.M) {
+        M.Modal.init(document.querySelectorAll('.modal'));
+        M.Sidenav.init(document.querySelectorAll('.sidenav'));
+    }
+    loadHistory();
+    buildPartsData();
+    bindEvents();
+    populateLines();
+    renderHistory();
+    updateCalculationState();
+});
 
-// --------------------
-// localStorage
-// --------------------
-const STORAGE_KEY = "reglaTresHistory";
-const historyData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+function toast(html, classes = 'blue') {
+    if (window.M) M.toast({
+        html,
+        classes,
+        displayLength: 2200
+    });
+}
+
+function loadHistory() {
+    try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        historyData = Array.isArray(saved) ? saved : [];
+    } catch (error) {
+        historyData = [];
+        localStorage.removeItem(STORAGE_KEY);
+    }
+}
 
 function saveHistory() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(historyData));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(historyData));
 }
 
-// --------------------
-// Init Materialize
-// --------------------
-document.addEventListener("DOMContentLoaded", () => {
-  M.FormSelect.init(document.querySelectorAll("select"));
-  renderHistory();
-});
-
-// --------------------
-// Validate partsDB
-// --------------------
-if (!window.partsDB) {
-  console.error("partsDB not loaded. Make sure partsdb.js is included BEFORE reglatres.js");
+function buildPartsData() {
+    if (!window.partsDB) {
+        console.error('partsDB not loaded');
+        toast('No se pudo cargar la base de partes', 'red');
+        return;
+    }
+    partsData = Object.entries(window.partsDB).sort(([a], [b]) => a.localeCompare(b, undefined, {
+        numeric: true
+    })).map(([partNumber, part]) => ({
+        partNumber,
+        line: part.line ?? 'Sin linea',
+        description: part.description ?? '',
+        piecesPerUnit: part.piecesPerUnit ?? part.pack ?? null,
+        weight: part.weight ?? null
+    }));
 }
 
-// --------------------
-// Build normalized data from partsDB
-// --------------------
-const partsData = Object.entries(window.partsDB)
-  .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
-  .map(([partNumber, part]) => ({
-    partNumber,
-    line: part.line ?? "Unknown",
-    description: part.description ?? "",
+function bindEvents() {
+    document.getElementById('tipo').addEventListener('change', handleLineChange);
+    document.getElementById('parte').addEventListener('change', handlePartChange);
+    document.getElementById('userInput').addEventListener('input', updateCalculationState);
+    document.getElementById('userInput').addEventListener('keydown', e => {
+        if (e.key === 'Enter') calcular();
+    });
+    document.getElementById('calculateBtn').addEventListener('click', calcular);
+    document.getElementById('clearHistoryBtn').addEventListener('click', openClearModal);
+    document.getElementById('confirmClearHistory').addEventListener('click', confirmClearHistory);
+}
 
-    // Semantic alias
-    piecesPerUnit: part.piecesPerUnit ?? part.pack ?? null,
+function populateLines() {
+    const select = document.getElementById('tipo');
+    [...new Set(partsData.map(part => part.line))].sort((a, b) => a.localeCompare(b, undefined, {
+        numeric: true
+    })).forEach(line => select.add(new Option(line, line)));
+}
 
-    weight: part.weight ?? null
-  }));
+function handleLineChange() {
+    const select = document.getElementById('parte');
+    select.innerHTML = '<option value="">Selecciona una parte</option>';
+    partsData.filter(part => part.line === document.getElementById('tipo').value).forEach(part => select.add(new Option(part.partNumber, part.partNumber)));
+    select.disabled = false;
+    document.getElementById('info').hidden = true;
+    document.getElementById('resultCard').hidden = true;
+    updateCalculationState();
+    select.focus();
+}
 
-// --------------------
-// DOM Elements
-// --------------------
-const lineSelect = document.getElementById("tipo");
-const partSelect = document.getElementById("parte");
-const infoContainer = document.getElementById("info");
-const resultContainer = document.getElementById("resultado");
+function selectedPart() {
+    return partsData.find(part => part.partNumber === document.getElementById('parte').value);
+}
 
-// --------------------
-// Populate Line Select
-// --------------------
-const lines = [...new Set(partsData.map(p => p.line))].sort();
+function handlePartChange() {
+    const part = selectedPart(),
+        info = document.getElementById('info');
+    info.innerHTML = '';
+    if (!part) {
+        info.hidden = true;
+        updateCalculationState();
+        return;
+    }
+    const values = [
+        ['Descripcion', part.description || '—'],
+        ['Piezas (Pack)', part.piecesPerUnit ?? '—'],
+        ['Peso', part.weight ?? '—']
+    ];
+    values.forEach(([label, value]) => {
+        const pair = document.createElement('div');
+        pair.className = 'info-pair';
+        const span = document.createElement('span'),
+            strong = document.createElement('strong');
+        span.textContent = label;
+        strong.textContent = value;
+        pair.append(span, strong);
+        info.append(pair);
+    });
+    info.hidden = false;
+    updateCalculationState();
+    document.getElementById('userInput').focus();
+}
 
-lines.forEach(line => {
-  const option = document.createElement("option");
-  option.value = line;
-  option.textContent = line;
-  lineSelect.appendChild(option);
-});
+function updateCalculationState() {
+    const part = selectedPart(),
+        value = Number(document.getElementById('userInput').value);
+    document.getElementById('calculateBtn').disabled = !(part && part.piecesPerUnit != null && Number(part.weight) !== 0 && Number.isFinite(value) && value >= 0);
+}
 
-M.FormSelect.init(lineSelect);
-
-// --------------------
-// Line Change Handler
-// --------------------
-lineSelect.addEventListener("change", () => {
-  partSelect.innerHTML = '<option value="" disabled selected>Choose part</option>';
-  infoContainer.innerHTML = "";
-  resultContainer.textContent = "";
-
-  const filteredParts = partsData
-    .filter(p => p.line === lineSelect.value)
-    .sort((a, b) => a.partNumber.localeCompare(b.partNumber));
-
-  filteredParts.forEach(part => {
-    const option = document.createElement("option");
-    option.value = part.partNumber;
-    option.textContent = part.partNumber;
-    partSelect.appendChild(option);
-  });
-
-  M.FormSelect.init(partSelect);
-});
-
-// --------------------
-// Part Change Handler
-// --------------------
-partSelect.addEventListener("change", () => {
-  const part = partsData.find(p => p.partNumber === partSelect.value);
-  if (!part) return;
-
-  infoContainer.innerHTML = `
-    <div class="info-line"><b>Descripción:</b> ${part.description || "n/a"}</div>
-    <div class="info-line"><b>Piezas (Pack):</b> ${part.piecesPerUnit ?? "n/a"}</div>
-    <div class="info-line"><b>Peso:</b> ${part.weight ?? "n/a"}</div>
-  `;
-});
-
-// --------------------
-// Calculation
-// --------------------
 function calcular() {
-  const part = partsData.find(p => p.partNumber === partSelect.value);
-  const userInput = Number(document.getElementById("userInput").value);
-
-  if (
-    !part ||
-    part.piecesPerUnit == null ||
-    part.weight == null ||
-    part.weight === 0 ||
-    isNaN(userInput)
-  ) {
-    M.toast({ html: "No se puede calcular (datos inválidos)" });
-    return;
-  }
-
-  const result = (userInput * part.piecesPerUnit) / part.weight;
-  resultContainer.textContent = "Resultado: " + result.toFixed(2);
-
-  historyData.push({
-    partNumber: part.partNumber,
-    input: userInput,
-    result: result.toFixed(2)
-  });
-
-  saveHistory();
-  renderHistory();
+    const part = selectedPart(),
+        input = Number(document.getElementById('userInput').value);
+    if (!part || part.piecesPerUnit == null || part.weight == null || Number(part.weight) === 0 || !Number.isFinite(input) || input < 0) {
+        toast('No se puede calcular: revisa la parte y cantidad', 'orange');
+        return;
+    }
+    const result = input * Number(part.piecesPerUnit) / Number(part.weight),
+        formatted = result.toFixed(2);
+    document.getElementById('resultado').textContent = formatted;
+    document.getElementById('resultCard').hidden = false;
+    historyData.unshift({
+        partNumber: part.partNumber,
+        input,
+        result: formatted,
+        timestamp: new Date().toISOString()
+    });
+    saveHistory();
+    renderHistory();
+    toast('Calculo guardado', 'green');
 }
 
-// --------------------
-// Render History
-// --------------------
 function renderHistory() {
-  const container = document.getElementById("history");
-  container.innerHTML = "";
-
-  historyData.forEach(row => {
-    const div = document.createElement("div");
-    div.className = "card-panel grey lighten-4";
-    div.innerHTML = `
-      <div><strong>Parte:</strong> ${row.partNumber}</div>
-      <div><strong>Input:</strong> ${row.input}</div>
-      <div><strong>Resultado:</strong> ${row.result}</div>
-    `;
-    container.appendChild(div);
-  });
+    const container = document.getElementById('history'),
+        empty = document.getElementById('emptyHistory');
+    container.innerHTML = '';
+    empty.hidden = historyData.length > 0;
+    document.getElementById('historyCount').textContent = historyData.length;
+    historyData.forEach(row => {
+        const item = document.createElement('div');
+        item.className = 'history-item';
+        const copy = document.createElement('div'),
+            part = document.createElement('strong'),
+            meta = document.createElement('small'),
+            result = document.createElement('div'),
+            value = document.createElement('span'),
+            unit = document.createElement('small');
+        part.textContent = row.partNumber;
+        meta.textContent = `Cantidad: ${row.input}${row.timestamp?` · ${new Date(row.timestamp).toLocaleString('es-MX',{dateStyle:'short',timeStyle:'short'})}`:''}`;
+        value.textContent = row.result;
+        unit.textContent = 'piezas';
+        copy.append(part, meta);
+        result.className = 'history-result';
+        result.append(value, unit);
+        item.append(copy, result);
+        container.append(item);
+    });
 }
 
-// --------------------
-// Clear History
-// --------------------
+function openClearModal() {
+    if (!historyData.length) {
+        toast('No hay historial para limpiar', 'blue-grey');
+        return;
+    }
+    M.Modal.getInstance(document.getElementById('clear-history-modal')).open();
+}
+
 function clearHistory() {
-  if (!confirm("¿Seguro que deseas borrar todo el historial?")) return;
-
-  historyData.length = 0;
-  localStorage.removeItem(STORAGE_KEY);
-
-  document.getElementById("history").innerHTML = "";
-  document.getElementById("resultado").textContent = "";
-
-  M.toast({ html: "Historial borrado correctamente" });
+    openClearModal();
 }
 
-// --------------------
-// Download CSV
-// --------------------
+function confirmClearHistory() {
+    historyData = [];
+    localStorage.removeItem(STORAGE_KEY);
+    document.getElementById('resultCard').hidden = true;
+    renderHistory();
+    M.Modal.getInstance(document.getElementById('clear-history-modal')).close();
+    toast('Historial eliminado', 'red');
+}
 
-function getFormattedTimestamp() {
-  const now = new Date();
+function csvCell(value) {
+    const text = String(value ?? '');
+    return /[",\n]/.test(text) ? `"${text.replace(/"/g,'""')}"` : text;
+}
 
-  const date = now.toLocaleDateString('sv-SE'); // YYYY-MM-DD
-  const time = now.toLocaleTimeString('en-GB'); // HH:MM:SS
+function generateCSV() {
+    return ['Parte,Input,Resultado', ...historyData.map(row => [row.partNumber, row.input, row.result].map(csvCell).join(','))].join('\n');
+}
 
-  return `${date}_${time.replace(/:/g, '-')}`;
+function createHistoryFile() {
+    const now = new Date(),
+        pad = n => String(n).padStart(2, '0'),
+        filename = `regla_de_tres_${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}.csv`,
+        blob = new Blob(['\ufeff', generateCSV()], {
+            type: 'text/csv;charset=utf-8'
+        });
+    return {
+        filename,
+        blob,
+        file: new File([blob], filename, {
+            type: 'text/csv'
+        })
+    };
 }
 
 function downloadHistory() {
-  if (historyData.length === 0) {
-    M.toast({ html: "No hay datos para descargar" });
-    return;
-  }
-
-  let csv = "Parte,Input,Resultado\n";
-
-  historyData.forEach(row => {
-    csv += `${row.partNumber},${row.input},${row.result}\n`;
-  });
-
-  const timestamp = getFormattedTimestamp();
-  const filename = `regla_de_tres_${timestamp}.csv`;
-
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-
-  M.toast({
-    html: `Descargado: ${filename}`,
-    classes: 'blue'
-  });
+    if (!historyData.length) {
+        toast('No hay datos para descargar', 'orange');
+        return;
+    }
+    const {
+        filename,
+        blob
+    } = createHistoryFile(), url = URL.createObjectURL(blob), link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    toast(`Descargado: ${filename}`, 'blue');
 }
 async function shareHistory() {
-  if (historyData.length === 0) {
-    M.toast({ html: "No hay datos para compartir" });
-    return;
-  }
-
-  let csv = "Parte,Input,Resultado\n";
-
-  historyData.forEach(row => {
-    csv += `${row.partNumber},${row.input},${row.result}\n`;
-  });
-
-  const timestamp = getFormattedTimestamp();
-  const filename = `regla_de_tres_${timestamp}.csv`;
-
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  const file = new File([blob], filename, { type: "text/csv" });
-
-  if (navigator.canShare && navigator.canShare({ files: [file] })) {
-    try {
-      await navigator.share({
-        title: "Regla de Tres",
-        text: `Archivo generado: ${filename}`,
-        files: [file]
-      });
-
-      M.toast({
-        html: `Compartido: ${filename}`,
-        classes: 'green'
-      });
-
-    } catch (err) {
-      console.log("Share cancelled");
+    if (!historyData.length) {
+        toast('No hay datos para compartir', 'orange');
+        return;
     }
-  } else {
-    M.toast({
-      html: "Compartir no disponible",
-      classes: "orange"
-    });
-  }
+    const data = createHistoryFile();
+    try {
+        if (navigator.canShare && navigator.canShare({
+                files: [data.file]
+            })) {
+            await navigator.share({
+                title: 'Regla de Tres',
+                text: `Archivo generado: ${data.filename}`,
+                files: [data.file]
+            });
+            toast('Archivo compartido', 'green');
+            return;
+        }
+    } catch (error) {
+        if (error.name === 'AbortError') return;
+    }
+    toast('Compartir no disponible; se descargara el archivo', 'orange');
+    downloadHistory();
 }

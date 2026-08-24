@@ -1,572 +1,482 @@
 let deleteTarget = null;
 let currentIndex = 0;
-let shouldScroll = false;
 let allParts = [];
-
-window.checkedState = {};
-
-// ===== STATE =====
 let groupedData = {};
 let orderedLocations = [];
+window.checkedState = {};
 const STORAGE_KEY = "verificar_data2";
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.M) {
+        M.Modal.init(document.querySelectorAll('.modal'));
+        M.Sidenav.init(document.querySelectorAll('.sidenav'));
+    }
+    allParts = [...new Set([...Object.keys(window.partsDB || {}), ...Object.keys(window.hilosDB || {})])].sort((a, b) => a.localeCompare(b, undefined, {
+        numeric: true
+    }));
+    bindEvents();
+    loadData();
+    render();
+});
 
-// ===== SAVE / LOAD =====
+function bindEvents() {
+    document.getElementById('csvFile').addEventListener('change', importCSV);
+    document.getElementById('add-location-btn').addEventListener('click', addLocation);
+    const quickLocationToggle = document.getElementById('quickLocationToggle');
+    if (quickLocationToggle) quickLocationToggle.addEventListener('click', () => {
+        const control = document.getElementById('newLocationControl');
+        const isOpen = control.classList.toggle('is-open');
+        quickLocationToggle.setAttribute('aria-expanded', String(isOpen));
+        quickLocationToggle.textContent = isOpen ? 'Cerrar' : '+ Ubicacion';
+        if (isOpen) document.getElementById('new-location').focus();
+    });
+    document.getElementById('new-location').addEventListener('keydown', e => {
+        if (e.key === 'Enter') addLocation();
+    });
+    document.getElementById('backBtn').addEventListener('click', () => moveLocation(-1));
+    document.getElementById('nextBtn').addEventListener('click', () => moveLocation(1));
+    document.getElementById('locationPickerBtn').addEventListener('click', openLocationPicker);
+    document.getElementById('locationSearch').addEventListener('input', renderLocationList);
+    document.getElementById('partSearch').addEventListener('input', renderPartResults);
+    document.getElementById('partSearch').addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+            const first = document.querySelector('.part-result');
+            if (first) {
+                e.preventDefault();
+                first.click();
+            } else if (document.getElementById('partQty').value) addPart();
+        }
+    });
+    document.getElementById('partQty').addEventListener('keydown', e => {
+        if (e.key === 'Enter') addPart();
+    });
+    document.getElementById('addPartBtn').addEventListener('click', addPart);
+    document.getElementById('confirm-delete-btn').addEventListener('click', confirmDelete);
+    document.getElementById('confirm-clear-btn').addEventListener('click', clearStoredData);
+}
+
+function toast(html, classes = 'blue') {
+    if (window.M) M.toast({
+        html,
+        classes,
+        displayLength: 2200
+    });
+}
+
 function saveData() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({
-    groupedData,
-    orderedLocations,
-    checkedState
-  }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        groupedData,
+        orderedLocations,
+        checkedState: window.checkedState
+    }));
 }
 
 function loadData() {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (!saved) return;
-
-  const data = JSON.parse(saved);
-  groupedData = data.groupedData || {};
-  orderedLocations = data.orderedLocations || [];
-  window.checkedState = data.checkedState || {};
-
-  renderOne();
-}
-
-// ===== RENDER =====
-function renderOne() {
-  const container = document.getElementById('table-container');
-  const fixedSearchContainer = document.getElementById('fixed-search');
-
-  container.innerHTML = '';
-  fixedSearchContainer.innerHTML = '';
-
-  if (orderedLocations.length === 0) return;
-
-  const loc = orderedLocations[currentIndex];
-  if (!window.checkedState[loc]) {
-  window.checkedState[loc] = [];
-}
-  const items = groupedData[loc] || [];
-
-  let doneCount = (window.checkedState[loc] || []).filter(v => v).length;
-
-  // =============================
-  //  HEADER
-  // =============================
-  const header = document.createElement('div');
-  header.className = 'location-header';
-
-  header.innerHTML = `
-    Locatizacion ${currentIndex + 1}/${orderedLocations.length} - ${loc}
-    <div class="progress">${doneCount}/${items.length} done</div>
-  `;
-
-  //  LOCATION SELECTOR
-  header.onclick = () => {
-    const menu = document.createElement('div');
-    menu.style.position = 'fixed';
-    menu.style.top = '0';
-    menu.style.left = '0';
-    menu.style.width = '100%';
-    menu.style.height = '100%';
-    menu.style.background = '#f5f7fa';
-    menu.style.zIndex = '9999';
-    menu.style.display = 'flex';
-    menu.style.flexDirection = 'column';
-
-    const topBar = document.createElement('div');
-    topBar.textContent = "Select Location";
-    topBar.style.padding = '15px';
-    topBar.style.background = '#1976d2';
-    topBar.style.color = 'white';
-
-    const closeBtn = document.createElement('button');
-    closeBtn.textContent = 'Cerrar';
-    closeBtn.style.float = "right";
-    closeBtn.onclick = () => document.body.removeChild(menu);
-
-    topBar.appendChild(closeBtn);
-    menu.appendChild(topBar);
-
-    const list = document.createElement('div');
-    list.style.flex = '1';
-    list.style.overflowY = 'auto';
-
-    orderedLocations.forEach((l, i) => {
-      const item = document.createElement('div');
-      item.textContent = `${i + 1}. ${l}`;
-      item.style.padding = '15px';
-
-	  item.classList.add('location-item');
-	  
-      if (i === currentIndex) {
-        item.style.background = '#e3f2fd';
-      }
-
-      item.onclick = () => {
-        currentIndex = i;
-        shouldScroll = true;
-        document.body.removeChild(menu);
-        renderOne();
-      };
-
-      list.appendChild(item);
-    });
-
-    menu.appendChild(list);
-    document.body.appendChild(menu);
-  };
-
-  container.appendChild(header);
-
-  // =============================
-  //  CARD TABLE
-  // =============================
-  const card = document.createElement('div');
-  card.className = 'location-card';
-
-  const table = document.createElement('table');
-  const thead = document.createElement('thead');
-thead.innerHTML = `
-<tr>
-  <th>Part</th>
-  <th>Qty</th>
-  <th>Packs</th>
-  <th></th>
-</tr>`;
-table.appendChild(thead);
-  const tbody = document.createElement('tbody');
-
-  items.forEach(([part, qty], i) => {
-	  let divided = "";
-const partData = (window.partsDB || {})[part];
-
-if (partData && partData.pack && qty) {
-  const result = parseFloat(qty) / parseFloat(partData.pack);
-  divided = result.toFixed(2);
-}
-    const tr = document.createElement('tr');
-
-    if (window.checkedState[loc]?.[i]) {
-      tr.classList.add('done');
+    try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+        if (saved) {
+            groupedData = saved.groupedData || {};
+            orderedLocations = saved.orderedLocations || [];
+            window.checkedState = saved.checkedState || {};
+        }
+        sanitizeState();
+    } catch (error) {
+        console.error('Could not load verification data', error);
+        localStorage.removeItem(STORAGE_KEY);
     }
+}
 
-    const partTd = document.createElement('td');
-    partTd.textContent = part;
-    partTd.onclick = () => makeEditable(partTd, loc, i, 0);
+function sanitizeState() {
+    orderedLocations = orderedLocations.filter(loc => Array.isArray(groupedData[loc]));
+    if (currentIndex >= orderedLocations.length) currentIndex = Math.max(0, orderedLocations.length - 1);
+    orderedLocations.forEach(loc => {
+        if (!Array.isArray(window.checkedState[loc])) window.checkedState[loc] = [];
+        while (window.checkedState[loc].length < groupedData[loc].length) window.checkedState[loc].push(false);
+        window.checkedState[loc] = window.checkedState[loc].slice(0, groupedData[loc].length);
+    });
+}
 
-    const qtyTd = document.createElement('td');
-    qtyTd.textContent = qty;
-    qtyTd.onclick = () => makeEditable(qtyTd, loc, i, 1);
-	const divTd = document.createElement('td');
-divTd.textContent = divided || "-";
+function render() {
+    sanitizeState();
+    const hasLocations = orderedLocations.length > 0;
+    document.getElementById('emptyState').hidden = hasLocations;
+    document.getElementById('verificationWorkspace').hidden = !hasLocations;
+    if (!hasLocations) {
+        updateOverallProgress();
+        return;
+    }
+    const loc = orderedLocations[currentIndex],
+        items = groupedData[loc] || [],
+        checks = window.checkedState[loc] || [],
+        done = checks.filter(Boolean).length;
+    document.getElementById('currentLocation').textContent = loc;
+    document.getElementById('locationDone').textContent = done;
+    document.getElementById('locationTotal').textContent = `de ${items.length}`;
+    const progress = document.getElementById('locationProgressBar');
+    progress.max = Math.max(items.length, 1);
+    progress.value = done;
+    document.getElementById('locationPosition').textContent = `${currentIndex+1} de ${orderedLocations.length}`;
+    document.getElementById('backBtn').disabled = currentIndex === 0;
+    document.getElementById('nextBtn').disabled = currentIndex === orderedLocations.length - 1;
+    renderRows(loc, items);
+    updateOverallProgress();
+}
 
-    const actionTd = document.createElement('td');
+function renderRows(loc, items) {
+    const body = document.getElementById('verificationRows');
+    body.innerHTML = '';
+    items.forEach(([part, qty], index) => {
+        const tr = document.createElement('tr');
+        if (window.checkedState[loc][index]) tr.classList.add('done');
+        const partTd = document.createElement('td');
+        partTd.className = 'part-number';
+        partTd.textContent = part;
+        partTd.onclick = () => makeEditable(partTd, loc, index, 0);
+        const qtyTd = document.createElement('td');
+        qtyTd.textContent = qty;
+        qtyTd.onclick = () => makeEditable(qtyTd, loc, index, 1);
+        const packTd = document.createElement('td');
+        packTd.className = 'pack-value';
+        const pack = Number((window.partsDB || {})[part]?.pack),
+            amount = Number(qty);
+        packTd.textContent = pack > 0 && Number.isFinite(amount) ? (amount / pack).toFixed(2) : '—';
+        const statusTd = document.createElement('td');
+        statusTd.textContent = window.checkedState[loc][index] ? 'Verificado' : 'Pendiente';
+        const actionTd = document.createElement('td');
+        actionTd.className = 'row-actions';
+        const done = document.createElement('button');
+        done.className = window.checkedState[loc][index] ? 'undo-btn' : 'done-btn';
+        done.textContent = window.checkedState[loc][index] ? 'Deshacer' : '✓ Verificar';
+        done.onclick = () => {
+            window.checkedState[loc][index] = !window.checkedState[loc][index];
+            saveData();
+            render();
+        };
+        const del = document.createElement('button');
+        del.className = 'delete-btn';
+        del.textContent = 'Eliminar';
+        del.onclick = () => requestDelete(loc, index);
+        actionTd.append(done, del);
+        tr.append(partTd, qtyTd, packTd, statusTd, actionTd);
+        body.append(tr);
+    });
+}
 
-    const doneBtn = document.createElement('button');
-doneBtn.className = 'done-btn';
-doneBtn.textContent = window.checkedState[loc]?.[i] ? 'Undo' : '✓';
+function updateOverallProgress() {
+    let total = 0,
+        done = 0;
+    orderedLocations.forEach(loc => {
+        total += (groupedData[loc] || []).length;
+        done += (window.checkedState[loc] || []).filter(Boolean).length;
+    });
+    document.getElementById('overallDone').textContent = done;
+    document.getElementById('overallTotal').textContent = `de ${total} verificados`;
+}
 
-    doneBtn.onclick = () => {
-      window.checkedState[loc][i] = !window.checkedState[loc][i];
-      saveData();
-      renderOne();
+function makeEditable(td, loc, row, col) {
+    if (td.querySelector('input')) return;
+    const original = td.textContent,
+        input = document.createElement('input');
+    input.className = 'editable-input';
+    input.value = original;
+    td.textContent = '';
+    td.append(input);
+    input.focus();
+    input.select();
+    let saved = false;
+    const commit = () => {
+        if (saved) return;
+        saved = true;
+        const value = input.value.trim();
+        if (value) groupedData[loc][row][col] = value;
+        saveData();
+        render();
     };
-
-    const delBtn = document.createElement('button');
-delBtn.className = 'delete-btn';
-delBtn.textContent = 'Borrar';
-    
-delBtn.onclick = () => {
-  deleteTarget = { loc, index: i };
-
-  const [part, qty] = groupedData[loc][i];
-
-  //  Set text inside modal
-  const text = document.getElementById('delete-text');
-  
-text.innerHTML = `
-  Eliminar:<br>
-  <strong>${part}</strong><br>
-  Cantidad: <strong>${qty}</strong>
-`;
-
-
-  const modal = document.getElementById('delete-modal');
-
-  let instance = M.Modal.getInstance(modal);
-  if (!instance) {
-    instance = M.Modal.init(modal);
-  }
-
-  instance.open();
-};
-
-
-    actionTd.appendChild(doneBtn);
-    actionTd.appendChild(delBtn);
-
-    tr.appendChild(partTd);
-    tr.appendChild(qtyTd);
-	tr.appendChild(divTd)
-    tr.appendChild(actionTd);
-
-    tbody.appendChild(tr);
-  });
-
-  table.appendChild(tbody);
-  card.appendChild(table);
-  container.appendChild(card);
-
-  // =============================
-  //  FIXED SEARCH (FINAL)
-  // =============================
-  const globalAdd = document.createElement('div');
-  globalAdd.className = 'add-inline';
-  globalAdd.style.position = 'relative';
-
-  const searchInput = document.createElement('input');
-  searchInput.placeholder = "Search part...";
-
-  const inputQty = document.createElement('input');
-  inputQty.type = 'number';
-  inputQty.placeholder = "Qty";
-
-  const results = document.createElement('div');
-  results.style.position = 'absolute';
-  results.style.bottom = '50px';
-  results.style.left = '0';
-  results.style.width = '100%';
-  results.style.maxHeight = '200px';
-  results.style.overflowY = 'auto';
-  results.style.background = 'white';
-  results.style.border = '1px solid #ccc';
-  results.style.borderTop = 'none';
-  results.style.boxShadow = '0 -2px 6px rgba(0,0,0,0.2)';
-  results.style.zIndex = '999';
-
-  let selectedPart = null;
-
-  searchInput.oninput = () => {
-    const q = searchInput.value.toLowerCase().trim();
-    results.innerHTML = '';
-    selectedPart = null;
-
-    if (!q) return;
-
-    const matches = allParts
-      .filter(p => {
-        const pLower = p.toLowerCase();
-        return pLower.startsWith(q) || pLower.includes(q);
-      })
-      .slice(0, 10);
-
-    matches.forEach(part => {
-      const item = document.createElement('div');
-      item.textContent = part;
-      item.style.padding = '10px';
-
-      item.onmouseenter = () => item.style.background = '#e3f2fd';
-      item.onmouseleave = () => item.style.background = 'white';
-
-      item.onclick = () => {
-        searchInput.value = part;
-        selectedPart = part;
-        results.innerHTML = '';
-        inputQty.focus();
-      };
-
-      results.appendChild(item);
+    input.addEventListener('blur', commit);
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') input.blur();
+        if (e.key === 'Escape') {
+            saved = true;
+            render();
+        }
     });
-  };
-
-  const addBtn = document.createElement('button');
-  addBtn.className = 'btn green';
-  addBtn.textContent = 'Agregar';
-
-  addBtn.onclick = () => {
-    const part = selectedPart || searchInput.value;
-
-    if (!part || !inputQty.value) {
-  alert("Enter part and quantity");
-  return;
 }
 
-    groupedData[loc].push([part, inputQty.value]);
-    window.checkedState[loc].push(false);
-
-    searchInput.value = "";
-    inputQty.value = "";
-    results.innerHTML = "";
-    selectedPart = null;
-
-    saveData();
-    renderOne();
-
-    setTimeout(() => searchInput.focus(), 50);
-  };
-
-  //  ENTER FLOW
-  searchInput.onkeydown = (e) => {
-    if (e.key === 'Enter') {
-      const first = results.firstChild;
-
-      if (first) {
-        first.click();
-      } else if ((selectedPart || searchInput.value) && inputQty.value) {
-        addBtn.click();
-      }
+function addLocation() {
+    const input = document.getElementById('new-location'),
+        loc = input.value.trim().toUpperCase();
+    if (!loc) {
+        toast('Escribe una ubicacion', 'orange');
+        return;
     }
-  };
-
-  inputQty.onkeydown = (e) => {
-    if (e.key === 'Enter') addBtn.click();
-  };
-
-  globalAdd.appendChild(searchInput);
-  globalAdd.appendChild(inputQty);
-  globalAdd.appendChild(addBtn);
-  globalAdd.appendChild(results);
-
-  fixedSearchContainer.appendChild(globalAdd);
-
-  // =============================
-  //  NAV STATE
-  // =============================
-  const backBtn = document.getElementById('backBtn');
-  const nextBtn = document.getElementById('nextBtn');
-
-  if (backBtn) backBtn.disabled = currentIndex === 0;
-  if (nextBtn) nextBtn.disabled = currentIndex === orderedLocations.length - 1;
-}
-
-// ===== EDIT =====
-function makeEditable(td, loc, rowIndex, colIndex) {
-  const input = document.createElement('input');
-  input.value = td.textContent;
-
-  td.innerHTML = '';
-  td.appendChild(input);
-
-  input.focus();
-
-  input.onblur = () => {
-    groupedData[loc][rowIndex][colIndex] = input.value.trim();
+    if (groupedData[loc]) {
+        currentIndex = orderedLocations.indexOf(loc);
+        input.value = '';
+        render();
+        toast('La ubicacion ya existe', 'blue-grey');
+        return;
+    }
+    groupedData[loc] = [];
+    window.checkedState[loc] = [];
+    orderedLocations.push(loc);
+    orderedLocations.sort((a, b) => a.localeCompare(b, undefined, {
+        numeric: true
+    }));
+    currentIndex = orderedLocations.indexOf(loc);
+    input.value = '';
+    const mobileControl = document.getElementById('newLocationControl');
+    const mobileToggle = document.getElementById('quickLocationToggle');
+    if (mobileControl) mobileControl.classList.remove('is-open');
+    if (mobileToggle) {
+        mobileToggle.setAttribute('aria-expanded', 'false');
+        mobileToggle.textContent = '+ Ubicacion';
+    }
     saveData();
-    renderOne();
-  };
-
-  input.onkeydown = (e) => {
-    if (e.key === 'Enter') input.blur();
-  };
+    render();
+    toast(`Ubicacion ${loc} agregada`, 'green');
 }
 
-// ===== CSV IMPORT =====
-document.getElementById('csvFile').addEventListener('change', function (e) {
-  const file = e.target.files[0];
-  if (!file) return;
+function moveLocation(direction) {
+    const next = currentIndex + direction;
+    if (next < 0 || next >= orderedLocations.length) return;
+    currentIndex = next;
+    render();
+    document.getElementById('partSearch').focus();
+}
 
-  const reader = new FileReader();
+function openLocationPicker() {
+    document.getElementById('locationSearch').value = '';
+    renderLocationList();
+    M.Modal.getInstance(document.getElementById('location-modal')).open();
+    setTimeout(() => document.getElementById('locationSearch').focus(), 150);
+}
 
-  reader.onload = function (e) {
-    const rows = e.target.result.split('\n');
+function renderLocationList() {
+    const query = document.getElementById('locationSearch').value.trim().toLowerCase(),
+        list = document.getElementById('locationList');
+    list.innerHTML = '';
+    orderedLocations.forEach((loc, index) => {
+        if (query && !loc.toLowerCase().includes(query)) return;
+        const button = document.createElement('button');
+        button.className = `location-option${index===currentIndex?' active':''}`;
+        const count = (window.checkedState[loc] || []).filter(Boolean).length,
+            total = (groupedData[loc] || []).length;
+        const name = document.createElement('strong');
+        name.textContent = loc;
+        const status = document.createElement('small');
+        status.textContent = `${count}/${total}`;
+        button.append(name, status);
+        button.onclick = () => {
+            currentIndex = index;
+            M.Modal.getInstance(document.getElementById('location-modal')).close();
+            render();
+        };
+        list.append(button);
+    });
+}
 
+function renderPartResults() {
+    const query = document.getElementById('partSearch').value.trim().toLowerCase(),
+        results = document.getElementById('partSearchResults');
+    results.innerHTML = '';
+    if (!query) return;
+    allParts.filter(part => part.toLowerCase().includes(query)).slice(0, 20).forEach(part => {
+        const button = document.createElement('button');
+        button.className = 'part-result';
+        const strong = document.createElement('strong');
+        strong.textContent = part;
+        const small = document.createElement('small');
+        small.textContent = (window.partsDB || {})[part]?.line || (window.hilosDB || {})[part]?.calibre || '';
+        button.append(strong, small);
+        button.onclick = () => {
+            document.getElementById('partSearch').value = part;
+            results.innerHTML = '';
+            document.getElementById('partQty').focus();
+        };
+        results.append(button);
+    });
+}
+
+function addPart() {
+    if (!orderedLocations.length) return;
+    const partInput = document.getElementById('partSearch'),
+        qtyInput = document.getElementById('partQty'),
+        part = partInput.value.trim().toUpperCase(),
+        qty = qtyInput.value.trim();
+    if (!part || !qty || Number(qty) <= 0) {
+        toast('Completa una parte y cantidad valida', 'orange');
+        return;
+    }
+    const loc = orderedLocations[currentIndex];
+    groupedData[loc].push([part, qty]);
+    window.checkedState[loc].push(false);
+    partInput.value = '';
+    qtyInput.value = '';
+    document.getElementById('partSearchResults').innerHTML = '';
+    saveData();
+    render();
+    partInput.focus();
+    toast(`${part} agregado a ${loc}`, 'green');
+}
+
+function requestDelete(loc, index) {
+    deleteTarget = {
+        loc,
+        index
+    };
+    const [part, qty] = groupedData[loc][index];
+    document.getElementById('delete-text').textContent = `Eliminar ${part}, cantidad ${qty}, de ${loc}.`;
+    M.Modal.getInstance(document.getElementById('delete-modal')).open();
+}
+
+function confirmDelete() {
+    if (!deleteTarget) return;
+    const {
+        loc,
+        index
+    } = deleteTarget;
+    groupedData[loc].splice(index, 1);
+    window.checkedState[loc].splice(index, 1);
+    deleteTarget = null;
+    saveData();
+    render();
+    M.Modal.getInstance(document.getElementById('delete-modal')).close();
+    toast('Material eliminado', 'red lighten-1');
+}
+
+function parseCSVLine(line) {
+    const result = [];
+    let value = '',
+        quoted = false;
+    for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+        if (ch === '"') {
+            if (quoted && line[i + 1] === '"') {
+                value += '"';
+                i++;
+            } else quoted = !quoted;
+        } else if ((ch === ',' || ch === ';' || ch === '\t') && !quoted) {
+            result.push(value.trim());
+            value = '';
+        } else value += ch;
+    }
+    result.push(value.trim());
+    return result;
+}
+
+function importCSV(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+        const nextData = {},
+            nextOrder = [],
+            nextChecks = {};
+        String(reader.result).split(/\r?\n/).slice(1).forEach(line => {
+            const [locRaw, partRaw, qtyRaw] = parseCSVLine(line);
+            const loc = (locRaw || '').trim(),
+                part = (partRaw || '').trim(),
+                qty = (qtyRaw || '').trim();
+            if (!loc || !part || !qty) return;
+            if (!nextData[loc]) {
+                nextData[loc] = [];
+                nextOrder.push(loc);
+                nextChecks[loc] = [];
+            }
+            nextData[loc].push([part, qty]);
+            nextChecks[loc].push(false);
+        });
+        if (!nextOrder.length) {
+            toast('El archivo no contiene filas validas', 'red');
+            return;
+        }
+        groupedData = nextData;
+        orderedLocations = nextOrder.sort((a, b) => a.localeCompare(b, undefined, {
+            numeric: true
+        }));
+        window.checkedState = nextChecks;
+        currentIndex = 0;
+        saveData();
+        render();
+
+        // Close the settings form after a successful CSV import.
+        const settingsModal = document.getElementById('settings-modal');
+        if (settingsModal && window.M) {
+            M.Modal.getInstance(settingsModal)?.close();
+        }
+
+        // Confirm the successful import and allow the same file to be selected again.
+        toast(`${orderedLocations.length} ubicaciones importadas correctamente`, 'green');
+        event.target.value = '';
+    };
+    reader.readAsText(file);
+}
+
+function csvCell(value) {
+    const text = String(value ?? '');
+    return /[",\n]/.test(text) ? `"${text.replace(/"/g,'""')}"` : text;
+}
+
+function generateCSV() {
+    return ['Location,Part,Qty', ...orderedLocations.flatMap(loc => (groupedData[loc] || []).map(([part, qty]) => [loc, part, qty].map(csvCell).join(',')))].join('\n');
+}
+
+function createCSV() {
+    const now = new Date(),
+        pad = n => String(n).padStart(2, '0'),
+        filename = `verificar_${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}.csv`,
+        blob = new Blob(['\ufeff', generateCSV()], {
+            type: 'text/csv;charset=utf-8'
+        });
+    return {
+        filename,
+        blob,
+        file: new File([blob], filename, {
+            type: 'text/csv'
+        })
+    };
+}
+
+function downloadCSV() {
+    const {
+        filename,
+        blob
+    } = createCSV(), url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    toast(`Descargado: ${filename}`, 'blue');
+}
+async function shareCSV() {
+    const data = createCSV();
+    try {
+        if (navigator.canShare && navigator.canShare({
+                files: [data.file]
+            })) {
+            await navigator.share({
+                title: 'Verificar',
+                text: 'Archivo de verificacion',
+                files: [data.file]
+            });
+            toast('Archivo compartido', 'green');
+            return;
+        }
+    } catch (error) {
+        if (error.name === 'AbortError') return;
+    }
+    toast('Compartir no disponible; se descargara el archivo', 'orange');
+    downloadCSV();
+}
+
+function clearStoredData() {
+    localStorage.removeItem(STORAGE_KEY);
     groupedData = {};
     orderedLocations = [];
     window.checkedState = {};
-
-    rows.slice(1).forEach(row => {
-    const [loc, part, qty] = row.split(/[,;\t]/).map(v => v?.trim());
-    if (!loc || !part || !qty) return;
-
-    if (!groupedData[loc]) {
-      groupedData[loc] = [];
-      orderedLocations.push(loc);
-      window.checkedState[loc] = [];
-    }
-
-    groupedData[loc].push([part.trim(), qty.trim()]);
-    window.checkedState[loc].push(false);
-  });
-
-  //  SORT LOCATIONS HERE
-  orderedLocations.sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
-
-  saveData();
-  renderOne();
-  };
-
-  reader.readAsText(file);
-});
-
-// ===== INIT =====
-document.addEventListener('DOMContentLoaded', () => {
-  // ===== ADD LOCATION =====
-const addLocationBtn = document.getElementById('add-location-btn');
-
-if (addLocationBtn) {
-  addLocationBtn.onclick = () => {
-    const input = document.getElementById('new-location');
-    const loc = input.value.trim();
-
-    if (!loc) {
-      alert("Enter a location name");
-      return;
-    }
-
-    if (groupedData[loc]) {
-      alert("Location already exists");
-      return;
-    }
-
-    // Create new location
-    groupedData[loc] = [];
-    orderedLocations.push(loc);
-    window.checkedState[loc] = [];
-
-    // Keep sorting consistent with CSV logic
-    orderedLocations.sort((a, b) =>
-      a.localeCompare(b, undefined, { numeric: true })
-    );
-
-    // Move to the new location
-    currentIndex = orderedLocations.indexOf(loc);
-
-    input.value = "";
-    saveData();
-    renderOne();
-  };
-}
-
-document.getElementById('new-location').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') addLocationBtn.click();
-});
-
-M.Modal.init(document.querySelectorAll('.modal'));
-  const partsDB = window.partsDB || {};
-  const hilosDB = window.hilosDB || {};
-
-  allParts = [
-    ...Object.keys(partsDB),
-    ...Object.keys(hilosDB)
-  ];
-
-  loadData();
-
-  const backBtn = document.getElementById('backBtn');
-  const nextBtn = document.getElementById('nextBtn');
-
-  if (backBtn) {
-    backBtn.onclick = () => {
-      if (currentIndex > 0) {
-        currentIndex--;
-        shouldScroll = true;
-        renderOne();
-      }
-    };
-  }
-
-  if (nextBtn) {
-    nextBtn.onclick = () => {
-      if (currentIndex < orderedLocations.length - 1) {
-        currentIndex++;
-        shouldScroll = true;
-        renderOne();
-      }
-    };
-  }
-  const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
-
-if (confirmDeleteBtn) {
-  confirmDeleteBtn.onclick = () => {
-    if (!deleteTarget) return;
-
-    const { loc, index } = deleteTarget;
-
-    groupedData[loc].splice(index, 1);
-
-    if (window.checkedState[loc]) {
-      window.checkedState[loc].splice(index, 1);
-    }
-
-    deleteTarget = null;
-    
-saveData();
-renderOne();
-
-const modal = document.getElementById('delete-modal');
-const instance = M.Modal.getInstance(modal);
-instance.close();
-
-  };
-}
-});
-
-// ===== DOWNLOAD CSV =====
-function downloadCSV() {
-  let csv = "Location,Part,Qty\n";
-
-  orderedLocations.forEach(loc => {
-    const items = groupedData[loc] || [];
-    items.forEach(([part, qty]) => {
-      csv += `${loc},${part},${qty}\n`;
-    });
-  });
-
-  const blob = new Blob([csv], { type: "text/csv" });
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-  const now = new Date();
-
-const date =
-  String(now.getMonth() + 1).padStart(2, '0') +
-  String(now.getDate()).padStart(2, '0');
-
-const time =
-  String(now.getHours()).padStart(2, '0') +
-  String(now.getMinutes()).padStart(2, '0');
-
-a.download = `verificar_${date}_${time}.csv`;  a.click();
-
-  URL.revokeObjectURL(url);
-}
-
-// ===== SHARE CSV (mobile-friendly) =====
-function shareCSV() {
-  let csv = "Location,Part,Qty\n";
-
-  orderedLocations.forEach(loc => {
-    const items = groupedData[loc] || [];
-    items.forEach(([part, qty]) => {
-      csv += `${loc},${part},${qty}\n`;
-    });
-  });
-
-  const blob = new Blob([csv], { type: "text/csv" });
-  const file = new File([blob], "verificar_data.csv", { type: "text/csv" });
-
-  if (navigator.share) {
-    navigator.share({
-      files: [file],
-      title: "Verificar Data",
-      text: "Here is the CSV file"
-    }).catch(err => console.log(err));
-  } else {
-    alert("Sharing not supported on this device");
-  }
-}
-
-// ===== CLEAR DATA =====
-function clearStoredData() {
-  if (!confirm("Are you sure you want to delete all data?")) return;
-
-  localStorage.removeItem(STORAGE_KEY);
-
-  groupedData = {};
-  orderedLocations = [];
-  window.checkedState = {};
-  currentIndex = 0;
-
-  renderOne();
+    currentIndex = 0;
+    render();
+    M.Modal.getInstance(document.getElementById('clear-modal')).close();
+	M.Modal.getInstance(document.getElementById('settings-modal')).close();
+    toast('Datos eliminados', 'red');
+	
 }
