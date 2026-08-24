@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Custom Encoder / Decoder — Bigram Singles + 3‑Digit Doubles</title>
+  <style>
+    :root{
+      --bg: #0f1220;
+      --panel: #171a2b;
+      --text: #e9ecf1;
+      --muted: #a6accd;
+      --accent: #7bd389;
+      --accent2: #62b1ff;
+      --danger: #ff6b6b;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji", "Segoe UI Symbol";
+    }
+    * { box-sizing: border-box; }
+    html, body { margin:0; padding:0; background:var(--bg); color:var(--text); font-family:var(--sans); }
+    header, footer { text-align:center; padding:1rem; }
+    header h1 { margin:0.5rem 0 0.25rem; font-weight:700; }
+    header p { margin:0; color:var(--muted); }
+    main { max-width: 980px; margin: 0 auto; padding: 1rem; display: grid; gap: 1rem; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+    .panel h2 { margin: 0 0 0.75rem; }
+    label { display:block; font-weight:600; margin: 0.5rem 0; }
+    textarea {
+      width:100%;
+      background: #0c0f1a;
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-size: 0.95rem;
+      line-height: 1.35;
+      resize: vertical;
+      font-family: var(--mono);
+    }
+    .options { margin: 0.5rem 0 0.75rem; color: var(--muted); }
+    .options label { display:flex; align-items:center; gap:0.5rem; font-weight:500; }
+    .button-row { display:flex; gap:0.5rem; margin: 0.5rem 0 0.75rem; flex-wrap: wrap; }
+    button {
+      background: linear-gradient(180deg, var(--accent2), #4a8fe0);
+      color: #0b1020;
+      border: none;
+      padding: 0.6rem 0.9rem;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button:hover { filter: brightness(1.05); }
+    button:active { transform: translateY(1px); }
+    .btn-secondary {
+      background: linear-gradient(180deg, var(--accent), #49b873);
+    }
+    .btn-danger {
+      background: linear-gradient(180deg, var(--danger), #e25555);
+      color: #ffffff;
+    }
+    pre.key {
+      background:#0c0f1a;
+      border:1px solid rgba(255,255,255,0.12);
+      border-radius:8px;
+      padding:0.75rem;
+      overflow:auto;
+      font-family:var(--mono);
+      color:var(--muted);
+      white-space: pre-wrap;
+    }
+    footer { color: var(--muted); }
+    @media (min-width: 850px) {
+      main { grid-template-columns: 1fr 1fr; }
+      main .panel:nth-child(3) { grid-column: 1 / -1; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Custom Cipher — Bigram Singles + 3‑Digit Doubles</h1>
+    <p>Singles use your bigrams. Two identical letters in a row become a 3‑digit number.</p>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>Encode</h2>
+      <label for="plain">Plaintext</label>
+      <textarea id="plain" rows="6" placeholder="Type your message here...">MEET AT NOON</textarea>
+
+      <div class="options">
+        <label>
+          <input type="checkbox" id="escapeDigitsEncode" />
+          Escape digits in plaintext (prefix digits with ~ to avoid collision)
+        </label>
+      </div>
+
+      <div class="button-row">
+        <button id="encodeBtn">Encode</button>
+        <button id="copyEnc" class="btn-secondary">Copy</button>
+        <button id="clearPlain" class="btn-danger">Clear</button>
+      </div>
+
+      <label for="cipher">Ciphertext</label>
+      <textarea id="cipher" rows="6" readonly></textarea>
+    </section>
+
+    <section class="panel">
+      <h2>Decode</h2>
+      <label for="cipherIn">Ciphertext</label>
+      <textarea id="cipherIn" rows="6" placeholder="Paste cipher here...">qe012nm</textarea>
+
+      <div class="options">
+        <label>
+          <input type="checkbox" id="unescapeDigitsDecode" checked />
+          Unescape digits (restore ~5 → 5)
+        </label>
+      </div>
+
+      <div class="button-row">
+        <button id="decodeBtn">Decode</button>
+        <button id="copyDec" class="btn-secondary">Copy</button>
+        <button id="clearCipher" class="btn-danger">Clear</button>
+      </div>
+
+      <label for="plainOut">Plaintext</label>
+      <textarea id="plainOut" rows="6" readonly></textarea>
+    </section>
+
+    <section class="panel">
+      <h2>Key (for reference)</h2>
+      <pre class="key">
+a→26/gj  b→25/fh  c→24/dg  d→23/sf  e→22/oa  f→21/ip
+g→20/uo  h→19/yi  i→18/tu  j→17/ry  k→16/et  l→15/wr
+m→14/qe  n→13/nm  o→12/vb  p→11/xc  q→10/lz  r→09/jk
+s→08/gh  t→07/df  u→06/as  v→05/op  w→04/ui  x→03/ty
+y→02/er  z→01/qw
+
+Rule: only doubles → 3 digits (zero‑padded). Singles → bigrams.
+Examples:
+  "moon" → m(qe) + oo(012) + n(nm) = qe012nm
+  "MEET AT NOON" → qe022df gjdf nm012nm
+      </pre>
+    </section>
+  </main>
+
+  <footer>
+    <p>Built for you by M365 Copilot · Works offline · No data leaves your device</p>
+  </footer>
+
+  <script>
+    // === Mapping according to your codebook ===
+    const MAP = {
+      a: [26, 'gj'], b: [25, 'fh'], c: [24, 'dg'], d: [23, 'sf'],
+      e: [22, 'oa'], f: [21, 'ip'], g: [20, 'uo'], h: [19, 'yi'],
+      i: [18, 'tu'], j: [17, 'ry'], k: [16, 'et'], l: [15, 'wr'],
+      m: [14, 'qe'], n: [13, 'nm'], o: [12, 'vb'], p: [11, 'xc'],
+      q: [10, 'lz'], r: [ 9, 'jk'], s: [ 8, 'gh'], t: [ 7, 'df'],
+      u: [ 6, 'as'], v: [ 5, 'op'], w: [ 4, 'ui'], x: [ 3, 'ty'],
+      y: [ 2, 'er'], z: [ 1, 'qw'],
+    };
+    const NUM_TO_LETTER = Object.fromEntries(Object.entries(MAP).map(([k, [n]]) => [n, k]));
+    const BIGRAM_TO_LETTER = Object.fromEntries(Object.entries(MAP).map(([k, [,b]]) => [b, k]));
+
+    function encodeTripleDigitDoubles(text, { escapeDigits=false } = {}) {
+      let out = '';
+      for (let i = 0; i < text.length; ) {
+        const ch = text[i];
+        if (/\d/.test(ch) && escapeDigits) {
+          out += '~' + ch;
+          i += 1;
+          continue;
+        }
+        const low = ch.toLowerCase();
+        if (MAP[low]) {
+          if (i + 1 < text.length && text[i+1].toLowerCase() === low) {
+            // Double letter → 3-digit number
+            const num = MAP[low][0];
+            out += String(num).padStart(3, '0');
+            i += 2;
+          } else {
+            // Single letter → bigram
+            out += MAP[low][1];
+            i += 1;
+          }
+        } else {
+          // Preserve punctuation/space/symbols
+          out += ch;
+          i += 1;
+        }
+      }
+      return out;
+    }
+
+    function decodeTripleDigitDoubles(cipher, { unescapeDigits=false } = {}) {
+      let out = '';
+      for (let i = 0; i < cipher.length; ) {
+        const ch = cipher[i];
+
+        // Handle escaped digits like ~5
+        if (ch === '~' && i + 1 < cipher.length && /\d/.test(cipher[i+1])) {
+          out += unescapeDigits ? cipher[i+1] : '~' + cipher[i+1];
+          i += 2;
+          continue;
+        }
+
+        if (/\d/.test(ch)) {
+          // Expect a 3-digit token for double letters
+          if (i + 2 < cipher.length && /\d/.test(cipher[i+1]) && /\d/.test(cipher[i+2])) {
+            const num = parseInt(cipher.slice(i, i+3), 10);
+            const letter = NUM_TO_LETTER[num];
+            if (!letter) {
+              out += '??'; // unknown token
+            } else {
+              out += letter + letter; // expand to double
+            }
+            i += 3;
+          } else {
+            out += '?'; // malformed numeric token
+            i += 1;
+          }
+        } else if (/[A-Za-z]/.test(ch)) {
+          // Expect a 2-letter bigram
+          if (i + 1 < cipher.length && /[A-Za-z]/.test(cipher[i+1])) {
+            const bigram = (cipher[i] + cipher[i+1]).toLowerCase();
+            const letter = BIGRAM_TO_LETTER[bigram];
+            out += letter ? letter : '?';
+            i += 2;
+          } else {
+            out += '?';
+            i += 1;
+          }
+        } else {
+          out += cipher[i];
+          i += 1;
+        }
+      }
+      return out;
+    }
+
+    // Helpers
+    const $ = (sel) => document.querySelector(sel);
+
+    async function copyToClipboard(text) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          // Fallback for non-HTTPS or older browsers
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.left = '-9999px';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+        }
+      } catch (e) {
+        alert('Copy failed. You can select and copy manually.');
+      }
+    }
+
+    // Wire up UI
+    $('#encodeBtn').addEventListener('click', () => {
+      const text = $('#plain').value;
+      const escapeDigits = $('#escapeDigitsEncode').checked;
+      const enc = encodeTripleDigitDoubles(text, { escapeDigits });
+      $('#cipher').value = enc;
+    });
+
+    $('#decodeBtn').addEventListener('click', () => {
+      const text = $('#cipherIn').value;
+      const unescapeDigits = $('#unescapeDigitsDecode').checked;
+      const dec = decodeTripleDigitDoubles(text, { unescapeDigits });
+      $('#plainOut').value = dec;
+    });
+
+    $('#copyEnc').addEventListener('click', () => copyToClipboard($('#cipher').value));
+    $('#copyDec').addEventListener('click', () => copyToClipboard($('#plainOut').value));
+
+    $('#clearPlain').addEventListener('click', () => { $('#plain').value = ''; $('#cipher').value = ''; });
+    $('#clearCipher').addEventListener('click', () => { $('#cipherIn').value = ''; $('#plainOut').value = ''; });
+
+    // Demo: run once on load
+    window.addEventListener('DOMContentLoaded', () => {
+      $('#encodeBtn').click();    // encode default sample
+      $('#decodeBtn').click();    // decode default sample
+    });
+  </script>
+</body>
+</html>
