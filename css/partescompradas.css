@@ -45,9 +45,12 @@
     vertical-align: middle;
 }
 .purchased-parts-page .nav-action {
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     min-width: 56px;
+    height: 64px; /* match navbar height */
+    padding: 0;
 }
 .purchased-parts-page .page-heading {
     display: flex;

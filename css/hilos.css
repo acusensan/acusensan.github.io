@@ -41,9 +41,12 @@
     filter: brightness(0) invert(1);
 }
 .hilos-page .nav-action {
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     min-width: 56px;
+    height: 64px; /* match navbar height */
+    padding: 0;
 }
 .hilos-page .hilos-shell {
     width: min(1180px, calc(100% - 32px));

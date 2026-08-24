@@ -41,9 +41,12 @@
     filter: brightness(0) invert(1);
 }
 .barcode-page .nav-action {
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     min-width: 56px;
+    height: 64px; /* match navbar height */
+    padding: 0;
 }
 .barcode-page .barcode-shell {
     width: min(1120px, calc(100% - 32px));

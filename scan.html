@@ -67,29 +67,12 @@
                     <div class="capture-controls">
                         <label class="file-button">Cargar produccion<input type="file" id="csvFile" accept=".csv" /><span class="sr-only"></span></label>
                         <div class="capture-fields">
-                        <label class="field-label" for="scanPart"
-                            ><span>Numero de parte</span
-                            ><input
-                                id="scanPart"
-                                type="text"
-                                class="scan-input"
-                                autocomplete="off"
-                                autocapitalize="characters"
-                                placeholder="Escanea o escribe la parte" /></label
-                        ><label class="field-label qty-field" for="scanQty"
-                            ><span>Cantidad</span
-                            ><input id="scanQty" type="text" inputmode="text" autocomplete="off" placeholder="Cantidad"
-                        /></label>
+                        <label class="field-label" for="scanPart"><span>Numero de parte</span><input id="scanPart"type="text"class="scan-input"autocomplete="off"autocapitalize="characters"placeholder="Escanea o escribe la parte" /></label>
+						<label class="field-label qty-field" for="scanQty"><span>Cantidad</span><input id="scanQty" type="text" inputmode="text" autocomplete="off" placeholder="Cantidad"/></label>
                         </div>
                     </div>
                     <div class="capture-actions">
-                        <button
-                            class="btn blue darken-4 modal-trigger"
-                            data-target="scan-summary-modal"
-                            onclick="renderScanSummary()"
-                        >
-                            Resumen activo</button
-                        ><button class="btn Green" onclick="openTransferredModal()">Ver transferidos</button>
+                        <button class="btn blue darken-4 modal-trigger"data-target="scan-summary-modal"onclick="renderScanSummary()">Resumen activo</button><button class="btn Green" onclick="openTransferredModal()">Ver transferidos</button>
                     </div>
                 </section>
 
@@ -103,14 +86,8 @@
                             <span id="searchStatus" class="status-badge active">Auto-limpiar</span>
                         </div>
                         <div class="panel-toolbar">
-                            <label class="field-label grow" for="partSearchInput"
-                                ><span>Parte</span
-                                ><input
-                                    id="partSearchInput"
-                                    type="search"
-                                    autocomplete="off"
-                                    placeholder="Buscar numero de parte..." /></label
-                            ><button id="toggleSearchPause" class="btn-flat">Pausar</button>
+                            <label class="field-label grow" for="partSearchInput"><span>Parte</span><input id="partSearchInput"type="search"autocomplete="off"placeholder="Buscar numero de parte..." /></label>
+							<button id="toggleSearchPause" class="btn-flat">Pausar</button>
                         </div>
                         <div class="table-scroll">
                             <table class="compact-table">
@@ -134,13 +111,7 @@
                                 <span class="eyebrow">Turno actual</span>
                                 <h2 id="log-title">Registro de escaneo</h2>
                             </div>
-                            <button
-                                class="btn-flat modal-trigger"
-                                data-target="scan-summary-modal"
-                                onclick="renderScanSummary()"
-                            >
-                                Ver resumen
-                            </button>
+                            <button class="btn-flat modal-trigger"data-target="scan-summary-modal"onclick="renderScanSummary()">Ver resumen</button>
                         </div>
                         <div class="table-scroll">
                             <table class="compact-table">
@@ -287,19 +258,15 @@
                 <h5 id="modalPartTitle">Agregar parte</h5>
                 <p id="modalPackInfo"></p>
                 <div class="quantity-stepper">
-                    <button class="btn red" onclick="changeModalQty(-1)">−</button
-                    ><input id="modalQtyInput" type="number" min="1" value="1" /><button
-                        class="btn green"
-                        onclick="changeModalQty(1)"
-                    >
-                        +
-                    </button>
+                    <button class="btn red" onclick="changeModalQty(-1)">−</button>
+					<input id="modalQtyInput" type="number" min="1" value="1" />
+					<button class="btn green"onclick="changeModalQty(1)">+</button>
                 </div>
                 <h5 id="modalTotal">Total: 0</h5>
             </div>
             <div class="modal-footer">
-                <button class="modal-close btn-flat">Cancelar</button
-                ><button class="btn green" onclick="confirmAddFromModal()">Agregar</button>
+                <button class="modal-close btn-flat">Cancelar</button>
+				<button class="btn green" onclick="confirmAddFromModal()">Agregar</button>
             </div>
         </div>
         <footer class="page-footer blue darken-4">

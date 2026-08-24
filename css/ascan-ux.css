@@ -40,9 +40,12 @@
     vertical-align: middle;
 }
 .ascan-page .nav-action {
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     min-width: 56px;
+    height: 64px; /* match navbar height */
+    padding: 0;
 }
 .ascan-page .ascan-shell {
     width: min(1400px, calc(100% - 32px));

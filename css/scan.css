@@ -46,9 +46,12 @@
     vertical-align: middle;
 }
 .scan-page .nav-action {
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     min-width: 56px;
+    height: 64px; /* match navbar height */
+    padding: 0;
 }
 .scan-page .page-heading {
     display: flex;
@@ -1017,5 +1020,44 @@
     .scan-page .capture-controls .capture-fields {
         grid-template-columns: 1fr;
         width: 100%;
+    }
+}
+
+/* =========================================================
+   COMPARATIVO: compact rows and prevent text wrapping
+   ========================================================= */
+.scan-page .totals-panel .compact-table tbody td {
+    padding: 7px 5px;
+    font-size: 0.78rem;
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-indent: 0;
+}
+
+/* Keep the part number readable while still using one line. */
+.scan-page .totals-panel .compact-table tbody td:nth-child(2) {
+    font-size: 0.74rem;
+}
+
+@media (min-width: 1500px) {
+    .scan-page .totals-panel .compact-table tbody td {
+        font-size: 0.86rem;
+    }
+
+    .scan-page .totals-panel .compact-table tbody td:nth-child(2) {
+        font-size: 0.82rem;
+    }
+}
+
+@media (max-width: 760px) {
+    .scan-page .totals-panel .compact-table tbody td {
+        padding: 6px 4px;
+        font-size: 0.7rem;
+    }
+
+    .scan-page .totals-panel .compact-table tbody td:nth-child(2) {
+        font-size: 0.68rem;
     }
 }
