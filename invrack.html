@@ -2,7 +2,7 @@
 <html lang="es">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
         <meta name="theme-color" content="#0d47a1" />
         <title>Inventario Racks | ./Acu</title>
         <link rel="stylesheet" href="css/materialize.min.css" />
@@ -66,7 +66,7 @@
                             <span class="step-number">1</span>
                             <h2 id="rack-selector-title">Ubicacion</h2>
                         </div>
-                        <span id="rackPosition" class="rack-position" aria-live="polite"></span>
+                        
                     </div>
                     <div class="rack-fields">
                         <label class="field-label" for="columnSelect">
@@ -83,7 +83,8 @@
                     </div>
                     <div class="rack-stepper">
                         <button id="prevRackBtn" class="btn-flat" type="button">← Anterior</button>
-                        <button id="nextRackBtn" class="btn-flat" type="button">Siguiente →</button>
+                        <span id="rackPosition" class="rack-position" aria-live="polite"></span>
+                        <button id="nextRackBtn" class="btn blue darken-4" type="button">Siguiente →</button>
                     </div>
                 </section>
                 <section class="inventory-panel" aria-labelledby="rackTitle">

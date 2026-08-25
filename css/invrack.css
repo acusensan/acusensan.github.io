@@ -611,3 +611,83 @@
         display: none;
     }
 }
+
+
+/* ============================================================
+   Table-style previous/next rack navigation
+   Matches the fixed mobile navigation used on Verificar.
+   ============================================================ */
+.invrack-page .rack-stepper {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+}
+
+.invrack-page .rack-stepper button {
+    min-width: 0;
+    border-radius: 10px;
+    text-transform: none;
+}
+
+.invrack-page .rack-stepper #nextRackBtn {
+    justify-self: stretch;
+}
+
+.invrack-page .rack-stepper .rack-position {
+    min-width: 58px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .invrack-page {
+        --ir-navigation-height: 56px;
+        --ir-safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    /* Leave room for the rack selector and fixed navigation. */
+    .invrack-page main {
+        padding-bottom: calc(176px + var(--ir-navigation-height) + var(--ir-safe-bottom));
+    }
+
+    /* The selector remains above the navigation bar. */
+    .invrack-page .rack-toolbar {
+        bottom: calc(var(--ir-navigation-height) + 12px + var(--ir-safe-bottom));
+    }
+
+    /* Pull the stepper out as a dedicated bottom navigation bar. */
+    .invrack-page .rack-stepper {
+        position: fixed;
+        z-index: 850;
+        left: 8px;
+        right: 8px;
+        bottom: calc(6px + var(--ir-safe-bottom));
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        gap: 6px;
+        min-height: var(--ir-navigation-height);
+        margin: 0;
+        padding: 7px;
+        border: 1px solid var(--ir-border);
+        border-radius: 14px;
+        background: var(--ir-surface);
+        box-shadow: 0 -5px 22px rgba(20, 33, 52, 0.2);
+    }
+
+    .invrack-page .rack-stepper .btn,
+    .invrack-page .rack-stepper .btn-flat {
+        width: 100%;
+        height: 42px;
+        line-height: 42px;
+        margin: 0;
+        padding: 0 8px;
+        border-radius: 10px;
+        font-size: 0.82rem;
+        white-space: nowrap;
+    }
+
+    .invrack-page .rack-stepper .rack-position {
+        min-width: 54px;
+        font-size: 0.82rem;
+    }
+}

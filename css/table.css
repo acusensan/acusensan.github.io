@@ -1187,5 +1187,8 @@ body.verify-page {
     .verify-page main {
         padding-bottom: calc(var(--vf-floating-controls-space) + 18px);
     }
+	.row-actions{
+		text-align: right;
+	}
 }
 
