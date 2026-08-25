@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     buildPartIndex();
     updateRackOptions();
     loadEntriesFromLocalStorage();
+    if (mobileCaptureQuery.matches) document.getElementById('capture-panel').setAttribute('aria-hidden', 'true');
     partSearchModalInstance = M.Modal.getInstance(document.getElementById('part-search-modal'));
     const selectedPart = document.getElementById('selectedPart');
     selectedPart.addEventListener('input', e => {
@@ -46,6 +47,68 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('confirm-clear-btn').addEventListener('click', confirmClear);
     document.getElementById('modalPartSearch').addEventListener('input', modalSearchParts);
     document.getElementById('exportPreviewSearch').addEventListener('input', renderExportPreviewRows);
+    document.getElementById('repeat-last-button').addEventListener('click', requestRepeatLastEntry);
+    document.getElementById('confirm-repeat-btn').addEventListener('click', confirmRepeatLastEntry);
+    document.getElementById('open-capture-button').addEventListener('click', openCaptureSheet);
+    document.getElementById('close-capture-button').addEventListener('click', closeCaptureSheet);
+    document.getElementById('capture-backdrop').addEventListener('click', closeCaptureSheet);
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && document.getElementById('capture-panel').classList.contains('is-open')) {
+            closeCaptureSheet();
+        }
+    });
+});
+
+const mobileCaptureQuery = window.matchMedia('(max-width: 600px)');
+let captureSheetReturnFocus = null;
+
+function openCaptureSheet() {
+    if (!mobileCaptureQuery.matches) return;
+
+    const panel = document.getElementById('capture-panel');
+    const backdrop = document.getElementById('capture-backdrop');
+    const trigger = document.getElementById('open-capture-button');
+
+    captureSheetReturnFocus = document.activeElement;
+    panel.classList.add('is-open');
+    backdrop.classList.add('is-open');
+    document.body.classList.add('sheet-open');
+    panel.setAttribute('aria-hidden', 'false');
+    trigger.setAttribute('aria-expanded', 'true');
+
+    setTimeout(() => document.getElementById('selectedPart').focus(), 220);
+}
+
+function closeCaptureSheet(options = {}) {
+    const panel = document.getElementById('capture-panel');
+    const backdrop = document.getElementById('capture-backdrop');
+    const trigger = document.getElementById('open-capture-button');
+
+    panel.classList.remove('is-open');
+    backdrop.classList.remove('is-open');
+    document.body.classList.remove('sheet-open');
+    trigger.setAttribute('aria-expanded', 'false');
+
+    if (mobileCaptureQuery.matches) panel.setAttribute('aria-hidden', 'true');
+    else panel.setAttribute('aria-hidden', 'false');
+
+    if (options.restoreFocus !== false) {
+        const target = captureSheetReturnFocus && captureSheetReturnFocus.isConnected
+            ? captureSheetReturnFocus
+            : trigger;
+        setTimeout(() => target.focus(), 210);
+    }
+}
+
+function scrollRecordsToNewest() {
+    const list = document.getElementById('entry-list');
+    if (!list) return;
+    requestAnimationFrame(() => list.scrollTo({ top: 0, left: 0, behavior: 'smooth' }));
+}
+
+mobileCaptureQuery.addEventListener?.('change', event => {
+    if (!event.matches) closeCaptureSheet({ restoreFocus: false });
+    else document.getElementById('capture-panel').setAttribute('aria-hidden', 'true');
 });
 
 function toast(html, classes = 'blue') {
@@ -105,6 +168,45 @@ function calculateBoxes(part, quantity) {
     return data && Number(data.pack) > 0 ? quantity / Number(data.pack) : null;
 }
 
+let entryPendingRepeat = null;
+
+function requestRepeatLastEntry() {
+    const lastItem = document.querySelector('#entry-list .record-item');
+
+    if (!lastItem) {
+        toast('No hay un registro anterior para repetir', 'blue-grey');
+        return;
+    }
+
+    entryPendingRepeat = JSON.parse(lastItem.dataset.entry);
+    document.getElementById('repeat-confirm-rack').textContent = entryPendingRepeat.rack;
+    document.getElementById('repeat-confirm-part').textContent = entryPendingRepeat.part;
+    document.getElementById('repeat-confirm-quantity').textContent = entryPendingRepeat.quantity;
+
+    const modal = M.Modal.getInstance(document.getElementById('repeat-confirm-modal'));
+    modal.open();
+}
+
+function confirmRepeatLastEntry() {
+    if (!entryPendingRepeat) {
+        M.Modal.getInstance(document.getElementById('repeat-confirm-modal')).close();
+        return;
+    }
+
+    const entry = {
+        ...entryPendingRepeat,
+        id: `${Date.now()}-${Math.random().toString(16).slice(2)}`
+    };
+
+    renderEntry(entry, true);
+    saveEntriesToLocalStorage();
+    scrollRecordsToNewest();
+    entryPendingRepeat = null;
+
+    M.Modal.getInstance(document.getElementById('repeat-confirm-modal')).close();
+    toast(`Registro repetido: <strong>${entry.rack} ${entry.part} (${entry.quantity})</strong>`, 'green darken-1');
+}
+
 function addEntry() {
     const rack = document.getElementById('rack').value,
         part = document.getElementById('selectedPart').value.trim().toUpperCase(),
@@ -127,7 +229,9 @@ function addEntry() {
     document.getElementById('quantity').value = '';
     document.getElementById('partSearchResults').innerHTML = '';
     M.updateTextFields();
-    document.getElementById('selectedPart').focus();
+    scrollRecordsToNewest();
+    if (mobileCaptureQuery.matches) closeCaptureSheet();
+    else document.getElementById('selectedPart').focus();
     toast(`Agregado: <strong>${rack} ${part} (${quantity})</strong>`, 'green darken-1');
 }
 
@@ -214,6 +318,8 @@ function updateRecordState() {
     const count = document.querySelectorAll('#entry-list .record-item').length;
     document.getElementById('entry-count').textContent = count;
     document.getElementById('empty-records').hidden = count > 0;
+    const repeatButton = document.getElementById('repeat-last-button');
+    if (repeatButton) repeatButton.disabled = count === 0;
 }
 
 function clearAllEntries() {

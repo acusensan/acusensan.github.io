@@ -864,3 +864,328 @@
         display: none;
     }
 }
+
+/* ============================================================
+   Mobile add-material action button and bottom sheet.
+   Location navigation remains in the normal page flow.
+   ============================================================ */
+.verify-page .mobile-add-material-button,
+.verify-page .add-part-backdrop,
+.verify-page .mobile-sheet-heading {
+    display: none;
+}
+
+@media (max-width: 700px) {
+    .verify-page {
+        --vf-sheet-safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    .verify-page main {
+        padding-bottom: calc(88px + var(--vf-sheet-safe-bottom));
+    }
+
+    .verify-page.sheet-open {
+        overflow: hidden;
+    }
+
+    .verify-page .table-scroll {
+        max-height: calc(100dvh - 205px);
+    }
+
+    .verify-page .location-navigation {
+        position: sticky;
+        z-index: 8;
+        bottom: 5px;
+        padding: 6px;
+        border: 1px solid var(--vf-border);
+        border-radius: 12px;
+        background: var(--vf-surface);
+        box-shadow: 0 -3px 14px rgba(20, 33, 52, 0.12);
+    }
+
+    .verify-page .mobile-add-material-button {
+        position: fixed;
+        z-index: 900;
+        right: 16px;
+        bottom: calc(62px + var(--vf-sheet-safe-bottom));
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-width: 126px;
+        min-height: 52px;
+        padding: 0 18px;
+        border: 0;
+        border-radius: 999px;
+        background: var(--vf-primary);
+        color: #fff;
+        box-shadow: 0 8px 24px rgba(13, 71, 161, 0.32);
+        cursor: pointer;
+        font: inherit;
+        font-weight: 800;
+    }
+
+
+    .verify-page .mobile-add-material-button span {
+        font-size: 1.5rem;
+        line-height: 1;
+    }
+
+    .verify-page .add-part-backdrop {
+        position: fixed;
+        z-index: 950;
+        inset: 0;
+        display: block;
+        visibility: hidden;
+        border: 0;
+        background: rgba(8, 15, 28, 0.55);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 180ms ease, visibility 180ms ease;
+    }
+
+    .verify-page .add-part-backdrop.is-open {
+        visibility: visible;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .verify-page .add-part-panel {
+        position: fixed;
+        z-index: 1000;
+        inset: auto 0 0;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 100px;
+        gap: 10px;
+        width: 100%;
+        max-height: calc(100dvh - 12px);
+        padding: 16px 16px calc(16px + var(--vf-sheet-safe-bottom));
+        overflow-x: hidden;
+        overflow-y: auto;
+        border-radius: 22px 22px 0 0;
+        background: var(--vf-surface);
+        box-shadow: 0 -10px 32px rgba(20, 33, 52, 0.25);
+        overscroll-behavior: contain;
+        transform: translateY(105%);
+        visibility: hidden;
+        pointer-events: none;
+        transition: transform 200ms ease, visibility 200ms ease;
+    }
+
+    .verify-page .add-part-panel.is-open {
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateY(0);
+    }
+
+    .verify-page .mobile-sheet-heading {
+        position: sticky;
+        z-index: 4;
+        top: -16px;
+        grid-column: 1 / -1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin: -16px -16px 6px;
+        padding: 15px 16px 12px;
+        border-bottom: 1px solid var(--vf-border);
+        background: var(--vf-surface);
+    }
+
+    .verify-page .mobile-sheet-heading strong {
+        display: block;
+        margin-top: 2px;
+        color: var(--vf-text);
+        font-size: 1.15rem;
+    }
+
+    .verify-page .sheet-close-button {
+        flex: 0 0 42px;
+        width: 42px;
+        height: 42px;
+        border: 0;
+        border-radius: 50%;
+        background: var(--vf-soft);
+        color: var(--vf-text);
+        cursor: pointer;
+        font-size: 1.8rem;
+        line-height: 1;
+    }
+
+    .verify-page .add-part-panel .part-search-field {
+        grid-column: 1 / -1;
+    }
+
+    .verify-page .add-part-panel .field-label > span {
+        position: static;
+        width: auto;
+        height: auto;
+        margin: 0 0 6px;
+        overflow: visible;
+        clip: auto;
+        white-space: normal;
+    }
+
+    .verify-page .add-part-panel .field-label input,
+    .verify-page .add-part-panel .btn {
+        height: 48px !important;
+    }
+
+    .verify-page #addPartBtn {
+        min-width: 0;
+        padding: 0 18px;
+        font-size: 1rem;
+    }
+
+    .verify-page #addPartBtn::before {
+        content: none;
+    }
+
+    .verify-page .part-results {
+        top: auto;
+        bottom: 54px;
+        max-height: min(38dvh, 270px);
+    }
+
+    .verify-page.sheet-open .mobile-add-material-button {
+        visibility: hidden;
+        pointer-events: none;
+    }
+}
+
+/* ============================================================
+   Persistent mobile location navigation
+   Keeps Anterior/Siguiente visible while the material form stays separate.
+   ============================================================ */
+@media (max-width: 700px) {
+    .verify-page {
+        --vf-navigation-height: 56px;
+    }
+
+    .verify-page main {
+        padding-bottom: calc(
+            var(--vf-navigation-height) +
+            84px +
+            var(--vf-sheet-safe-bottom)
+        );
+    }
+
+    .verify-page .location-navigation {
+        position: fixed;
+        z-index: 850;
+        left: 8px;
+        right: 8px;
+        bottom: calc(6px + var(--vf-sheet-safe-bottom));
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        align-items: center;
+        gap: 6px;
+        min-height: var(--vf-navigation-height);
+        margin: 0;
+        padding: 7px;
+        border: 1px solid var(--vf-border);
+        border-radius: 14px;
+        background: var(--vf-surface);
+        box-shadow: 0 -5px 22px rgba(20, 33, 52, 0.2);
+    }
+
+    .verify-page .location-navigation button {
+        width: 100%;
+        min-width: 0;
+        height: 42px;
+        line-height: 42px;
+        margin: 0;
+        padding: 0 8px;
+        border-radius: 10px;
+        white-space: nowrap;
+    }
+
+    .verify-page #locationPosition {
+        min-width: 54px;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .verify-page .mobile-add-material-button {
+        bottom: calc(
+            var(--vf-navigation-height) +
+            18px +
+            var(--vf-sheet-safe-bottom)
+        );
+    }
+
+    .verify-page.sheet-open .location-navigation {
+        visibility: hidden;
+        pointer-events: none;
+    }
+}
+
+/* ============================================================
+   Viewport overlap and full-width footer corrections
+   ============================================================ */
+html,
+body.verify-page {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+body.verify-page {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+.verify-page main {
+    flex: 1 0 auto;
+    width: 100%;
+    min-width: 0;
+}
+
+.verify-page .page-footer {
+    flex: 0 0 auto;
+    align-self: stretch;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+}
+
+.verify-page .page-footer > .container {
+    box-sizing: border-box;
+    width: min(1120px, calc(100% - 30px));
+    max-width: none;
+    margin-inline: auto;
+}
+
+@media (max-width: 700px) {
+    .verify-page {
+        --vf-floating-controls-space: calc(
+            var(--vf-navigation-height) +
+            88px +
+            var(--vf-sheet-safe-bottom)
+        );
+    }
+
+    /*
+     * The rows scroll inside .table-scroll, so page padding alone cannot
+     * protect the last rows from fixed controls. This internal space lets
+     * the final record scroll completely above both floating controls.
+     */
+    .verify-page .table-scroll {
+        box-sizing: border-box;
+        padding-bottom: var(--vf-floating-controls-space);
+        scroll-padding-bottom: var(--vf-floating-controls-space);
+    }
+
+    .verify-page .verify-table {
+        margin-bottom: 0;
+    }
+
+    .verify-page main {
+        padding-bottom: calc(var(--vf-floating-controls-space) + 18px);
+    }
+}
+

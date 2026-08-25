@@ -1,28 +1,53 @@
-const VERSION = 'v2.3';
+const VERSION = 'v2.6';
+
 const STATIC_CACHE = `static-${VERSION}`;
 const DYNAMIC_CACHE = `dynamic-${VERSION}`;
 
 const STATIC_ASSETS = [
+  // Main page
   '/',
   '/index.html',
 
   // CSS
+  '/css/ajuste.css',
+  '/css/ascan.css',
+  '/css/ascan-ux.css',
+  '/css/barcode.css',
+  '/css/hilos.css',
+  '/css/home.css',
+  '/css/invrack.css',
+  '/css/konami.css',
+  '/css/materiales.css',
   '/css/materialize.min.css',
   '/css/navigationbar.css',
+  '/css/partescompradas.css',
+  '/css/reglatres.css',
+  '/css/scan.css',
+  '/css/table.css',
+  '/css/velcros.css',
+  '/css/zipper.css',
 
-  // JS
-  '/js/materialize.min.js',
-  '/js/navigationbar.js',
+  // JavaScript
   '/js/ajuste.js',
+  '/js/ascan.js',
+  '/js/ascan-ux.js',
   '/js/barcode.js',
   '/js/hilos.js',
+  '/js/hilosdb.js',
   '/js/invrack.js',
   '/js/JsBarcode.all.min.js',
+  '/js/konami.js',
+  '/js/materiales.js',
+  '/js/materialize.min.js',
+  '/js/navigationbar.js',
   '/js/partescompradas.js',
   '/js/partsdb.js',
   '/js/reglatres.js',
   '/js/scan.js',
   '/js/table.js',
+  '/js/velcros_3.1_noSuper.js',
+  '/js/velcros_3.1_Super.js',
+  '/js/zipper.js',
 
   // HTML pages
   '/ascan.html',
@@ -42,112 +67,231 @@ const STATIC_ASSETS = [
   '/icons/settings.svg',
   '/icons/icon-192.png',
   '/icons/icon-512.png'
+
+  // Add the manifest if the application has one:
+  // '/manifest.json'
 ];
 
-//
-//  INSTALL
-//
+/*
+ * INSTALL
+ *
+ * Save all essential application files in the static cache.
+ */
 self.addEventListener('install', event => {
-  self.skipWaiting();
-
   event.waitUntil(
-    caches.open(STATIC_CACHE).then(async cache => {
+    (async () => {
+      const cache = await caches.open(STATIC_CACHE);
+
       for (const asset of STATIC_ASSETS) {
         try {
           await cache.add(asset);
           console.log('[SW] Cached:', asset);
-        } catch (err) {
-          console.warn('[SW] Failed to cache:', asset);
+        } catch (error) {
+          console.warn('[SW] Failed to cache:', asset, error);
         }
       }
-    })
+
+      await self.skipWaiting();
+    })()
   );
 });
 
-//
-//  ACTIVATE
-//
+/*
+ * ACTIVATE
+ *
+ * Delete caches belonging to older service-worker versions.
+ */
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys.map(key => {
-          if (key !== STATIC_CACHE && key !== DYNAMIC_CACHE) {
-            return caches.delete(key);
-          }
-        })
-      )
-    )
-  );
+    (async () => {
+      const cacheNames = await caches.keys();
 
-  self.clients.claim();
+      await Promise.all(
+        cacheNames.map(cacheName => {
+          if (
+            cacheName !== STATIC_CACHE &&
+            cacheName !== DYNAMIC_CACHE
+          ) {
+            console.log('[SW] Deleting old cache:', cacheName);
+            return caches.delete(cacheName);
+          }
+
+          return Promise.resolve();
+        })
+      );
+
+      await self.clients.claim();
+    })()
+  );
 });
 
-//
-//  LIMIT CACHE SIZE
-//
-function limitCacheSize(name, size) {
-  caches.open(name).then(cache => {
-    cache.keys().then(keys => {
-      if (keys.length > size) {
-        cache.delete(keys[0]).then(() => limitCacheSize(name, size));
-      }
-    });
-  });
+/*
+ * LIMIT DYNAMIC CACHE
+ *
+ * Delete the oldest entries when the maximum size is exceeded.
+ */
+async function limitCacheSize(cacheName, maxItems) {
+  const cache = await caches.open(cacheName);
+  const requests = await cache.keys();
+
+  while (requests.length > maxItems) {
+    const oldestRequest = requests.shift();
+    await cache.delete(oldestRequest);
+  }
 }
 
-//
-//  FETCH
-//
+/*
+ * DETERMINE WHETHER A RESPONSE CAN BE CACHED
+ */
+function canCacheResponse(request, response) {
+  if (!response || !response.ok) {
+    return false;
+  }
+
+  const requestUrl = new URL(request.url);
+
+  // Only dynamically cache files from this website.
+  if (requestUrl.origin !== self.location.origin) {
+    return false;
+  }
+
+  return response.type === 'basic';
+}
+
+/*
+ * SAVE A RESPONSE IN THE DYNAMIC CACHE
+ */
+async function saveToDynamicCache(request, response) {
+  if (canCacheResponse(request, response)) {
+    const cache = await caches.open(DYNAMIC_CACHE);
+
+    await cache.put(request, response.clone());
+    await limitCacheSize(DYNAMIC_CACHE, 50);
+  }
+
+  return response;
+}
+
+/*
+ * FETCH
+ */
 self.addEventListener('fetch', event => {
   const request = event.request;
 
-  if (request.method !== 'GET') return;
-
-  //
-  //  HTML NAVIGATION (FIXED!)
-  //
-  if (request.mode === 'navigate') {
-    event.respondWith(
-      caches.match(request).then(cached => {
-        return (
-          cached ||
-          fetch(request)
-            .then(response => {
-              return caches.open(DYNAMIC_CACHE).then(cache => {
-                cache.put(request, response.clone());
-                return response;
-              });
-            })
-            .catch(() => caches.match('/index.html'))
-        );
-      })
-    );
+  // Service workers should only cache GET requests.
+  if (request.method !== 'GET') {
     return;
   }
 
-  //
-  //  STATIC FILES (CSS, JS, IMAGES)
-  //
-  event.respondWith(
-    caches.match(request).then(cached => {
-      return (
-        cached ||
-        fetch(request)
-          .then(response => {
-            return caches.open(DYNAMIC_CACHE).then(cache => {
-              cache.put(request, response.clone());
-              limitCacheSize(DYNAMIC_CACHE, 50);
-              return response;
-            });
-          })
-          .catch(() => {
-            // fallback (optional)
-            if (request.destination === 'document') {
-              return caches.match('/index.html');
+  // Do not handle unsupported URL protocols.
+  if (!request.url.startsWith('http')) {
+    return;
+  }
+
+  /*
+   * HTML NAVIGATION
+   *
+   * Strategy:
+   * 1. Return the requested page from the cache.
+   * 2. If it is not cached, request it from the network.
+   * 3. Save the successful network response.
+   * 4. If offline, return index.html as a fallback.
+   */
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      (async () => {
+        const cachedResponse = await caches.match(request);
+
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+
+        try {
+          const networkResponse = await fetch(request);
+
+          await saveToDynamicCache(request, networkResponse);
+
+          return networkResponse;
+        } catch (error) {
+          console.warn(
+            '[SW] Navigation failed while offline:',
+            request.url
+          );
+
+          const indexFallback = await caches.match('/index.html');
+
+          if (indexFallback) {
+            return indexFallback;
+          }
+
+          return new Response(
+            `
+              <!DOCTYPE html>
+              <html lang="en">
+                <head>
+                  <meta charset="UTF-8">
+                  <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1"
+                  >
+                  <title>Offline</title>
+                </head>
+                <body>
+                  <h1>You are offline</h1>
+                  <p>
+                    This page is not currently available offline.
+                  </p>
+                </body>
+              </html>
+            `,
+            {
+              status: 503,
+              statusText: 'Offline',
+              headers: {
+                'Content-Type': 'text/html; charset=UTF-8'
+              }
             }
-          })
-      );
-    })
+          );
+        }
+      })()
+    );
+
+    return;
+  }
+
+  /*
+   * CSS, JAVASCRIPT, IMAGES, FONTS AND OTHER FILES
+   *
+   * Strategy:
+   * 1. Return the file from the cache.
+   * 2. If it is not cached, request it from the network.
+   * 3. Save the successful network response dynamically.
+   */
+  event.respondWith(
+    (async () => {
+      const cachedResponse = await caches.match(request);
+
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+
+      try {
+        const networkResponse = await fetch(request);
+
+        await saveToDynamicCache(request, networkResponse);
+
+        return networkResponse;
+      } catch (error) {
+        console.warn(
+          '[SW] Resource unavailable while offline:',
+          request.url
+        );
+
+        return new Response('', {
+          status: 503,
+          statusText: 'Offline'
+        });
+      }
+    })()
   );
 });

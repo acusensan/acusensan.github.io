@@ -500,4 +500,5 @@ function confirmReset() {
     displayItems();
     M.Modal.getInstance(document.getElementById('reset-confirm-modal')).close();
     toast('Inventario reiniciado', 'red');
+	M.Modal.getInstance(document.getElementById('settings-modal')).close();
 }

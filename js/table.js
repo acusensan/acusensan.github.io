@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bindEvents();
     loadData();
     render();
+    if (mobileAddPartQuery.matches) document.getElementById('add-part-panel').setAttribute('aria-hidden', 'true');
 });
 
 function bindEvents() {
@@ -50,9 +51,67 @@ function bindEvents() {
         if (e.key === 'Enter') addPart();
     });
     document.getElementById('addPartBtn').addEventListener('click', addPart);
+    document.getElementById('open-add-part-button').addEventListener('click', openAddPartSheet);
+    document.getElementById('close-add-part-button').addEventListener('click', closeAddPartSheet);
+    document.getElementById('add-part-backdrop').addEventListener('click', closeAddPartSheet);
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && document.getElementById('add-part-panel').classList.contains('is-open')) {
+            closeAddPartSheet();
+        }
+    });
     document.getElementById('confirm-delete-btn').addEventListener('click', confirmDelete);
     document.getElementById('confirm-clear-btn').addEventListener('click', clearStoredData);
 }
+
+const mobileAddPartQuery = window.matchMedia('(max-width: 700px)');
+let addPartReturnFocus = null;
+
+function openAddPartSheet() {
+    if (!mobileAddPartQuery.matches) return;
+
+    if (!orderedLocations.length) {
+        const settingsModal = M.Modal.getInstance(document.getElementById('settings-modal'));
+        settingsModal?.open();
+        toast('Importa un CSV o crea una ubicacion primero', 'blue-grey');
+        return;
+    }
+
+    const panel = document.getElementById('add-part-panel');
+    const backdrop = document.getElementById('add-part-backdrop');
+    const trigger = document.getElementById('open-add-part-button');
+    const location = orderedLocations[currentIndex];
+
+    addPartReturnFocus = document.activeElement;
+    document.getElementById('sheetCurrentLocation').textContent = `Agregar a ${location}`;
+    panel.classList.add('is-open');
+    backdrop.classList.add('is-open');
+    document.body.classList.add('sheet-open');
+    panel.setAttribute('aria-hidden', 'false');
+    trigger.setAttribute('aria-expanded', 'true');
+    setTimeout(() => document.getElementById('partSearch').focus(), 220);
+}
+
+function closeAddPartSheet(options = {}) {
+    const panel = document.getElementById('add-part-panel');
+    const backdrop = document.getElementById('add-part-backdrop');
+    const trigger = document.getElementById('open-add-part-button');
+
+    panel.classList.remove('is-open');
+    backdrop.classList.remove('is-open');
+    document.body.classList.remove('sheet-open');
+    trigger.setAttribute('aria-expanded', 'false');
+    panel.setAttribute('aria-hidden', mobileAddPartQuery.matches ? 'true' : 'false');
+
+    if (options.restoreFocus !== false) {
+        const target = addPartReturnFocus && addPartReturnFocus.isConnected ? addPartReturnFocus : trigger;
+        setTimeout(() => target.focus(), 210);
+    }
+}
+
+mobileAddPartQuery.addEventListener?.('change', event => {
+    if (!event.matches) closeAddPartSheet({ restoreFocus: false });
+    else document.getElementById('add-part-panel').setAttribute('aria-hidden', 'true');
+});
 
 function toast(html, classes = 'blue') {
     if (window.M) M.toast({
@@ -100,6 +159,17 @@ function render() {
     const hasLocations = orderedLocations.length > 0;
     document.getElementById('emptyState').hidden = hasLocations;
     document.getElementById('verificationWorkspace').hidden = !hasLocations;
+    const addMaterialButton = document.getElementById('open-add-part-button');
+    if (addMaterialButton) {
+        addMaterialButton.hidden = false;
+        addMaterialButton.setAttribute(
+            'aria-label',
+            hasLocations ? 'Agregar material' : 'Preparar verificacion'
+        );
+    }
+    if (addMaterialButton) {
+        addMaterialButton.lastChild.textContent = hasLocations ? ' Material' : ' Preparar';
+    }
     if (!hasLocations) {
         updateOverallProgress();
         return;
@@ -109,6 +179,8 @@ function render() {
         checks = window.checkedState[loc] || [],
         done = checks.filter(Boolean).length;
     document.getElementById('currentLocation').textContent = loc;
+    const sheetLocation = document.getElementById('sheetCurrentLocation');
+    if (sheetLocation) sheetLocation.textContent = `Agregar a ${loc}`;
     document.getElementById('locationDone').textContent = done;
     document.getElementById('locationTotal').textContent = `de ${items.length}`;
     const progress = document.getElementById('locationProgressBar');
@@ -240,7 +312,10 @@ function moveLocation(direction) {
     if (next < 0 || next >= orderedLocations.length) return;
     currentIndex = next;
     render();
-    document.getElementById('partSearch').focus();
+
+    if (!mobileAddPartQuery.matches) {
+        document.getElementById('partSearch').focus();
+    }
 }
 
 function openLocationPicker() {
@@ -269,6 +344,13 @@ function renderLocationList() {
             currentIndex = index;
             M.Modal.getInstance(document.getElementById('location-modal')).close();
             render();
+
+            if (mobileAddPartQuery.matches) {
+                document.querySelector('.location-toolbar')?.scrollIntoView({
+                    block: 'nearest',
+                    behavior: 'smooth'
+                });
+            }
         };
         list.append(button);
     });
@@ -314,7 +396,8 @@ function addPart() {
     document.getElementById('partSearchResults').innerHTML = '';
     saveData();
     render();
-    partInput.focus();
+    if (mobileAddPartQuery.matches) closeAddPartSheet();
+    else partInput.focus();
     toast(`${part} agregado a ${loc}`, 'green');
 }
 
@@ -469,14 +552,33 @@ async function shareCSV() {
 }
 
 function clearStoredData() {
+    // Clear both the stored copy and every in-memory reference.
     localStorage.removeItem(STORAGE_KEY);
     groupedData = {};
     orderedLocations = [];
     window.checkedState = {};
     currentIndex = 0;
+    deleteTarget = null;
+
+    // Clear visible controls immediately before re-rendering the empty state.
+    document.getElementById('verificationRows').innerHTML = '';
+    document.getElementById('partSearch').value = '';
+    document.getElementById('partQty').value = '';
+    document.getElementById('partSearchResults').innerHTML = '';
+    document.getElementById('new-location').value = '';
+    document.getElementById('csvFile').value = '';
+
+    closeAddPartSheet({ restoreFocus: false });
     render();
-    M.Modal.getInstance(document.getElementById('clear-modal')).close();
-	M.Modal.getInstance(document.getElementById('settings-modal')).close();
+
+    const clearModal = M.Modal.getInstance(document.getElementById('clear-modal'));
+    const settingsModal = M.Modal.getInstance(document.getElementById('settings-modal'));
+    clearModal?.close();
+    settingsModal?.close();
+
     toast('Datos eliminados', 'red');
-	
+
+    // Reload after the modal animation. This also verifies that nothing
+    // remains in localStorage and returns the page to a clean initial state.
+    window.setTimeout(() => window.location.reload(), 350);
 }

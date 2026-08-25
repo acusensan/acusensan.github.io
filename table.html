@@ -2,7 +2,7 @@
 <html lang="es">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
         <meta name="theme-color" content="#0d47a1" />
         <title>Verificar | ./Acu</title>
         <link rel="stylesheet" href="css/materialize.min.css" />
@@ -83,8 +83,15 @@
                             </table>
                         </div>
                     </div>
-                    <div class="add-part-panel">
-                        <label class="field-label part-search-field" for="partSearch"><span>Agregar material</span><input id="partSearch"type="search"autocomplete="off"placeholder="Buscar numero de parte..." />
+                    <div id="add-part-panel" class="add-part-panel" aria-hidden="false">
+                        <div class="mobile-sheet-heading">
+                            <div>
+                                <span class="eyebrow">Ubicacion actual</span>
+                                <strong id="sheetCurrentLocation">Agregar material</strong>
+                            </div>
+                            <button id="close-add-part-button" class="sheet-close-button" type="button" aria-label="Cerrar formulario">&times;</button>
+                        </div>
+                        <label class="field-label part-search-field" for="partSearch"><span>Agregar material</span><input id="partSearch" type="search" autocomplete="off" placeholder="Buscar numero de parte..." />
                             <div id="partSearchResults" class="part-results"></div></label><label class="field-label qty-control" for="partQty"><span>Cantidad</span><input id="partQty" type="number" min="1" inputmode="numeric" placeholder="0" /></label><button id="addPartBtn" class="btn green" type="button">Agregar</button>
                     </div>
                     <div class="location-navigation">
@@ -93,6 +100,23 @@
                 </section>
             </div>
         </main>
+        <button
+            id="open-add-part-button"
+            class="mobile-add-material-button"
+            type="button"
+            aria-controls="add-part-panel"
+            aria-expanded="false"
+        >
+            <span aria-hidden="true">+</span>
+            Material
+        </button>
+        <button
+            id="add-part-backdrop"
+            class="add-part-backdrop"
+            type="button"
+            aria-label="Cerrar formulario para agregar material"
+            tabindex="-1"
+        ></button>
 
         <div id="location-modal" class="modal location-modal">
             <div class="modal-content">

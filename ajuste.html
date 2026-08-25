@@ -2,7 +2,7 @@
 <html lang="es">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"/>
         <meta name="theme-color" content="#0d47a1" />
         <title>Ajuste | ./Acu</title>
         <link rel="stylesheet" href="css/materialize.min.css" />
@@ -64,6 +64,10 @@
                                 <h2 id="records-title">Registros</h2>
                             </div>
                             <div class="records-actions">
+                                <button id="repeat-last-button" class="repeat-last-button" type="button" disabled>
+                                    <span aria-hidden="true">↻</span>
+                                    Repetir ultimo
+                                </button>
                                 <button class="preview-button modal-trigger" data-target="export-preview-modal" type="button" onclick="showExportPreview()">Vista previa</button>
                                 <button class="icon-text-button" type="button" onclick="clearAllEntries()">Limpiar</button>
                             </div>
@@ -75,7 +79,14 @@
                         <ul id="entry-list" class="record-list" aria-live="polite"></ul>
                     </section>
 					
-                    <section class="capture-panel" aria-labelledby="capture-title">
+                    <section id="capture-panel" class="capture-panel" aria-labelledby="capture-title" aria-hidden="false">
+                        <div class="mobile-sheet-heading">
+                            <div>
+                                <span class="eyebrow">Captura de inventario</span>
+                                <strong>Agregar registro</strong>
+                            </div>
+                            <button id="close-capture-button" class="sheet-close-button" type="button" aria-label="Cerrar formulario">&times;</button>
+                        </div>
                         <div class="panel-heading">
                             <div>
                                 <span class="step-number">1</span>
@@ -83,7 +94,10 @@
                             </div>
                             <span id="rack-position" class="rack-position" aria-live="polite"></span>
                         </div>
-						
+						<div class="rack-navigation">
+                            <button class="btn-flat" type="button" onclick="changeRack(-1)">← Anterior</button
+                            ><button class="btn-flat" type="button" onclick="changeRack(1)">Siguiente →</button>
+                        </div>
                         <div class="field-grid">
                             <label class="field-label" for="section"><span>Area</span>
 								<select id="section" class="browser-default" onchange="updateRackOptions()">
@@ -98,11 +112,6 @@
 								<span>Rack o ubicacion</span>
 								<select id="rack" class="browser-default"></select>
 							</label>
-                        </div>
-						
-                        <div class="rack-navigation">
-                            <button class="btn-flat" type="button" onclick="changeRack(-1)">← Anterior</button
-                            ><button class="btn-flat" type="button" onclick="changeRack(1)">Siguiente →</button>
                         </div>
 
                         <div class="panel-divider"></div>
@@ -128,6 +137,23 @@
                 </div>
             </div>
         </main>
+        <button
+            id="open-capture-button"
+            class="mobile-add-button"
+            type="button"
+            aria-controls="capture-panel"
+            aria-expanded="false"
+        >
+            <span aria-hidden="true">+</span>
+            Agregar
+        </button>
+        <button
+            id="capture-backdrop"
+            class="capture-backdrop"
+            type="button"
+            aria-label="Cerrar formulario de captura"
+            tabindex="-1"
+        ></button>
 
         <div
             id="settings-modal"
@@ -228,6 +254,21 @@
             </div>
         </div>
 
+        <div id="repeat-confirm-modal" class="modal confirmation-modal" role="dialog" aria-modal="true" aria-labelledby="repeat-confirm-title">
+            <div class="modal-content">
+                <h5 id="repeat-confirm-title">Repetir ultimo registro</h5>
+                <p>Se agregara una copia del siguiente registro:</p>
+                <div class="repeat-confirm-summary">
+                    <span><strong>Ubicacion</strong><output id="repeat-confirm-rack">-</output></span>
+                    <span><strong>Numero de parte</strong><output id="repeat-confirm-part">-</output></span>
+                    <span><strong>Cantidad</strong><output id="repeat-confirm-quantity">-</output></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close btn-flat" type="button">Cancelar</button>
+                <button id="confirm-repeat-btn" class="btn blue" type="button">Repetir</button>
+            </div>
+        </div>
         <div id="clear-confirm-modal" class="modal confirmation-modal">
             <div class="modal-content">
                 <h5>Limpiar todos los registros</h5>
