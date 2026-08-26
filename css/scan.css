@@ -124,7 +124,7 @@
 }
 .scan-page .scan-capture {
     padding: 18px 20px;
-    margin-bottom: 16px;
+    margin-bottom: 6px;
 }
 .scan-page .capture-heading,
 .scan-page .capture-heading > div,
@@ -453,6 +453,14 @@
         max-height: 0;
     }
 }
+.modal .modal-footer {
+    border-radius: 0 0 2px 2px;
+    background-color: #fafafa;
+    padding: 4px 6px;
+    height: 70px;
+    width: 100%;
+    text-align: right;
+}
 @media (max-width: 1250px) {
     .scan-page .scan-layout {
         grid-template-columns: 1fr 1fr;
@@ -613,7 +621,7 @@
     .scan-page .panel-toolbar .btn-flat {
         height: 58px;
         line-height: 58px;
-        font-size: 1rem;
+        font-size: 0.82rem;
     }
 
     .scan-page .table-scroll {

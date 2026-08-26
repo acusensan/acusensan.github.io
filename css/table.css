@@ -450,7 +450,7 @@
     font-size: 2rem;
 }
 .verify-page .location-list {
-    max-height: 55vh;
+    max-height: 80vh;
     overflow: auto;
     margin-top: 12px;
 }

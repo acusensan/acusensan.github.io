@@ -210,7 +210,7 @@ function renderRows(loc, items) {
         packTd.className = 'pack-value';
         const pack = Number((window.partsDB || {})[part]?.pack),
             amount = Number(qty);
-        packTd.textContent = pack > 0 && Number.isFinite(amount) ? (amount / pack).toFixed(2) : '—';
+        packTd.textContent = pack > 0 && Number.isFinite(amount) ? `${(amount / pack).toFixed(2)} cajas` : 'No disponible';
         const statusTd = document.createElement('td');
         statusTd.textContent = window.checkedState[loc][index] ? 'Verificado' : 'Pendiente';
         const actionTd = document.createElement('td');

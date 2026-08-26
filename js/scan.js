@@ -757,40 +757,51 @@ function initPartSearch() {
   const input = document.getElementById("partSearchInput");
   const results = document.getElementById("partSearchResults");
 
-  //  INITIAL STATE (fixed)
+  // MATERIAL STYLE BUTTON
+  pauseBtn.style.borderRadius = "999px";
+  pauseBtn.style.color = "#fff";
+  pauseBtn.style.border = "none";
+  pauseBtn.style.fontWeight = "500";
+  pauseBtn.style.boxShadow = "0 2px 6px rgba(0,0,0,.25)";
+
+  // INITIAL STATE
   if (isSearchPaused) {
     statusChip.textContent = "Auto-Limpiar Pausado";
-    statusChip.classList.remove("green");
-    statusChip.classList.add("red");
+    statusChip.style.backgroundColor = "#F44336";
+    statusChip.style.color = "#fff";
 
     pauseBtn.textContent = "Reanudar Auto-Limpiar";
-    pauseBtn.classList.remove("grey");
-    pauseBtn.classList.add("green");
+    pauseBtn.style.backgroundColor = "#4CAF50";
+  } else {
+    statusChip.textContent = "Auto-Limpiar Activo";
+    statusChip.style.backgroundColor = "#4CAF50";
+    statusChip.style.color = "#fff";
+
+    pauseBtn.textContent = "Pausar Auto-Limpiar";
+    pauseBtn.style.backgroundColor = "#607D8B";
   }
 
-  //  BUTTON TOGGLE
+  // BUTTON TOGGLE
   pauseBtn.onclick = () => {
     isSearchPaused = !isSearchPaused;
 
-    pauseBtn.textContent = isSearchPaused
-      ? "Reanudar Auto-Limpiar"
-      : "Pausar Auto-Limpiar";
-
-    pauseBtn.classList.toggle("green", isSearchPaused);
-    pauseBtn.classList.toggle("grey", !isSearchPaused);
-
-    //  STATUS CHIP UPDATE
     if (isSearchPaused) {
+      pauseBtn.textContent = "Reanudar Auto-Limpiar";
+      pauseBtn.style.backgroundColor = "#4CAF50";
+
       statusChip.textContent = "Auto-Limpiar Pausado";
-      statusChip.classList.remove("green");
-      statusChip.classList.add("red");
+      statusChip.style.backgroundColor = "#F44336";
+      statusChip.style.color = "#fff";
     } else {
+      pauseBtn.textContent = "Pausar Auto-Limpiar";
+      pauseBtn.style.backgroundColor = "#607D8B";
+
       statusChip.textContent = "Auto-Limpiar Activo";
-      statusChip.classList.remove("red");
-      statusChip.classList.add("green");
+      statusChip.style.backgroundColor = "#4CAF50";
+      statusChip.style.color = "#fff";
     }
 
-    //  CANCEL TIMER IF PAUSED
+    // CANCEL TIMER IF PAUSED
     if (isSearchPaused && partSearchClearTimer) {
       clearTimeout(partSearchClearTimer);
       partSearchClearTimer = null;
@@ -801,16 +812,16 @@ function initPartSearch() {
   results.innerHTML = "";
   input.focus();
 
-  //  INPUT HANDLER
+  // INPUT HANDLER
   let searchTimer;
 
-input.oninput = () => {
-  clearTimeout(searchTimer);
+  input.oninput = () => {
+    clearTimeout(searchTimer);
 
-  searchTimer = setTimeout(() => {
-    const term = input.value.trim().toUpperCase();
-    renderPartSearchResults(term);
-  }, 200);
+    searchTimer = setTimeout(() => {
+      const term = input.value.trim().toUpperCase();
+      renderPartSearchResults(term);
+    }, 200);
 
     if (partSearchClearTimer) {
       clearTimeout(partSearchClearTimer);

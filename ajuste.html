@@ -96,7 +96,7 @@
                         </div>
 						<div class="rack-navigation">
                             <button class="btn-flat" type="button" onclick="changeRack(-1)">← Anterior</button
-                            ><button class="btn-flat" type="button" onclick="changeRack(1)">Siguiente →</button>
+                            ><button class="btn blue darken-4" type="button" onclick="changeRack(1)">Siguiente →</button>
                         </div>
                         <div class="field-grid">
                             <label class="field-label" for="section"><span>Area</span>
@@ -137,31 +137,10 @@
                 </div>
             </div>
         </main>
-        <button
-            id="open-capture-button"
-            class="mobile-add-button"
-            type="button"
-            aria-controls="capture-panel"
-            aria-expanded="false"
-        >
-            <span aria-hidden="true">+</span>
-            Agregar
-        </button>
-        <button
-            id="capture-backdrop"
-            class="capture-backdrop"
-            type="button"
-            aria-label="Cerrar formulario de captura"
-            tabindex="-1"
-        ></button>
+        <button id="open-capture-button"class="mobile-add-button"type="button"aria-controls="capture-panel"aria-expanded="false"><span aria-hidden="true">+</span>Agregar</button>
+        <button id="capture-backdrop"class="capture-backdrop"type="button"aria-label="Cerrar formulario de captura"tabindex="-1"></button>
 
-        <div
-            id="settings-modal"
-            class="modal compact-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="settings-title"
-        >
+        <div id="settings-modal"class="modal compact-modal"role="dialog"aria-modal="true"aria-labelledby="settings-title">
             <div class="modal-content">
                 <div class="modal-heading">
                     <div>
@@ -178,15 +157,13 @@
                 </div>
                 <div class="setting-row">
                     <div><strong>Resumen</strong><span>Totales por numero de parte</span></div>
-                    <button class="btn purple modal-trigger" data-target="totals-modal" onclick="showTotals()">
-                        Ver totales
-                    </button>
+                    <button class="btn purple modal-trigger" data-target="totals-modal" onclick="showTotals()">Ver totales</button>
                 </div>
                 <div class="setting-row stacked">
                     <div><strong>Exportar registros</strong><span>Descarga o comparte un archivo CSV</span></div>
                     <div class="button-pair">
-                        <button class="btn blue" onclick="downloadData()">Descargar</button
-                        ><button class="btn green" onclick="shareData()">Compartir</button>
+                        <button class="btn blue" onclick="downloadData()">Descargar</button>
+						<button class="btn green" onclick="shareData()">Compartir</button>
                     </div>
                 </div>
                 <div class="setting-row">
@@ -249,8 +226,8 @@
                 <p>Esta accion quitara el registro de la sesion actual.</p>
             </div>
             <div class="modal-footer">
-                <button class="modal-close btn-flat">Cancelar</button
-                ><button id="confirm-delete-btn" class="btn red">Eliminar</button>
+                <button class="modal-close btn-flat">Cancelar</button>
+				<button id="confirm-delete-btn" class="btn red">Eliminar</button>
             </div>
         </div>
 
@@ -275,8 +252,8 @@
                 <p>Esta accion no se puede deshacer.</p>
             </div>
             <div class="modal-footer">
-                <button class="modal-close btn-flat">Cancelar</button
-                ><button id="confirm-clear-btn" class="btn red">Limpiar todo</button>
+                <button class="modal-close btn-flat">Cancelar</button>
+				<button id="confirm-clear-btn" class="btn red">Limpiar todo</button>
             </div>
         </div>
 
@@ -289,10 +266,10 @@
                     </div>
                     <button class="modal-close close-button" type="button" aria-label="Cerrar">&times;</button>
                 </div>
-                <label class="field-label" for="modalPartSearch"
-                    ><span>Escribe parte del numero</span
-                    ><input type="search" id="modalPartSearch" placeholder="Numero de parte..." autocomplete="off"
-                /></label>
+                <label class="field-label" for="modalPartSearch">
+					<span>Escribe parte del numero</span>
+					<input type="search" id="modalPartSearch" placeholder="Numero de parte..." autocomplete="off"/>
+				</label>
                 <p id="search-hint" class="search-hint">Escribe al menos un caracter para buscar.</p>
                 <ul id="modalSearchResults" class="search-results"></ul>
             </div>

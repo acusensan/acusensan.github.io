@@ -520,6 +520,13 @@
     color: var(--aj-text) !important;
 }
 
+button, input, optgroup, select, textarea {
+    font-family: sans-serif;
+    font-size: 200%;
+    line-height: 1.15;
+    margin: 0;
+}
+
 @media (max-width: 850px) {
     .ajuste-page .ajuste-layout {
         grid-template-columns: 1fr;
@@ -574,9 +581,9 @@
     left: 0;
     right: 0;
     bottom: 54px;
-    max-height: 245px;
+    max-height: 300px;
     overflow: auto;
-    border: 1px solid var(--aj-border);
+    border: 2px solid var(--aj-border);
     border-radius: 10px;
     background: var(--aj-surface);
     box-shadow: 0 10px 25px rgba(20,33,52,.18);
@@ -591,7 +598,7 @@
     justify-content: space-between;
     gap: 12px;
     width: 100%;
-    padding: 11px 13px;
+    padding: 20px 13px;
     border: 0;
     border-bottom: 1px solid var(--aj-border);
     background: transparent;
@@ -1029,15 +1036,12 @@
     }
 
     .ajuste-page .rack-navigation .btn-flat {
-        height: 30px;
-        line-height: 30px;
-        padding: 0 8px;
-        border: 1px solid var(--aj-border);
+        height: 32px;
+        line-height: 32px;
+        padding: 0 7px;
+        border: 1px solid var(--ir-border);
         border-radius: 8px;
-        font-size: .72rem;
-        grid-column: auto;
-        min-width: 0;
-        width: 100%;
+        font-size: 14px;
     }
 }
 
