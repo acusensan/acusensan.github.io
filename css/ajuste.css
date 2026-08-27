@@ -520,7 +520,7 @@
     color: var(--aj-text) !important;
 }
 
-button, input, optgroup, select, textarea {
+.part-result{
     font-family: sans-serif;
     font-size: 200%;
     line-height: 1.15;

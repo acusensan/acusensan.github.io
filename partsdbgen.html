@@ -1,121 +1,360 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Parts DB Generator</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0d47a1">
+  <title>./Acu | Generador DB</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="css/materialize.min.css">
+  <link rel="stylesheet" href="css/navigationbar.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/konami.css">
   <style>
-    body { font-family: Arial, sans-serif; background:#f4f6f8; padding:20px; }
-    h1 { color:#0d47a1; }
-    textarea { width:100%; min-height:160px; margin:10px 0; font-family: monospace; }
-    button { padding:10px 16px; font-size:16px; background:#0d47a1; color:#fff; border:none; cursor:pointer; }
-    button:hover { background:#08306b; }
-    pre { background:#212121; color:#e0e0e0; padding:15px; overflow:auto; }
+    .generator-page {
+      --gen-code-bg:#101828;
+      --gen-code-text:#e6edf7;
+      background:var(--home-bg); color:var(--home-text);
+    }
+    .generator-page main { padding-top:64px; }
+    .generator-page .generator-shell { width:min(1180px,calc(100% - 32px)); padding:42px 0 48px; }
+    .generator-page .generator-hero { padding:26px 0 30px; }
+    .generator-page .generator-hero h1 { font-size:clamp(2rem,5vw,3.35rem); font-weight:750; letter-spacing:-.045em; line-height:1.05; margin:9px 0 12px; }
+    .generator-page .generator-hero p { color:var(--home-muted); font-size:1.06rem; margin:0; max-width:780px; }
+    .generator-page .privacy-pill { display:inline-flex; align-items:center; gap:8px; margin-top:17px; padding:8px 12px; border:1px solid var(--home-border); border-radius:999px; background:var(--home-surface); color:var(--home-muted); font-size:.82rem; }
+    .generator-page .privacy-dot { width:8px; height:8px; border-radius:50%; background:#26a69a; }
+    .generator-grid { display:grid; grid-template-columns:minmax(0,1.03fr) minmax(0,.97fr); gap:18px; }
+    .generator-card { overflow:hidden; border:1px solid var(--home-border); border-radius:16px; background:var(--home-surface); box-shadow:0 2px 8px rgba(22,34,51,.035); }
+    .generator-card-header { display:flex; justify-content:space-between; align-items:center; gap:18px; padding:20px 22px; border-bottom:1px solid var(--home-border); }
+    .generator-card-header h2 { margin:0 0 4px; font-size:1.25rem; font-weight:700; }
+    .generator-card-header p { margin:0; color:var(--home-muted); font-size:.88rem; }
+    .generator-card-body { padding:22px; }
+    .generator-tabs { display:grid; grid-template-columns:1fr 1fr; gap:4px; padding:4px; border:1px solid var(--home-border); border-radius:12px; background:var(--home-bg); }
+    .generator-tabs button { border:0; border-radius:8px; padding:9px 12px; background:transparent; color:var(--home-muted); font-weight:700; cursor:pointer; }
+    .generator-tabs button.active { background:var(--home-primary); color:#fff; }
+    .drop-zone { border:1px dashed #b9cef0; border-radius:14px; background:var(--home-primary-soft); overflow:hidden; transition:.18s ease; }
+    .drop-zone.dragging { border-color:#26a69a; transform:translateY(-1px); }
+    .generator-page textarea { display:block; width:100%; min-height:330px; resize:vertical; margin:0; padding:17px; border:0!important; outline:0; background:transparent; color:var(--home-text); box-shadow:none!important; font: .86rem/1.55 "SFMono-Regular",Consolas,"Liberation Mono",monospace; box-sizing:border-box; }
+    .generator-page textarea:focus { border:0!important; box-shadow:none!important; }
+    .generator-page textarea::placeholder { color:var(--home-muted); opacity:.75; }
+    .drop-hint { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:10px 14px; border-top:1px solid var(--home-border); color:var(--home-muted); font-size:.8rem; background:var(--home-surface); }
+    .generator-controls { display:grid; grid-template-columns:1fr auto; gap:12px; margin-top:16px; }
+    .delimiter-field { display:flex; align-items:center; gap:10px; min-width:0; padding:0 12px; border:1px solid var(--home-border); border-radius:10px; background:var(--home-surface); }
+    .delimiter-field label { position:static; transform:none; color:var(--home-muted)!important; font-size:.8rem; white-space:nowrap; }
+    .generator-page .delimiter-field select { display:block; width:100%; height:44px; border:0; outline:0; background:transparent; color:var(--home-text); }
+    .generator-page .delimiter-field option { color:#172033; background:#fff; }
+    .generator-actions { display:flex; flex-wrap:wrap; gap:9px; }
+    .generator-page .gen-btn { display:inline-flex; justify-content:center; align-items:center; min-height:42px; padding:0 16px; border:1px solid var(--home-border); border-radius:10px; background:var(--home-surface); color:var(--home-text); font-weight:700; text-transform:none; letter-spacing:0; box-shadow:none; cursor:pointer; }
+    .generator-page .gen-btn:hover { border-color:#b9cef0; background:var(--home-primary-soft); }
+    .generator-page .gen-btn.primary { border-color:var(--home-primary); background:var(--home-primary); color:#fff; }
+    .generator-page .gen-btn.danger { color:#c62828; }
+    .generator-page .gen-btn:disabled { opacity:.45; cursor:not-allowed; }
+    .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px; }
+    .stat { padding:13px 14px; border:1px solid var(--home-border); border-radius:12px; background:var(--home-bg); }
+    .stat strong,.stat span { display:block; }
+    .stat strong { font-size:1.35rem; color:var(--home-text); }
+    .stat span { color:var(--home-muted); font-size:.76rem; }
+    .stat.success strong { color:#00897b; } .stat.warning strong { color:#ef6c00; }
+    .message { display:none; margin-bottom:14px; padding:12px 14px; border-radius:10px; font-size:.86rem; line-height:1.45; }
+    .message.show { display:block; } .message.error { background:#ffebee; color:#b71c1c; border:1px solid #ffcdd2; } .message.info { background:var(--home-primary-soft); color:var(--home-primary); border:1px solid #b9cef0; }
+    .output-wrap { position:relative; min-height:470px; overflow:hidden; border:1px solid var(--home-border); border-radius:14px; background:var(--gen-code-bg); }
+    .generator-page pre { min-height:470px; max-height:650px; overflow:auto; margin:0; padding:18px; background:transparent; color:var(--gen-code-text); font:.82rem/1.55 "SFMono-Regular",Consolas,"Liberation Mono",monospace; white-space:pre; }
+    .output-empty { position:absolute; inset:0; display:grid; place-content:center; padding:30px; text-align:center; color:#98a2b3; pointer-events:none; }
+    .output-empty strong { color:#f3f6fb; } .output-empty p { max-width:330px; margin:8px auto 0; line-height:1.5; font-size:.86rem; }
+    .output-icon { display:grid; place-items:center; width:52px; height:52px; margin:0 auto 12px; border:1px solid #344054; border-radius:13px; color:#fff; font-size:1.35rem; }
+    .generator-page .settings-modal { border-radius:18px; max-width:560px; }
+    .generator-page .toast-local { position:fixed; z-index:2100; left:50%; top:16px; transform:translate(-50%,-12px); padding:11px 16px; border-radius:9px; background:#323232; color:#fff; opacity:0; pointer-events:none; transition:.2s ease; box-shadow:0 5px 18px rgba(0,0,0,.2); }
+    .generator-page .toast-local.show { opacity:1; transform:translate(-50%,0); }
+    .generator-page.dark-mode .generator-card,.generator-page.dark-mode .drop-hint,.generator-page.dark-mode .delimiter-field,.generator-page.dark-mode .gen-btn { background:var(--home-surface); color:var(--home-text); }
+    .generator-page.dark-mode .drop-zone { border-color:#466891; }
+    .generator-page.dark-mode .message.error { background:#3a171b; color:#ffcdd2; border-color:#71333a; }
+    .generator-page.dark-mode .delimiter-field option { color:#fff; background:#1e1e1e; }
+    @media(max-width:930px){.generator-grid{grid-template-columns:1fr}}
+    @media(max-width:600px){.generator-page main{padding-top:56px}.generator-page .generator-shell{width:min(100% - 24px,1180px);padding-top:25px}.generator-page .generator-hero{padding:18px 0 26px}.generator-card-header{align-items:flex-start;flex-direction:column;padding:16px}.generator-card-body{padding:16px}.generator-controls{grid-template-columns:1fr}.drop-hint{align-items:flex-start;flex-direction:column}.stats{grid-template-columns:1fr 1fr}.stats .stat:first-child{grid-column:1/-1}.generator-page textarea{min-height:270px}}
   </style>
 </head>
-<body>
+<body class="home-page generator-page">
+  <a class="skip-link" href="#main-content">Saltar al contenido</a>
+  <ul id="slide-out" class="sidenav sidenav-flex" aria-label="Navegacion principal">
+    <li class="sidenav-heading"><span class="sidenav-mark">A</span><div><strong>./Acu</strong><small>Herramientas de materiales</small></div></li>
+    <li><a href="index.html">Inicio</a></li><li><a href="ascan.html">A-Scan</a></li><li><a href="ajuste.html">Ajuste</a></li><li><a href="invrack.html">Inventario Racks</a></li><li><a href="partescompradas.html">Partes Compradas</a></li><li><a href="table.html">Verificar</a></li><li><a href="hilos.html">Hilos</a></li><li><a href="barcode.html">Codigo de Barras</a></li><li><a href="reglatres.html">Regla de Tres</a></li><li><a href="scan.html">Escaneo</a></li>
+    <li><div class="divider"></div></li><li class="sidenav-section-label">Herramientas</li><li class="active"><a href="partsdbgen.html" aria-current="page">Generador DB</a></li>
+  </ul>
+  <nav class="blue darken-4 home-nav" aria-label="Barra superior"><div class="nav-wrapper">
+    <button class="menu-button sidenav-trigger" data-target="slide-out" aria-label="Abrir menu" type="button"><span class="bar"></span><span class="bar"></span><span class="bar"></span></button>
+    <a href="index.html" class="brand-logo home-brand"><code>./Acu</code></a>
+    <ul class="right"><li><a href="#settings-modal" class="modal-trigger nav-action" aria-label="Abrir ajustes"><img src="icons/settings.svg" alt="" class="nav-icon"></a></li></ul>
+  </div></nav>
+  <div id="settings-modal" class="modal settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-title"><div class="modal-content">
+    <div class="modal-heading"><div><span class="eyebrow">Preferencias</span><h4 id="settings-title">Ajustes</h4></div><button class="modal-close icon-button" type="button" aria-label="Cerrar ajustes">&times;</button></div>
+    <div class="setting-row"><div><strong>Tema de la aplicacion</strong><span id="dark-mode-text">Modo Oscuro</span></div><div class="switch"><label><input type="checkbox" id="dark-mode-toggle"><span class="lever"></span><span class="sr-only">Cambiar tema</span></label></div></div>
+    <div class="setting-row"><div><strong>Totales</strong><span>Acceso a funciones Konami</span></div><button class="btn purple modal-trigger" data-target="totals-modal" onclick="toggleKonami()" type="button">Konami</button></div>
+  </div></div>
+  <main id="main-content"><div class="container generator-shell">
+    <header class="generator-hero"><span class="eyebrow">Herramienta de base de datos</span><h1>Generador de Parts DB</h1><p>Pega datos desde Excel o importa un archivo CSV/TSV para generar una base de datos JavaScript lista para usar.</p><span class="privacy-pill"><span class="privacy-dot"></span>Los datos se procesan localmente</span></header>
+    <section class="generator-grid">
+      <article class="generator-card"><div class="generator-card-header"><div><h2>1. Datos de origen</h2><p>Selecciona el tipo de base de datos y agrega tus datos.</p></div><div class="generator-tabs" aria-label="Tipo de base de datos"><button id="partsTab" class="active" type="button" data-mode="parts">Parts DB</button><button id="hilosTab" type="button" data-mode="hilos">Hilos DB</button></div></div>
+      <div class="generator-card-body"><div id="dropZone" class="drop-zone"><textarea id="input" spellcheck="false" aria-label="Datos de hoja de calculo" placeholder="Pega aqui los datos de Excel, incluyendo los encabezados..."></textarea><div class="drop-hint"><span>Copia directamente desde Excel o arrastra un archivo .csv, .tsv o .txt.</span><button id="fileButton" class="gen-btn" type="button">Seleccionar archivo</button><input id="fileInput" type="file" accept=".csv,.tsv,.txt" hidden></div></div>
+      <div class="generator-controls"><div class="delimiter-field"><label for="delimiter">Separador</label><select id="delimiter"><option value="auto">Detectar automaticamente</option><option value="tab">Tabulador</option><option value="comma">Coma</option><option value="semicolon">Punto y coma</option></select></div><button id="generateButton" class="gen-btn primary" type="button">Generate Parts DB</button></div>
+      <div class="generator-actions" style="margin-top:11px"><button id="sampleButton" class="gen-btn" type="button">Cargar ejemplo</button><button id="clearButton" class="gen-btn danger" type="button">Limpiar todo</button></div></div></article>
+      <article class="generator-card"><div class="generator-card-header"><div><h2>2. JavaScript generado</h2><p id="outputLabel">Ready to create <code>partsDB</code>.</p></div><div class="generator-actions"><button id="copyButton" class="gen-btn" type="button" disabled>Copiar</button><button id="downloadButton" class="gen-btn" type="button" disabled>Descargar .js</button></div></div>
+      <div class="generator-card-body"><div class="stats"><div class="stat"><strong id="totalRows">0</strong><span>Filas de datos</span></div><div class="stat success"><strong id="validRows">0</strong><span>Generadas</span></div><div class="stat warning"><strong id="skippedRows">0</strong><span>Omitidas / reemplazadas</span></div></div><div id="message" class="message"></div><div class="output-wrap"><pre id="output" aria-live="polite"></pre><div id="emptyState" class="output-empty"><div><div class="output-icon">{ }</div><strong>Tu base de datos aparecera aqui</strong><p>Pega tus datos y selecciona Generate. Las filas vacias se ignoran.</p></div></div></div></div></article>
+    </section>
+  </div></main>
+  <footer class="page-footer blue darken-4"><div class="container">© <span id="current-year"></span> Samuel Eduardo Renteria Quintero NCG <span class="footer-dot">•</span> <span id="version"></span></div></footer>
+  <div id="toast" class="toast-local" role="status"></div>
+  <script src="js/materialize.min.js"></script><script src="js/navigationbar.js"></script><script src="js/konami.js"></script>
+  <script>(() => {
+      'use strict';
 
-<h1>Parts DB Generator</h1>
+      const $ = id => document.getElementById(id);
+      const input = $('input');
+      const output = $('output');
+      const message = $('message');
+      const emptyState = $('emptyState');
+      const generateButton = $('generateButton');
+      const copyButton = $('copyButton');
+      const downloadButton = $('downloadButton');
+      const delimiterSelect = $('delimiter');
+      const dropZone = $('dropZone');
+      const fileInput = $('fileInput');
+      let mode = 'parts';
+      let generatedCode = '';
 
-<p>Paste Excel or CSV data (with headers):</p>
-<textarea id="input"></textarea>
+      const schemas = {
+        parts: {
+          variable: 'partsDB',
+          filename: 'partsDB.js',
+          key: ['Numero De Parte', 'Número De Parte', 'Numero de Parte', 'Part Number'],
+          fields: [
+            ['description', ['Descripción', 'Descripcion', 'Description'], 'text'],
+            ['pack', ['Standard Pack', 'Pack'], 'number0'],
+            ['cost', ['Costo', 'Cost'], 'currency'],
+            ['weight', ['Peso', 'Weight'], 'nullableNumber'],
+            ['piecesPerUnit', ['Pzs', 'Piezas', 'Pieces'], 'number0'],
+            ['line', ['Línea', 'Linea'], 'text'],
+            ['daily', ['Daily', 'Diario'], 'number0'],
+            ['kanban', ['Kanban'], 'number0'],
+            ['location', ['Localización', 'Localizacion', 'Location'], 'text'],
+            ['productionLine', ['Linea Produccion', 'Línea Producción', 'Production Line', 'Linea'], 'text']
+          ]
+        },
+        hilos: {
+          variable: 'hilosDB',
+          filename: 'hilosDB.js',
+          key: ['Numero De Parte', 'Número De Parte', 'Numero de Parte', 'Part Number'],
+          fields: [
+            ['description', ['Descripción', 'Descripcion', 'Description'], 'text'],
+            ['calibre', ['Calibre', 'Gauge'], 'text'],
+            ['color', ['Color'], 'text'],
+            ['um', ['Um', 'UM', 'U/M', 'Unit'], 'text'],
+            ['kanban', ['Kanban'], 'number0'],
+            ['location', ['Localización', 'Localizacion', 'Location'], 'text'],
+            ['productionLine', ['Linea', 'Línea', 'Production Line'], 'text']
+          ]
+        }
+      };
 
-<button onclick="generatepartes()">Generate Partes DB</button>
-<button onclick="generatehilos()">Generate Hilos DB</button>
+      const normalize = value => String(value ?? '')
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .trim().toLowerCase().replace(/\s+/g, ' ');
 
-<h2>Generated <code>partsDB</code></h2>
-<pre id="output"></pre>
+      function delimiterCharacter(text) {
+        const selected = delimiterSelect.value;
+        if (selected !== 'auto') return ({ tab: '\t', comma: ',', semicolon: ';' })[selected];
+        const firstLine = (text.split(/\r?\n/).find(line => line.trim()) || '');
+        const candidates = ['\t', ',', ';'];
+        return candidates.sort((a, b) => countOutsideQuotes(firstLine, b) - countOutsideQuotes(firstLine, a))[0];
+      }
 
-<script>
-  //Gen Partes
-function generatepartes() {
-  const text = document.getElementById('input').value.trim();
-  if (!text) return;
+      function countOutsideQuotes(line, delimiter) {
+        let count = 0, quoted = false;
+        for (let i = 0; i < line.length; i++) {
+          if (line[i] === '"') {
+            if (quoted && line[i + 1] === '"') i++;
+            else quoted = !quoted;
+          } else if (!quoted && line[i] === delimiter) count++;
+        }
+        return count;
+      }
 
-  const lines = text.split(/\r?\n/);
-  const headers = lines.shift().split(/,|\t/).map(h => h.trim());
+      function parseDelimited(text, delimiter) {
+        const rows = [];
+        let row = [], field = '', quoted = false;
+        for (let i = 0; i < text.length; i++) {
+          const char = text[i];
+          if (char === '"') {
+            if (quoted && text[i + 1] === '"') { field += '"'; i++; }
+            else quoted = !quoted;
+          } else if (char === delimiter && !quoted) {
+            row.push(field.trim()); field = '';
+          } else if ((char === '\n' || char === '\r') && !quoted) {
+            if (char === '\r' && text[i + 1] === '\n') i++;
+            row.push(field.trim());
+            if (row.some(cell => cell !== '')) rows.push(row);
+            row = []; field = '';
+          } else field += char;
+        }
+        row.push(field.trim());
+        if (row.some(cell => cell !== '')) rows.push(row);
+        return rows;
+      }
 
-  const map = {};
+      function parseNumber(value, nullable = false) {
+        const raw = String(value ?? '').trim();
+        if (!raw) return nullable ? null : 0;
+        let cleaned = raw.replace(/[$€£\s]/g, '');
+        if (cleaned.includes(',') && cleaned.includes('.')) cleaned = cleaned.replace(/,/g, '');
+        else if (cleaned.includes(',') && !cleaned.includes('.')) cleaned = cleaned.replace(',', '.');
+        const number = Number(cleaned);
+        return Number.isFinite(number) ? number : (nullable ? null : 0);
+      }
 
-  lines.forEach(line => {
-    if (!line.trim()) return;
-    const cols = line.split(/,|\t/);
+      function convert(value, type) {
+        if (type === 'number0') return parseNumber(value, false);
+        if (type === 'nullableNumber') return parseNumber(value, true);
+        if (type === 'currency') return parseNumber(value, false);
+        return String(value ?? '').trim();
+      }
 
-    const get = name => cols[headers.indexOf(name)]?.trim();
+      function findIndex(headers, aliases) {
+        const normalizedHeaders = headers.map(normalize);
+        for (const alias of aliases) {
+          const index = normalizedHeaders.indexOf(normalize(alias));
+          if (index !== -1) return index;
+        }
+        return -1;
+      }
 
-    const part = get('Numero De Parte');
-    if (!part) return;
+      function generate() {
+        const text = input.value.replace(/^\uFEFF/, '').trim();
+        resetMessage();
+        if (!text) return showError('Add spreadsheet data before generating the database.');
 
-    map[part.toUpperCase()] = {
-    description: get('Descripción'),
-    pack: Number(get('Standard Pack')) || 0,
-    cost: Number(get('Costo')?.replace('$','')) || 0,
-    weight: Number(get('Peso')) || null,
-    piecesPerUnit: Number(get('Pzs')) || 0,
-    line: get('Línea'),
-    daily: Number(get('Daily')) || 0,
-    kanban: Number(get('Kanban')) || 0,
-    location: get('Localización'),
-    productionLine: get('Linea')
-};
+        const delimiter = delimiterCharacter(text);
+        const rows = parseDelimited(text, delimiter);
+        if (rows.length < 2) return showError('A header row and at least one data row are required.');
 
-  });
+        const schema = schemas[mode];
+        const headers = rows.shift();
+        const keyIndex = findIndex(headers, schema.key);
+        if (keyIndex === -1) return showError(`Required column not found: ${schema.key[0]}. Check the header spelling.`);
 
-  let out = 'const partsDB = {};\n\n';
-  Object.entries(map).forEach(([key, val]) => {
-    out += `partsDB["${key}"] = ${JSON.stringify(val, null, 2)};\n\n`;
-  });
+        const fieldIndexes = schema.fields.map(([property, aliases, type]) => ({ property, type, index: findIndex(headers, aliases) }));
+        const database = {};
+        let missingKeys = 0;
+        let duplicates = 0;
 
-  out += 'window.partsDB = partsDB;';
-  document.getElementById('output').textContent = out;
-}
+        rows.forEach(row => {
+          const key = String(row[keyIndex] ?? '').trim().toUpperCase();
+          if (!key) { missingKeys++; return; }
+          if (Object.prototype.hasOwnProperty.call(database, key)) duplicates++;
+          const record = {};
+          fieldIndexes.forEach(({ property, type, index }) => {
+            record[property] = convert(index === -1 ? '' : row[index], type);
+          });
+          database[key] = record;
+        });
 
- //Gen Hilos
+        const entries = Object.entries(database);
+        generatedCode = `const ${schema.variable} = ${JSON.stringify(Object.fromEntries(entries), null, 2)};\n\nwindow.${schema.variable} = ${schema.variable};\n`;
+        output.textContent = generatedCode;
+        emptyState.style.display = 'none';
+        copyButton.disabled = false;
+        downloadButton.disabled = false;
+        $('totalRows').textContent = rows.length;
+        $('validRows').textContent = entries.length;
+        $('skippedRows').textContent = missingKeys + duplicates;
+        $('outputLabel').innerHTML = `Generated <code>${schema.variable}</code> successfully.`;
 
-function generatehilos() {
-  const text = document.getElementById('input').value.trim();
-  if (!text) return;
+        const missingColumns = fieldIndexes.filter(item => item.index === -1).map(item => item.property);
+        if (missingColumns.length) showInfo(`Generated successfully. Missing columns were filled with defaults: ${missingColumns.join(', ')}.`);
+        else if (missingKeys || duplicates) showInfo(`Generated successfully. ${missingKeys} row(s) had no part number and ${duplicates} duplicate(s) were replaced by the last occurrence.`);
+      }
 
-  // Split lines
-  const lines = text.split(/\r?\n/);
+      function setMode(nextMode) {
+        mode = nextMode;
+        document.querySelectorAll('.segmented button').forEach(button => button.classList.toggle('active', button.dataset.mode === mode));
+        const title = mode === 'parts' ? 'Parts' : 'Hilos';
+        generateButton.textContent = `Generate ${title} DB`;
+        $('outputLabel').innerHTML = `Ready to create <code>${schemas[mode].variable}</code>.`;
+        clearOutput();
+      }
 
-  // Read headers
-  const headers = lines.shift()
-    .split(/,|\t/)
-    .map(h => h.trim());
+      function loadSample() {
+        input.value = mode === 'parts'
+          ? 'Numero De Parte\tDescripción\tStandard Pack\tCosto\tPeso\tPzs\tLínea\tDaily\tKanban\tLocalización\tLinea Produccion\nABC-100\tTerminal Assembly\t500\t$0.18\t1.25\t10\tL1\t900\t2\tA-01-02\tAssembly 1\nXYZ-205\tConnector Housing\t250\t0.42\t0.80\t5\tL2\t600\t3\tB-04-01\tAssembly 2'
+          : 'Numero De Parte\tDescripcion\tCalibre\tColor\tUm\tKanban\tLocalización\tLinea\nWIRE-100\tAutomotive wire\t18 AWG\tRed\tM\t2\tH-01\tCutting 1\nWIRE-200\tAutomotive wire\t20 AWG\tBlack\tM\t3\tH-02\tCutting 2';
+        delimiterSelect.value = 'auto';
+        clearOutput();
+        input.focus();
+      }
 
-  const hilosDB = {};
+      function clearOutput() {
+        generatedCode = '';
+        output.textContent = '';
+        emptyState.style.display = 'grid';
+        copyButton.disabled = true;
+        downloadButton.disabled = true;
+        ['totalRows', 'validRows', 'skippedRows'].forEach(id => $(id).textContent = '0');
+        resetMessage();
+      }
 
-  lines.forEach(line => {
-    if (!line.trim()) return;
+      function clearAll() {
+        input.value = '';
+        fileInput.value = '';
+        clearOutput();
+        input.focus();
+      }
 
-    const cols = line.split(/,|\t/);
-    const get = name => cols[headers.indexOf(name)]?.trim();
+      function showError(text) { message.className = 'message error show'; message.textContent = text; }
+      function showInfo(text) { message.className = 'message info show'; message.textContent = text; }
+      function resetMessage() { message.className = 'message'; message.textContent = ''; }
+      function toast(text) {
+        const el = $('toast'); el.textContent = text; el.classList.add('show');
+        clearTimeout(toast.timer); toast.timer = setTimeout(() => el.classList.remove('show'), 1800);
+      }
 
-    const part = get('Numero De Parte');
-    if (!part) return;
+      async function copyOutput() {
+        if (!generatedCode) return;
+        try { await navigator.clipboard.writeText(generatedCode); }
+        catch { const range = document.createRange(); range.selectNodeContents(output); const selection = window.getSelection(); selection.removeAllRanges(); selection.addRange(range); document.execCommand('copy'); selection.removeAllRanges(); }
+        toast('Copied to clipboard');
+      }
 
-    hilosDB[part.toUpperCase()] = {
-      description: get('Descripcion'),
-      calibre: get('Calibre'),
-      color: get('Color'),
-      um: get('Um'),
-      kanban: Number(get('Kanban')) || 0,
-      location: get('Localización'),
-      productionLine: get('Linea')
-    };
-  });
+      function downloadOutput() {
+        if (!generatedCode) return;
+        const blob = new Blob([generatedCode], { type: 'text/javascript;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url; link.download = schemas[mode].filename; link.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        toast(`${schemas[mode].filename} downloaded`);
+      }
 
-  // Output JS code
-  let out = 'const hilosDB = {};\n\n';
-  Object.entries(hilosDB).forEach(([key, val]) => {
-    out += `hilosDB["${key}"] = ${JSON.stringify(val, null, 2)};\n\n`;
-  });
+      function readFile(file) {
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = event => { input.value = event.target.result; clearOutput(); toast(`${file.name} loaded`); };
+        reader.onerror = () => showError('The selected file could not be read.');
+        reader.readAsText(file);
+      }
 
-  out += 'window.hilosDB = hilosDB;';
-  document.getElementById('output').textContent = out;
-}
-
-</script>
-
-</body>
-</html>
+      $('partsTab').addEventListener('click', () => setMode('parts'));
+      $('hilosTab').addEventListener('click', () => setMode('hilos'));
+      generateButton.addEventListener('click', generate);
+      $('sampleButton').addEventListener('click', loadSample);
+      $('clearButton').addEventListener('click', clearAll);
+      copyButton.addEventListener('click', copyOutput);
+      downloadButton.addEventListener('click', downloadOutput);
+      $('fileButton').addEventListener('click', () => fileInput.click());
+      fileInput.addEventListener('change', event => readFile(event.target.files[0]));
+      input.addEventListener('input', clearOutput);
+      input.addEventListener('keydown', event => {
+        if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') generate();
+      });
+      ['dragenter', 'dragover'].forEach(name => dropZone.addEventListener(name, event => { event.preventDefault(); dropZone.classList.add('dragging'); }));
+      ['dragleave', 'drop'].forEach(name => dropZone.addEventListener(name, event => { event.preventDefault(); dropZone.classList.remove('dragging'); }));
+      dropZone.addEventListener('drop', event => readFile(event.dataTransfer.files[0]));
+    })();</script>
+</body></html>

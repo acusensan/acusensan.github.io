@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parts Database Generator</title>
+  <style>
+    :root {
+      --bg: #08111f;
+      --panel: rgba(15, 29, 48, .86);
+      --panel-2: #13233a;
+      --text: #eef5ff;
+      --muted: #9fb0c6;
+      --primary: #4f8cff;
+      --primary-2: #73a8ff;
+      --success: #2dd4a8;
+      --warning: #f8c15c;
+      --danger: #ff6b7d;
+      --border: rgba(164, 188, 222, .18);
+      --shadow: 0 24px 70px rgba(0, 0, 0, .28);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html { color-scheme: dark; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(79, 140, 255, .18), transparent 30%),
+        radial-gradient(circle at 90% 15%, rgba(45, 212, 168, .12), transparent 26%),
+        linear-gradient(145deg, #07101d, #0a1627 52%, #07101d);
+    }
+
+    button, textarea, select, input { font: inherit; }
+    button { color: inherit; }
+
+    .app { width: min(1440px, calc(100% - 32px)); margin: 0 auto; padding: 34px 0 48px; }
+    .topbar { display: flex; justify-content: space-between; gap: 20px; align-items: flex-start; margin-bottom: 24px; }
+    .eyebrow { margin: 0 0 7px; color: var(--primary-2); font-size: .78rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(1.85rem, 3vw, 3rem); letter-spacing: -.04em; }
+    .subtitle { max-width: 760px; margin: 9px 0 0; color: var(--muted); line-height: 1.6; }
+
+    .badge { display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; border: 1px solid var(--border); border-radius: 999px; background: rgba(255,255,255,.04); color: var(--muted); white-space: nowrap; }
+    .badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); box-shadow: 0 0 0 5px rgba(45,212,168,.12); }
+
+    .layout { display: grid; grid-template-columns: minmax(0, 1.03fr) minmax(0, .97fr); gap: 20px; }
+    .card { border: 1px solid var(--border); border-radius: var(--radius); background: var(--panel); backdrop-filter: blur(18px); box-shadow: var(--shadow); overflow: hidden; }
+    .card-header { display: flex; justify-content: space-between; gap: 18px; align-items: center; padding: 20px 22px; border-bottom: 1px solid var(--border); }
+    .card-header h2 { margin: 0; font-size: 1.05rem; }
+    .card-header p { margin: 5px 0 0; color: var(--muted); font-size: .88rem; }
+    .card-body { padding: 22px; }
+
+    .segmented { display: grid; grid-template-columns: 1fr 1fr; padding: 5px; border: 1px solid var(--border); border-radius: 13px; background: rgba(4,10,19,.45); }
+    .segmented button { border: 0; border-radius: 9px; padding: 10px 13px; color: var(--muted); background: transparent; cursor: pointer; font-weight: 750; }
+    .segmented button.active { color: white; background: linear-gradient(135deg, var(--primary), #356cd7); box-shadow: 0 8px 24px rgba(79,140,255,.26); }
+
+    .drop-zone { position: relative; border: 1px dashed rgba(115,168,255,.46); border-radius: 15px; background: rgba(79,140,255,.055); transition: .2s ease; }
+    .drop-zone.dragging { border-color: var(--success); background: rgba(45,212,168,.08); transform: translateY(-1px); }
+    textarea { display: block; width: 100%; min-height: 330px; resize: vertical; border: 0; outline: 0; padding: 18px; color: var(--text); background: transparent; font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: .86rem; line-height: 1.55; tab-size: 2; }
+    textarea::placeholder { color: #71839a; }
+    .drop-hint { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 11px 15px; border-top: 1px solid var(--border); color: var(--muted); font-size: .8rem; }
+
+    .controls { display: grid; grid-template-columns: 1fr auto; gap: 12px; margin-top: 16px; }
+    .select-wrap { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 0 12px; border: 1px solid var(--border); border-radius: 12px; background: rgba(5,11,20,.38); }
+    .select-wrap label { color: var(--muted); font-size: .8rem; white-space: nowrap; }
+    select { width: 100%; border: 0; outline: 0; padding: 12px 0; color: var(--text); background: transparent; }
+
+    .btn { display: inline-flex; justify-content: center; align-items: center; gap: 8px; min-height: 44px; padding: 10px 15px; border: 1px solid var(--border); border-radius: 12px; background: rgba(255,255,255,.045); cursor: pointer; font-weight: 760; transition: transform .16s ease, border-color .16s ease, background .16s ease; }
+    .btn:hover { transform: translateY(-1px); border-color: rgba(115,168,255,.5); background: rgba(255,255,255,.08); }
+    .btn-primary { border: 0; background: linear-gradient(135deg, var(--primary), #356cd7); box-shadow: 0 12px 28px rgba(79,140,255,.24); }
+    .btn-primary:hover { background: linear-gradient(135deg, #639aff, #3f75df); }
+    .btn-danger { color: #ffb4bd; }
+    .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .actions { display: flex; flex-wrap: wrap; gap: 9px; }
+
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+    .stat { padding: 13px 14px; border: 1px solid var(--border); border-radius: 13px; background: rgba(255,255,255,.035); }
+    .stat strong { display: block; font-size: 1.35rem; letter-spacing: -.03em; }
+    .stat span { color: var(--muted); font-size: .76rem; }
+    .stat.success strong { color: var(--success); }
+    .stat.warning strong { color: var(--warning); }
+
+    .message { display: none; margin-bottom: 14px; padding: 12px 14px; border-radius: 12px; line-height: 1.45; font-size: .86rem; }
+    .message.show { display: block; }
+    .message.error { border: 1px solid rgba(255,107,125,.35); background: rgba(255,107,125,.09); color: #ffc1c8; }
+    .message.info { border: 1px solid rgba(79,140,255,.35); background: rgba(79,140,255,.09); color: #cce0ff; }
+
+    .output-wrap { position: relative; min-height: 470px; border: 1px solid var(--border); border-radius: 15px; overflow: hidden; background: #050b13; }
+    pre { min-height: 470px; max-height: 650px; margin: 0; padding: 19px; overflow: auto; color: #dceaff; font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: .82rem; line-height: 1.55; tab-size: 2; white-space: pre; }
+    .empty { position: absolute; inset: 0; display: grid; place-content: center; padding: 30px; text-align: center; color: var(--muted); pointer-events: none; }
+    .empty-icon { width: 54px; height: 54px; display: grid; place-items: center; margin: 0 auto 12px; border: 1px solid var(--border); border-radius: 16px; background: rgba(255,255,255,.04); font-size: 1.5rem; }
+    .empty strong { color: var(--text); }
+    .empty p { max-width: 330px; margin: 8px auto 0; line-height: 1.5; font-size: .86rem; }
+
+    .footer-note { margin: 18px 2px 0; color: var(--muted); font-size: .78rem; text-align: center; }
+    .toast { position: fixed; right: 22px; bottom: 22px; z-index: 20; padding: 12px 15px; border: 1px solid var(--border); border-radius: 12px; background: #13233a; box-shadow: var(--shadow); opacity: 0; transform: translateY(12px); pointer-events: none; transition: .2s ease; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 930px) {
+      .layout { grid-template-columns: 1fr; }
+      .topbar { flex-direction: column; }
+    }
+    @media (max-width: 600px) {
+      .app { width: min(100% - 20px, 1440px); padding-top: 20px; }
+      .card-header, .card-body { padding: 16px; }
+      .card-header { align-items: flex-start; flex-direction: column; }
+      .controls { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .stats .stat:first-child { grid-column: 1 / -1; }
+      .drop-hint { align-items: flex-start; flex-direction: column; }
+      textarea { min-height: 270px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Inventory Utility</p>
+        <h1>Database Generator</h1>
+        <p class="subtitle">Paste data from Excel or import a CSV/TSV file, validate the rows, and produce a clean JavaScript database in seconds.</p>
+      </div>
+      <div class="badge"><span class="badge-dot"></span> Runs locally in your browser</div>
+    </header>
+
+    <section class="layout">
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <h2>1. Source data</h2>
+            <p>Select a database type and add your spreadsheet data.</p>
+          </div>
+          <div class="segmented" aria-label="Database type">
+            <button id="partsTab" class="active" type="button" data-mode="parts">Parts DB</button>
+            <button id="hilosTab" type="button" data-mode="hilos">Hilos DB</button>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div id="dropZone" class="drop-zone">
+            <textarea id="input" spellcheck="false" aria-label="Spreadsheet data" placeholder="Paste spreadsheet data here, including the header row..."></textarea>
+            <div class="drop-hint">
+              <span>Tip: Copy directly from Excel, or drag a .csv/.tsv/.txt file here.</span>
+              <button id="fileButton" class="btn" type="button">Choose file</button>
+              <input id="fileInput" type="file" accept=".csv,.tsv,.txt" hidden>
+            </div>
+          </div>
+
+          <div class="controls">
+            <div class="select-wrap">
+              <label for="delimiter">Delimiter</label>
+              <select id="delimiter">
+                <option value="auto">Auto detect</option>
+                <option value="tab">Tab</option>
+                <option value="comma">Comma</option>
+                <option value="semicolon">Semicolon</option>
+              </select>
+            </div>
+            <button id="generateButton" class="btn btn-primary" type="button">Generate Parts DB</button>
+          </div>
+
+          <div class="actions" style="margin-top: 11px;">
+            <button id="sampleButton" class="btn" type="button">Load sample</button>
+            <button id="clearButton" class="btn btn-danger" type="button">Clear all</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <h2>2. Generated JavaScript</h2>
+            <p id="outputLabel">Ready to create <code>partsDB</code>.</p>
+          </div>
+          <div class="actions">
+            <button id="copyButton" class="btn" type="button" disabled>Copy</button>
+            <button id="downloadButton" class="btn" type="button" disabled>Download .js</button>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="stats">
+            <div class="stat"><strong id="totalRows">0</strong><span>Data rows</span></div>
+            <div class="stat success"><strong id="validRows">0</strong><span>Generated</span></div>
+            <div class="stat warning"><strong id="skippedRows">0</strong><span>Skipped / replaced</span></div>
+          </div>
+          <div id="message" class="message"></div>
+          <div class="output-wrap">
+            <pre id="output" aria-live="polite"></pre>
+            <div id="emptyState" class="empty">
+              <div>
+                <div class="empty-icon">{ }</div>
+                <strong>Your generated database will appear here</strong>
+                <p>Paste your data and select Generate. Empty rows are ignored and duplicate part numbers use the last matching row.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <p class="footer-note">No data is uploaded or stored. Everything is processed on this device.</p>
+  </main>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const $ = id => document.getElementById(id);
+      const input = $('input');
+      const output = $('output');
+      const message = $('message');
+      const emptyState = $('emptyState');
+      const generateButton = $('generateButton');
+      const copyButton = $('copyButton');
+      const downloadButton = $('downloadButton');
+      const delimiterSelect = $('delimiter');
+      const dropZone = $('dropZone');
+      const fileInput = $('fileInput');
+      let mode = 'parts';
+      let generatedCode = '';
+
+      const schemas = {
+        parts: {
+          variable: 'partsDB',
+          filename: 'partsDB.js',
+          key: ['Numero De Parte', 'Número De Parte', 'Numero de Parte', 'Part Number'],
+          fields: [
+            ['description', ['Descripción', 'Descripcion', 'Description'], 'text'],
+            ['pack', ['Standard Pack', 'Pack'], 'number0'],
+            ['cost', ['Costo', 'Cost'], 'currency'],
+            ['weight', ['Peso', 'Weight'], 'nullableNumber'],
+            ['piecesPerUnit', ['Pzs', 'Piezas', 'Pieces'], 'number0'],
+            ['line', ['Línea', 'Linea'], 'text'],
+            ['daily', ['Daily', 'Diario'], 'number0'],
+            ['kanban', ['Kanban'], 'number0'],
+            ['location', ['Localización', 'Localizacion', 'Location'], 'text'],
+            ['productionLine', ['Linea Produccion', 'Línea Producción', 'Production Line', 'Linea'], 'text']
+          ]
+        },
+        hilos: {
+          variable: 'hilosDB',
+          filename: 'hilosDB.js',
+          key: ['Numero De Parte', 'Número De Parte', 'Numero de Parte', 'Part Number'],
+          fields: [
+            ['description', ['Descripción', 'Descripcion', 'Description'], 'text'],
+            ['calibre', ['Calibre', 'Gauge'], 'text'],
+            ['color', ['Color'], 'text'],
+            ['um', ['Um', 'UM', 'U/M', 'Unit'], 'text'],
+            ['kanban', ['Kanban'], 'number0'],
+            ['location', ['Localización', 'Localizacion', 'Location'], 'text'],
+            ['productionLine', ['Linea', 'Línea', 'Production Line'], 'text']
+          ]
+        }
+      };
+
+      const normalize = value => String(value ?? '')
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .trim().toLowerCase().replace(/\s+/g, ' ');
+
+      function delimiterCharacter(text) {
+        const selected = delimiterSelect.value;
+        if (selected !== 'auto') return ({ tab: '\t', comma: ',', semicolon: ';' })[selected];
+        const firstLine = (text.split(/\r?\n/).find(line => line.trim()) || '');
+        const candidates = ['\t', ',', ';'];
+        return candidates.sort((a, b) => countOutsideQuotes(firstLine, b) - countOutsideQuotes(firstLine, a))[0];
+      }
+
+      function countOutsideQuotes(line, delimiter) {
+        let count = 0, quoted = false;
+        for (let i = 0; i < line.length; i++) {
+          if (line[i] === '"') {
+            if (quoted && line[i + 1] === '"') i++;
+            else quoted = !quoted;
+          } else if (!quoted && line[i] === delimiter) count++;
+        }
+        return count;
+      }
+
+      function parseDelimited(text, delimiter) {
+        const rows = [];
+        let row = [], field = '', quoted = false;
+        for (let i = 0; i < text.length; i++) {
+          const char = text[i];
+          if (char === '"') {
+            if (quoted && text[i + 1] === '"') { field += '"'; i++; }
+            else quoted = !quoted;
+          } else if (char === delimiter && !quoted) {
+            row.push(field.trim()); field = '';
+          } else if ((char === '\n' || char === '\r') && !quoted) {
+            if (char === '\r' && text[i + 1] === '\n') i++;
+            row.push(field.trim());
+            if (row.some(cell => cell !== '')) rows.push(row);
+            row = []; field = '';
+          } else field += char;
+        }
+        row.push(field.trim());
+        if (row.some(cell => cell !== '')) rows.push(row);
+        return rows;
+      }
+
+      function parseNumber(value, nullable = false) {
+        const raw = String(value ?? '').trim();
+        if (!raw) return nullable ? null : 0;
+        let cleaned = raw.replace(/[$€£\s]/g, '');
+        if (cleaned.includes(',') && cleaned.includes('.')) cleaned = cleaned.replace(/,/g, '');
+        else if (cleaned.includes(',') && !cleaned.includes('.')) cleaned = cleaned.replace(',', '.');
+        const number = Number(cleaned);
+        return Number.isFinite(number) ? number : (nullable ? null : 0);
+      }
+
+      function convert(value, type) {
+        if (type === 'number0') return parseNumber(value, false);
+        if (type === 'nullableNumber') return parseNumber(value, true);
+        if (type === 'currency') return parseNumber(value, false);
+        return String(value ?? '').trim();
+      }
+
+      function findIndex(headers, aliases) {
+        const normalizedHeaders = headers.map(normalize);
+        for (const alias of aliases) {
+          const index = normalizedHeaders.indexOf(normalize(alias));
+          if (index !== -1) return index;
+        }
+        return -1;
+      }
+
+      function generate() {
+        const text = input.value.replace(/^\uFEFF/, '').trim();
+        resetMessage();
+        if (!text) return showError('Add spreadsheet data before generating the database.');
+
+        const delimiter = delimiterCharacter(text);
+        const rows = parseDelimited(text, delimiter);
+        if (rows.length < 2) return showError('A header row and at least one data row are required.');
+
+        const schema = schemas[mode];
+        const headers = rows.shift();
+        const keyIndex = findIndex(headers, schema.key);
+        if (keyIndex === -1) return showError(`Required column not found: ${schema.key[0]}. Check the header spelling.`);
+
+        const fieldIndexes = schema.fields.map(([property, aliases, type]) => ({ property, type, index: findIndex(headers, aliases) }));
+        const database = {};
+        let missingKeys = 0;
+        let duplicates = 0;
+
+        rows.forEach(row => {
+          const key = String(row[keyIndex] ?? '').trim().toUpperCase();
+          if (!key) { missingKeys++; return; }
+          if (Object.prototype.hasOwnProperty.call(database, key)) duplicates++;
+          const record = {};
+          fieldIndexes.forEach(({ property, type, index }) => {
+            record[property] = convert(index === -1 ? '' : row[index], type);
+          });
+          database[key] = record;
+        });
+
+        const entries = Object.entries(database);
+        generatedCode = `const ${schema.variable} = ${JSON.stringify(Object.fromEntries(entries), null, 2)};\n\nwindow.${schema.variable} = ${schema.variable};\n`;
+        output.textContent = generatedCode;
+        emptyState.style.display = 'none';
+        copyButton.disabled = false;
+        downloadButton.disabled = false;
+        $('totalRows').textContent = rows.length;
+        $('validRows').textContent = entries.length;
+        $('skippedRows').textContent = missingKeys + duplicates;
+        $('outputLabel').innerHTML = `Generated <code>${schema.variable}</code> successfully.`;
+
+        const missingColumns = fieldIndexes.filter(item => item.index === -1).map(item => item.property);
+        if (missingColumns.length) showInfo(`Generated successfully. Missing columns were filled with defaults: ${missingColumns.join(', ')}.`);
+        else if (missingKeys || duplicates) showInfo(`Generated successfully. ${missingKeys} row(s) had no part number and ${duplicates} duplicate(s) were replaced by the last occurrence.`);
+      }
+
+      function setMode(nextMode) {
+        mode = nextMode;
+        document.querySelectorAll('.segmented button').forEach(button => button.classList.toggle('active', button.dataset.mode === mode));
+        const title = mode === 'parts' ? 'Parts' : 'Hilos';
+        generateButton.textContent = `Generate ${title} DB`;
+        $('outputLabel').innerHTML = `Ready to create <code>${schemas[mode].variable}</code>.`;
+        clearOutput();
+      }
+
+      function loadSample() {
+        input.value = mode === 'parts'
+          ? 'Numero De Parte\tDescripción\tStandard Pack\tCosto\tPeso\tPzs\tLínea\tDaily\tKanban\tLocalización\tLinea Produccion\nABC-100\tTerminal Assembly\t500\t$0.18\t1.25\t10\tL1\t900\t2\tA-01-02\tAssembly 1\nXYZ-205\tConnector Housing\t250\t0.42\t0.80\t5\tL2\t600\t3\tB-04-01\tAssembly 2'
+          : 'Numero De Parte\tDescripcion\tCalibre\tColor\tUm\tKanban\tLocalización\tLinea\nWIRE-100\tAutomotive wire\t18 AWG\tRed\tM\t2\tH-01\tCutting 1\nWIRE-200\tAutomotive wire\t20 AWG\tBlack\tM\t3\tH-02\tCutting 2';
+        delimiterSelect.value = 'auto';
+        clearOutput();
+        input.focus();
+      }
+
+      function clearOutput() {
+        generatedCode = '';
+        output.textContent = '';
+        emptyState.style.display = 'grid';
+        copyButton.disabled = true;
+        downloadButton.disabled = true;
+        ['totalRows', 'validRows', 'skippedRows'].forEach(id => $(id).textContent = '0');
+        resetMessage();
+      }
+
+      function clearAll() {
+        input.value = '';
+        fileInput.value = '';
+        clearOutput();
+        input.focus();
+      }
+
+      function showError(text) { message.className = 'message error show'; message.textContent = text; }
+      function showInfo(text) { message.className = 'message info show'; message.textContent = text; }
+      function resetMessage() { message.className = 'message'; message.textContent = ''; }
+      function toast(text) {
+        const el = $('toast'); el.textContent = text; el.classList.add('show');
+        clearTimeout(toast.timer); toast.timer = setTimeout(() => el.classList.remove('show'), 1800);
+      }
+
+      async function copyOutput() {
+        if (!generatedCode) return;
+        try { await navigator.clipboard.writeText(generatedCode); }
+        catch { const range = document.createRange(); range.selectNodeContents(output); const selection = window.getSelection(); selection.removeAllRanges(); selection.addRange(range); document.execCommand('copy'); selection.removeAllRanges(); }
+        toast('Copied to clipboard');
+      }
+
+      function downloadOutput() {
+        if (!generatedCode) return;
+        const blob = new Blob([generatedCode], { type: 'text/javascript;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url; link.download = schemas[mode].filename; link.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        toast(`${schemas[mode].filename} downloaded`);
+      }
+
+      function readFile(file) {
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = event => { input.value = event.target.result; clearOutput(); toast(`${file.name} loaded`); };
+        reader.onerror = () => showError('The selected file could not be read.');
+        reader.readAsText(file);
+      }
+
+      $('partsTab').addEventListener('click', () => setMode('parts'));
+      $('hilosTab').addEventListener('click', () => setMode('hilos'));
+      generateButton.addEventListener('click', generate);
+      $('sampleButton').addEventListener('click', loadSample);
+      $('clearButton').addEventListener('click', clearAll);
+      copyButton.addEventListener('click', copyOutput);
+      downloadButton.addEventListener('click', downloadOutput);
+      $('fileButton').addEventListener('click', () => fileInput.click());
+      fileInput.addEventListener('change', event => readFile(event.target.files[0]));
+      input.addEventListener('input', clearOutput);
+      input.addEventListener('keydown', event => {
+        if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') generate();
+      });
+      ['dragenter', 'dragover'].forEach(name => dropZone.addEventListener(name, event => { event.preventDefault(); dropZone.classList.add('dragging'); }));
+      ['dragleave', 'drop'].forEach(name => dropZone.addEventListener(name, event => { event.preventDefault(); dropZone.classList.remove('dragging'); }));
+      dropZone.addEventListener('drop', event => readFile(event.dataTransfer.files[0]));
+    })();
+  </script>
+</body>
+</html>
