@@ -30,6 +30,7 @@
             <li><a href="scan.html">Escaneo</a></li>
             <li><div class="divider"></div></li>
             <li class="sidenav-section-label">Under Construction</li>
+			<li><a href="partsdbgen.html">Generador DB</a></li>
             <li><a href="velcros_3.1_Super.html">Velcros - Normal</a></li>
             <li><a href="velcros_3.1_noSuper.html">Velcros - No Supervisor</a></li>
         </ul>
@@ -52,13 +53,7 @@
                 </ul>
             </div>
         </nav>
-        <div
-            id="settings-modal"
-            class="modal settings-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="settings-title"
-        >
+        <div id="settings-modal"class="modal settings-modal"role="dialog"aria-modal="true"aria-labelledby="settings-title">
             <div class="modal-content">
                 <div class="modal-heading">
                     <div>
@@ -70,23 +65,10 @@
                 <div class="setting-row">
                     <div><strong>Tema de la aplicacion</strong><span id="dark-mode-text">Modo Oscuro</span></div>
                     <div class="switch">
-                        <label
-                            ><input type="checkbox" id="dark-mode-toggle" /><span class="lever"></span
-                            ><span class="sr-only">Cambiar tema</span></label
-                        >
+                        <label><input type="checkbox" id="dark-mode-toggle" /><span class="lever"></span><span class="sr-only">Cambiar tema</span></label>
                     </div>
                 </div>
-                <div class="setting-row">
-                    <div><strong>Totales</strong><span>Acceso a funciones Konami</span></div>
-                    <button
-                        class="btn purple modal-trigger"
-                        data-target="totals-modal"
-                        onclick="toggleKonami()"
-                        type="button"
-                    >
-                        Konami
-                    </button>
-                </div>
+                
             </div>
         </div>
         <main id="main-content">
@@ -104,43 +86,15 @@
                         </div>
                     </div>
                     <div class="tool-grid" id="tool-grid">
-                        <a class="tool-card" href="ascan.html" data-search="a-scan escaneo ubicacion"
-                            ><span class="tool-icon" aria-hidden="true">AS</span
-                            ><span><strong>A-Scan</strong><small>Consulta y captura con escaner</small></span
-                            ><span class="tool-arrow" aria-hidden="true">›</span></a
-                        ><a class="tool-card" href="ajuste.html" data-search="ajuste inventario cantidad"
-                            ><span class="tool-icon" aria-hidden="true">AJ</span
-                            ><span><strong>Ajuste</strong><small>Realiza ajustes de material</small></span
-                            ><span class="tool-arrow" aria-hidden="true">›</span></a
-                        ><a class="tool-card" href="invrack.html" data-search="inventario racks ubicaciones"
-                            ><span class="tool-icon" aria-hidden="true">IR</span
-                            ><span><strong>Inventario Racks</strong><small>Revisa material por rack</small></span
-                            ><span class="tool-arrow" aria-hidden="true">›</span></a
-                        ><a class="tool-card" href="partescompradas.html" data-search="partes compradas componentes"
-                            ><span class="tool-icon" aria-hidden="true">PC</span
-                            ><span><strong>Partes Compradas</strong><small>Consulta componentes comprados</small></span
-                            ><span class="tool-arrow" aria-hidden="true">›</span></a
-                        ><a class="tool-card" href="table.html" data-search="verificar tabla datos"
-                            ><span class="tool-icon" aria-hidden="true">VE</span
-                            ><span><strong>Verificar</strong><small>Valida registros y cantidades</small></span
-                            ><span class="tool-arrow" aria-hidden="true">›</span></a
-                        ><a class="tool-card" href="hilos.html" data-search="hilos cables material"
-                            ><span class="tool-icon" aria-hidden="true">HI</span
-                            ><span><strong>Hilos</strong><small>Consulta informacion de hilos</small></span
-                            ><span class="tool-arrow" aria-hidden="true">›</span></a
-                        ><a class="tool-card" href="barcode.html" data-search="generar codigo barras etiqueta"
-                            ><span class="tool-icon" aria-hidden="true">CB</span
-                            ><span><strong>Codigo de Barras</strong><small>Genera codigos para etiquetas</small></span
-                            ><span class="tool-arrow" aria-hidden="true">›</span></a
-                        ><a class="tool-card" href="reglatres.html" data-search="regla tres calculadora proporcion"
-                            ><span class="tool-icon" aria-hidden="true">R3</span
-                            ><span><strong>Regla de Tres</strong><small>Calcula proporciones rapidamente</small></span
-                            ><span class="tool-arrow" aria-hidden="true">›</span></a
-                        ><a class="tool-card" href="scan.html" data-search="escaneo scanner codigo"
-                            ><span class="tool-icon" aria-hidden="true">ES</span
-                            ><span><strong>Escaneo</strong><small>Captura codigos de material</small></span
-                            ><span class="tool-arrow" aria-hidden="true">›</span></a
-                        >
+                        <a class="tool-card" href="ascan.html" data-search="a-scan escaneo ubicacion"><span class="tool-icon" aria-hidden="true">AS</span><span><strong>A-Scan</strong><small>Consulta y captura con escaner</small></span><span class="tool-arrow" aria-hidden="true">›</span></a>
+						<a class="tool-card" href="ajuste.html" data-search="ajuste inventario cantidad"><span class="tool-icon" aria-hidden="true">AJ</span><span><strong>Ajuste</strong><small>Realiza ajustes de material</small></span><span class="tool-arrow" aria-hidden="true">›</span></a>
+						<a class="tool-card" href="invrack.html" data-search="inventario racks ubicaciones"><span class="tool-icon" aria-hidden="true">IR</span><span><strong>Inventario Racks</strong><small>Revisa material por rack</small></span><span class="tool-arrow" aria-hidden="true">›</span></a>
+						<a class="tool-card" href="partescompradas.html" data-search="partes compradas componentes" ><span class="tool-icon" aria-hidden="true">PC</span><span><strong>Partes Compradas</strong><small>Consulta componentes comprados</small></span><span class="tool-arrow" aria-hidden="true">›</span></a>
+						<a class="tool-card" href="table.html" data-search="verificar tabla datos"><span class="tool-icon" aria-hidden="true">VE</span><span><strong>Verificar</strong><small>Valida registros y cantidades</small></span><span class="tool-arrow" aria-hidden="true">›</span></a>
+						<a class="tool-card" href="hilos.html" data-search="hilos cables material"><span class="tool-icon" aria-hidden="true">HI</span><span><strong>Hilos</strong><small>Consulta informacion de hilos</small></span><span class="tool-arrow" aria-hidden="true">›</span></a>
+						<a class="tool-card" href="barcode.html" data-search="generar codigo barras etiqueta"><span class="tool-icon" aria-hidden="true">CB</span><span><strong>Codigo de Barras</strong><small>Genera codigos para etiquetas</small></span><span class="tool-arrow" aria-hidden="true">›</span></a>
+						<a class="tool-card" href="reglatres.html" data-search="regla tres calculadora proporcion"><span class="tool-icon" aria-hidden="true">R3</span><span><strong>Regla de Tres</strong><small>Calcula proporciones rapidamente</small></span><span class="tool-arrow" aria-hidden="true">›</span></a>
+						<a class="tool-card" href="scan.html" data-search="escaneo scanner codigo"><span class="tool-icon" aria-hidden="true">ES</span><span><strong>Escaneo</strong><small>Captura codigos de material</small></span><span class="tool-arrow" aria-hidden="true">›</span></a>
                     </div>
                     <p id="empty-tools" class="empty-state" hidden>No se encontraron herramientas.</p>
                 </section>
@@ -150,6 +104,7 @@
             <div class="container">
                 © <span id="current-year"></span> Samuel Eduardo Renteria Quintero NCG
                 <span class="footer-dot">•</span> <span id="version"></span>
+                    <button class="btn-small blue modal-trigger"data-target="totals-modal"onclick="toggleKonami()"type="button">K</button>
             </div>
         </footer>
         <script src="js/materialize.min.js"></script>

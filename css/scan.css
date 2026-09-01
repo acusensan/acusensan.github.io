@@ -424,6 +424,7 @@
 }
 .scan-page.dark-mode .scan-capture,
 .scan-page.dark-mode .data-panel,
+.scan-page.dark-mode .modal-footer,
 .scan-page.dark-mode .modal,
 .scan-page.dark-mode .field-label input,
 .scan-page.dark-mode .compact-table input {
