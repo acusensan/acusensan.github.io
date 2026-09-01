@@ -1,18 +1,6 @@
-const partsDB = {};
-
-partsDB["10686"] = {
-    "pack": 2.5,
-    "cost": 73.7478,
-    "weight": 2703,
-    "piecesPerUnit": 2.5,
-    "line": "Misc",
-    "daily": 0.8,
-    "kanban": 1,
-    "location": "APC0203",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["170480"] = {
+const partsDB = {
+  "170480": {
+    "description": "VELCRO HOOK 1\" BLACK",
     "pack": 250,
     "cost": 0.2973,
     "weight": null,
@@ -21,22 +9,22 @@ partsDB["170480"] = {
     "daily": 0,
     "kanban": 1,
     "location": "APC0109",
-    "productionLine": "PCGSAVAN"
-};
-
-partsDB["190562"] = {
+    "productionLine": "Velcro"
+  },
+  "190562": {
+    "description": "HOOK 088-0199",
     "pack": 500,
     "cost": 0.2385,
     "weight": null,
     "piecesPerUnit": 0,
     "line": "Velcro",
-    "daily": 388.6,
+    "daily": 433.2,
     "kanban": 1,
     "location": "APC0110",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["346779"] = {
+    "productionLine": "Velcro"
+  },
+  "346779": {
+    "description": "BINDING FOLD 1 1/8\" 195A",
     "pack": 300,
     "cost": 0.5,
     "weight": 4035,
@@ -45,226 +33,226 @@ partsDB["346779"] = {
     "daily": 0,
     "kanban": 1,
     "location": "APC0203",
-    "productionLine": "PCGSAVAN"
-};
-
-partsDB["346803"] = {
+    "productionLine": "Misc"
+  },
+  "346803": {
+    "description": "BINDING FOLD 1 1/8\" 110D",
     "pack": 300,
     "cost": 0.5,
     "weight": 4035,
     "piecesPerUnit": 300,
     "line": "Misc",
-    "daily": 678.2,
+    "daily": 569.8,
     "kanban": 1,
     "location": "APC0203",
-    "productionLine": "PCGSAVAN"
-};
-
-partsDB["L002316235NCPAB"] = {
+    "productionLine": "Misc"
+  },
+  "L002316235NCPAB": {
+    "description": "BEADED TIE-DOWN 25X955MM",
     "pack": 500,
     "cost": 0.2328,
     "weight": 381,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1514.8,
+    "daily": 1609.6,
     "kanban": 5,
     "location": "APC0101",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002401087NCPAC"] = {
+    "productionLine": "Colorado"
+  },
+  "L002401087NCPAC": {
+    "description": "RET FLAT 5258 25X245MM",
     "pack": 1000,
     "cost": 0.0386,
     "weight": 102,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 3026.8,
+    "daily": 3230.4,
     "kanban": 1,
     "location": "APC0101",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002401088NCPAC"] = {
+    "productionLine": "Colorado"
+  },
+  "L002401088NCPAC": {
+    "description": "RET FLAT 5258 25X255MM",
     "pack": 1000,
     "cost": 0.0402,
     "weight": 106,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1513.4,
+    "daily": 1615.2,
     "kanban": 1,
     "location": "APC0101",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002401089NCPAD"] = {
+    "productionLine": "Colorado"
+  },
+  "L002401089NCPAD": {
+    "description": "TIE-DOWN 5258 25X430MM",
     "pack": 1000,
     "cost": 0.0778,
     "weight": 175,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1513.4,
+    "daily": 1615.2,
     "kanban": 1,
     "location": "APC0101",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002401090NCPAD"] = {
+    "productionLine": "Colorado"
+  },
+  "L002401090NCPAD": {
+    "description": "TIE-DOWN 5258 25X420MM",
     "pack": 1000,
     "cost": 0.076,
     "weight": 165,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1513.4,
+    "daily": 1615.2,
     "kanban": 1,
     "location": "APC0101",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002401091NCPAB"] = {
+    "productionLine": "Colorado"
+  },
+  "L002401091NCPAB": {
+    "description": "TIE-DOWN 5258 30X160MM",
     "pack": 1000,
     "cost": 0.0264,
     "weight": 70,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 757.4,
+    "daily": 808.6,
     "kanban": 1,
     "location": "APC0101",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002316236NCPAA"] = {
+    "productionLine": "Colorado"
+  },
+  "L002316236NCPAA": {
+    "description": "J-RET D1805 24X120 MM",
     "pack": 1800,
     "cost": 0.0326,
     "weight": 153,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1514.8,
+    "daily": 1609.6,
     "kanban": 1,
     "location": "APC0102",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002316237NCPAA"] = {
+    "productionLine": "Colorado"
+  },
+  "L002316237NCPAA": {
+    "description": "J-RET D1805 24X200 MM",
     "pack": 1000,
     "cost": 0.0556,
     "weight": 263,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1954.8,
+    "daily": 2142.6,
     "kanban": 1,
     "location": "APC0102",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002316238NCPAA"] = {
+    "productionLine": "Colorado"
+  },
+  "L002316238NCPAA": {
+    "description": "J-RET D1697 21.7X250 MM",
     "pack": 1200,
     "cost": 0.0576,
     "weight": 200,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 757.4,
+    "daily": 804.8,
     "kanban": 1,
     "location": "APC0102",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002316951NCPAC"] = {
+    "productionLine": "Colorado"
+  },
+  "L002316951NCPAC": {
+    "description": "STIFFENER PP 260X320MM",
     "pack": 80,
     "cost": 0.6008,
     "weight": 2791,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 353.6,
+    "daily": 303,
     "kanban": 2,
     "location": "APC0102",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002401092NCPAA"] = {
+    "productionLine": "Colorado"
+  },
+  "L002401092NCPAA": {
+    "description": "J-RET 721 28.5X625MM",
     "pack": 350,
     "cost": 0.2262,
     "weight": 819,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 757.4,
+    "daily": 808.6,
     "kanban": 1,
     "location": "APC0102",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002481117NCPAA"] = {
+    "productionLine": "Colorado"
+  },
+  "L002481117NCPAA": {
+    "description": "J-RET D721 28.5X240 MM",
     "pack": 1100,
     "cost": 0.0643,
     "weight": 286,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 353.6,
+    "daily": 303,
     "kanban": 1,
     "location": "APC0102",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["5CC-CH-PLF8-645D"] = {
+    "productionLine": "Colorado"
+  },
+  "5CC-CH-PLF8-645D": {
+    "description": "ZIPPER CHAIN 5CC-CH-PLF8",
     "pack": 766,
     "cost": 0.7315,
     "weight": null,
     "piecesPerUnit": 0,
     "line": "Zipper",
-    "daily": 498,
+    "daily": 492,
     "kanban": 1,
     "location": "APC0103",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L00144987006HAA"] = {
+    "productionLine": "Zipper"
+  },
+  "L00144987006HAA": {
+    "description": "ZIPPER CHAIN 5CC-CH-PLF8",
     "pack": 766,
     "cost": 0.7315,
     "weight": null,
     "piecesPerUnit": 0,
     "line": "Zipper",
-    "daily": 55.4,
+    "daily": 57.8,
     "kanban": 1,
     "location": "APC0103",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L001449870U52AA"] = {
+    "productionLine": "Zipper"
+  },
+  "L001449870U52AA": {
+    "description": "ZIPPER CHAIN U52 BLACK",
     "pack": 766,
     "cost": 0.6401,
     "weight": null,
     "piecesPerUnit": 0,
     "line": "Zipper",
-    "daily": 2832.2,
+    "daily": 3018.8,
     "kanban": 3,
     "location": "APC0103",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L002401093NCPAA"] = {
+    "productionLine": "Zipper"
+  },
+  "L002401093NCPAA": {
+    "description": "J-RET D1805 28.5X370 MM",
     "pack": 650,
     "cost": 0.1258,
     "weight": 459,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 756,
+    "daily": 806.6,
     "kanban": 1,
     "location": "APC0103",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["255S5-195A"] = {
+    "productionLine": "Colorado"
+  },
+  "255S5-195A": {
+    "description": "ZIPPER CHAIN YKK ITEM",
     "pack": 766,
     "cost": 0.2164,
     "weight": null,
     "piecesPerUnit": 0,
     "line": "Zipper",
-    "daily": 47,
+    "daily": 34.4,
     "kanban": 1,
     "location": "APC0103",
-    "productionLine": "PCGSAVAN"
-};
-
-partsDB["L00180249345DAA"] = {
+    "productionLine": "Zipper"
+  },
+  "L00180249345DAA": {
+    "description": "ZIPPER ASSEM L435MM 45D",
     "pack": 1000,
     "cost": 0.278,
     "weight": null,
@@ -273,682 +261,682 @@ partsDB["L00180249345DAA"] = {
     "daily": 12.8,
     "kanban": 2,
     "location": "APC0104",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L001802493GKAAA"] = {
+    "productionLine": "Zipper"
+  },
+  "L001802493GKAAA": {
+    "description": "ZIPPER ASSEM L435MM GKA",
     "pack": 1000,
     "cost": 0.278,
     "weight": null,
     "piecesPerUnit": 0,
     "line": "Zipper",
-    "daily": 460.8,
+    "daily": 596.8,
     "kanban": 2,
     "location": "APC0104",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0816049AA0109X"] = {
+    "productionLine": "Zipper"
+  },
+  "L0816049AA0109X": {
+    "description": "ZIPPER 5/8 W32.5.L535MM",
     "pack": 1000,
     "cost": 0.255,
     "weight": null,
     "piecesPerUnit": 0,
     "line": "Zipper",
-    "daily": 260.8,
+    "daily": 361.6,
     "kanban": 1,
     "location": "APC0104",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0816049AA0145D"] = {
+    "productionLine": "Zipper"
+  },
+  "L0816049AA0145D": {
+    "description": "ZIPPER 5/8 W32.5.L535MM",
     "pack": 1000,
     "cost": 0.255,
     "weight": null,
     "piecesPerUnit": 0,
     "line": "Zipper",
-    "daily": 461.6,
+    "daily": 502.4,
     "kanban": 2,
     "location": "APC0104",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0816049AA01GKA"] = {
+    "productionLine": "Zipper"
+  },
+  "L0816049AA01GKA": {
+    "description": "ZIPPER 5/8 W32.5.L535MM",
     "pack": 1000,
     "cost": 0.255,
     "weight": null,
     "piecesPerUnit": 0,
     "line": "Zipper",
-    "daily": 10143.6,
+    "daily": 11245.2,
     "kanban": 5,
     "location": "APC0104",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0571635AA01"] = {
+    "productionLine": "Zipper"
+  },
+  "L0571635AA01": {
+    "description": "J-RET D3497 22.4X45MM",
     "pack": 5000,
     "cost": 0.0114,
     "weight": 52,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 7584,
+    "daily": 8064,
     "kanban": 1,
     "location": "APC0105",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0571636AA01"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0571636AA01": {
+    "description": "J-RET D3497 22.4X80MM",
     "pack": 3000,
     "cost": 0.017,
     "weight": 91,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 4550.4,
+    "daily": 4838.4,
     "kanban": 1,
     "location": "APC0105",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0572828AA03"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0572828AA03": {
+    "description": "RET FLT STRP 67X270MM",
     "pack": 750,
     "cost": 0.0947,
     "weight": 377,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 1516.8,
+    "daily": 1612.8,
     "kanban": 1,
     "location": "APC0105",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0591424AA01"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0591424AA01": {
+    "description": "J-RET 1588 28.95X80MM",
     "pack": 1500,
     "cost": 0.0173,
     "weight": 94,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 1516.8,
+    "daily": 1612.8,
     "kanban": 1,
     "location": "APC0105",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0668944AA01"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0668944AA01": {
+    "description": "J-RET D2140 35X60MM",
     "pack": 1500,
     "cost": 0.0217,
     "weight": 104,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 3033.6,
+    "daily": 3225.6,
     "kanban": 1,
     "location": "APC0105",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L002866832NCPAA"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L002866832NCPAA": {
+    "description": "J-RET 30.1X335MM",
     "pack": 500,
     "cost": 0.0915,
     "weight": 375,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 2818,
+    "daily": 3136.8,
     "kanban": 2,
     "location": "APC0106",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L002890609NCPAA"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L002890609NCPAA": {
+    "description": "J-RET D975 30.1X320MM",
     "pack": 500,
     "cost": 0.0874,
     "weight": 371,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 2818,
+    "daily": 3136.8,
     "kanban": 2,
     "location": "APC0106",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0571668AA01"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0571668AA01": {
+    "description": "A-RET D2384 25X100MM",
     "pack": 1000,
     "cost": 0.0269,
     "weight": 159,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 6167.2,
+    "daily": 5860,
     "kanban": 1,
     "location": "APC0106",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0592046AA01"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0592046AA01": {
+    "description": "J-RET D976 25X60MM BLK",
     "pack": 4700,
     "cost": 0.0152,
     "weight": 66,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 6067.2,
+    "daily": 6451.2,
     "kanban": 1,
     "location": "APC0106",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0676165AA01"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0676165AA01": {
+    "description": "RET FLT STRP 25X290MM",
     "pack": 2000,
     "cost": 0.0442,
     "weight": 128,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 7750.4,
+    "daily": 8533.6,
     "kanban": 1,
     "location": "APC0106",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L002866833NCPAA"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L002866833NCPAA": {
+    "description": "J-RET D975 30.1X735MM",
     "pack": 150,
     "cost": 0.2007,
     "weight": 844,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 2810.8,
+    "daily": 3140.4,
     "kanban": 5,
     "location": "APC0107",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L002890610NCPAA"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L002890610NCPAA": {
+    "description": "J-RET D975 30.1X720MM",
     "pack": 150,
     "cost": 0.1966,
     "weight": 811,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 2810.8,
+    "daily": 3140.4,
     "kanban": 5,
     "location": "APC0107",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0676192AA01"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0676192AA01": {
+    "description": "RET FLT STRP 25X285MM",
     "pack": 2000,
     "cost": 0.0436,
     "weight": 124,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 3225.2,
+    "daily": 3745.2,
     "kanban": 1,
     "location": "APC0107",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0676195AA01"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0676195AA01": {
+    "description": "RET FLT STRP 25X350MM",
     "pack": 1800,
     "cost": 0.0537,
     "weight": 152,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 5516.8,
+    "daily": 6127.2,
     "kanban": 1,
     "location": "APC0107",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["1561-305SAA"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "1561-305SAA": {
+    "description": "J RET 1561 305MM",
     "pack": 950,
     "cost": 0.1099,
     "weight": 290,
     "piecesPerUnit": 20,
     "line": "Savana",
-    "daily": 694,
+    "daily": 649.4,
     "kanban": 1,
     "location": "APC0108",
-    "productionLine": "PCGSAVAN"
-};
-
-partsDB["1561-345SAA"] = {
+    "productionLine": "Savana"
+  },
+  "1561-345SAA": {
+    "description": "J RET 1561 345MM",
     "pack": 750,
     "cost": 0.094,
     "weight": 324,
     "piecesPerUnit": 20,
     "line": "Savana",
-    "daily": 694,
+    "daily": 649.4,
     "kanban": 1,
     "location": "APC0108",
-    "productionLine": "PCGSAVAN"
-};
-
-partsDB["2232B910F00MA"] = {
+    "productionLine": "Savana"
+  },
+  "2232B910F00MA": {
+    "description": "J-RET FABRIC 910mm BLK",
     "pack": 175,
     "cost": 0.1758,
     "weight": 1364,
     "piecesPerUnit": 20,
     "line": "Savana",
-    "daily": 700.8,
+    "daily": 662.6,
     "kanban": 5,
     "location": "APC0108",
-    "productionLine": "PCGSAVAN"
-};
-
-partsDB["STFR-415X122FAC"] = {
+    "productionLine": "Savana"
+  },
+  "STFR-415X122FAC": {
+    "description": "STIFFENER 415X122 MM",
     "pack": 300,
     "cost": 0.2248,
     "weight": 766,
     "piecesPerUnit": 20,
     "line": "Savana",
-    "daily": 545.4,
+    "daily": 572.8,
     "kanban": 2,
     "location": "APC0108",
-    "productionLine": "PCGSAVAN"
-};
-
-partsDB["L002162447NCPAA"] = {
+    "productionLine": "Savana"
+  },
+  "L002162447NCPAA": {
+    "description": "BRIDED POLY/NEO 12.700MM",
     "pack": 144,
     "cost": 0.3706,
     "weight": 1346,
     "piecesPerUnit": 144,
     "line": "Misc",
-    "daily": 95.2,
+    "daily": 100.4,
     "kanban": 1,
     "location": "APC0109",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0575410AA01"] = {
+    "productionLine": "Misc"
+  },
+  "L0575410AA01": {
+    "description": "VELCRO LOOP BLK TAPE 1\"",
     "pack": 1000,
     "cost": 0.2446,
     "weight": null,
     "piecesPerUnit": 0,
     "line": "Velcro",
-    "daily": 1197.6,
+    "daily": 1193,
     "kanban": 1,
     "location": "APC0109",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0633654AA01"] = {
+    "productionLine": "Velcro"
+  },
+  "L0633654AA01": {
+    "description": "VELCRO LOOP 30MM WIDE",
     "pack": 328,
     "cost": 0.0582,
     "weight": 974,
     "piecesPerUnit": 109.33,
     "line": "Velcro",
-    "daily": 4930,
+    "daily": 5168.4,
     "kanban": 5,
     "location": "APC0109",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["KRG25LTCA"] = {
+    "productionLine": "Velcro"
+  },
+  "KRG25LTCA": {
+    "description": "TRICOT LOOP PROTECTOR",
     "pack": 500,
     "cost": 0.1876,
     "weight": null,
     "piecesPerUnit": 0,
     "line": "Velcro",
-    "daily": 50.2,
+    "daily": 66,
     "kanban": 1,
     "location": "APC0110",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0429142AA02"] = {
+    "productionLine": "Velcro"
+  },
+  "L0429142AA02": {
+    "description": "TRICOT PROTECT KRG25LTCA",
     "pack": 2000,
     "cost": 0.1533,
     "weight": null,
     "piecesPerUnit": 0,
     "line": "Velcro",
-    "daily": 2939,
+    "daily": 3021.6,
     "kanban": 2,
     "location": "APC0110",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0495624AA01"] = {
+    "productionLine": "Velcro"
+  },
+  "L0495624AA01": {
+    "description": "ELASTIC 1\" BLK BRAIDDE",
     "pack": 720,
     "cost": 0.8637,
     "weight": 1011,
     "piecesPerUnit": 45,
     "line": "Misc",
-    "daily": 419,
+    "daily": 472.2,
     "kanban": 1,
     "location": "APC0110",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0549303AA01"] = {
+    "productionLine": "Misc"
+  },
+  "L0549303AA01": {
+    "description": "WELT-PLASTIC 701156",
     "pack": 2624.672,
     "cost": 0.2165,
     "weight": 1989,
     "piecesPerUnit": 874.89,
     "line": "Misc",
-    "daily": 7112.6,
+    "daily": 6587.6,
     "kanban": 2,
     "location": "APC0110",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0575409AA01"] = {
+    "productionLine": "Misc"
+  },
+  "L0575409AA01": {
+    "description": "VELCRO HOOK MUSHRM 1\"X2\"",
     "pack": 1050,
     "cost": 0.254,
     "weight": null,
     "piecesPerUnit": 0,
     "line": "Velcro",
-    "daily": 130.4,
+    "daily": 129.6,
     "kanban": 1,
     "location": "APC0110",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L001434100NCPAA"] = {
+    "productionLine": "Velcro"
+  },
+  "L001434100NCPAA": {
+    "description": "J-RET D1805 24X45MM",
     "pack": 4400,
     "cost": 0.0127,
     "weight": 57,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 4541.6,
+    "daily": 4847.6,
     "kanban": 1,
     "location": "APC0111",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L001518304NCPAA"] = {
+    "productionLine": "Colorado"
+  },
+  "L001518304NCPAA": {
+    "description": "J-RET 721 28.5X55MM 31XX",
     "pack": 3000,
     "cost": 0.0197,
     "weight": 64,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1513.4,
+    "daily": 1615.2,
     "kanban": 1,
     "location": "APC0111",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002312383NCPAC"] = {
+    "productionLine": "Colorado"
+  },
+  "L002312383NCPAC": {
+    "description": "J-RET D1805 24X290 MM",
     "pack": 700,
     "cost": 0.1249,
     "weight": 264,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 756,
+    "daily": 806.6,
     "kanban": 1,
     "location": "APC0111",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002479502NCPAA"] = {
+    "productionLine": "Colorado"
+  },
+  "L002479502NCPAA": {
+    "description": "RET-ARROW 687 15X308MM",
     "pack": 1900,
     "cost": 0.0517,
     "weight": 147,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1514.8,
+    "daily": 1617.2,
     "kanban": 1,
     "location": "APC0111",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002618780NCPAA"] = {
+    "productionLine": "Colorado"
+  },
+  "L002618780NCPAA": {
+    "description": "J-RET 1697 21.7x330MM",
     "pack": 900,
     "cost": 0.1031,
     "weight": 263,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 757.4,
+    "daily": 804.8,
     "kanban": 1,
     "location": "APC0111",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L0430654AA01"] = {
+    "productionLine": "Colorado"
+  },
+  "L0430654AA01": {
+    "description": "J-RET 1805 W24MM; L25MM",
     "pack": 5000,
     "cost": 0.007,
     "weight": 32,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 4540.2,
+    "daily": 4845.6,
     "kanban": 1,
     "location": "APC0111",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002215045NCPAA"] = {
+    "productionLine": "Colorado"
+  },
+  "L002215045NCPAA": {
+    "description": "ARROW RET 687 W15XL240MM",
     "pack": 2500,
     "cost": 0.0549,
     "weight": 122,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 353.6,
+    "daily": 303,
     "kanban": 1,
     "location": "APC0112",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002312377NCPAA"] = {
+    "productionLine": "Colorado"
+  },
+  "L002312377NCPAA": {
+    "description": "J-RET D1805 24X290 MM LH",
     "pack": 700,
     "cost": 0.1158,
     "weight": 284,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1513.4,
+    "daily": 1615.2,
     "kanban": 1,
     "location": "APC0112",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002312378NCPAA"] = {
+    "productionLine": "Colorado"
+  },
+  "L002312378NCPAA": {
+    "description": "J-RET D1805 24X290 MM RH",
     "pack": 700,
     "cost": 0.1158,
     "weight": 298,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1513.4,
+    "daily": 1615.2,
     "kanban": 1,
     "location": "APC0112",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002312379NCPAC"] = {
+    "productionLine": "Colorado"
+  },
+  "L002312379NCPAC": {
+    "description": "J-RET D1805 24X580 MM",
     "pack": 375,
     "cost": 0.2365,
     "weight": 509,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 757.4,
+    "daily": 808.6,
     "kanban": 1,
     "location": "APC0112",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002396469NCPAA"] = {
+    "productionLine": "Colorado"
+  },
+  "L002396469NCPAA": {
+    "description": "STIFFENER PP 180X20MM",
     "pack": 2600,
     "cost": 0.0423,
     "weight": 91,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 757.4,
+    "daily": 804.8,
     "kanban": 1,
     "location": "APC0112",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002479499NCPAA"] = {
+    "productionLine": "Colorado"
+  },
+  "L002479499NCPAA": {
+    "description": "J-RET D1805 24X65MM",
     "pack": 3600,
     "cost": 0.0326,
     "weight": 82,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 406.2,
+    "daily": 502.8,
     "kanban": 1,
     "location": "APC0112",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["255S5-184D"] = {
+    "productionLine": "Colorado"
+  },
+  "255S5-184D": {
+    "description": "ZIPPER CHAIN YKK ITEM",
     "pack": 766,
     "cost": 0.2164,
     "weight": null,
     "piecesPerUnit": 0,
     "line": "Zipper",
-    "daily": 959.2,
+    "daily": 908.6,
     "kanban": 1,
     "location": "APC0113",
-    "productionLine": "PCGSAVAN"
-};
-
-partsDB["L002215046NCPAA"] = {
+    "productionLine": "Zipper"
+  },
+  "L002215046NCPAA": {
+    "description": "ARROW RET 687 W15XL170MM",
     "pack": 3500,
     "cost": 0.0304,
     "weight": 86,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1512,
+    "daily": 1613.2,
     "kanban": 1,
     "location": "APC0113",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002316914NCPAA"] = {
+    "productionLine": "Colorado"
+  },
+  "L002316914NCPAA": {
+    "description": "J-RET D1697 21.7X45 MM",
     "pack": 6700,
     "cost": 0.0145,
     "weight": 37,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 707.2,
+    "daily": 606,
     "kanban": 1,
     "location": "APC0113",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L002316915NCPAA"] = {
+    "productionLine": "Colorado"
+  },
+  "L002316915NCPAA": {
+    "description": "J-RET D721 28.5X55 MM",
     "pack": 1200,
     "cost": 0.041,
     "weight": 191,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 353.6,
+    "daily": 303,
     "kanban": 1,
     "location": "APC0113",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L0449870AA0102F"] = {
+    "productionLine": "Colorado"
+  },
+  "L0449870AA0102F": {
+    "description": "ZIPPER CHAIN 5CC-CH-PLF8",
     "pack": 766,
     "cost": 0.7315,
     "weight": null,
     "piecesPerUnit": 0,
     "line": "Zipper",
-    "daily": 154.4,
+    "daily": 181.8,
     "kanban": 1,
     "location": "APC0113",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0449870AA0164D"] = {
+    "productionLine": "Zipper"
+  },
+  "L0449870AA0164D": {
+    "description": "ZIPPER CHAIN 5CC-CH-PLF8",
     "pack": 766,
     "cost": 0.7315,
     "weight": null,
     "piecesPerUnit": 0,
     "line": "Zipper",
-    "daily": 185.8,
+    "daily": 187.2,
     "kanban": 1,
     "location": "APC0113",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L001466311NCPAA"] = {
+    "productionLine": "Zipper"
+  },
+  "L001466311NCPAA": {
+    "description": "ARROW RET W15XL155MM",
     "pack": 3000,
     "cost": 0.0198,
     "weight": 74,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 353.6,
+    "daily": 303,
     "kanban": 1,
     "location": "APC0113",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["L001797262NCPAA"] = {
+    "productionLine": "Colorado"
+  },
+  "L001797262NCPAA": {
+    "description": "RET FLAT STRIP 25X265MM",
     "pack": 2000,
     "cost": 0.0385,
     "weight": 114,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 16496.6,
+    "daily": 18430.2,
     "kanban": 2,
     "location": "APC0114",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L002171015NCPAA"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L002171015NCPAA": {
+    "description": "RET FLAT STRIP 25X420MM",
     "pack": 1000,
     "cost": 0.0611,
     "weight": 176,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 10859.6,
+    "daily": 12085.2,
     "kanban": 2,
     "location": "APC0114",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L001637636NCPAA"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L001637636NCPAA": {
+    "description": "J-RET 25.4X335MM",
     "pack": 700,
     "cost": 0.0949,
     "weight": null,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 99.2,
+    "daily": 6.2,
     "kanban": 1,
     "location": "APC0114",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L001676232NCPAA"] = {
+    "productionLine": "BT1 Old"
+  },
+  "L001676232NCPAA": {
+    "description": "J-RET D3167 25.4X320MM",
     "pack": 800,
     "cost": 0.0561,
     "weight": 310,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 103.6,
+    "daily": 33.8,
     "kanban": 1,
     "location": "APC0114",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L001797260NCPAA"] = {
+    "productionLine": "BT1 Old"
+  },
+  "L001797260NCPAA": {
+    "description": "J-RET D3167 25.4X720MM",
     "pack": 350,
     "cost": 0.1015,
     "weight": 960,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 83.4,
+    "daily": 34,
     "kanban": 1,
     "location": "APC0114",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L0637636AA01"] = {
+    "productionLine": "BT1 Old"
+  },
+  "L0637636AA01": {
+    "description": "J-RET 25.4X335MM",
     "pack": 700,
     "cost": 0.0745,
     "weight": 330,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 13.8,
+    "daily": 30.4,
     "kanban": 1,
     "location": "APC0114",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L0639918AA01"] = {
+    "productionLine": "BT1 Old"
+  },
+  "L0639918AA01": {
+    "description": "J-RET D976 25.4X735MM",
     "pack": 300,
     "cost": 0.1515,
     "weight": 810,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 83.4,
+    "daily": 34,
     "kanban": 1,
     "location": "APC0114",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L0676232AA01"] = {
+    "productionLine": "BT1 Old"
+  },
+  "L0676232AA01": {
+    "description": "J-RET D3167 25.4X320MM",
     "pack": 700,
     "cost": 0.0542,
     "weight": 310,
@@ -957,10 +945,10 @@ partsDB["L0676232AA01"] = {
     "daily": 0,
     "kanban": 1,
     "location": "APC0114",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L0797260AA01"] = {
+    "productionLine": "BT1 Old"
+  },
+  "L0797260AA01": {
+    "description": "J-RET D3167 25.4X720MM",
     "pack": 400,
     "cost": 0.1184,
     "weight": 960,
@@ -969,322 +957,334 @@ partsDB["L0797260AA01"] = {
     "daily": 0,
     "kanban": 1,
     "location": "APC0114",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L0571640AA01"] = {
+    "productionLine": "BT1 Old"
+  },
+  "L0571640AA01": {
+    "description": "RET FLT STRP 25X50MM",
     "pack": 10000,
     "cost": 0.0088,
     "weight": 20,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 3033.6,
+    "daily": 3225.6,
     "kanban": 1,
     "location": "APC0115",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0592042AA01"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0592042AA01": {
+    "description": "J-RET D3497 22.4X35MM",
     "pack": 6000,
     "cost": 0.0094,
     "weight": 40,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 3033.6,
+    "daily": 3225.6,
     "kanban": 1,
     "location": "APC0115",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0592045AA04"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0592045AA04": {
+    "description": "RET FLT STRP 25.4X250MM",
     "pack": 3000,
     "cost": 0.0322,
     "weight": 98,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 3033.6,
+    "daily": 3225.6,
     "kanban": 1,
     "location": "APC0115",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0597009AA02"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0597009AA02": {
+    "description": "RET FLT STRP 154X42MM",
     "pack": 5000,
     "cost": 0.0486,
     "weight": 57,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 2810.8,
+    "daily": 3140.4,
     "kanban": 1,
     "location": "APC0115",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0682843AA01"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0682843AA01": {
+    "description": "RET FLAT STRIP 25X330MM",
     "pack": 1700,
     "cost": 0.0494,
     "weight": 143,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 116.8,
+    "daily": 153.6,
     "kanban": 1,
     "location": "APC0115",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L001802491NCPAA"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L001802491NCPAA": {
+    "description": "RET FLAT STRIP 25X380MM",
     "pack": 1000,
     "cost": 0.058,
     "weight": 162,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 230.4,
+    "daily": 302.4,
     "kanban": 1,
     "location": "APC0116",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L001802492NCPAA"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L001802492NCPAA": {
+    "description": "RET FLAT STRIP 25X360MM",
     "pack": 1000,
     "cost": 0.055,
     "weight": 156,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 230.4,
+    "daily": 302.4,
     "kanban": 1,
     "location": "APC0116",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0681545AA01"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0681545AA01": {
+    "description": "RET FLAT SRIP 25MMX220MM",
     "pack": 2800,
     "cost": 0.0339,
     "weight": 98,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 467.2,
+    "daily": 617.6,
     "kanban": 1,
     "location": "APC0116",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0681546AA01"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0681546AA01": {
+    "description": "RET FLAT SRIP 25MMX325MM",
     "pack": 1500,
     "cost": 0.0491,
     "weight": 142,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 116.8,
+    "daily": 154.4,
     "kanban": 1,
     "location": "APC0116",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0681547AA01"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0681547AA01": {
+    "description": "RET FLAT SRIP 25MMX305MM",
     "pack": 1500,
     "cost": 0.0463,
     "weight": 127,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 116.8,
+    "daily": 154.4,
     "kanban": 1,
     "location": "APC0116",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0685445AA01"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0685445AA01": {
+    "description": "FLT STRP STIFF 20X310MM",
     "pack": 1300,
     "cost": 0.0528,
     "weight": 222,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 3033.6,
+    "daily": 3225.6,
     "kanban": 2,
     "location": "APC0116",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0649100AA01"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0649100AA01": {
+    "description": "A-RET D2384 25X35MM",
     "pack": 3000,
     "cost": 0.0112,
     "weight": 56,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 6069.2,
+    "daily": 6030,
     "kanban": 1,
     "location": "APC0117",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0649101AA01"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0649101AA01": {
+    "description": "A-RET D2384 25X75MM",
     "pack": 1400,
     "cost": 0.0239,
     "weight": 121,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 2114,
+    "daily": 1482,
     "kanban": 1,
     "location": "APC0117",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0676166AA01"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0676166AA01": {
+    "description": "RET FLT STRP 25X220MM",
     "pack": 2300,
     "cost": 0.0488,
     "weight": 93,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 1202.4,
+    "daily": 1293.6,
     "kanban": 1,
     "location": "APC0117",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0676168AA01"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0676168AA01": {
+    "description": "RET FLT STRP 25X290MM",
     "pack": 1750,
     "cost": 0.0609,
     "weight": 125,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 3607.2,
+    "daily": 3880.8,
     "kanban": 2,
     "location": "APC0117",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0676177AA01"] = {
+    "productionLine": "Fix-Storage"
+  },
+  "L0676177AA01": {
+    "description": "RET FLT STRP 25X325MM",
     "pack": 2000,
     "cost": 0.0489,
     "weight": 142,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 2404.8,
+    "daily": 2587.2,
     "kanban": 1,
     "location": "APC0117",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L002460234NCPAA"] = {
-    "pack": 800,
-    "cost": 0.1308,
-    "weight": 500,
+    "productionLine": "Fix-Storage"
+  },
+  "25ZZ5": {
+    "description": "ZIPPER SLIDER 580 BLACK",
+    "pack": 6000,
+    "cost": 0.0348,
+    "weight": 60,
     "piecesPerUnit": 20,
-    "line": "BT1",
-    "daily": 4.6,
+    "line": "Misc",
+    "daily": 1298.8,
     "kanban": 1,
     "location": "APC0118",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L002798840NCPAB"] = {
-    "pack": 2100,
-    "cost": 0.0521,
-    "weight": 102,
-    "piecesPerUnit": 20,
-    "line": "BT1",
-    "daily": 18.8,
-    "kanban": 1,
-    "location": "APC0118",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L002798841NCPAB"] = {
-    "pack": 2400,
-    "cost": 0.0557,
-    "weight": 108,
-    "piecesPerUnit": 20,
-    "line": "BT1",
-    "daily": 9.4,
-    "kanban": 1,
-    "location": "APC0118",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L002806946NCPAA"] = {
-    "pack": 2000,
-    "cost": 0.0333,
-    "weight": 132,
-    "piecesPerUnit": 20,
-    "line": "BT1",
-    "daily": 9.2,
-    "kanban": 1,
-    "location": "APC0118",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L002806947NCPAA"] = {
-    "pack": 1800,
-    "cost": 0.0389,
-    "weight": 150,
-    "piecesPerUnit": 20,
-    "line": "BT1",
-    "daily": 14.8,
-    "kanban": 1,
-    "location": "APC0118",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L002807250NCPAA"] = {
+    "productionLine": "Misc"
+  },
+  "L0148229AA02": {
+    "description": "AIR BAG TAG GM PROGRAMS",
     "pack": 500,
-    "cost": 0.126,
-    "weight": 486,
-    "piecesPerUnit": 20,
-    "line": "BT1",
-    "daily": 5.6,
+    "cost": 0.04,
+    "weight": 103,
+    "piecesPerUnit": 500,
+    "line": "Misc",
+    "daily": 572.8,
     "kanban": 1,
     "location": "APC0118",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L002907223NCPAA"] = {
+    "productionLine": "Misc"
+  },
+  "L0269501AA01": {
+    "description": "ELGIN CLIP ASSY 11X46MM",
+    "pack": 750,
+    "cost": 0.2425,
+    "weight": 316,
+    "piecesPerUnit": 20,
+    "line": "Misc",
+    "daily": 572.8,
+    "kanban": 2,
+    "location": "APC0118",
+    "productionLine": "Misc"
+  },
+  "L0617164AA01": {
+    "description": "LABEL ISO CHILD 40.6X44",
     "pack": 1000,
-    "cost": 0.0425,
-    "weight": 76,
-    "piecesPerUnit": 20,
-    "line": "BT1",
-    "daily": 4.4,
+    "cost": 0.067,
+    "weight": 438,
+    "piecesPerUnit": 1000,
+    "line": "Misc",
+    "daily": 459.2,
     "kanban": 1,
     "location": "APC0118",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["794-100SAA"] = {
+    "productionLine": "Misc"
+  },
+  "L0697064AA01": {
+    "description": "LABEL SAFETY TAG 20X64MM",
+    "pack": 1000,
+    "cost": 0.0472,
+    "weight": 396,
+    "piecesPerUnit": 1000,
+    "line": "Misc",
+    "daily": 1582,
+    "kanban": 1,
+    "location": "APC0118",
+    "productionLine": "Misc"
+  },
+  "Q010000839": {
+    "description": "ISO BUTTON BACK WHITE",
+    "pack": 1000,
+    "cost": 0.0306,
+    "weight": 417,
+    "piecesPerUnit": 1000,
+    "line": "Misc",
+    "daily": 13167.2,
+    "kanban": 1,
+    "location": "APC0118",
+    "productionLine": "Misc"
+  },
+  "Q92K204G19": {
+    "description": "ISO BUTTON CHARCOAL",
+    "pack": 1000,
+    "cost": 0.024,
+    "weight": 342,
+    "piecesPerUnit": 1000,
+    "line": "Misc",
+    "daily": 11568,
+    "kanban": 1,
+    "location": "APC0118",
+    "productionLine": "Misc"
+  },
+  "Q92K204G20": {
+    "description": "ISO BUTTON G20 A. BROWN",
+    "pack": 1000,
+    "cost": 0.024,
+    "weight": 342,
+    "piecesPerUnit": 1000,
+    "line": "Misc",
+    "daily": 1377.6,
+    "kanban": 1,
+    "location": "APC0118",
+    "productionLine": "Misc"
+  },
+  "794-100SAA": {
+    "description": "J-RET D794 100mm  BLK",
     "pack": 1500,
     "cost": 0.0395,
     "weight": 129,
     "piecesPerUnit": 20,
     "line": "Savana",
-    "daily": 700.8,
+    "daily": 662.6,
     "kanban": 1,
     "location": "APC0119",
-    "productionLine": "PCGSAVAN"
-};
-
-partsDB["L00180970202FAA"] = {
+    "productionLine": "Savana"
+  },
+  "L00180970202FAA": {
+    "description": "PULLSTRAP 9.5X70MM 02F",
     "pack": 2000,
     "cost": 0.0911,
     "weight": 12,
     "piecesPerUnit": 20,
     "line": "Misc",
-    "daily": 112,
+    "daily": 132,
     "kanban": 1,
     "location": "APC0119",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L00180970206HAA"] = {
+    "productionLine": "Misc"
+  },
+  "L00180970206HAA": {
+    "description": "PULLSTRAP 9.5X70MM 06H",
     "pack": 2000,
     "cost": 0.1384,
     "weight": 12,
     "piecesPerUnit": 20,
     "line": "Misc",
-    "daily": 40.2,
+    "daily": 42,
     "kanban": 1,
     "location": "APC0119",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L00180970209XAA"] = {
+    "productionLine": "Misc"
+  },
+  "L00180970209XAA": {
+    "description": "PULLSTRAP 9.5X70MM 09X",
     "pack": 2000,
     "cost": 0.0911,
     "weight": 12,
@@ -1293,562 +1293,610 @@ partsDB["L00180970209XAA"] = {
     "daily": 0,
     "kanban": 1,
     "location": "APC0119",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L00180970245DAA"] = {
+    "productionLine": "Misc"
+  },
+  "L00180970245DAA": {
+    "description": "PULLSTRAP 9.5X70MM 45D",
     "pack": 2000,
     "cost": 0.0911,
     "weight": 12,
     "piecesPerUnit": 20,
     "line": "Misc",
-    "daily": 369.8,
+    "daily": 369,
     "kanban": 1,
     "location": "APC0119",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L00180970264DAA"] = {
+    "productionLine": "Misc"
+  },
+  "L00180970264DAA": {
+    "description": "PULLSTRAP 9.5X70MM 64D",
     "pack": 2000,
     "cost": 0.0911,
     "weight": 12,
     "piecesPerUnit": 20,
     "line": "Misc",
-    "daily": 125.2,
+    "daily": 123.8,
     "kanban": 1,
     "location": "APC0119",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L001809702GKAAA"] = {
+    "productionLine": "Misc"
+  },
+  "L001809702GKAAA": {
+    "description": "PULLSTRAP 9.5X70MM GKA",
     "pack": 2000,
     "cost": 0.0911,
     "weight": 12,
     "piecesPerUnit": 20,
     "line": "Misc",
-    "daily": 3570.2,
+    "daily": 3800.4,
     "kanban": 1,
     "location": "APC0119",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L001809702HXWAA"] = {
+    "productionLine": "Misc"
+  },
+  "L001809702HXWAA": {
+    "description": "PULLSTRAP 9.5X70MM HXW",
     "pack": 2000,
     "cost": 0.0911,
     "weight": 12,
     "piecesPerUnit": 20,
     "line": "Misc",
-    "daily": 329.8,
+    "daily": 90.4,
     "kanban": 1,
     "location": "APC0119",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L002618822NCPAA"] = {
+    "productionLine": "Misc"
+  },
+  "L002618822NCPAA": {
+    "description": "PIPING CORE 1MM ROLL",
     "pack": 1000,
     "cost": 0.0491,
     "weight": 1082,
     "piecesPerUnit": 1000,
     "line": "Misc",
-    "daily": 1714.8,
+    "daily": 2157.2,
     "kanban": 2,
     "location": "APC0119",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["WRG16HMAA"] = {
+    "productionLine": "Misc"
+  },
+  "WRG16HMAA": {
+    "description": "APLIX HOOK 16MM",
     "pack": 500,
     "cost": 0.2054,
     "weight": null,
-    "piecesPerUnit": 20,
+    "piecesPerUnit": 0,
     "line": "Velcro",
-    "daily": 1772.6,
+    "daily": 1891.8,
     "kanban": 2,
     "location": "APC0120",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["WRG16LBAA"] = {
+    "productionLine": "Velcro"
+  },
+  "WRG16LBAA": {
+    "description": "LOOP 5/8",
     "pack": 500,
     "cost": 0.3533,
     "weight": null,
-    "piecesPerUnit": 20,
+    "piecesPerUnit": 0,
     "line": "Velcro",
-    "daily": 1059.8,
+    "daily": 1111.2,
     "kanban": 2,
     "location": "APC0120",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["WRG25LBAA"] = {
+    "productionLine": "Velcro"
+  },
+  "WRG25LBAA": {
+    "description": "VELCRO LOOP BLK TAPE 1\"",
     "pack": 500,
     "cost": 0.4018,
     "weight": null,
-    "piecesPerUnit": 20,
+    "piecesPerUnit": 0,
     "line": "Velcro",
-    "daily": 2339,
+    "daily": 2544,
     "kanban": 2,
     "location": "APC0120",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["WRG25MAAA"] = {
+    "productionLine": "Velcro"
+  },
+  "WRG25MAAA": {
+    "description": "VELCRO HOOK MUSHRM 1\"X2\"",
     "pack": 1000,
     "cost": 0.3129,
     "weight": null,
-    "piecesPerUnit": 20,
+    "piecesPerUnit": 0,
     "line": "Velcro",
-    "daily": 1240.6,
+    "daily": 1318.4,
     "kanban": 2,
     "location": "APC0120",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0698195AA01"] = {
+    "productionLine": "Velcro"
+  },
+  "L0698195AA01": {
+    "description": "FLAT RET D5258 W30 L365",
     "pack": 800,
     "cost": 0.0416,
     "weight": 150,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 4908,
+    "daily": 5063.6,
     "kanban": 1,
     "location": "APC0201",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0706492AA02"] = {
+    "productionLine": "SUV"
+  },
+  "L0706492AA02": {
+    "description": "RET FLAT D5258 30X300MM",
     "pack": 1500,
     "cost": 0.0431,
     "weight": 132,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 5394.4,
+    "daily": 5352.8,
     "kanban": 1,
     "location": "APC0201",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0724597AA01"] = {
+    "productionLine": "SUV"
+  },
+  "L0724597AA01": {
+    "description": "RET FLAT 5258 W25 L265mm",
     "pack": 2000,
     "cost": 0.0307,
     "weight": 113,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 7362,
+    "daily": 7595.4,
     "kanban": 1,
     "location": "APC0201",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0736063AA01"] = {
+    "productionLine": "SUV"
+  },
+  "L0736063AA01": {
+    "description": "J-RET 3127 W29XL240",
     "pack": 700,
     "cost": 0.0767,
     "weight": 419,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 2344.6,
+    "daily": 2335.2,
     "kanban": 1,
     "location": "APC0201",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0736066AA01"] = {
+    "productionLine": "SUV"
+  },
+  "L0736066AA01": {
+    "description": "J-RET 3127 W29XL680",
     "pack": 125,
     "cost": 0.2138,
     "weight": 1104,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 362,
+    "daily": 459.2,
     "kanban": 1,
     "location": "APC0201",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L002194708NCPAA"] = {
+    "productionLine": "SUV"
+  },
+  "L002194708NCPAA": {
+    "description": "STF RET 25X30MM BLACK PP",
     "pack": 3300,
     "cost": 0.0152,
     "weight": 7,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 5390.4,
+    "daily": 5447.6,
     "kanban": 2,
     "location": "APC0202",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0676258AA05"] = {
+    "productionLine": "SUV"
+  },
+  "L0676258AA05": {
+    "description": "RET FLAT STIF 108X142MM",
     "pack": 2600,
     "cost": 0.056,
     "weight": 109,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 5394.4,
+    "daily": 5352.8,
     "kanban": 1,
     "location": "APC0202",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0706490AA03"] = {
+    "productionLine": "SUV"
+  },
+  "L0706490AA03": {
+    "description": "RET FLAT D5258 25X255MM",
     "pack": 2000,
     "cost": 0.0348,
     "weight": 98,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 5044,
+    "daily": 4985.8,
     "kanban": 1,
     "location": "APC0202",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0706491AA03"] = {
+    "productionLine": "SUV"
+  },
+  "L0706491AA03": {
+    "description": "RET FLAT D5258 25X370MM",
     "pack": 1500,
     "cost": 0.0504,
     "weight": 143,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 372.4,
+    "daily": 435,
     "kanban": 1,
     "location": "APC0202",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0776538AA01"] = {
+    "productionLine": "SUV"
+  },
+  "L0776538AA01": {
+    "description": "J-RET D3890 W25.6 L160MM",
     "pack": 500,
     "cost": 0.0652,
     "weight": 280,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 718.4,
+    "daily": 904.4,
     "kanban": 1,
     "location": "APC0202",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0780891AA01"] = {
+    "productionLine": "SUV"
+  },
+  "L0780891AA01": {
+    "description": "J-RET D305 W26.67 L190MM",
     "pack": 750,
     "cost": 0.0627,
     "weight": 344,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 2003.2,
+    "daily": 2048.4,
     "kanban": 1,
     "location": "APC0202",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["5CC-DF6SLSEP"] = {
+    "productionLine": "SUV"
+  },
+  "0010686": {
+    "description": "BW/WIRE ZP (3mm/2.5K.G)",
+    "pack": 2.5,
+    "cost": 73.7478,
+    "weight": 2703,
+    "piecesPerUnit": 2.5,
+    "line": "Misc",
+    "daily": 0.8,
+    "kanban": 1,
+    "location": "APC0203",
+    "productionLine": "Misc"
+  },
+  "5CC-DF6SLSEP": {
+    "description": "ZIPPER SLIDER CD391 2013",
     "pack": 3000,
     "cost": 0.17,
     "weight": 129,
     "piecesPerUnit": 20,
     "line": "Misc",
-    "daily": 5392.4,
+    "daily": 5348,
     "kanban": 3,
     "location": "APC0203",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0672525AA01"] = {
+    "productionLine": "Misc"
+  },
+  "L0672525AA01": {
+    "description": "WELT-PLASTIC, 124830;",
     "pack": 2000,
     "cost": 0.09,
     "weight": null,
-    "piecesPerUnit": null,
+    "piecesPerUnit": 0,
     "line": "Misc",
-    "daily": 164.6,
+    "daily": 199.8,
     "kanban": 1,
     "location": "APC0203",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["25ZZ5"] = {
-    "pack": 6000,
-    "cost": 0.0348,
-    "weight": 60,
-    "piecesPerUnit": 20,
-    "line": "Misc",
-    "daily": 1388,
+    "productionLine": "Misc"
+  },
+  "L001433340NCPAA": {
+    "description": "RET ARROW D2384 25X50MM",
+    "pack": 0,
+    "cost": 0.0157,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
     "kanban": 1,
     "location": "APC0204",
-    "productionLine": "PCGSAVAN"
-};
-
-partsDB["L0148229AA02"] = {
-    "pack": 500,
-    "cost": 0.04,
-    "weight": 103,
-    "piecesPerUnit": 500,
-    "line": "Misc",
-    "daily": 545.4,
+    "productionLine": "T2X"
+  },
+  "L001677415NCPAA": {
+    "description": "RET FLAT STRIP 5258",
+    "pack": 0,
+    "cost": 0.026,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
     "kanban": 1,
     "location": "APC0204",
-    "productionLine": "PCGSAVAN"
-};
-
-partsDB["L0269501AA01"] = {
-    "pack": 750,
-    "cost": 0.2425,
-    "weight": 316,
-    "piecesPerUnit": 20,
-    "line": "Misc",
-    "daily": 545.4,
-    "kanban": 2,
-    "location": "APC0204",
-    "productionLine": "PCGSAVAN"
-};
-
-partsDB["L0617164AA01"] = {
-    "pack": 1000,
-    "cost": 0.067,
-    "weight": 438,
-    "piecesPerUnit": 1000,
-    "line": "Misc",
-    "daily": 362,
+    "productionLine": "T2X"
+  },
+  "L001698194NCPAA": {
+    "description": "FLAT RET D5258 W30 L230",
+    "pack": 0,
+    "cost": 0.0351,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
     "kanban": 1,
     "location": "APC0204",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0697064AA01"] = {
-    "pack": 1000,
-    "cost": 0.0472,
-    "weight": 396,
-    "piecesPerUnit": 1000,
-    "line": "Misc",
-    "daily": 1497.2,
+    "productionLine": "T2X"
+  },
+  "L001701146NCPAA": {
+    "description": "RET FS 5258 25MMX270MM",
+    "pack": 0,
+    "cost": 0.0293,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
     "kanban": 1,
     "location": "APC0204",
-    "productionLine": "PCG31XX"
-};
-
-partsDB["Q010000839"] = {
-    "pack": 1000,
-    "cost": 0.0306,
-    "weight": 417,
-    "piecesPerUnit": 20,
-    "line": "Misc",
-    "daily": 12623.2,
+    "productionLine": "T2X"
+  },
+  "L001701757NCPAA": {
+    "description": "RET TIEDOWN 5258 30X250M",
+    "pack": 0,
+    "cost": 0.0278,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
     "kanban": 1,
     "location": "APC0204",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["Q92K204G19"] = {
-    "pack": 1000,
-    "cost": 0.024,
-    "weight": 342,
-    "piecesPerUnit": 20,
-    "line": "Misc",
-    "daily": 11110.8,
+    "productionLine": "T2X"
+  },
+  "L003455760NCPAE": {
+    "description": "STFR 321.4x269.9x1.5MM",
+    "pack": 0,
+    "cost": 0.3552,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
     "kanban": 1,
     "location": "APC0204",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["Q92K204G20"] = {
-    "pack": 1000,
-    "cost": 0.024,
-    "weight": 342,
-    "piecesPerUnit": 20,
-    "line": "Misc",
-    "daily": 1330.4,
-    "kanban": 1,
-    "location": "APC0204",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L002799380NCPAA"] = {
-    "pack": 110,
-    "cost": 0.8675,
-    "weight": 2033,
-    "piecesPerUnit": 20,
-    "line": "BT1",
-    "daily": 4.6,
+    "productionLine": "T2X"
+  },
+  "L001702050NCPAA": {
+    "description": "FLAP-RET 5258 W30,L270MM",
+    "pack": 0,
+    "cost": 0.0301,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
     "kanban": 1,
     "location": "APC0205",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L002806896NCPAA"] = {
-    "pack": 3000,
-    "cost": 0.0375,
-    "weight": 86,
-    "piecesPerUnit": 20,
-    "line": "BT1",
-    "daily": 30.6,
+    "productionLine": "T2X"
+  },
+  "L001706672NCPAA": {
+    "description": "RET FLAT STRIP 25X255MM",
+    "pack": 0,
+    "cost": 0.0277,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
     "kanban": 1,
     "location": "APC0205",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L002806897NCPAA"] = {
-    "pack": 3000,
-    "cost": 0.0382,
-    "weight": 86,
-    "piecesPerUnit": 20,
-    "line": "BT1",
-    "daily": 10.2,
+    "productionLine": "T2X"
+  },
+  "L002187742HXWAB": {
+    "description": "ZIPPER 5/8 W32.5 L535MM",
+    "pack": 0,
+    "cost": 0.29254,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
     "kanban": 1,
     "location": "APC0205",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L002914716NCPAA"] = {
-    "pack": 5000,
-    "cost": 0.0121,
-    "weight": 38,
-    "piecesPerUnit": 20,
-    "line": "BT1",
-    "daily": 10.2,
+    "productionLine": "T2X"
+  },
+  "L003440689NCPAA": {
+    "description": "RET TIEDOW 5258 25X175MM",
+    "pack": 0,
+    "cost": 0.0187,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
     "kanban": 1,
     "location": "APC0205",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L003142004NCPAA"] = {
-    "pack": 900,
-    "cost": 0.0808,
-    "weight": 261,
-    "piecesPerUnit": 20,
-    "line": "BT1",
-    "daily": 5,
+    "productionLine": "T2X"
+  },
+  "L003455759NCPAF": {
+    "description": "TIEDOW PP 5258 30X695MM",
+    "pack": 0,
+    "cost": 0.1099,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
     "kanban": 1,
     "location": "APC0205",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L003142005NCPAA"] = {
-    "pack": 1000,
-    "cost": 0.0708,
-    "weight": 225,
-    "piecesPerUnit": 20,
-    "line": "BT1",
-    "daily": 10,
+    "productionLine": "T2X"
+  },
+  "L003461757NCPAA": {
+    "description": "RET ARROW 2384 25X20MM",
+    "pack": 0,
+    "cost": 0.0066,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
     "kanban": 1,
     "location": "APC0205",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L001698202NCPAA"] = {
+    "productionLine": "T2X"
+  },
+  "L003570742NCPAE": {
+    "description": "TIEDOW 5258 30X195.2MMMM",
+    "pack": 0,
+    "cost": 0.0288,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0205",
+    "productionLine": "T2X"
+  },
+  "L003680869NCPAD": {
+    "description": "TIEDOW 5258 30X198.86MMM",
+    "pack": 0,
+    "cost": 0.0294,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0205",
+    "productionLine": "T2X"
+  },
+  "L003941829HXWAB": {
+    "description": "ZIPPER 5/8 W32.2 L565MM",
+    "pack": 0,
+    "cost": 0.33795,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0205",
+    "productionLine": "T2X"
+  },
+  "L003987906NCPAA": {
+    "description": "RET TIEDOW 5258 25X315MM",
+    "pack": 0,
+    "cost": 0.0337,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0205",
+    "productionLine": "T2X"
+  },
+  "L004256807NCPAA": {
+    "description": "TIEDOW PP 5258 20X135MM",
+    "pack": 0,
+    "cost": 0.0149,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0205",
+    "productionLine": "T2X"
+  },
+  "L001698202NCPAA": {
+    "description": "RET J 305 W26.67 L115MM",
     "pack": 900,
     "cost": 0.05,
     "weight": 216,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 11.2,
+    "daily": 24.8,
     "kanban": 1,
     "location": "APC0206",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L002053089NCPAA"] = {
+    "productionLine": "BT1"
+  },
+  "L002053089NCPAA": {
+    "description": "RET J POLY 26.67X155MM",
     "pack": 1000,
     "cost": 0.0747,
     "weight": 279,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 10.2,
+    "daily": 24.8,
     "kanban": 1,
     "location": "APC0206",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L002799378NCPAA"] = {
+    "productionLine": "BT1"
+  },
+  "L002799378NCPAA": {
+    "description": "STIFFENER 30X72MM PP",
     "pack": 6500,
     "cost": 0.0402,
     "weight": 46,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 20.4,
+    "daily": 49.6,
     "kanban": 1,
     "location": "APC0206",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L002799379NCPAB"] = {
+    "productionLine": "BT1"
+  },
+  "L002799379NCPAB": {
+    "description": "STIFFENER 78.5X67.7 PP",
     "pack": 1700,
     "cost": 0.0482,
     "weight": 123,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 4.6,
+    "daily": 12.4,
     "kanban": 1,
     "location": "APC0206",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L002907225NCPAB"] = {
+    "productionLine": "BT1"
+  },
+  "L002907225NCPAB": {
+    "description": "OKIE TIEDOWN 30X335MM",
     "pack": 2000,
     "cost": 0.0588,
     "weight": 118,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 8.8,
+    "daily": 24.8,
     "kanban": 1,
     "location": "APC0206",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L002914905NCPAA"] = {
+    "productionLine": "BT1"
+  },
+  "L002914905NCPAA": {
+    "description": "RET J 305 W26.67 L60MM",
     "pack": 2000,
     "cost": 0.0285,
     "weight": 114,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 5.6,
+    "daily": 12.4,
     "kanban": 1,
     "location": "APC0206",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L0609247AA01"] = {
+    "productionLine": "BT1"
+  },
+  "L0609247AA01": {
+    "description": "J-RET D305 25MM BLACK",
     "pack": 6500,
     "cost": 0.0055,
     "weight": 46,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 4.6,
+    "daily": 12.4,
     "kanban": 1,
     "location": "APC0206",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L0698200AA01"] = {
+    "productionLine": "BT1"
+  },
+  "L0698200AA01": {
+    "description": "J RET D305 W26.67 175MM",
     "pack": 600,
     "cost": 0.0376,
     "weight": 342,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 2695.2,
+    "daily": 2723.8,
     "kanban": 2,
     "location": "APC0211",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0698203AA01"] = {
+    "productionLine": "SUV"
+  },
+  "L0698203AA01": {
+    "description": "RET J 305 W26.67 L185MM",
     "pack": 550,
     "cost": 0.0398,
     "weight": 348,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 356.4,
+    "daily": 445.2,
     "kanban": 2,
     "location": "APC0211",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0797678AA01"] = {
+    "productionLine": "SUV"
+  },
+  "L0797678AA01": {
+    "description": "RETAINER  J 305 W26.67MM",
     "pack": 450,
     "cost": 0.0522,
     "weight": 465,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 2003.2,
+    "daily": 2048.4,
     "kanban": 2,
     "location": "APC0211",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0797679AA01"] = {
+    "productionLine": "SUV"
+  },
+  "L0797679AA01": {
+    "description": "RETAINER -J,305 W26.67MM",
     "pack": 100,
     "cost": 0.1324,
     "weight": 1145,
@@ -1857,298 +1905,598 @@ partsDB["L0797679AA01"] = {
     "daily": 459.2,
     "kanban": 3,
     "location": "APC0211",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0654899AA01"] = {
+    "productionLine": "SUV"
+  },
+  "L0654899AA01": {
+    "description": "J RET D976 W25.4MM L35MM",
     "pack": 7500,
     "cost": 0.0054,
     "weight": 39,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 718.4,
+    "daily": 904.4,
     "kanban": 1,
     "location": "APC0212",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0797825AA01"] = {
+    "productionLine": "SUV"
+  },
+  "L0797825AA01": {
+    "description": "FLAT RET STFR W98 L195MM",
     "pack": 1200,
     "cost": 0.0703,
     "weight": 140,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 362,
+    "daily": 459.2,
     "kanban": 1,
     "location": "APC0212",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0806941AA01"] = {
+    "productionLine": "SUV"
+  },
+  "L0806941AA01": {
+    "description": "J-RET 721 28.5X300MM",
     "pack": 850,
     "cost": 0.0775,
     "weight": 317,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 2346.8,
+    "daily": 2309.4,
     "kanban": 1,
     "location": "APC0212",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0806942AA01"] = {
+    "productionLine": "SUV"
+  },
+  "L0806942AA01": {
+    "description": "J-RET 721 28.5X750MM",
     "pack": 250,
     "cost": 0.1933,
     "weight": 850,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 372.4,
+    "daily": 435,
     "kanban": 2,
     "location": "APC0212",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0806943AA01"] = {
+    "productionLine": "SUV"
+  },
+  "L0806943AA01": {
+    "description": "A-RET 687 15X285MM",
     "pack": 2000,
     "cost": 0.0435,
     "weight": 135,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 2346.8,
+    "daily": 2309.4,
     "kanban": 1,
     "location": "APC0212",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0806944AA01"] = {
+    "productionLine": "SUV"
+  },
+  "L0806944AA01": {
+    "description": "A-RET 687 15X735MM",
     "pack": 400,
     "cost": 0.1125,
     "weight": 352,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 372.4,
+    "daily": 435,
     "kanban": 2,
     "location": "APC0212",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L002798842NCPAC"] = {
-    "pack": 2000,
-    "cost": 0.0776,
-    "weight": 136,
-    "piecesPerUnit": 20,
-    "line": "BT1",
-    "daily": 18.8,
-    "kanban": 1,
-    "location": "APC0213",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L0701143AA01"] = {
-    "pack": 1000,
-    "cost": 0.0204,
-    "weight": 202,
-    "piecesPerUnit": 20,
-    "line": "BT1",
-    "daily": 15.8,
-    "kanban": 1,
-    "location": "APC0213",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L0753466AA01"] = {
+    "productionLine": "SUV"
+  },
+  "L0753466AA01": {
+    "description": "FLAT RET D5258 W25 L245",
     "pack": 2000,
     "cost": 0.0278,
     "weight": 100,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 1086,
+    "daily": 1377.6,
     "kanban": 1,
     "location": "APC0213",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0802979AA01"] = {
+    "productionLine": "SUV"
+  },
+  "L0802979AA01": {
+    "description": "RET FLT STRP 5258 25X265",
     "pack": 2000,
     "cost": 0.0373,
     "weight": 110,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 482.4,
+    "daily": 427.2,
     "kanban": 1,
     "location": "APC0213",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0802980AA01"] = {
+    "productionLine": "SUV"
+  },
+  "L0802980AA01": {
+    "description": "RET FLT STRP 5258 25X265",
     "pack": 2000,
     "cost": 0.0373,
     "weight": 113,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 241.2,
+    "daily": 213.6,
     "kanban": 1,
     "location": "APC0213",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L0802981AA01"] = {
+    "productionLine": "SUV"
+  },
+  "L0802981AA01": {
+    "description": "RET FLT STRP 5258 25X365",
     "pack": 1500,
     "cost": 0.0515,
     "weight": 151,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 482.4,
+    "daily": 427.2,
     "kanban": 1,
     "location": "APC0213",
-    "productionLine": "PCGREARS"
-};
-
-partsDB["L001423285NCPAA"] = {
+    "productionLine": "SUV"
+  },
+  "L003455772NCPAA": {
+    "description": "RET TIEDOW 5258 30X300MM",
+    "pack": 0,
+    "cost": 0.033,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0213",
+    "productionLine": "T2X"
+  },
+  "L003455773NCPAA": {
+    "description": "RET TIEDOW 5258 30X285MM",
+    "pack": 0,
+    "cost": 0.0314,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0213",
+    "productionLine": "T2X"
+  },
+  "L001701758NCPAA": {
+    "description": "FLAP-RET 5258 W30,L290MM",
+    "pack": 0,
+    "cost": 0.0323,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0214",
+    "productionLine": "T2X"
+  },
+  "L003572083NCPAD": {
+    "description": "TIEDOW 5258 30X175MM",
+    "pack": 0,
+    "cost": 0.0258,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0214",
+    "productionLine": "T2X"
+  },
+  "L003784687NCPAA": {
+    "description": "RET TIEDOWN 5258 30X430M",
+    "pack": 0,
+    "cost": 0.0474,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0214",
+    "productionLine": "T2X"
+  },
+  "L003823725NCPAC": {
+    "description": "TIEDOW PP 5258 30X175MM",
+    "pack": 0,
+    "cost": 0.0258,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0214",
+    "productionLine": "T2X"
+  },
+  "L003835893NCPAA": {
+    "description": "TIEDOW 5258 30X220MM",
+    "pack": 0,
+    "cost": 0.0242,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0215",
+    "productionLine": "T2X"
+  },
+  "L003835894NCPAA": {
+    "description": "TIEDOW 5258 30X310MM",
+    "pack": 0,
+    "cost": 0.0351,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0215",
+    "productionLine": "T2X"
+  },
+  "L003859081NCPAA": {
+    "description": "TIEDOWN 5258 30X390MM",
+    "pack": 0,
+    "cost": 0.043,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0215",
+    "productionLine": "T2X"
+  },
+  "L003859082NCPAA": {
+    "description": "TIEDOWN 5258 30X260MM",
+    "pack": 0,
+    "cost": 0.0286,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0215",
+    "productionLine": "T2X"
+  },
+  "L003941826NCPAA": {
+    "description": "RET TIEDWN 5258 30X265MM",
+    "pack": 0,
+    "cost": 0.0292,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0215",
+    "productionLine": "T2X"
+  },
+  "L003941828NCPAA": {
+    "description": "RET TIEDWN 5258 30X255MM",
+    "pack": 0,
+    "cost": 0.0281,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0215",
+    "productionLine": "T2X"
+  },
+  "L002460234NCPAA": {
+    "description": "J RETAINER 26.67X270MM",
+    "pack": 800,
+    "cost": 0.1308,
+    "weight": 500,
+    "piecesPerUnit": 20,
+    "line": "BT1",
+    "daily": 12.4,
+    "kanban": 1,
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L002798840NCPAB": {
+    "description": "OKIE TIEDOWN FL 30X290MM",
+    "pack": 2100,
+    "cost": 0.0521,
+    "weight": 102,
+    "piecesPerUnit": 20,
+    "line": "BT1",
+    "daily": 51.2,
+    "kanban": 1,
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L002798841NCPAB": {
+    "description": "OKIE TIEDOWN FL 30X310MM",
+    "pack": 2400,
+    "cost": 0.0557,
+    "weight": 108,
+    "piecesPerUnit": 20,
+    "line": "BT1",
+    "daily": 25.6,
+    "kanban": 1,
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L002806946NCPAA": {
+    "description": "J RETAINER 26.7X70MM",
+    "pack": 2000,
+    "cost": 0.0333,
+    "weight": 132,
+    "piecesPerUnit": 20,
+    "line": "BT1",
+    "daily": 24.8,
+    "kanban": 1,
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L002806947NCPAA": {
+    "description": "RET J 305 26.7X80MM",
+    "pack": 1800,
+    "cost": 0.0389,
+    "weight": 150,
+    "piecesPerUnit": 20,
+    "line": "BT1",
+    "daily": 37.2,
+    "kanban": 1,
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L002807250NCPAA": {
+    "description": "RET J 305 26.7X260MM",
+    "pack": 500,
+    "cost": 0.126,
+    "weight": 486,
+    "piecesPerUnit": 20,
+    "line": "BT1",
+    "daily": 12.4,
+    "kanban": 1,
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L002907223NCPAA": {
+    "description": "ARROW RET 267 25.4X100MM",
+    "pack": 1000,
+    "cost": 0.0425,
+    "weight": 76,
+    "piecesPerUnit": 20,
+    "line": "BT1",
+    "daily": 12.4,
+    "kanban": 1,
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L002799380NCPAA": {
+    "description": "STIFFENER 325X248 PP",
+    "pack": 110,
+    "cost": 0.8675,
+    "weight": 2033,
+    "piecesPerUnit": 20,
+    "line": "BT1",
+    "daily": 12.4,
+    "kanban": 1,
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L002806896NCPAA": {
+    "description": "OKIE TIEDOWN FL 25X250MM",
+    "pack": 3000,
+    "cost": 0.0375,
+    "weight": 86,
+    "piecesPerUnit": 20,
+    "line": "BT1",
+    "daily": 74.4,
+    "kanban": 1,
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L002806897NCPAA": {
+    "description": "OKIE TIEDOWN FL 25X255MM",
+    "pack": 3000,
+    "cost": 0.0382,
+    "weight": 86,
+    "piecesPerUnit": 20,
+    "line": "BT1",
+    "daily": 24.8,
+    "kanban": 1,
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L002914716NCPAA": {
+    "description": "STIFFENER PP 28X55MM 1.5",
+    "pack": 5000,
+    "cost": 0.0121,
+    "weight": 38,
+    "piecesPerUnit": 20,
+    "line": "BT1",
+    "daily": 24.8,
+    "kanban": 1,
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L003142004NCPAA": {
+    "description": "ARROW RET 15.5X452MM",
+    "pack": 900,
+    "cost": 0.0808,
+    "weight": 261,
+    "piecesPerUnit": 20,
+    "line": "BT1",
+    "daily": 13.2,
+    "kanban": 1,
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L003142005NCPAA": {
+    "description": "ARROW RET 15.5X396MM",
+    "pack": 1000,
+    "cost": 0.0708,
+    "weight": 225,
+    "piecesPerUnit": 20,
+    "line": "BT1",
+    "daily": 26.4,
+    "kanban": 1,
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L002798842NCPAC": {
+    "description": "OKIE TIEDOWN FL 30X375MM",
+    "pack": 2000,
+    "cost": 0.0776,
+    "weight": 136,
+    "piecesPerUnit": 20,
+    "line": "BT1",
+    "daily": 51.2,
+    "kanban": 1,
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L0701143AA01": {
+    "description": "J-RET D305 100 MM",
+    "pack": 1000,
+    "cost": 0.0204,
+    "weight": 202,
+    "piecesPerUnit": 20,
+    "line": "BT1",
+    "daily": 37.2,
+    "kanban": 1,
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L001423285NCPAA": {
+    "description": "RET J 305 26.67X30MM",
     "pack": 5000,
     "cost": 0.0186,
     "weight": 55,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 4.6,
+    "daily": 12.4,
     "kanban": 1,
-    "location": "APC0214",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L001450016NCPAA"] = {
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L001450016NCPAA": {
+    "description": "ARROW 2384 W25MM L70MM",
     "pack": 2000,
     "cost": 0.0544,
     "weight": 103,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 58.4,
+    "daily": 136,
     "kanban": 1,
-    "location": "APC0214",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L001553609NCPAA"] = {
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L001553609NCPAA": {
+    "description": "RET J D305 26.67X160MM",
     "pack": 850,
     "cost": 0.076,
     "weight": 290,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 19.4,
+    "daily": 49.6,
     "kanban": 1,
-    "location": "APC0214",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L001614470NCPAA"] = {
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L001614470NCPAA": {
+    "description": "RET J 305 W26.67 L50MM",
     "pack": 2000,
     "cost": 0.0258,
     "weight": 100,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 4.6,
+    "daily": 12.4,
     "kanban": 1,
-    "location": "APC0214",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L001676174NCPAA"] = {
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L001676174NCPAA": {
+    "description": "RET FLT STRP 25.4X80MM",
     "pack": 7800,
     "cost": 0.0148,
     "weight": 36,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 43.8,
+    "daily": 102,
     "kanban": 1,
-    "location": "APC0214",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L001676224NCPAA"] = {
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L001676224NCPAA": {
+    "description": "RET J D305 26.76X140MM",
     "pack": 1000,
     "cost": 0.0698,
     "weight": 257,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 4.6,
+    "daily": 12.4,
     "kanban": 1,
-    "location": "APC0214",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L003141998NCPAA"] = {
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L003141998NCPAA": {
+    "description": "ARROW RET 15.50X660MM",
     "pack": 200,
     "cost": 0.118,
     "weight": 384,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 4.4,
+    "daily": 12.4,
     "kanban": 2,
-    "location": "APC0215",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L003141999NCPAA"] = {
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L003141999NCPAA": {
+    "description": "ARROW RET 15.50X596MM",
     "pack": 200,
     "cost": 0.1066,
     "weight": 348,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 4.4,
+    "daily": 12.4,
     "kanban": 2,
-    "location": "APC0215",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L003142000NCPAA"] = {
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L003142000NCPAA": {
+    "description": "ARROW RET 15.50X390MM",
     "pack": 1200,
     "cost": 0.0697,
     "weight": 226,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 4.4,
+    "daily": 12.4,
     "kanban": 1,
-    "location": "APC0215",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L003142001NCPAA"] = {
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L003142001NCPAA": {
+    "description": "ARROW RET 15.50X380MM",
     "pack": 1200,
     "cost": 0.068,
     "weight": 220,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 9.4,
+    "daily": 25.6,
     "kanban": 1,
-    "location": "APC0215",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L003142002NCPAA"] = {
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L003142002NCPAA": {
+    "description": "ARROW RET 15.50X80MM",
     "pack": 5000,
     "cost": 0.014,
     "weight": 50,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 4.4,
+    "daily": 12.4,
     "kanban": 1,
-    "location": "APC0215",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L003142003NCPAA"] = {
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L003142003NCPAA": {
+    "description": "ARROW RET 15.50X110MM",
     "pack": 5000,
     "cost": 0.0192,
     "weight": 69,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 4.4,
+    "daily": 12.4,
     "kanban": 1,
-    "location": "APC0215",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L001571668NCPAA"] = {
+    "location": "BODPATIO",
+    "productionLine": "BT1"
+  },
+  "L001571668NCPAA": {
+    "description": "A-RET D2384 25X100MM",
     "pack": 1000,
     "cost": 0.0262,
     "weight": 170,
@@ -2157,22 +2505,22 @@ partsDB["L001571668NCPAA"] = {
     "daily": 0,
     "kanban": 0,
     "location": "BODPATIO",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L001597009NCPAA"] = {
+    "productionLine": "BT1 Old"
+  },
+  "L001597009NCPAA": {
+    "description": "RET FLT STRP 154X42MM",
     "pack": 5000,
     "cost": 0.0451,
     "weight": 27,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 14.2,
+    "daily": 34,
     "kanban": 0,
     "location": "BODPATIO",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L001649100NCPAA"] = {
+    "productionLine": "BT1 Old"
+  },
+  "L001649100NCPAA": {
+    "description": "A-RET D2384 25X35MM",
     "pack": 4500,
     "cost": 0.0133,
     "weight": 56,
@@ -2181,10 +2529,10 @@ partsDB["L001649100NCPAA"] = {
     "daily": 0,
     "kanban": 0,
     "location": "BODPATIO",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L001649101NCPAA"] = {
+    "productionLine": "BT1 Old"
+  },
+  "L001649101NCPAA": {
+    "description": "A-RET D2384 25X75MM",
     "pack": 1400,
     "cost": 0.0233,
     "weight": 121,
@@ -2193,67 +2541,68 @@ partsDB["L001649101NCPAA"] = {
     "daily": 0,
     "kanban": 0,
     "location": "BODPATIO",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L001676165NCPAA"] = {
+    "productionLine": "BT1 Old"
+  },
+  "L001676165NCPAA": {
+    "description": "RET FLT STRP 25X290MM",
     "pack": 2000,
     "cost": 0.0471,
     "weight": 128,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 87.6,
+    "daily": 204,
     "kanban": 0,
     "location": "BODPATIO",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L001676166NCPAA"] = {
+    "productionLine": "BT1 Old"
+  },
+  "L001676166NCPAA": {
+    "description": "RET FLT STRP 25X220MM",
     "pack": 2300,
     "cost": 0.0488,
     "weight": 93,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 14.6,
+    "daily": 34,
     "kanban": 0,
     "location": "BODPATIO",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L001676177NCPAA"] = {
+    "productionLine": "BT1 Old"
+  },
+  "L001676177NCPAA": {
+    "description": "RET FLT STRP 25X325MM",
     "pack": 2000,
     "cost": 0.0541,
     "weight": 142,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 29.2,
+    "daily": 68,
     "kanban": 0,
     "location": "BODPATIO",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L001676192NCPAA"] = {
+    "productionLine": "BT1 Old"
+  },
+  "L001676192NCPAA": {
+    "description": "RET FLT STRP 25X285MM",
     "pack": 2000,
     "cost": 0.0497,
     "weight": 124,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 14.2,
+    "daily": 34,
     "kanban": 0,
     "location": "BODPATIO",
-    "productionLine": "PCGBT1CC"
-};
-
-partsDB["L001676195NCPAA"] = {
+    "productionLine": "BT1 Old"
+  },
+  "L001676195NCPAA": {
+    "description": "RET FLT STRP 25X350MM",
     "pack": 1800,
     "cost": 0.0583,
     "weight": 152,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 28.4,
+    "daily": 68,
     "kanban": 0,
     "location": "BODPATIO",
-    "productionLine": "PCGBT1CC"
+    "productionLine": "BT1 Old"
+  }
 };
 
 window.partsDB = partsDB;
