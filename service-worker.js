@@ -1,4 +1,4 @@
-const VERSION = 'v3.0';
+const VERSION = 'v3.1';
 
 const STATIC_CACHE = `static-${VERSION}`;
 const DYNAMIC_CACHE = `dynamic-${VERSION}`;

@@ -6,14 +6,8 @@ let orderedLocations = [];
 window.checkedState = {};
 window.scannedState = {};
 let barcodeDetector = null;
-let scannerStream = null;
-let scannerFrameId = null;
-let scannerPhase = 'part';
-let pendingScannedPart = '';
-let pendingScannedQty = '';
-let lastScannedRawValue = '';
-let lastScannedTime = 0;
-let scannerProcessing = false;
+let photoBusy = false;
+let photoUrl = "";
 const STORAGE_KEY = "verificar_data2";
 document.addEventListener('DOMContentLoaded', () => {
     if (window.M) {
@@ -71,10 +65,11 @@ function bindEvents() {
     });
     document.getElementById('confirm-delete-btn').addEventListener('click', confirmDelete);
     document.getElementById('confirm-clear-btn').addEventListener('click', clearStoredData);
-    document.getElementById('openScannerBtn')?.addEventListener('click', openBarcodeScanner);
-    document.getElementById('closeScannerBtn')?.addEventListener('click', closeBarcodeScanner);
-    document.getElementById('stopScannerBtn')?.addEventListener('click', closeBarcodeScanner);
-    document.getElementById('resetScannerBtn')?.addEventListener('click', resetBarcodeScanner);
+    document.getElementById('openScannerBtn')?.addEventListener('click', openPhotoScanner);
+    document.getElementById('closeScannerBtn')?.addEventListener('click', closePhotoScanner);
+    document.getElementById('stopScannerBtn')?.addEventListener('click', closePhotoScanner);
+    document.getElementById('resetScannerBtn')?.addEventListener('click', resetPhotoScanner);
+    document.getElementById('labelPhotoInput')?.addEventListener('change', analyzeLabelPhoto);
 }
 
 const mobileAddPartQuery = window.matchMedia('(max-width: 700px)');
@@ -220,17 +215,8 @@ function renderRows(loc, items) {
         if (window.checkedState[loc][index]) tr.classList.add('done');
         const partTd = document.createElement('td');
         partTd.className = 'part-number';
-        if (window.scannedState[loc]?.[index]) {
-            const dot = document.createElement('span');
-            dot.className = 'scanned-dot';
-            dot.title = 'Agregado por escaneo';
-            dot.setAttribute('aria-label', 'Escaneado');
-            partTd.append(dot);
-        }
-        const partText = document.createElement('span');
-        partText.className = 'part-number-text';
-        partText.textContent = part;
-        partTd.append(partText);
+        if (window.scannedState[loc]?.[index]) { const dot=document.createElement('span'); dot.className='scanned-dot'; dot.title='Agregado por foto'; partTd.append(dot); }
+        const partText=document.createElement('span'); partText.textContent=part; partTd.append(partText);
         partTd.onclick = () => makeEditable(partTd, loc, index, 0);
         const qtyTd = document.createElement('td');
         qtyTd.textContent = qty;
@@ -588,142 +574,16 @@ async function shareCSV() {
 }
 
 
-function normalizeBarcodeValue(value) {
-    return String(value || '').trim().replace(/\s+/g, '');
-}
-function parsePartBarcode(rawValue) {
-    let value = normalizeBarcodeValue(rawValue).toUpperCase()
-        .replace(/^\(P\)/, '').replace(/^P[:=\-]/, '');
-    if (!value || !/[A-Z]/.test(value) || !/^[A-Z0-9._\-/]+$/.test(value)) return '';
-    return value;
-}
-function parseQuantityBarcode(rawValue) {
-    let value = normalizeBarcodeValue(rawValue).toUpperCase()
-        .replace(/^\(Q\)/, '').replace(/^Q[:=\-]?/, '').replace(/EA$/, '');
-    const match = value.match(/\d+(?:\.\d+)?/);
-    if (!match) return '';
-    const quantity = Number(match[0]);
-    return Number.isFinite(quantity) && quantity > 0 ? String(quantity) : '';
-}
-function setScannerMessage(text, type = '') {
-    const el = document.getElementById('scannerMessage');
-    if (!el) return;
-    el.textContent = text;
-    el.className = `scanner-message${type ? ` ${type}` : ''}`;
-}
-function updateScannerInterface() {
-    const pStep = document.getElementById('scannerPartStep');
-    const qStep = document.getElementById('scannerQtyStep');
-    pStep?.classList.toggle('active', scannerPhase === 'part');
-    pStep?.classList.toggle('complete', Boolean(pendingScannedPart));
-    qStep?.classList.toggle('active', scannerPhase === 'qty');
-    qStep?.classList.toggle('complete', Boolean(pendingScannedQty));
-    document.getElementById('scannerPartValue').textContent = pendingScannedPart || 'Escanea el codigo Part No. (P)';
-    document.getElementById('scannerQtyValue').textContent = pendingScannedQty || (pendingScannedPart ? 'Escanea el codigo Quantity (Q)' : 'Esperando numero de parte');
-    setScannerMessage(scannerPhase === 'part' ? 'Apunta la camara al codigo Part No. (P).' : 'Parte capturada. Ahora escanea Quantity (Q).');
-}
-function resetBarcodeScanner() {
-    scannerPhase = 'part'; pendingScannedPart = ''; pendingScannedQty = '';
-    lastScannedRawValue = ''; lastScannedTime = 0; scannerProcessing = false;
-    const raw = document.getElementById('scannerRawValue');
-    if (raw) raw.textContent = 'Ninguno';
-    updateScannerInterface();
-}
-async function openBarcodeScanner() {
-    if (!orderedLocations.length) { toast('Importa un CSV o crea una ubicacion primero', 'orange'); return; }
-    if (!('BarcodeDetector' in window)) {
-        toast('Este navegador no incluye el escaner offline. Usa Chrome en Android.', 'red');
-        return;
-    }
-    resetBarcodeScanner();
-    M.Modal.getInstance(document.getElementById('scanner-modal'))?.open();
-    try {
-        const supported = await BarcodeDetector.getSupportedFormats();
-        const preferred = ['code_128', 'code_39', 'code_93', 'codabar', 'ean_13', 'ean_8', 'itf'];
-        const formats = preferred.filter(format => supported.includes(format));
-        barcodeDetector = new BarcodeDetector(formats.length ? { formats } : undefined);
-        scannerStream = await navigator.mediaDevices.getUserMedia({audio: false, video: {facingMode: {ideal: 'environment'}, width: {ideal: 1280}, height: {ideal: 720}}});
-        const video = document.getElementById('scannerVideo');
-        video.srcObject = scannerStream;
-        await video.play();
-        scanVideoFrame();
-    } catch (error) {
-        console.error('Could not start scanner', error);
-        setScannerMessage('No se pudo abrir la camara. Revisa permisos y usa HTTPS.', 'warning');
-        toast('No se pudo abrir la camara', 'red');
-    }
-}
-async function scanVideoFrame() {
-    const video = document.getElementById('scannerVideo');
-    if (!barcodeDetector || !scannerStream) return;
-    try {
-        if (video.readyState >= 2 && !scannerProcessing) {
-            const codes = await barcodeDetector.detect(video);
-            if (codes.length) handleBarcodeValue(codes[0].rawValue);
-        }
-    } catch (error) { console.warn('Barcode frame skipped', error); }
-    scannerFrameId = requestAnimationFrame(scanVideoFrame);
-}
-function handleBarcodeValue(rawValue) {
-    if (!rawValue || scannerProcessing) return;
-    const now = Date.now();
-    if (rawValue === lastScannedRawValue && now - lastScannedTime < 1800) return;
-    lastScannedRawValue = rawValue; lastScannedTime = now;
-    document.getElementById('scannerRawValue').textContent = rawValue;
-    if (scannerPhase === 'part') {
-        const part = parsePartBarcode(rawValue);
-        if (!part) { setScannerMessage('No parece un numero de parte. Escanea Part No. (P).', 'warning'); return; }
-        pendingScannedPart = part; scannerPhase = 'qty'; updateScannerInterface();
-        setScannerMessage(`Parte ${part} capturada. Escanea Quantity (Q).`, 'success');
-        navigator.vibrate?.([70, 50, 70]);
-        return;
-    }
-    const qty = parseQuantityBarcode(rawValue);
-    if (!qty) { setScannerMessage('No se encontro una cantidad valida. Escanea Quantity (Q).', 'warning'); return; }
-    pendingScannedQty = qty; scannerProcessing = true; updateScannerInterface();
-    addScannedMaterial(pendingScannedPart, qty);
-    navigator.vibrate?.([100, 60, 100]);
-    setTimeout(closeBarcodeScanner, 700);
-}
-function stopBarcodeCamera() {
-    if (scannerFrameId) cancelAnimationFrame(scannerFrameId);
-    scannerFrameId = null;
-    scannerStream?.getTracks().forEach(track => track.stop());
-    scannerStream = null; barcodeDetector = null;
-    const video = document.getElementById('scannerVideo');
-    if (video) video.srcObject = null;
-}
-function closeBarcodeScanner() {
-    stopBarcodeCamera();
-    M.Modal.getInstance(document.getElementById('scanner-modal'))?.close();
-    resetBarcodeScanner();
-}
-function addScannedMaterial(part, qty) {
-    const loc = orderedLocations[currentIndex];
-    if (!loc) return;
-    if (!Array.isArray(window.scannedState[loc])) window.scannedState[loc] = [];
-    const index = groupedData[loc].findIndex(([p]) => String(p).trim().toUpperCase() === part.toUpperCase());
-    if (index >= 0) {
-        groupedData[loc][index][1] = qty;
-        window.scannedState[loc][index] = true;
-        saveData(); render(); toast(`${part} actualizado a cantidad ${qty}`, 'blue');
-        scrollToScannedRow(index); return;
-    }
-    groupedData[loc].push([part, qty]);
-    window.checkedState[loc].push(false);
-    window.scannedState[loc].push(true);
-    saveData(); render(); toast(`${part}, cantidad ${qty}, agregado a ${loc}`, 'blue');
-    scrollToScannedRow(groupedData[loc].length - 1);
-}
-function scrollToScannedRow(index) {
-    setTimeout(() => {
-        const row = document.querySelectorAll('#verificationRows tr')[index];
-        if (!row) return;
-        row.classList.add('scan-highlight');
-        row.scrollIntoView({behavior: 'smooth', block: 'center'});
-        setTimeout(() => row.classList.remove('scan-highlight'), 1800);
-    }, 150);
-}
+function cleanBarcode(v){return String(v||'').trim().replace(/\s+/g,'').toUpperCase();}
+function partFrom(v){v=cleanBarcode(v).replace(/^\(P\)/,'').replace(/^P[:=\-]/,'');return /[A-Z]/.test(v)&&/\d/.test(v)&&/^[A-Z0-9._\-/]+$/.test(v)?v:'';}
+function qtyFrom(v){v=cleanBarcode(v).replace(/^\(Q\)/,'').replace(/^Q[:=\-]?/,'').replace(/EA$/,'');return /^\d+(?:\.\d+)?$/.test(v)&&Number(v)>0?String(Number(v)):'';}
+function scannerMessage(text,type=''){const e=document.getElementById('scannerMessage');e.textContent=text;e.className=`scanner-message${type?' '+type:''}`;}
+function resetPhotoScanner(){photoBusy=false;const i=document.getElementById('labelPhotoInput');if(i)i.value='';if(photoUrl)URL.revokeObjectURL(photoUrl);photoUrl='';document.getElementById('photoPreviewPanel').hidden=true;document.getElementById('scannerPartValue').textContent='Pendiente';document.getElementById('scannerQtyValue').textContent='Pendiente';document.getElementById('scannerRawValue').textContent='Ninguno';scannerMessage('Toma una foto clara de la etiqueta completa.');}
+async function prepareDetector(){if(!('BarcodeDetector' in window))throw new Error('UNSUPPORTED');const s=await BarcodeDetector.getSupportedFormats();const f=['code_128','code_39','code_93','codabar','ean_13','ean_8','itf'].filter(x=>s.includes(x));barcodeDetector=new BarcodeDetector(f.length?{formats:f}:undefined);}
+async function openPhotoScanner(){if(!orderedLocations.length){toast('Importa un CSV o crea una ubicacion primero','orange');return;}resetPhotoScanner();M.Modal.getInstance(document.getElementById('scanner-modal'))?.open();try{await prepareDetector();}catch(e){scannerMessage('Este navegador no admite lectura offline de fotos. Usa Chrome en Android con HTTPS o instala la PWA.','warning');}}
+async function analyzeLabelPhoto(e){const file=e.target.files?.[0];if(!file||photoBusy)return;photoBusy=true;scannerMessage('Analizando todos los codigos de la foto...');photoUrl=URL.createObjectURL(file);const img=document.getElementById('labelPhotoPreview');img.src=photoUrl;document.getElementById('photoPreviewPanel').hidden=false;try{await img.decode();if(!barcodeDetector)await prepareDetector();const found=await barcodeDetector.detect(img);const vals=[...new Set(found.map(x=>cleanBarcode(x.rawValue)).filter(Boolean))];document.getElementById('scannerRawValue').textContent=vals.join(' | ')||'Ninguno';const parts=vals.map(partFrom).filter(Boolean).sort((a,b)=>b.length-a.length);const nums=vals.map(qtyFrom).filter(Boolean);const likely=nums.filter(x=>Number(x)>9);const qty=(likely.length?likely:nums).sort((a,b)=>Number(b)-Number(a))[0]||'';const part=parts[0]||'';document.getElementById('scannerPartValue').textContent=part||'No detectado';document.getElementById('scannerQtyValue').textContent=qty||'No detectada';if(!part||!qty){photoBusy=false;scannerMessage('No se detectaron ambos datos. Acerca la camara, evita reflejos y toma otra foto.','warning');return;}scannerMessage(`Detectado: ${part}, cantidad ${qty}. Agregando...`,'success');addPhotoMaterial(part,qty);navigator.vibrate?.([100,60,100]);setTimeout(closePhotoScanner,900);}catch(err){console.error(err);photoBusy=false;scannerMessage('No se pudo analizar. Toma otra foto con mejor enfoque e iluminacion.','warning');}}
+function closePhotoScanner(){barcodeDetector=null;M.Modal.getInstance(document.getElementById('scanner-modal'))?.close();setTimeout(resetPhotoScanner,250);}
+function addPhotoMaterial(part,qty){const loc=orderedLocations[currentIndex];if(!Array.isArray(window.scannedState[loc]))window.scannedState[loc]=[];const i=groupedData[loc].findIndex(([p])=>String(p).trim().toUpperCase()===part);if(i>=0){groupedData[loc][i][1]=qty;window.scannedState[loc][i]=true;}else{groupedData[loc].push([part,qty]);window.checkedState[loc].push(false);window.scannedState[loc].push(true);}saveData();render();toast(`${part}, cantidad ${qty}, guardado en ${loc}`,'blue');}
 
 function clearStoredData() {
     // Clear both the stored copy and every in-memory reference.
