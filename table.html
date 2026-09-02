@@ -51,6 +51,13 @@
                     </div>
                 </header>
                 <section id="verificationWorkspace" class="verification-workspace" hidden>
+                    <div class="scanner-toolbar">
+                        <button id="openScannerBtn" class="btn scanner-open-button" type="button" aria-controls="scanner-modal">
+                            <span class="scanner-button-icon" aria-hidden="true">▣</span>
+                            Escanear etiqueta
+                        </button>
+                        <span class="scanner-toolbar-help">Escanea primero Parte (P) y despues Cantidad (Q)</span>
+                    </div>
                     <div class="location-toolbar">
                         <button id="locationPickerBtn" class="location-picker" type="button">
                             <span><small>Ubicacion actual</small><strong id="currentLocation">—</strong></span><span aria-hidden="true">⌄</span>
@@ -151,6 +158,29 @@
             <div class="modal-footer">
                 <button class="modal-close btn-flat">Cancelar</button
                 ><button id="confirm-clear-btn" class="btn red">Limpiar todo</button>
+            </div>
+        </div>
+        <div id="scanner-modal" class="modal scanner-modal">
+            <div class="modal-content">
+                <div class="modal-heading">
+                    <div><span class="eyebrow">Escaner sin conexion</span><h4>Escanear etiqueta</h4></div>
+                    <button id="closeScannerBtn" class="close-button" type="button" aria-label="Cerrar escaner">&times;</button>
+                </div>
+                <div class="scanner-status-card">
+                    <div class="scanner-step-row"><span id="scannerPartStep" class="scanner-step active" aria-current="step">1</span><div><small>Numero de parte</small><strong id="scannerPartValue">Escanea el codigo Part No. (P)</strong></div></div>
+                    <div class="scanner-step-connector"></div>
+                    <div class="scanner-step-row"><span id="scannerQtyStep" class="scanner-step">2</span><div><small>Cantidad</small><strong id="scannerQtyValue">Esperando numero de parte</strong></div></div>
+                </div>
+                <div class="scanner-camera">
+                    <video id="scannerVideo" playsinline muted aria-label="Vista de la camara para escanear codigos"></video>
+                    <div class="scanner-target" aria-hidden="true"><span></span></div>
+                </div>
+                <div id="scannerMessage" class="scanner-message" role="status">Apunta la camara al codigo Part No. (P).</div>
+                <details class="scanner-diagnostic"><summary>Detalles del escaner</summary><p>Ultimo valor leido: <code id="scannerRawValue">Ninguno</code></p></details>
+                <div class="scanner-actions">
+                    <button id="resetScannerBtn" class="btn-flat" type="button">Reiniciar</button>
+                    <button id="stopScannerBtn" class="btn red lighten-1" type="button">Cancelar</button>
+                </div>
             </div>
         </div>
         <div id="settings-modal" class="modal settings-modal">

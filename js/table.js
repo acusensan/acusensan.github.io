@@ -4,6 +4,16 @@ let allParts = [];
 let groupedData = {};
 let orderedLocations = [];
 window.checkedState = {};
+window.scannedState = {};
+let barcodeDetector = null;
+let scannerStream = null;
+let scannerFrameId = null;
+let scannerPhase = 'part';
+let pendingScannedPart = '';
+let pendingScannedQty = '';
+let lastScannedRawValue = '';
+let lastScannedTime = 0;
+let scannerProcessing = false;
 const STORAGE_KEY = "verificar_data2";
 document.addEventListener('DOMContentLoaded', () => {
     if (window.M) {
@@ -61,6 +71,10 @@ function bindEvents() {
     });
     document.getElementById('confirm-delete-btn').addEventListener('click', confirmDelete);
     document.getElementById('confirm-clear-btn').addEventListener('click', clearStoredData);
+    document.getElementById('openScannerBtn')?.addEventListener('click', openBarcodeScanner);
+    document.getElementById('closeScannerBtn')?.addEventListener('click', closeBarcodeScanner);
+    document.getElementById('stopScannerBtn')?.addEventListener('click', closeBarcodeScanner);
+    document.getElementById('resetScannerBtn')?.addEventListener('click', resetBarcodeScanner);
 }
 
 const mobileAddPartQuery = window.matchMedia('(max-width: 700px)');
@@ -125,7 +139,8 @@ function saveData() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
         groupedData,
         orderedLocations,
-        checkedState: window.checkedState
+        checkedState: window.checkedState,
+        scannedState: window.scannedState
     }));
 }
 
@@ -136,6 +151,7 @@ function loadData() {
             groupedData = saved.groupedData || {};
             orderedLocations = saved.orderedLocations || [];
             window.checkedState = saved.checkedState || {};
+            window.scannedState = saved.scannedState || {};
         }
         sanitizeState();
     } catch (error) {
@@ -149,8 +165,11 @@ function sanitizeState() {
     if (currentIndex >= orderedLocations.length) currentIndex = Math.max(0, orderedLocations.length - 1);
     orderedLocations.forEach(loc => {
         if (!Array.isArray(window.checkedState[loc])) window.checkedState[loc] = [];
+        if (!Array.isArray(window.scannedState[loc])) window.scannedState[loc] = [];
         while (window.checkedState[loc].length < groupedData[loc].length) window.checkedState[loc].push(false);
+        while (window.scannedState[loc].length < groupedData[loc].length) window.scannedState[loc].push(false);
         window.checkedState[loc] = window.checkedState[loc].slice(0, groupedData[loc].length);
+        window.scannedState[loc] = window.scannedState[loc].slice(0, groupedData[loc].length);
     });
 }
 
@@ -201,7 +220,17 @@ function renderRows(loc, items) {
         if (window.checkedState[loc][index]) tr.classList.add('done');
         const partTd = document.createElement('td');
         partTd.className = 'part-number';
-        partTd.textContent = part;
+        if (window.scannedState[loc]?.[index]) {
+            const dot = document.createElement('span');
+            dot.className = 'scanned-dot';
+            dot.title = 'Agregado por escaneo';
+            dot.setAttribute('aria-label', 'Escaneado');
+            partTd.append(dot);
+        }
+        const partText = document.createElement('span');
+        partText.className = 'part-number-text';
+        partText.textContent = part;
+        partTd.append(partText);
         partTd.onclick = () => makeEditable(partTd, loc, index, 0);
         const qtyTd = document.createElement('td');
         qtyTd.textContent = qty;
@@ -246,7 +275,7 @@ function updateOverallProgress() {
 
 function makeEditable(td, loc, row, col) {
     if (td.querySelector('input')) return;
-    const original = td.textContent,
+    const original = groupedData[loc][row][col],
         input = document.createElement('input');
     input.className = 'editable-input';
     input.value = original;
@@ -289,6 +318,7 @@ function addLocation() {
     }
     groupedData[loc] = [];
     window.checkedState[loc] = [];
+    window.scannedState[loc] = [];
     orderedLocations.push(loc);
     orderedLocations.sort((a, b) => a.localeCompare(b, undefined, {
         numeric: true
@@ -391,6 +421,7 @@ function addPart() {
     const loc = orderedLocations[currentIndex];
     groupedData[loc].push([part, qty]);
     window.checkedState[loc].push(false);
+    window.scannedState[loc].push(false);
     partInput.value = '';
     qtyInput.value = '';
     document.getElementById('partSearchResults').innerHTML = '';
@@ -419,6 +450,7 @@ function confirmDelete() {
     } = deleteTarget;
     groupedData[loc].splice(index, 1);
     window.checkedState[loc].splice(index, 1);
+    window.scannedState[loc]?.splice(index, 1);
     deleteTarget = null;
     saveData();
     render();
@@ -453,7 +485,8 @@ function importCSV(event) {
     reader.onload = () => {
         const nextData = {},
             nextOrder = [],
-            nextChecks = {};
+            nextChecks = {},
+            nextScanned = {};
         String(reader.result).split(/\r?\n/).slice(1).forEach(line => {
             const [locRaw, partRaw, qtyRaw] = parseCSVLine(line);
             const loc = (locRaw || '').trim(),
@@ -464,9 +497,11 @@ function importCSV(event) {
                 nextData[loc] = [];
                 nextOrder.push(loc);
                 nextChecks[loc] = [];
+                nextScanned[loc] = [];
             }
             nextData[loc].push([part, qty]);
             nextChecks[loc].push(false);
+            nextScanned[loc].push(false);
         });
         if (!nextOrder.length) {
             toast('El archivo no contiene filas validas', 'red');
@@ -477,6 +512,7 @@ function importCSV(event) {
             numeric: true
         }));
         window.checkedState = nextChecks;
+        window.scannedState = nextScanned;
         currentIndex = 0;
         saveData();
         render();
@@ -551,12 +587,151 @@ async function shareCSV() {
     downloadCSV();
 }
 
+
+function normalizeBarcodeValue(value) {
+    return String(value || '').trim().replace(/\s+/g, '');
+}
+function parsePartBarcode(rawValue) {
+    let value = normalizeBarcodeValue(rawValue).toUpperCase()
+        .replace(/^\(P\)/, '').replace(/^P[:=\-]/, '');
+    if (!value || !/[A-Z]/.test(value) || !/^[A-Z0-9._\-/]+$/.test(value)) return '';
+    return value;
+}
+function parseQuantityBarcode(rawValue) {
+    let value = normalizeBarcodeValue(rawValue).toUpperCase()
+        .replace(/^\(Q\)/, '').replace(/^Q[:=\-]?/, '').replace(/EA$/, '');
+    const match = value.match(/\d+(?:\.\d+)?/);
+    if (!match) return '';
+    const quantity = Number(match[0]);
+    return Number.isFinite(quantity) && quantity > 0 ? String(quantity) : '';
+}
+function setScannerMessage(text, type = '') {
+    const el = document.getElementById('scannerMessage');
+    if (!el) return;
+    el.textContent = text;
+    el.className = `scanner-message${type ? ` ${type}` : ''}`;
+}
+function updateScannerInterface() {
+    const pStep = document.getElementById('scannerPartStep');
+    const qStep = document.getElementById('scannerQtyStep');
+    pStep?.classList.toggle('active', scannerPhase === 'part');
+    pStep?.classList.toggle('complete', Boolean(pendingScannedPart));
+    qStep?.classList.toggle('active', scannerPhase === 'qty');
+    qStep?.classList.toggle('complete', Boolean(pendingScannedQty));
+    document.getElementById('scannerPartValue').textContent = pendingScannedPart || 'Escanea el codigo Part No. (P)';
+    document.getElementById('scannerQtyValue').textContent = pendingScannedQty || (pendingScannedPart ? 'Escanea el codigo Quantity (Q)' : 'Esperando numero de parte');
+    setScannerMessage(scannerPhase === 'part' ? 'Apunta la camara al codigo Part No. (P).' : 'Parte capturada. Ahora escanea Quantity (Q).');
+}
+function resetBarcodeScanner() {
+    scannerPhase = 'part'; pendingScannedPart = ''; pendingScannedQty = '';
+    lastScannedRawValue = ''; lastScannedTime = 0; scannerProcessing = false;
+    const raw = document.getElementById('scannerRawValue');
+    if (raw) raw.textContent = 'Ninguno';
+    updateScannerInterface();
+}
+async function openBarcodeScanner() {
+    if (!orderedLocations.length) { toast('Importa un CSV o crea una ubicacion primero', 'orange'); return; }
+    if (!('BarcodeDetector' in window)) {
+        toast('Este navegador no incluye el escaner offline. Usa Chrome en Android.', 'red');
+        return;
+    }
+    resetBarcodeScanner();
+    M.Modal.getInstance(document.getElementById('scanner-modal'))?.open();
+    try {
+        const supported = await BarcodeDetector.getSupportedFormats();
+        const preferred = ['code_128', 'code_39', 'code_93', 'codabar', 'ean_13', 'ean_8', 'itf'];
+        const formats = preferred.filter(format => supported.includes(format));
+        barcodeDetector = new BarcodeDetector(formats.length ? { formats } : undefined);
+        scannerStream = await navigator.mediaDevices.getUserMedia({audio: false, video: {facingMode: {ideal: 'environment'}, width: {ideal: 1280}, height: {ideal: 720}}});
+        const video = document.getElementById('scannerVideo');
+        video.srcObject = scannerStream;
+        await video.play();
+        scanVideoFrame();
+    } catch (error) {
+        console.error('Could not start scanner', error);
+        setScannerMessage('No se pudo abrir la camara. Revisa permisos y usa HTTPS.', 'warning');
+        toast('No se pudo abrir la camara', 'red');
+    }
+}
+async function scanVideoFrame() {
+    const video = document.getElementById('scannerVideo');
+    if (!barcodeDetector || !scannerStream) return;
+    try {
+        if (video.readyState >= 2 && !scannerProcessing) {
+            const codes = await barcodeDetector.detect(video);
+            if (codes.length) handleBarcodeValue(codes[0].rawValue);
+        }
+    } catch (error) { console.warn('Barcode frame skipped', error); }
+    scannerFrameId = requestAnimationFrame(scanVideoFrame);
+}
+function handleBarcodeValue(rawValue) {
+    if (!rawValue || scannerProcessing) return;
+    const now = Date.now();
+    if (rawValue === lastScannedRawValue && now - lastScannedTime < 1800) return;
+    lastScannedRawValue = rawValue; lastScannedTime = now;
+    document.getElementById('scannerRawValue').textContent = rawValue;
+    if (scannerPhase === 'part') {
+        const part = parsePartBarcode(rawValue);
+        if (!part) { setScannerMessage('No parece un numero de parte. Escanea Part No. (P).', 'warning'); return; }
+        pendingScannedPart = part; scannerPhase = 'qty'; updateScannerInterface();
+        setScannerMessage(`Parte ${part} capturada. Escanea Quantity (Q).`, 'success');
+        navigator.vibrate?.([70, 50, 70]);
+        return;
+    }
+    const qty = parseQuantityBarcode(rawValue);
+    if (!qty) { setScannerMessage('No se encontro una cantidad valida. Escanea Quantity (Q).', 'warning'); return; }
+    pendingScannedQty = qty; scannerProcessing = true; updateScannerInterface();
+    addScannedMaterial(pendingScannedPart, qty);
+    navigator.vibrate?.([100, 60, 100]);
+    setTimeout(closeBarcodeScanner, 700);
+}
+function stopBarcodeCamera() {
+    if (scannerFrameId) cancelAnimationFrame(scannerFrameId);
+    scannerFrameId = null;
+    scannerStream?.getTracks().forEach(track => track.stop());
+    scannerStream = null; barcodeDetector = null;
+    const video = document.getElementById('scannerVideo');
+    if (video) video.srcObject = null;
+}
+function closeBarcodeScanner() {
+    stopBarcodeCamera();
+    M.Modal.getInstance(document.getElementById('scanner-modal'))?.close();
+    resetBarcodeScanner();
+}
+function addScannedMaterial(part, qty) {
+    const loc = orderedLocations[currentIndex];
+    if (!loc) return;
+    if (!Array.isArray(window.scannedState[loc])) window.scannedState[loc] = [];
+    const index = groupedData[loc].findIndex(([p]) => String(p).trim().toUpperCase() === part.toUpperCase());
+    if (index >= 0) {
+        groupedData[loc][index][1] = qty;
+        window.scannedState[loc][index] = true;
+        saveData(); render(); toast(`${part} actualizado a cantidad ${qty}`, 'blue');
+        scrollToScannedRow(index); return;
+    }
+    groupedData[loc].push([part, qty]);
+    window.checkedState[loc].push(false);
+    window.scannedState[loc].push(true);
+    saveData(); render(); toast(`${part}, cantidad ${qty}, agregado a ${loc}`, 'blue');
+    scrollToScannedRow(groupedData[loc].length - 1);
+}
+function scrollToScannedRow(index) {
+    setTimeout(() => {
+        const row = document.querySelectorAll('#verificationRows tr')[index];
+        if (!row) return;
+        row.classList.add('scan-highlight');
+        row.scrollIntoView({behavior: 'smooth', block: 'center'});
+        setTimeout(() => row.classList.remove('scan-highlight'), 1800);
+    }, 150);
+}
+
 function clearStoredData() {
     // Clear both the stored copy and every in-memory reference.
     localStorage.removeItem(STORAGE_KEY);
     groupedData = {};
     orderedLocations = [];
     window.checkedState = {};
+    window.scannedState = {};
     currentIndex = 0;
     deleteTarget = null;
 
