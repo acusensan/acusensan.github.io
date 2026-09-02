@@ -5,9 +5,7 @@ let groupedData = {};
 let orderedLocations = [];
 window.checkedState = {};
 window.scannedState = {};
-let barcodeDetector = null;
-let photoBusy = false;
-let photoUrl = "";
+let labelDetector=null, labelBusy=false, labelUrl="";
 const STORAGE_KEY = "verificar_data2";
 document.addEventListener('DOMContentLoaded', () => {
     if (window.M) {
@@ -65,10 +63,10 @@ function bindEvents() {
     });
     document.getElementById('confirm-delete-btn').addEventListener('click', confirmDelete);
     document.getElementById('confirm-clear-btn').addEventListener('click', clearStoredData);
-    document.getElementById('openScannerBtn')?.addEventListener('click', openPhotoScanner);
-    document.getElementById('closeScannerBtn')?.addEventListener('click', closePhotoScanner);
-    document.getElementById('stopScannerBtn')?.addEventListener('click', closePhotoScanner);
-    document.getElementById('resetScannerBtn')?.addEventListener('click', resetPhotoScanner);
+    document.getElementById('openScannerBtn')?.addEventListener('click', openLabelPhoto);
+    document.getElementById('closeScannerBtn')?.addEventListener('click', closeLabelPhoto);
+    document.getElementById('stopScannerBtn')?.addEventListener('click', closeLabelPhoto);
+    document.getElementById('resetScannerBtn')?.addEventListener('click', resetLabelPhoto);
     document.getElementById('labelPhotoInput')?.addEventListener('change', analyzeLabelPhoto);
 }
 
@@ -216,7 +214,7 @@ function renderRows(loc, items) {
         const partTd = document.createElement('td');
         partTd.className = 'part-number';
         if (window.scannedState[loc]?.[index]) { const dot=document.createElement('span'); dot.className='scanned-dot'; dot.title='Agregado por foto'; partTd.append(dot); }
-        const partText=document.createElement('span'); partText.textContent=part; partTd.append(partText);
+        const text=document.createElement('span'); text.textContent=part; partTd.append(text);
         partTd.onclick = () => makeEditable(partTd, loc, index, 0);
         const qtyTd = document.createElement('td');
         qtyTd.textContent = qty;
@@ -471,8 +469,7 @@ function importCSV(event) {
     reader.onload = () => {
         const nextData = {},
             nextOrder = [],
-            nextChecks = {},
-            nextScanned = {};
+            nextChecks = {}, nextScanned = {};
         String(reader.result).split(/\r?\n/).slice(1).forEach(line => {
             const [locRaw, partRaw, qtyRaw] = parseCSVLine(line);
             const loc = (locRaw || '').trim(),
@@ -486,8 +483,7 @@ function importCSV(event) {
                 nextScanned[loc] = [];
             }
             nextData[loc].push([part, qty]);
-            nextChecks[loc].push(false);
-            nextScanned[loc].push(false);
+            nextChecks[loc].push(false); nextScanned[loc].push(false);
         });
         if (!nextOrder.length) {
             toast('El archivo no contiene filas validas', 'red');
@@ -497,8 +493,7 @@ function importCSV(event) {
         orderedLocations = nextOrder.sort((a, b) => a.localeCompare(b, undefined, {
             numeric: true
         }));
-        window.checkedState = nextChecks;
-        window.scannedState = nextScanned;
+        window.checkedState = nextChecks; window.scannedState = nextScanned;
         currentIndex = 0;
         saveData();
         render();
@@ -574,16 +569,25 @@ async function shareCSV() {
 }
 
 
-function cleanBarcode(v){return String(v||'').trim().replace(/\s+/g,'').toUpperCase();}
-function partFrom(v){v=cleanBarcode(v).replace(/^\(P\)/,'').replace(/^P[:=\-]/,'');return /[A-Z]/.test(v)&&/\d/.test(v)&&/^[A-Z0-9._\-/]+$/.test(v)?v:'';}
-function qtyFrom(v){v=cleanBarcode(v).replace(/^\(Q\)/,'').replace(/^Q[:=\-]?/,'').replace(/EA$/,'');return /^\d+(?:\.\d+)?$/.test(v)&&Number(v)>0?String(Number(v)):'';}
-function scannerMessage(text,type=''){const e=document.getElementById('scannerMessage');e.textContent=text;e.className=`scanner-message${type?' '+type:''}`;}
-function resetPhotoScanner(){photoBusy=false;const i=document.getElementById('labelPhotoInput');if(i)i.value='';if(photoUrl)URL.revokeObjectURL(photoUrl);photoUrl='';document.getElementById('photoPreviewPanel').hidden=true;document.getElementById('scannerPartValue').textContent='Pendiente';document.getElementById('scannerQtyValue').textContent='Pendiente';document.getElementById('scannerRawValue').textContent='Ninguno';scannerMessage('Toma una foto clara de la etiqueta completa.');}
-async function prepareDetector(){if(!('BarcodeDetector' in window))throw new Error('UNSUPPORTED');const s=await BarcodeDetector.getSupportedFormats();const f=['code_128','code_39','code_93','codabar','ean_13','ean_8','itf'].filter(x=>s.includes(x));barcodeDetector=new BarcodeDetector(f.length?{formats:f}:undefined);}
-async function openPhotoScanner(){if(!orderedLocations.length){toast('Importa un CSV o crea una ubicacion primero','orange');return;}resetPhotoScanner();M.Modal.getInstance(document.getElementById('scanner-modal'))?.open();try{await prepareDetector();}catch(e){scannerMessage('Este navegador no admite lectura offline de fotos. Usa Chrome en Android con HTTPS o instala la PWA.','warning');}}
-async function analyzeLabelPhoto(e){const file=e.target.files?.[0];if(!file||photoBusy)return;photoBusy=true;scannerMessage('Analizando todos los codigos de la foto...');photoUrl=URL.createObjectURL(file);const img=document.getElementById('labelPhotoPreview');img.src=photoUrl;document.getElementById('photoPreviewPanel').hidden=false;try{await img.decode();if(!barcodeDetector)await prepareDetector();const found=await barcodeDetector.detect(img);const vals=[...new Set(found.map(x=>cleanBarcode(x.rawValue)).filter(Boolean))];document.getElementById('scannerRawValue').textContent=vals.join(' | ')||'Ninguno';const parts=vals.map(partFrom).filter(Boolean).sort((a,b)=>b.length-a.length);const nums=vals.map(qtyFrom).filter(Boolean);const likely=nums.filter(x=>Number(x)>9);const qty=(likely.length?likely:nums).sort((a,b)=>Number(b)-Number(a))[0]||'';const part=parts[0]||'';document.getElementById('scannerPartValue').textContent=part||'No detectado';document.getElementById('scannerQtyValue').textContent=qty||'No detectada';if(!part||!qty){photoBusy=false;scannerMessage('No se detectaron ambos datos. Acerca la camara, evita reflejos y toma otra foto.','warning');return;}scannerMessage(`Detectado: ${part}, cantidad ${qty}. Agregando...`,'success');addPhotoMaterial(part,qty);navigator.vibrate?.([100,60,100]);setTimeout(closePhotoScanner,900);}catch(err){console.error(err);photoBusy=false;scannerMessage('No se pudo analizar. Toma otra foto con mejor enfoque e iluminacion.','warning');}}
-function closePhotoScanner(){barcodeDetector=null;M.Modal.getInstance(document.getElementById('scanner-modal'))?.close();setTimeout(resetPhotoScanner,250);}
-function addPhotoMaterial(part,qty){const loc=orderedLocations[currentIndex];if(!Array.isArray(window.scannedState[loc]))window.scannedState[loc]=[];const i=groupedData[loc].findIndex(([p])=>String(p).trim().toUpperCase()===part);if(i>=0){groupedData[loc][i][1]=qty;window.scannedState[loc][i]=true;}else{groupedData[loc].push([part,qty]);window.checkedState[loc].push(false);window.scannedState[loc].push(true);}saveData();render();toast(`${part}, cantidad ${qty}, guardado en ${loc}`,'blue');}
+function barcodeText(v){return String(v||'').trim().replace(/\s+/g,'').toUpperCase();}
+function taggedValue(raw,tag){const v=barcodeText(raw), patterns=[new RegExp('^\\('+tag+'\\)[:=\\-]?(.*)$'),new RegExp('^'+tag+'[:=\\-](.*)$')];for(const p of patterns){const m=v.match(p);if(m&&m[1])return m[1];}return '';}
+function chooseLabelData(values){
+ const rows=values.map(raw=>({raw:barcodeText(raw),p:taggedValue(raw,'P'),q:taggedValue(raw,'Q')}));
+ let part=(rows.find(x=>x.p)?.p||'').replace(/EA$/,'');
+ let qty=(rows.find(x=>x.q)?.q||'').replace(/EA$/,'');
+ if(!part){const candidates=rows.map(x=>x.raw).filter(v=>!/^[(]?[QVSM][):=\-]?/.test(v)&&/[A-Z]/.test(v)&&/\d/.test(v)&&/^[A-Z0-9._\-/]+$/.test(v));part=candidates.sort((a,b)=>b.length-a.length)[0]||'';}
+ if(!qty){const candidates=rows.map(x=>x.raw).filter(v=>/^\d+(?:\.\d+)?(?:EA)?$/.test(v)).map(v=>v.replace(/EA$/,''));qty=candidates.filter(v=>Number(v)>9).sort((a,b)=>Number(b)-Number(a))[0]||'';}
+ if(!/^[A-Z0-9._\-/]+$/.test(part)||!/[A-Z]/.test(part)||!/[0-9]/.test(part))part='';
+ if(!/^\d+(?:\.\d+)?$/.test(qty)||Number(qty)<=0)qty='';
+ return {part,qty:String(Number(qty)||'')};
+}
+function labelMessage(t,type=''){const e=document.getElementById('scannerMessage');e.textContent=t;e.className='scanner-message'+(type?' '+type:'');}
+function resetLabelPhoto(){labelBusy=false;const i=document.getElementById('labelPhotoInput');if(i)i.value='';if(labelUrl)URL.revokeObjectURL(labelUrl);labelUrl='';document.getElementById('photoPanel').hidden=true;document.getElementById('scannerPartValue').textContent='Pendiente';document.getElementById('scannerQtyValue').textContent='Pendiente';document.getElementById('scannerRawValue').textContent='Ninguno';labelMessage('Toma una foto clara de la etiqueta completa.');}
+async function setupLabelDetector(){if(!('BarcodeDetector'in window))throw Error('unsupported');const supported=await BarcodeDetector.getSupportedFormats();const wanted=['code_128','code_39','code_93','codabar','ean_13','ean_8','itf'].filter(x=>supported.includes(x));labelDetector=new BarcodeDetector(wanted.length?{formats:wanted}:undefined);}
+async function openLabelPhoto(){if(!orderedLocations.length){toast('Importa un CSV o crea una ubicacion primero','orange');return;}resetLabelPhoto();M.Modal.getInstance(document.getElementById('scanner-modal'))?.open();try{await setupLabelDetector();}catch(e){labelMessage('Usa Chrome en Android mediante HTTPS o instala la PWA.','warning');}}
+async function analyzeLabelPhoto(e){const file=e.target.files?.[0];if(!file||labelBusy)return;labelBusy=true;labelMessage('Analizando los codigos...');labelUrl=URL.createObjectURL(file);const img=document.getElementById('labelPhotoPreview');img.src=labelUrl;document.getElementById('photoPanel').hidden=false;try{await img.decode();if(!labelDetector)await setupLabelDetector();const found=await labelDetector.detect(img);const vals=[...new Set(found.map(x=>barcodeText(x.rawValue)).filter(Boolean))];document.getElementById('scannerRawValue').textContent=vals.join(' | ')||'Ninguno';const {part,qty}=chooseLabelData(vals);document.getElementById('scannerPartValue').textContent=part||'No detectado';document.getElementById('scannerQtyValue').textContent=qty||'No detectada';if(!part||!qty){labelBusy=false;labelMessage('No se identificaron P y Q. Evita reflejos y procura que ambos codigos esten enfocados.','warning');return;}labelMessage(`Detectado: ${part}, cantidad ${qty}`,'success');savePhotoMaterial(part,qty);setTimeout(closeLabelPhoto,900);}catch(err){console.error(err);labelBusy=false;labelMessage('No se pudo leer la foto. Intenta con mejor enfoque.','warning');}}
+function closeLabelPhoto(){labelDetector=null;M.Modal.getInstance(document.getElementById('scanner-modal'))?.close();setTimeout(resetLabelPhoto,250);}
+function savePhotoMaterial(part,qty){const loc=orderedLocations[currentIndex];if(!Array.isArray(window.scannedState[loc]))window.scannedState[loc]=[];const i=groupedData[loc].findIndex(([p])=>barcodeText(p)===part);if(i>=0){groupedData[loc][i][1]=qty;window.scannedState[loc][i]=true;}else{groupedData[loc].push([part,qty]);window.checkedState[loc].push(false);window.scannedState[loc].push(true);}saveData();render();toast(`${part}, cantidad ${qty}, guardado en ${loc}`,'blue');}
 
 function clearStoredData() {
     // Clear both the stored copy and every in-memory reference.

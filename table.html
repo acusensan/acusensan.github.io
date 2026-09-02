@@ -51,10 +51,7 @@
                     </div>
                 </header>
                 <section id="verificationWorkspace" class="verification-workspace" hidden>
-                    <div class="scanner-toolbar">
-                        <button id="openScannerBtn" class="btn scanner-open-button" type="button">▣ Escanear etiqueta</button>
-                        <span>Toma una foto completa para detectar Parte y Cantidad</span>
-                    </div>
+                    <div class="scanner-toolbar"><button id="openScannerBtn" class="btn blue darken-4" type="button">▣ Escanear etiqueta</button><span>Toma una foto completa para detectar Parte y Cantidad</span></div>
                     <div class="location-toolbar">
                         <button id="locationPickerBtn" class="location-picker" type="button">
                             <span><small>Ubicacion actual</small><strong id="currentLocation">—</strong></span><span aria-hidden="true">⌄</span>
@@ -157,18 +154,16 @@
                 ><button id="confirm-clear-btn" class="btn red">Limpiar todo</button>
             </div>
         </div>
-        <div id="scanner-modal" class="modal scanner-modal">
-            <div class="modal-content">
-                <div class="modal-heading"><div><span class="eyebrow">Lectura sin conexion</span><h4>Fotografiar etiqueta</h4></div><button id="closeScannerBtn" class="close-button" type="button" aria-label="Cerrar">&times;</button></div>
-                <p class="scanner-instructions">Incluye en una sola foto los codigos <strong>Part No. (P)</strong> y <strong>Quantity (Q)</strong>.</p>
-                <label class="photo-capture-button btn blue darken-4">▣ Tomar foto<input id="labelPhotoInput" type="file" accept="image/*" capture="environment"></label>
-                <div id="photoPreviewPanel" class="photo-preview-panel" hidden><img id="labelPhotoPreview" alt="Vista previa de la etiqueta"><div class="photo-scan-overlay"></div></div>
-                <div id="scannerMessage" class="scanner-message" role="status">Toma una foto clara de la etiqueta completa.</div>
-                <div class="detected-values"><div><small>Numero de parte</small><strong id="scannerPartValue">Pendiente</strong></div><div><small>Cantidad</small><strong id="scannerQtyValue">Pendiente</strong></div></div>
-                <details class="scanner-diagnostic"><summary>Valores leidos</summary><code id="scannerRawValue">Ninguno</code></details>
-                <div class="scanner-actions"><button id="resetScannerBtn" class="btn-flat" type="button">Otra foto</button><button id="stopScannerBtn" class="btn red lighten-1" type="button">Cancelar</button></div>
-            </div>
-        </div>
+        <div id="scanner-modal" class="modal scanner-modal"><div class="modal-content">
+            <div class="modal-heading"><div><span class="eyebrow">Lectura sin conexion</span><h4>Fotografiar etiqueta</h4></div><button id="closeScannerBtn" class="close-button" type="button">&times;</button></div>
+            <p>Incluye en una sola foto los codigos <strong>Part No. (P)</strong> y <strong>Quantity (Q)</strong>.</p>
+            <label class="photo-button btn blue darken-4">▣ Tomar foto<input id="labelPhotoInput" type="file" accept="image/*" capture="environment"></label>
+            <div id="photoPanel" class="photo-panel" hidden><img id="labelPhotoPreview" alt="Foto de etiqueta"></div>
+            <div id="scannerMessage" class="scanner-message" role="status">Toma una foto clara de la etiqueta completa.</div>
+            <div class="detected-values"><div><small>Numero de parte</small><strong id="scannerPartValue">Pendiente</strong></div><div><small>Cantidad</small><strong id="scannerQtyValue">Pendiente</strong></div></div>
+            <details><summary>Valores leidos</summary><code id="scannerRawValue">Ninguno</code></details>
+            <div class="scanner-actions"><button id="resetScannerBtn" class="btn-flat">Otra foto</button><button id="stopScannerBtn" class="btn red lighten-1">Cancelar</button></div>
+        </div></div>
         <div id="settings-modal" class="modal settings-modal">
             <div class="modal-content">
                 <div class="modal-heading">
