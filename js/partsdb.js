@@ -1,4 +1,16 @@
 const partsDB = {
+  "10686": {
+    "description": "BW/WIRE ZP (3mm/2.5K.G)",
+    "pack": 2.5,
+    "cost": 73.7478,
+    "weight": 2703,
+    "piecesPerUnit": 2.5,
+    "line": "Misc",
+    "daily": 0.8,
+    "kanban": 1,
+    "location": "APC0203",
+    "productionLine": "Misc"
+  },
   "170480": {
     "description": "VELCRO HOOK 1\" BLACK",
     "pack": 250,
@@ -875,18 +887,6 @@ const partsDB = {
     "location": "APC0114",
     "productionLine": "Fix-Storage"
   },
-  "L001637636NCPAA": {
-    "description": "J-RET 25.4X335MM",
-    "pack": 700,
-    "cost": 0.0949,
-    "weight": null,
-    "piecesPerUnit": 20,
-    "line": "BT1 Old",
-    "daily": 6.2,
-    "kanban": 1,
-    "location": "APC0114",
-    "productionLine": "BT1 Old"
-  },
   "L001676232NCPAA": {
     "description": "J-RET D3167 25.4X320MM",
     "pack": 800,
@@ -899,18 +899,6 @@ const partsDB = {
     "location": "APC0114",
     "productionLine": "BT1 Old"
   },
-  "L001797260NCPAA": {
-    "description": "J-RET D3167 25.4X720MM",
-    "pack": 350,
-    "cost": 0.1015,
-    "weight": 960,
-    "piecesPerUnit": 20,
-    "line": "BT1 Old",
-    "daily": 34,
-    "kanban": 1,
-    "location": "APC0114",
-    "productionLine": "BT1 Old"
-  },
   "L0637636AA01": {
     "description": "J-RET 25.4X335MM",
     "pack": 700,
@@ -919,42 +907,6 @@ const partsDB = {
     "piecesPerUnit": 20,
     "line": "BT1 Old",
     "daily": 30.4,
-    "kanban": 1,
-    "location": "APC0114",
-    "productionLine": "BT1 Old"
-  },
-  "L0639918AA01": {
-    "description": "J-RET D976 25.4X735MM",
-    "pack": 300,
-    "cost": 0.1515,
-    "weight": 810,
-    "piecesPerUnit": 20,
-    "line": "BT1 Old",
-    "daily": 34,
-    "kanban": 1,
-    "location": "APC0114",
-    "productionLine": "BT1 Old"
-  },
-  "L0676232AA01": {
-    "description": "J-RET D3167 25.4X320MM",
-    "pack": 700,
-    "cost": 0.0542,
-    "weight": 310,
-    "piecesPerUnit": 20,
-    "line": "BT1 Old",
-    "daily": 0,
-    "kanban": 1,
-    "location": "APC0114",
-    "productionLine": "BT1 Old"
-  },
-  "L0797260AA01": {
-    "description": "J-RET D3167 25.4X720MM",
-    "pack": 400,
-    "cost": 0.1184,
-    "weight": 960,
-    "piecesPerUnit": 20,
-    "line": "BT1 Old",
-    "daily": 0,
     "kanban": 1,
     "location": "APC0114",
     "productionLine": "BT1 Old"
@@ -1535,18 +1487,6 @@ const partsDB = {
     "location": "APC0202",
     "productionLine": "SUV"
   },
-  "0010686": {
-    "description": "BW/WIRE ZP (3mm/2.5K.G)",
-    "pack": 2.5,
-    "cost": 73.7478,
-    "weight": 2703,
-    "piecesPerUnit": 2.5,
-    "line": "Misc",
-    "daily": 0.8,
-    "kanban": 1,
-    "location": "APC0203",
-    "productionLine": "Misc"
-  },
   "5CC-DF6SLSEP": {
     "description": "ZIPPER SLIDER CD391 2013",
     "pack": 3000,
@@ -1667,30 +1607,6 @@ const partsDB = {
     "location": "APC0205",
     "productionLine": "T2X"
   },
-  "L002187742HXWAB": {
-    "description": "ZIPPER 5/8 W32.5 L535MM",
-    "pack": 0,
-    "cost": 0.29254,
-    "weight": null,
-    "piecesPerUnit": 0,
-    "line": "T2X",
-    "daily": 0,
-    "kanban": 1,
-    "location": "APC0205",
-    "productionLine": "T2X"
-  },
-  "L003440689NCPAA": {
-    "description": "RET TIEDOW 5258 25X175MM",
-    "pack": 0,
-    "cost": 0.0187,
-    "weight": null,
-    "piecesPerUnit": 0,
-    "line": "T2X",
-    "daily": 0,
-    "kanban": 1,
-    "location": "APC0205",
-    "productionLine": "T2X"
-  },
   "L003455759NCPAF": {
     "description": "TIEDOW PP 5258 30X695MM",
     "pack": 0,
@@ -1707,30 +1623,6 @@ const partsDB = {
     "description": "RET ARROW 2384 25X20MM",
     "pack": 0,
     "cost": 0.0066,
-    "weight": null,
-    "piecesPerUnit": 0,
-    "line": "T2X",
-    "daily": 0,
-    "kanban": 1,
-    "location": "APC0205",
-    "productionLine": "T2X"
-  },
-  "L003570742NCPAE": {
-    "description": "TIEDOW 5258 30X195.2MMMM",
-    "pack": 0,
-    "cost": 0.0288,
-    "weight": null,
-    "piecesPerUnit": 0,
-    "line": "T2X",
-    "daily": 0,
-    "kanban": 1,
-    "location": "APC0205",
-    "productionLine": "T2X"
-  },
-  "L003680869NCPAD": {
-    "description": "TIEDOW 5258 30X198.86MMM",
-    "pack": 0,
-    "cost": 0.0294,
     "weight": null,
     "piecesPerUnit": 0,
     "line": "T2X",
@@ -1773,6 +1665,54 @@ const partsDB = {
     "daily": 0,
     "kanban": 1,
     "location": "APC0205",
+    "productionLine": "T2X"
+  },
+  "L001797260NCPAA": {
+    "description": "J-RET D3167 25.4X720MM",
+    "pack": 350,
+    "cost": 0.1015,
+    "weight": 960,
+    "piecesPerUnit": 0,
+    "line": "BT1 Old",
+    "daily": 34,
+    "kanban": 1,
+    "location": "APC0206",
+    "productionLine": "BT1 Old"
+  },
+  "L0639918AA01": {
+    "description": "J-RET D976 25.4X735MM",
+    "pack": 300,
+    "cost": 0.1515,
+    "weight": 810,
+    "piecesPerUnit": 0,
+    "line": "BT1 Old",
+    "daily": 34,
+    "kanban": 1,
+    "location": "APC0206",
+    "productionLine": "BT1 Old"
+  },
+  "L002187742HXWAB": {
+    "description": "ZIPPER 5/8 W32.5 L535MM",
+    "pack": 0,
+    "cost": 0.29254,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0206",
+    "productionLine": "T2X"
+  },
+  "L003440689NCPAA": {
+    "description": "RET TIEDOW 5258 25X175MM",
+    "pack": 0,
+    "cost": 0.0187,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0206",
     "productionLine": "T2X"
   },
   "L001698202NCPAA": {
@@ -2049,6 +1989,30 @@ const partsDB = {
     "daily": 0,
     "kanban": 1,
     "location": "APC0213",
+    "productionLine": "T2X"
+  },
+  "L003570742NCPAE": {
+    "description": "TIEDOW 5258 30X195.2MMMM",
+    "pack": 0,
+    "cost": 0.0288,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0214",
+    "productionLine": "T2X"
+  },
+  "L003680869NCPAD": {
+    "description": "TIEDOW 5258 30X198.86MMM",
+    "pack": 0,
+    "cost": 0.0294,
+    "weight": null,
+    "piecesPerUnit": 0,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0214",
     "productionLine": "T2X"
   },
   "L001701758NCPAA": {
@@ -2600,6 +2564,42 @@ const partsDB = {
     "line": "BT1 Old",
     "daily": 68,
     "kanban": 0,
+    "location": "BODPATIO",
+    "productionLine": "BT1 Old"
+  },
+  "L001637636NCPAA": {
+    "description": "J-RET 25.4X335MM",
+    "pack": 700,
+    "cost": 0.0949,
+    "weight": 330,
+    "piecesPerUnit": 20,
+    "line": "BT1 Old",
+    "daily": 6.2,
+    "kanban": 1,
+    "location": "BODPATIO",
+    "productionLine": "BT1 Old"
+  },
+  "L0676232AA01": {
+    "description": "J-RET D3167 25.4X320MM",
+    "pack": 700,
+    "cost": 0.0542,
+    "weight": 310,
+    "piecesPerUnit": 20,
+    "line": "BT1 Old",
+    "daily": 0,
+    "kanban": 1,
+    "location": "BODPATIO",
+    "productionLine": "BT1 Old"
+  },
+  "L0797260AA01": {
+    "description": "J-RET D3167 25.4X720MM",
+    "pack": 400,
+    "cost": 0.1184,
+    "weight": 960,
+    "piecesPerUnit": 20,
+    "line": "BT1 Old",
+    "daily": 0,
+    "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1 Old"
   }
