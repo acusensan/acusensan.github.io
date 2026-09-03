@@ -4,8 +4,6 @@ let allParts = [];
 let groupedData = {};
 let orderedLocations = [];
 window.checkedState = {};
-window.scannedState = {};
-let labelDetector=null, labelBusy=false, labelUrl="";
 const STORAGE_KEY = "verificar_data2";
 document.addEventListener('DOMContentLoaded', () => {
     if (window.M) {
@@ -63,11 +61,6 @@ function bindEvents() {
     });
     document.getElementById('confirm-delete-btn').addEventListener('click', confirmDelete);
     document.getElementById('confirm-clear-btn').addEventListener('click', clearStoredData);
-    document.getElementById('openScannerBtn')?.addEventListener('click', openLabelPhoto);
-    document.getElementById('closeScannerBtn')?.addEventListener('click', closeLabelPhoto);
-    document.getElementById('stopScannerBtn')?.addEventListener('click', closeLabelPhoto);
-    document.getElementById('resetScannerBtn')?.addEventListener('click', resetLabelPhoto);
-    document.getElementById('labelPhotoInput')?.addEventListener('change', analyzeLabelPhoto);
 }
 
 const mobileAddPartQuery = window.matchMedia('(max-width: 700px)');
@@ -132,8 +125,7 @@ function saveData() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
         groupedData,
         orderedLocations,
-        checkedState: window.checkedState,
-        scannedState: window.scannedState
+        checkedState: window.checkedState
     }));
 }
 
@@ -144,7 +136,6 @@ function loadData() {
             groupedData = saved.groupedData || {};
             orderedLocations = saved.orderedLocations || [];
             window.checkedState = saved.checkedState || {};
-            window.scannedState = saved.scannedState || {};
         }
         sanitizeState();
     } catch (error) {
@@ -158,11 +149,8 @@ function sanitizeState() {
     if (currentIndex >= orderedLocations.length) currentIndex = Math.max(0, orderedLocations.length - 1);
     orderedLocations.forEach(loc => {
         if (!Array.isArray(window.checkedState[loc])) window.checkedState[loc] = [];
-        if (!Array.isArray(window.scannedState[loc])) window.scannedState[loc] = [];
         while (window.checkedState[loc].length < groupedData[loc].length) window.checkedState[loc].push(false);
-        while (window.scannedState[loc].length < groupedData[loc].length) window.scannedState[loc].push(false);
         window.checkedState[loc] = window.checkedState[loc].slice(0, groupedData[loc].length);
-        window.scannedState[loc] = window.scannedState[loc].slice(0, groupedData[loc].length);
     });
 }
 
@@ -213,8 +201,7 @@ function renderRows(loc, items) {
         if (window.checkedState[loc][index]) tr.classList.add('done');
         const partTd = document.createElement('td');
         partTd.className = 'part-number';
-        if (window.scannedState[loc]?.[index]) { const dot=document.createElement('span'); dot.className='scanned-dot'; dot.title='Agregado por foto'; partTd.append(dot); }
-        const text=document.createElement('span'); text.textContent=part; partTd.append(text);
+        partTd.textContent = part;
         partTd.onclick = () => makeEditable(partTd, loc, index, 0);
         const qtyTd = document.createElement('td');
         qtyTd.textContent = qty;
@@ -259,7 +246,7 @@ function updateOverallProgress() {
 
 function makeEditable(td, loc, row, col) {
     if (td.querySelector('input')) return;
-    const original = groupedData[loc][row][col],
+    const original = td.textContent,
         input = document.createElement('input');
     input.className = 'editable-input';
     input.value = original;
@@ -302,7 +289,6 @@ function addLocation() {
     }
     groupedData[loc] = [];
     window.checkedState[loc] = [];
-    window.scannedState[loc] = [];
     orderedLocations.push(loc);
     orderedLocations.sort((a, b) => a.localeCompare(b, undefined, {
         numeric: true
@@ -405,7 +391,6 @@ function addPart() {
     const loc = orderedLocations[currentIndex];
     groupedData[loc].push([part, qty]);
     window.checkedState[loc].push(false);
-    window.scannedState[loc].push(false);
     partInput.value = '';
     qtyInput.value = '';
     document.getElementById('partSearchResults').innerHTML = '';
@@ -434,7 +419,6 @@ function confirmDelete() {
     } = deleteTarget;
     groupedData[loc].splice(index, 1);
     window.checkedState[loc].splice(index, 1);
-    window.scannedState[loc]?.splice(index, 1);
     deleteTarget = null;
     saveData();
     render();
@@ -469,7 +453,7 @@ function importCSV(event) {
     reader.onload = () => {
         const nextData = {},
             nextOrder = [],
-            nextChecks = {}, nextScanned = {};
+            nextChecks = {};
         String(reader.result).split(/\r?\n/).slice(1).forEach(line => {
             const [locRaw, partRaw, qtyRaw] = parseCSVLine(line);
             const loc = (locRaw || '').trim(),
@@ -480,10 +464,9 @@ function importCSV(event) {
                 nextData[loc] = [];
                 nextOrder.push(loc);
                 nextChecks[loc] = [];
-                nextScanned[loc] = [];
             }
             nextData[loc].push([part, qty]);
-            nextChecks[loc].push(false); nextScanned[loc].push(false);
+            nextChecks[loc].push(false);
         });
         if (!nextOrder.length) {
             toast('El archivo no contiene filas validas', 'red');
@@ -493,7 +476,7 @@ function importCSV(event) {
         orderedLocations = nextOrder.sort((a, b) => a.localeCompare(b, undefined, {
             numeric: true
         }));
-        window.checkedState = nextChecks; window.scannedState = nextScanned;
+        window.checkedState = nextChecks;
         currentIndex = 0;
         saveData();
         render();
@@ -568,31 +551,12 @@ async function shareCSV() {
     downloadCSV();
 }
 
-
-function barcodeText(v){return String(v||'').trim().replace(/\s+/g,'').toUpperCase();}
-function taggedValue(raw,tag){const v=barcodeText(raw);let m=v.match(new RegExp('^\\('+tag+'\\)[:=\\-]?(.*)$'));if(!m)m=v.match(new RegExp('^'+tag+'[:=\\-](.*)$'));return m&&m[1]?m[1]:'';}
-function chooseLabelData(values){const rows=values.map(raw=>({raw:barcodeText(raw),p:taggedValue(raw,'P'),q:taggedValue(raw,'Q')}));let part=(rows.find(x=>x.p)?.p||'').replace(/EA$/,'');let qty=(rows.find(x=>x.q)?.q||'').replace(/EA$/,'');if(!part){part=rows.map(x=>x.raw).filter(v=>!/^[(]?[QVSM][):=\-]?/.test(v)&&/[A-Z]/.test(v)&&/\d/.test(v)&&/^[A-Z0-9._\-/]+$/.test(v)).sort((a,b)=>b.length-a.length)[0]||'';}if(!qty){let q=rows.map(x=>x.raw).filter(v=>/^\d+(?:\.\d+)?(?:EA)?$/.test(v)).map(v=>v.replace(/EA$/,''));qty=(q.filter(v=>Number(v)>9).length?q.filter(v=>Number(v)>9):q).sort((a,b)=>Number(b)-Number(a))[0]||'';}if(!/^[A-Z0-9._\-/]+$/.test(part)||!/[A-Z]/.test(part)||!/[0-9]/.test(part))part='';if(!/^\d+(?:\.\d+)?$/.test(qty)||Number(qty)<=0)qty='';return{part,qty:qty?String(Number(qty)):''};}
-function makeCanvas(img,rotation=0){const side=rotation===90||rotation===270,cv=document.createElement('canvas');cv.width=side?img.naturalHeight:img.naturalWidth;cv.height=side?img.naturalWidth:img.naturalHeight;const x=cv.getContext('2d',{willReadFrequently:true});x.translate(cv.width/2,cv.height/2);x.rotate(rotation*Math.PI/180);x.drawImage(img,-img.naturalWidth/2,-img.naturalHeight/2);return cv;}
-function enhanceCanvas(source,{contrast=1,brightness=0,threshold=null}={}){const cv=document.createElement('canvas');cv.width=source.width;cv.height=source.height;const x=cv.getContext('2d',{willReadFrequently:true});x.drawImage(source,0,0);const im=x.getImageData(0,0,cv.width,cv.height),d=im.data;for(let i=0;i<d.length;i+=4){let g=.299*d[i]+.587*d[i+1]+.114*d[i+2];g=(g-128)*contrast+128+brightness;g=Math.max(0,Math.min(255,g));if(threshold!==null)g=g>=threshold?255:0;d[i]=d[i+1]=d[i+2]=g;}x.putImageData(im,0,0);return cv;}
-async function multiPassDetect(img){const profiles=[{name:'original',original:true},{name:'gray'},{name:'contrast135',contrast:1.35,brightness:5},{name:'contrast170',contrast:1.7,brightness:8},{name:'brighter',contrast:1.45,brightness:20},{name:'threshold110',contrast:1.2,threshold:110},{name:'threshold135',contrast:1.2,threshold:135},{name:'threshold160',contrast:1.2,threshold:160}],hits=[];for(const rotation of [0,90,180,270]){const base=makeCanvas(img,rotation);for(const p of profiles){const cv=p.original?base:enhanceCanvas(base,p);try{for(const r of await labelDetector.detect(cv)){const value=barcodeText(r.rawValue);if(value)hits.push({value,profile:p.name,rotation});}}catch(e){console.warn('Decode pass skipped',p.name,rotation,e);}}}return hits;}
-function voteDetections(hits){const m=new Map();for(const h of hits){if(!m.has(h.value))m.set(h.value,{value:h.value,count:0,profiles:new Set(),rotations:new Set()});const x=m.get(h.value);x.count++;x.profiles.add(h.profile);x.rotations.add(h.rotation);}return [...m.values()].map(x=>({value:x.value,count:x.count,profiles:[...x.profiles],rotations:[...x.rotations]})).sort((a,b)=>b.count-a.count);}
-function editDistance(a,b){const row=Array.from({length:b.length+1},(_,i)=>i);for(let i=1;i<=a.length;i++){let prev=row[0];row[0]=i;for(let k=1;k<=b.length;k++){const old=row[k];row[k]=Math.min(row[k]+1,row[k-1]+1,prev+(a[i-1]===b[k-1]?0:1));prev=old;}}return row[b.length];}
-function correctKnownPart(value){const v=barcodeText(value);if(window.partsDB?.[v]||window.hilosDB?.[v])return v;let best=null;for(const p of allParts){const k=barcodeText(p);if(Math.abs(k.length-v.length)>1)continue;const d=editDistance(v,k);if(!best||d<best.d)best={part:k,d};}return best&&best.d<=1?best.part:v;}
-function labelMessage(t,type=''){const e=document.getElementById('scannerMessage');e.textContent=t;e.className='scanner-message'+(type?' '+type:'');}
-function resetLabelPhoto(){labelBusy=false;const i=document.getElementById('labelPhotoInput');if(i)i.value='';if(labelUrl)URL.revokeObjectURL(labelUrl);labelUrl='';document.getElementById('photoPanel').hidden=true;document.getElementById('scannerPartValue').textContent='Pendiente';document.getElementById('scannerQtyValue').textContent='Pendiente';document.getElementById('scannerRawValue').textContent='Ninguno';labelMessage('Toma una foto clara de la etiqueta completa.');}
-async function setupLabelDetector(){if(!('BarcodeDetector'in window))throw Error('unsupported');const s=await BarcodeDetector.getSupportedFormats();const f=['code_128','code_39','code_93','codabar','ean_13','ean_8','itf'].filter(x=>s.includes(x));labelDetector=new BarcodeDetector(f.length?{formats:f}:undefined);}
-async function openLabelPhoto(){if(!orderedLocations.length){toast('Importa un CSV o crea una ubicacion primero','orange');return;}resetLabelPhoto();M.Modal.getInstance(document.getElementById('scanner-modal'))?.open();try{await setupLabelDetector();}catch(e){labelMessage('Usa Chrome en Android mediante HTTPS o como PWA instalada.','warning');}}
-async function analyzeLabelPhoto(e){const file=e.target.files?.[0];if(!file||labelBusy)return;labelBusy=true;labelMessage('Analizando color, grises, contraste y rotaciones...');labelUrl=URL.createObjectURL(file);const img=document.getElementById('labelPhotoPreview');img.src=labelUrl;document.getElementById('photoPanel').hidden=false;try{await img.decode();if(!labelDetector)await setupLabelDetector();const votes=voteDetections(await multiPassDetect(img));document.getElementById('scannerRawValue').textContent=votes.map(x=>`${x.value} (${x.count})`).join(' | ')||'Ninguno';let{part,qty}=chooseLabelData(votes.map(x=>x.value));if(part)part=correctKnownPart(part);document.getElementById('scannerPartValue').textContent=part||'No detectado';document.getElementById('scannerQtyValue').textContent=qty||'No detectada';if(!part||!qty){labelBusy=false;labelMessage('No se identificaron ambos datos. Evita reflejos y toma otra foto mas cerca.','warning');return;}labelMessage(`Detectado: ${part}, cantidad ${qty}`,'success');savePhotoMaterial(part,qty);setTimeout(closeLabelPhoto,900);}catch(err){console.error(err);labelBusy=false;labelMessage('No se pudo leer la foto. Intenta con mejor enfoque e iluminacion.','warning');}}
-function closeLabelPhoto(){labelDetector=null;M.Modal.getInstance(document.getElementById('scanner-modal'))?.close();setTimeout(resetLabelPhoto,250);}
-function savePhotoMaterial(part,qty){const loc=orderedLocations[currentIndex];if(!Array.isArray(window.scannedState[loc]))window.scannedState[loc]=[];const i=groupedData[loc].findIndex(([p])=>barcodeText(p)===part);if(i>=0){groupedData[loc][i][1]=qty;window.scannedState[loc][i]=true;}else{groupedData[loc].push([part,qty]);window.checkedState[loc].push(false);window.scannedState[loc].push(true);}saveData();render();toast(`${part}, cantidad ${qty}, guardado en ${loc}`,'blue');}
-
 function clearStoredData() {
     // Clear both the stored copy and every in-memory reference.
     localStorage.removeItem(STORAGE_KEY);
     groupedData = {};
     orderedLocations = [];
     window.checkedState = {};
-    window.scannedState = {};
     currentIndex = 0;
     deleteTarget = null;
 
