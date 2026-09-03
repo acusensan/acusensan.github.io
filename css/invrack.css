@@ -1,0 +1,693 @@
+/* Inventory-only styles, scoped to preserve the shared navigation stylesheet. */
+.invrack-page {
+    --ir-bg: #f4f7fb;
+    --ir-surface: #fff;
+    --ir-text: #172033;
+    --ir-muted: #667085;
+    --ir-border: #e3e9f2;
+    --ir-primary: #0d47a1;
+    --ir-soft: #eaf2ff;
+    background: var(--ir-bg);
+    color: var(--ir-text);
+}
+.invrack-page main {
+    padding-top: 64px;
+}
+.invrack-page .skip-link {
+    position: fixed;
+    z-index: 3000;
+    top: 8px;
+    left: 8px;
+    transform: translateY(-150%);
+    background: #fff;
+    color: #0d47a1;
+    padding: 10px 14px;
+    border-radius: 8px;
+}
+.invrack-page .skip-link:focus {
+    transform: none;
+}
+.invrack-page .invrack-nav .nav-wrapper {
+    padding: 0 clamp(8px, 3vw, 28px);
+}
+.invrack-page .invrack-brand code {
+    color: #fff;
+    font: 700 1.35rem system-ui;
+}
+.invrack-page .nav-icon {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    filter: brightness(0) invert(1);
+}
+.invrack-page .nav-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 56px;
+    height: 64px; /* match navbar height */
+    padding: 0;
+}
+.invrack-page .inventory-shell {
+    width: min(1050px, calc(100% - 32px));
+    padding: 38px 0 48px;
+}
+.invrack-page .page-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+.invrack-page .eyebrow {
+    display: block;
+    color: var(--ir-primary);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+}
+.invrack-page h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 750;
+    letter-spacing: -0.04em;
+    margin: 6px 0 8px;
+}
+.invrack-page .page-heading p {
+    color: var(--ir-muted);
+    margin: 0;
+}
+.invrack-page .progress-summary {
+    min-width: 125px;
+    padding: 12px 16px;
+    border: 1px solid var(--ir-border);
+    border-radius: 13px;
+    background: var(--ir-surface);
+    text-align: center;
+}
+.invrack-page .progress-summary strong,
+.invrack-page .progress-summary span {
+    display: block;
+}
+.invrack-page .progress-summary strong {
+    color: var(--ir-primary);
+    font-size: 1.35rem;
+}
+.invrack-page .progress-summary span {
+    color: var(--ir-muted);
+    font-size: 0.75rem;
+}
+.invrack-page .rack-toolbar,
+.invrack-page .inventory-panel {
+    border: 1px solid var(--ir-border);
+    border-radius: 18px;
+    background: var(--ir-surface);
+    box-shadow: 0 3px 14px rgba(20, 33, 52, 0.05);
+}
+.invrack-page .rack-toolbar {
+    display: grid;
+    grid-template-columns: 1fr 1fr minmax(265px, auto);
+    gap: 14px;
+    align-items: end;
+    padding: 18px;
+    margin-bottom: 18px;
+}
+.invrack-page .field-label > span {
+    display: block;
+    color: var(--ir-muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 7px;
+}
+.invrack-page .field-label select {
+    box-sizing: border-box !important;
+    width: 100%;
+    height: 48px !important;
+    margin: 0 !important;
+    padding: 0 13px !important;
+    border: 1px solid var(--ir-border) !important;
+    border-radius: 11px !important;
+    background: var(--ir-surface) !important;
+    color: var(--ir-text) !important;
+    font-size: 1rem !important;
+}
+.invrack-page .field-label select:focus {
+    border-color: var(--ir-primary) !important;
+    box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.12) !important;
+    outline: 0;
+}
+.invrack-page .rack-stepper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    border: 1px solid var(--ir-border);
+    border-radius: 11px;
+}
+.invrack-page .rack-stepper .btn-flat {
+    height: 46px;
+    padding: 0 12px;
+    color: var(--ir-primary);
+    text-transform: none;
+}
+.invrack-page #rackPosition {
+    color: var(--ir-muted);
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+.invrack-page .inventory-panel {
+    overflow: hidden;
+}
+.invrack-page .inventory-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 22px;
+    border-bottom: 1px solid var(--ir-border);
+}
+.invrack-page .inventory-heading h2 {
+    font-size: 1.6rem;
+    font-weight: 750;
+    margin: 3px 0 0;
+}
+.invrack-page .rack-stats {
+    text-align: right;
+}
+.invrack-page .rack-stats strong,
+.invrack-page .rack-stats span {
+    display: block;
+}
+.invrack-page .rack-stats strong {
+    color: var(--ir-primary);
+    font-size: 1.2rem;
+}
+.invrack-page .rack-stats span {
+    color: var(--ir-muted);
+    font-size: 0.75rem;
+}
+.invrack-page .item-list {
+    padding: 0;
+}
+.invrack-page .inventory-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 150px;
+    gap: 18px;
+    align-items: center;
+    padding: 15px 22px;
+    border-bottom: 1px solid var(--ir-border);
+}
+.invrack-page .inventory-item.completed {
+    background: #f3faf5;
+}
+.invrack-page .item-number {
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+.invrack-page .quantity-control {
+    position: relative;
+}
+.invrack-page .quantity-control input {
+    box-sizing: border-box !important;
+    width: 100%;
+    height: 46px !important;
+    margin: 0 !important;
+    padding: 0 12px !important;
+    border: 1px solid var(--ir-border) !important;
+    border-radius: 10px !important;
+    background: var(--ir-surface) !important;
+    color: var(--ir-text) !important;
+    font-size: 1.08rem !important;
+    font-weight: 700;
+    text-align: right !important;
+}
+.invrack-page .quantity-control input:focus {
+    border-color: var(--ir-primary) !important;
+    box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.12) !important;
+    outline: 0;
+}
+.invrack-page .quantity-control span {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ir-muted);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+}
+.invrack-page .bottom-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 20px;
+    background: #f8fafc;
+}
+.invrack-page .bottom-navigation .btn,
+.invrack-page .bottom-navigation .btn-flat {
+    border-radius: 10px;
+    text-transform: none;
+}
+.invrack-page .empty-state {
+    padding: 70px 24px;
+    text-align: center;
+    color: var(--ir-muted);
+}
+.invrack-page .empty-state strong {
+    display: block;
+    color: var(--ir-text);
+    margin-bottom: 4px;
+}
+.invrack-page .settings-modal,
+.invrack-page .confirmation-modal {
+    border-radius: 18px;
+}
+.invrack-page .settings-modal {
+    max-width: 600px;
+}
+.invrack-page .confirmation-modal {
+    max-width: 470px;
+}
+.invrack-page .modal-heading,
+.invrack-page .setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+.invrack-page .modal-heading h4 {
+    font-weight: 750;
+    margin: 2px 0 0;
+}
+.invrack-page .close-button {
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    width: 42px;
+    height: 42px;
+    font-size: 2rem;
+}
+.invrack-page .setting-row {
+    padding: 18px 0;
+    border-top: 1px solid var(--ir-border);
+}
+.invrack-page .setting-row:first-of-type {
+    margin-top: 18px;
+}
+.invrack-page .setting-row strong,
+.invrack-page .setting-row div > span {
+    display: block;
+}
+.invrack-page .setting-row div > span {
+    color: var(--ir-muted);
+    font-size: 0.84rem;
+    margin-top: 3px;
+}
+.invrack-page .button-pair {
+    display: flex;
+    gap: 8px;
+}
+.invrack-page .page-footer {
+    margin: 0;
+    font-size: 0.88rem;
+}
+.invrack-page .footer-dot {
+    padding: 0 7px;
+}
+.invrack-page .sidenav {
+    padding-top: 12px;
+}
+.invrack-page .sidenav-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 24px 20px;
+}
+.invrack-page .sidenav-heading small {
+    display: block;
+    color: #667085;
+    font-size: 0.75rem;
+}
+.invrack-page .sidenav-mark {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: #0d47a1;
+    color: #fff;
+    font-weight: 800;
+}
+.invrack-page.dark-mode {
+    --ir-bg: #0f141c;
+    --ir-surface: #171e29;
+    --ir-text: #f3f6fb;
+    --ir-muted: #aab4c4;
+    --ir-border: #2b3545;
+    --ir-soft: #172d51;
+}
+.invrack-page.dark-mode .rack-toolbar,
+.invrack-page.dark-mode .inventory-panel,
+.invrack-page.dark-mode .modal,
+.invrack-page.dark-mode .field-label select,
+.invrack-page.dark-mode .quantity-control input {
+    background: var(--ir-surface) !important;
+    color: var(--ir-text) !important;
+}
+.invrack-page.dark-mode .inventory-item.completed {
+    background: #17291f;
+}
+.invrack-page.dark-mode .bottom-navigation {
+    background: #121923;
+}
+@media (max-width: 820px) {
+    .invrack-page .rack-toolbar {
+        grid-template-columns: 1fr 1fr;
+    }
+    .invrack-page .rack-stepper {
+        grid-column: 1/-1;
+    }
+}
+@media (max-width: 600px) {
+    .invrack-page main {
+        padding-top: 56px;
+    }
+    .invrack-page .inventory-shell {
+        width: calc(100% - 20px);
+        padding-top: 24px;
+    }
+    .invrack-page .page-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .invrack-page .progress-summary {
+        display: flex;
+        align-items: baseline;
+        gap: 7px;
+        min-width: 0;
+    }
+    .invrack-page .rack-toolbar {
+        grid-template-columns: 1fr;
+    }
+    .invrack-page .rack-stepper {
+        grid-column: auto;
+    }
+    .invrack-page .inventory-item {
+        grid-template-columns: minmax(0, 1fr) 110px;
+        padding: 13px 14px;
+    }
+    .invrack-page .bottom-navigation > * {
+        flex: 1;
+    }
+    .invrack-page .setting-row.stacked {
+        align-items: stretch;
+        flex-direction: column;
+    }
+    .invrack-page .button-pair .btn {
+        flex: 1;
+    }
+    .invrack-page .modal {
+        width: calc(100% - 20px);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .invrack-page * {
+        scroll-behavior: auto !important;
+        transition: none !important;
+    }
+}
+
+
+/* Rack selector styled to match the location section in ajuste.html. */
+.invrack-page .rack-toolbar {
+    display: block;
+    padding: 24px;
+    margin-bottom: 18px;
+}
+
+.invrack-page .rack-panel-heading,
+.invrack-page .rack-panel-heading > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.invrack-page .rack-panel-heading h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 750;
+}
+
+.invrack-page .step-number {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: var(--ir-soft);
+    color: var(--ir-primary);
+    font-weight: 800;
+}
+
+.invrack-page .rack-position {
+    color: var(--ir-muted);
+    font-size: .82rem;
+}
+
+.invrack-page .rack-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.invrack-page .rack-stepper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: auto;
+    margin-top: 8px;
+    border: 0;
+    border-radius: 0;
+}
+
+.invrack-page .rack-stepper .btn-flat {
+    height: 36px;
+    padding: 0 10px;
+    color: var(--ir-primary);
+    text-transform: none;
+}
+
+@media (max-width: 820px) {
+    .invrack-page .rack-toolbar {
+        display: block;
+    }
+
+    .invrack-page .rack-stepper {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .invrack-page .rack-toolbar {
+        position: sticky;
+        z-index: 12;
+        top: 56px;
+        padding: 10px;
+        border-radius: 12px;
+        box-shadow: 0 3px 12px rgba(20, 33, 52, .1);
+    }
+
+    .invrack-page .rack-panel-heading h2 {
+        font-size: 1rem;
+    }
+
+    .invrack-page .step-number {
+        width: 26px;
+        height: 26px;
+        border-radius: 8px;
+        font-size: .82rem;
+    }
+
+    .invrack-page .rack-fields {
+        grid-template-columns: 100px minmax(0, 1fr);
+        gap: 6px;
+        margin-top: 9px;
+    }
+
+    .invrack-page .rack-fields .field-label > span {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    .invrack-page .rack-fields .field-label select {
+        height: 40px !important;
+        padding: 0 9px !important;
+        border-radius: 9px !important;
+        font-size: .86rem !important;
+    }
+
+    .invrack-page .rack-stepper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+        margin-top: 6px;
+    }
+
+    .invrack-page .rack-stepper .btn-flat {
+        height: 32px;
+        line-height: 32px;
+        padding: 0 7px;
+        border: 1px solid var(--ir-border);
+        border-radius: 8px;
+        font-size: .72rem;
+    }
+}
+
+/* Phone layout: keep the Ajuste-style rack selector fixed at the bottom. */
+@media (max-width: 600px) {
+    .invrack-page main {
+        padding-bottom: 170px;
+    }
+
+    .invrack-page .rack-toolbar {
+        position: fixed;
+        z-index: 40;
+        top: auto;
+        left: 5px;
+        right: 5px;
+        bottom: 5px;
+        margin: 0;
+        padding: 7px;
+        border-radius: 13px;
+        box-shadow: 0 -5px 22px rgba(20, 33, 52, .2);
+    }
+
+    .invrack-page .rack-panel-heading {
+        min-height: 28px;
+    }
+
+    .invrack-page .rack-panel-heading h2 {
+        font-size: .95rem;
+    }
+
+    .invrack-page .rack-position {
+        font-size: .72rem;
+    }
+
+    .invrack-page .rack-fields {
+        grid-template-columns: 100px minmax(0, 1fr);
+        gap: 5px;
+        margin-top: 5px;
+    }
+
+    .invrack-page .rack-fields .field-label select {
+        height: 38px !important;
+    }
+
+    .invrack-page .rack-stepper {
+        gap: 5px;
+        margin-top: 5px;
+    }
+
+    .invrack-page .rack-stepper .btn-flat {
+        height: 30px;
+        line-height: 30px;
+    }
+
+    .invrack-page .bottom-navigation {
+        display: none;
+    }
+
+    .invrack-page .page-footer {
+        display: none;
+    }
+}
+
+
+/* ============================================================
+   Table-style previous/next rack navigation
+   Matches the fixed mobile navigation used on Verificar.
+   ============================================================ */
+.invrack-page .rack-stepper {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+}
+
+.invrack-page .rack-stepper button {
+    min-width: 0;
+    border-radius: 10px;
+    text-transform: none;
+}
+
+.invrack-page .rack-stepper #nextRackBtn {
+    justify-self: stretch;
+}
+
+.invrack-page .rack-stepper .rack-position {
+    min-width: 58px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .invrack-page {
+        --ir-navigation-height: 56px;
+        --ir-safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    /* Leave room for the rack selector and fixed navigation. */
+    .invrack-page main {
+        padding-bottom: calc(176px + var(--ir-navigation-height) + var(--ir-safe-bottom));
+    }
+
+    /* The selector remains above the navigation bar. */
+    .invrack-page .rack-toolbar {
+        bottom: calc(var(--ir-navigation-height) + 12px + var(--ir-safe-bottom));
+    }
+
+    /* Pull the stepper out as a dedicated bottom navigation bar. */
+    .invrack-page .rack-stepper {
+        position: fixed;
+        z-index: 850;
+        left: 8px;
+        right: 8px;
+        bottom: calc(6px + var(--ir-safe-bottom));
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        gap: 6px;
+        min-height: var(--ir-navigation-height);
+        margin: 0;
+        padding: 7px;
+        border: 1px solid var(--ir-border);
+        border-radius: 14px;
+        background: var(--ir-surface);
+        box-shadow: 0 -5px 22px rgba(20, 33, 52, 0.2);
+    }
+
+    .invrack-page .rack-stepper .btn,
+    .invrack-page .rack-stepper .btn-flat {
+        width: 100%;
+        height: 42px;
+        line-height: 42px;
+        margin: 0;
+        padding: 0 8px;
+        border-radius: 10px;
+        font-size: 0.82rem;
+        white-space: nowrap;
+    }
+
+    .invrack-page .rack-stepper .rack-position {
+        min-width: 54px;
+        font-size: 0.82rem;
+    }
+}

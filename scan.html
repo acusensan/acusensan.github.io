@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="theme-color" content="#0d47a1" />
+        <title>Escaneo</title>
+        <link rel="stylesheet" href="css/materialize.min.css" />
+        <link rel="stylesheet" href="css/navigationbar.css" />
+        <link rel="stylesheet" href="css/scan.css" />
+    </head>
+    <body class="scan-page">
+        <a class="skip-link" href="#main-content">Saltar al contenido</a>
+        <ul id="slide-out" class="sidenav" aria-label="Navegacion principal">
+            <li class="sidenav-heading">
+                <span class="sidenav-mark">A</span>
+                <div><strong>./Acu</strong><small>Herramientas de materiales</small></div>
+            </li>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="ascan.html">A-Scan</a></li>
+            <li><a href="ajuste.html">Ajuste</a></li>
+            <li class="active"><a href="scan.html" aria-current="page">Escaneo</a></li>
+            <li><a href="barcode.html">Generar codigo de barras</a></li>
+            <li><a href="hilos.html">Hilos</a></li>
+            <li><a href="invrack.html">Inventario Racks</a></li>
+            <li><a href="partescompradas.html">Partes Compradas</a></li>
+            <li><a href="reglatres.html">Regla de Tres</a></li>
+            <li><a href="table.html">Verificar</a></li>
+        </ul>
+        <nav class="blue darken-4 scan-nav">
+            <div class="nav-wrapper">
+                <button class="menu-button" id="menuBtn" type="button" aria-label="Abrir menu protegido">
+                    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                </button>
+                <a href="scan.html" class="brand-logo scan-brand"><code>Escaneo</code></a>
+                <ul class="right">
+                    <li>
+                        <a href="#settings-modal" class="modal-trigger nav-action" aria-label="Abrir ajustes"><img src="icons/settings.svg" alt="" class="nav-icon"/></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main id="main-content">
+            <div class="container scan-shell">
+                <header class="page-heading">
+                    <div>
+                        <span class="eyebrow">Captura de materiales</span>
+                        <h1>Centro de escaneo</h1>
+                        <p>Escanea partes, controla cantidades y compara el avance contra la produccion.</p>
+                    </div>
+                    <div id="scanStatus" class="scan-status ready" role="status">
+                        <span class="dot"></span><span class="text">Listo para escanear</span>
+                    </div>
+                </header>
+
+                <section class="scan-capture" aria-labelledby="capture-title">
+                    <div class="capture-heading">
+                        <div>
+                            <span class="step-number">1</span>
+                            <div>
+                                <h2 id="capture-title">Escanear material</h2>
+                                <p>Presiona Enter para pasar de parte a cantidad.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="capture-controls">
+                        <label class="file-button">Cargar produccion<input type="file" id="csvFile" accept=".csv" /><span class="sr-only"></span></label>
+                        <div class="capture-fields">
+                        <label class="field-label" for="scanPart"><span>Numero de parte</span><input id="scanPart"type="text"class="scan-input"autocomplete="off"autocapitalize="characters"placeholder="Escanea o escribe la parte" /></label>
+						<label class="field-label qty-field" for="scanQty"><span>Cantidad</span><input id="scanQty" type="text" inputmode="text" autocomplete="off" placeholder="Cantidad"/></label>
+                        </div>
+                    </div>
+                    <div class="capture-actions">
+                        <button class="btn blue darken-4 modal-trigger"data-target="scan-summary-modal"onclick="renderScanSummary()">Resumen activo</button><button class="btn Green" onclick="openTransferredModal()">Ver transferidos</button>
+                    </div>
+                </section>
+
+                <div class="scan-layout">
+                    <section class="data-panel search-panel" aria-labelledby="search-title">
+                        <div class="panel-heading">
+                            <div>
+                                <span class="eyebrow">Catalogo</span>
+                                <h2 id="search-title">Buscar partes</h2>
+                            </div>
+                            <span id="searchStatus" class="status-badge active">Auto-limpiar</span>
+                        </div>
+                        <div class="panel-toolbar">
+                            <label class="field-label grow" for="partSearchInput"><span>Parte</span><input id="partSearchInput"type="search"autocomplete="off"placeholder="Buscar numero de parte..." /></label>
+							<button id="toggleSearchPause" class="btn-flat">Pausar Auto Limpiar
+                        </div>
+                        <div class="table-scroll">
+                            <table class="compact-table">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>Parte</th>
+                                        <th>Loc.</th>
+                                        <th>Pack</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="partSearchResults"></tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section class="data-panel log-panel" aria-labelledby="log-title">
+                        <div class="panel-heading">
+                            <div>
+                                <span class="eyebrow">Turno actual</span>
+                                <h2 id="log-title">Registro de escaneo</h2>
+                            </div>
+                            <button class="btn blue modal-trigger"data-target="scan-summary-modal"onclick="renderScanSummary()">Ver resumen</button>
+                        </div>
+                        <div class="table-scroll">
+                            <table class="compact-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Parte</th>
+                                        <th>Qty</th>
+                                        <th>Hora</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="scanLog"></tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section class="data-panel totals-panel" aria-labelledby="totals-title">
+                        <div class="panel-heading">
+                            <div>
+                                <span class="eyebrow">Comparativo</span>
+                                <h2 id="totals-title">Totales</h2>
+                            </div>
+                            <span class="legend-danger">Rojo = excedido</span>
+                        </div>
+                        <div class="table-scroll">
+                            <table class="compact-table sortable-table">
+                                <thead>
+                                    <tr>
+                                        <th onclick="sortTotals('color')">Status</th>
+                                        <th onclick="sortTotals('part')">Parte</th>
+                                        <th onclick="sortTotals('scanned')">Total</th>
+                                        <th onclick="sortTotals('daily')">Daily</th>
+                                        <th onclick="sortTotals('prod')">Prod</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="scanTotals"></tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <div id="settings-modal" class="modal settings-modal">
+            <div class="modal-content">
+                <div class="modal-heading">
+                    <div>
+                        <span class="eyebrow">Preferencias y datos</span>
+                        <h4>Ajustes</h4>
+                    </div>
+                    <button class="modal-close close-button" aria-label="Cerrar">&times;</button>
+                </div>
+                <div class="setting-row">
+                    <div><strong>Tema</strong><span id="dark-mode-text">Modo Oscuro</span></div>
+                    <div class="switch">
+                        <label><input type="checkbox" id="dark-mode-toggle" /><span class="lever"></span></label>
+                    </div>
+                </div>
+                <div class="setting-row stacked">
+                    <div><strong>Exportar informacion</strong><span>Descarga el registro o los totales</span></div>
+                    <div class="button-pair">
+                        <button class="btn blue" onclick="exportScanLogCSV()">Registro</button
+                        ><button class="btn blue darken-2" onclick="exportTotalsCSV()">Totales</button>
+                    </div>
+                </div>
+                <div class="setting-row">
+                    <div>
+                        <strong>Siguiente turno</strong><span>Elimina escaneos, totales y archivo de produccion</span>
+                    </div>
+                    <button class="btn red" onclick="clearForNextShift()">Limpiar</button>
+                </div>
+            </div>
+        </div>
+        <div id="nav-password-modal" class="modal confirmation-modal">
+            <div class="modal-content">
+                <span class="eyebrow">Acceso restringido</span>
+                <h4>Navegacion protegida</h4>
+                <div class="input-field">
+                    <input id="navPasswordInput" type="password" inputmode="numeric" /><label for="navPasswordInput"
+                        >Contraseña</label
+                    >
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close btn-flat">Cancelar</button
+                ><button class="btn green" onclick="checkNavPassword()">Entrar</button>
+            </div>
+        </div>
+        <div id="scan-summary-modal" class="modal modal-fixed-footer summary-modal">
+            <div class="modal-content">
+                <div class="modal-heading">
+                    <div>
+                        <span class="eyebrow">Turno actual</span>
+                        <h4>Resumen de escaneo</h4>
+                    </div>
+                    <button class="modal-close close-button" aria-label="Cerrar">&times;</button>
+                </div>
+                <table class="compact-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Numero de parte</th>
+                            <th>Total</th>
+                            <th>Copiar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scanSummaryBody"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn red" onclick="sendScanLogToBottom()">Transferir activos</button
+                ><button class="btn green" onclick="copyAllScanTotals()">Copiar todo</button
+                ><button class="modal-close btn red">Cerrar</button>
+            </div>
+        </div>
+        <div id="transferredModal" class="modal modal-fixed-footer summary-modal">
+            <div class="modal-content">
+                <div class="modal-heading">
+                    <div>
+                        <span class="eyebrow">Historial</span>
+                        <h4>Partes transferidas</h4>
+                    </div>
+                    <button class="modal-close close-button" aria-label="Cerrar">&times;</button>
+                </div>
+                <table class="compact-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Parte</th>
+                            <th>Qty</th>
+                            <th>Escaneo</th>
+                            <th>Transferido</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scanTransferred"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer"><button class="modal-close btn blue darken-4">Listo</button></div>
+        </div>
+        <div id="addPartModal" class="modal confirmation-modal">
+            <div class="modal-content center-align">
+                <span class="eyebrow">Agregar desde catalogo</span>
+                <h5 id="modalPartTitle">Agregar parte</h5>
+                <p id="modalPackInfo"></p>
+                <div class="quantity-stepper">
+                    <button class="btn red" onclick="changeModalQty(-1)">−</button>
+					<input id="modalQtyInput" type="number" min="1" value="1" />
+					<button class="btn green"onclick="changeModalQty(1)">+</button>
+                </div>
+                <h5 id="modalTotal">Total: 0</h5>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close btn red">Cancelar</button>
+				<button class="btn green" onclick="confirmAddFromModal()">Agregar</button>
+            </div>
+        </div>
+        <footer class="page-footer blue darken-4">
+            <div class="container">
+                © <span id="current-year"></span> Samuel Eduardo Renteria Quintero NCG
+                <span class="footer-dot">•</span> <span id="version"></span>
+            </div>
+        </footer>
+        <script src="js/materialize.min.js"></script>
+        <script src="js/navigationbar.js"></script>
+        <script src="js/partsdb.js"></script>
+        <script src="js/hilosdb.js"></script>
+        <script src="js/scan.js"></script>
+    </body>
+</html>

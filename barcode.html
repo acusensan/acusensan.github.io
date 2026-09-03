@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"/>
+        <meta name="theme-color" content="#0d47a1" />
+        <title>Codigos de Barras | ./Acu</title>
+        <link rel="stylesheet" href="css/materialize.min.css" />
+        <link rel="stylesheet" href="css/navigationbar.css" />
+        <link rel="stylesheet" href="css/barcode.css" />
+    </head>
+    <body class="barcode-page">
+        <a class="skip-link" href="#main-content">Saltar al contenido</a>
+        <ul id="slide-out" class="sidenav barcode-sidenav" aria-label="Navegacion principal">
+            <li class="sidenav-heading">
+                <span class="sidenav-mark">A</span>
+                <div><strong>./Acu</strong><small>Herramientas de materiales</small></div>
+            </li>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="ascan.html">A-Scan</a></li>
+            <li><a href="ajuste.html">Ajuste</a></li>
+            <li><a href="scan.html">Escaneo</a></li>
+            <li class="active"><a href="barcode.html" aria-current="page">Generar codigo de barras</a></li>
+            <li><a href="hilos.html">Hilos</a></li>
+            <li><a href="invrack.html">Inventario Racks</a></li>
+            <li><a href="partescompradas.html">Partes Compradas</a></li>
+            <li><a href="reglatres.html">Regla de Tres</a></li>
+            <li><a href="table.html">Verificar</a></li>
+        </ul>
+        <nav class="blue darken-4 barcode-nav" aria-label="Barra superior">
+            <div class="nav-wrapper">
+                <button
+                    class="menu-button sidenav-trigger"
+                    data-target="slide-out"
+                    aria-label="Abrir menu"
+                    type="button"
+                >
+                    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                </button>
+                <a href="barcode.html" class="brand-logo barcode-brand"><code>Codigos de Barras</code></a>
+                <ul class="right">
+                    <li>
+                        <a href="#settings-modal" class="modal-trigger nav-action" aria-label="Abrir ajustes"
+                            ><img src="icons/settings.svg" alt="" class="nav-icon"
+                        /></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main id="main-content">
+            <div class="container barcode-shell">
+                <header class="page-heading">
+                    <span class="eyebrow">Generador de etiquetas</span>
+                    <h1>Crear codigo de barras</h1>
+                    <p>Selecciona el tipo de dato, ingresa el valor y descarga el resultado en formato SVG.</p>
+                </header>
+                <div class="barcode-layout">
+                    <section class="generator-panel" aria-labelledby="generator-title">
+                        <div class="panel-heading">
+                            <span class="step-number">1</span>
+                            <div>
+                                <h2 id="generator-title">Datos del codigo</h2>
+                                <p>El prefijo requerido se agrega automaticamente.</p>
+                            </div>
+                        </div>
+                        <label class="field-label" for="barcodeType"
+                            ><span>Tipo de dato</span
+                            ><select id="barcodeType" class="browser-default">
+                                <option value="" selected>Selecciona un tipo</option>
+                                <option value="L">Localizacion</option>
+                                <option value="P">Parte</option>
+                                <option value="S">Serie</option>
+                                <option value="Q">Cantidad</option>
+                            </select></label
+                        >
+                        <label class="field-label" for="barcodeValue"
+                            ><span id="valueLabel">Valor</span
+                            ><input
+                                id="barcodeValue"
+                                type="text"
+                                disabled
+                                autocomplete="off"
+                                autocapitalize="characters"
+                                placeholder="Primero selecciona un tipo"
+                            /><small id="helperText">Selecciona el tipo de dato para continuar.</small></label
+                        >
+                        <div class="encoded-value" id="encodedValue" hidden>
+                            <span>Valor codificado</span><strong id="encodedText"></strong>
+                        </div>
+                        <div class="action-row">
+                            <button id="downloadBtn" class="btn-large primary-action" type="button" disabled>
+                                Descargar SVG</button
+                            ><button id="clearBtn" class="btn-flat secondary-action" type="button">Limpiar</button>
+                        </div>
+                    </section>
+
+                    <section class="preview-panel" aria-labelledby="preview-title">
+                        <div class="preview-heading">
+                            <div>
+                                <span class="eyebrow">Vista previa</span>
+                                <h2 id="preview-title">Codigo generado</h2>
+                            </div>
+                            <span id="previewStatus" class="status-pill">Sin datos</span>
+                        </div>
+                        <div id="emptyPreview" class="empty-preview">
+                            <strong>Tu codigo aparecera aqui</strong>
+                            <p>Completa los campos para generar una vista previa.</p>
+                        </div>
+                        <div id="barcodePreview" class="barcode-preview" hidden>
+                            <svg id="barcode" role="img" aria-label="Codigo de barras generado"></svg>
+                        </div>
+                        <p class="preview-note">Verifica que el valor sea correcto antes de imprimir o compartir.</p>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <div
+            id="settings-modal"
+            class="modal settings-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="settings-title"
+        >
+            <div class="modal-content">
+                <div class="modal-heading">
+                    <div>
+                        <span class="eyebrow">Preferencias</span>
+                        <h4 id="settings-title">Ajustes</h4>
+                    </div>
+                    <button class="modal-close close-button" type="button" aria-label="Cerrar">&times;</button>
+                </div>
+                <div class="setting-row">
+                    <div><strong>Tema de la aplicacion</strong><span id="dark-mode-text">Modo Oscuro</span></div>
+                    <div class="switch">
+                        <label><input type="checkbox" id="dark-mode-toggle" /><span class="lever"></span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="page-footer blue darken-4">
+            <div class="container">
+                © <span id="current-year"></span> Samuel Eduardo Renteria Quintero NCG
+                <span class="footer-dot">•</span> <span id="version"></span>
+            </div>
+        </footer>
+        <script src="js/materialize.min.js"></script>
+        <script src="js/navigationbar.js"></script>
+        <script src="js/JsBarcode.all.min.js"></script>
+        <script src="js/barcode.js"></script>
+    </body>
+</html>

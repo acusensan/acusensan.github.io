@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"/>
+        <meta name="theme-color" content="#0d47a1" />
+        <title>Regla de Tres | ./Acu</title>
+        <link rel="stylesheet" href="css/materialize.min.css" />
+        <link rel="stylesheet" href="css/navigationbar.css" />
+        <link rel="stylesheet" href="css/reglatres.css" />
+    </head>
+    <body class="rule-three-page">
+        <a class="skip-link" href="#main-content">Saltar al contenido</a>
+        <ul id="slide-out" class="sidenav" aria-label="Navegacion principal">
+            <li class="sidenav-heading">
+                <span class="sidenav-mark">A</span>
+                <div><strong>./Acu</strong><small>Herramientas de materiales</small></div>
+            </li>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="ascan.html">A-Scan</a></li>
+            <li><a href="ajuste.html">Ajuste</a></li>
+            <li><a href="scan.html">Escaneo</a></li>
+            <li><a href="barcode.html">Generar codigo de barras</a></li>
+            <li><a href="hilos.html">Hilos</a></li>
+            <li><a href="invrack.html">Inventario Racks</a></li>
+            <li><a href="partescompradas.html">Partes Compradas</a></li>
+            <li class="active"><a href="reglatres.html" aria-current="page">Regla de Tres</a></li>
+            <li><a href="table.html">Verificar</a></li>
+        </ul>
+        <nav class="blue darken-4 rule-nav">
+            <div class="nav-wrapper">
+                <button
+                    class="menu-button sidenav-trigger"
+                    data-target="slide-out"
+                    type="button"
+                    aria-label="Abrir menu"
+                >
+                    <span class="bar"></span><span class="bar"></span><span class="bar"></span></button
+                ><a href="reglatres.html" class="brand-logo rule-brand"><code>Regla de Tres</code></a>
+                <ul class="right">
+                    <li>
+                        <a href="#settings-modal" class="modal-trigger nav-action" aria-label="Abrir ajustes"
+                            ><img src="icons/settings.svg" alt="" class="nav-icon"
+                        /></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main id="main-content">
+            <div class="container rule-shell">
+                <header class="page-heading">
+                    <div>
+                        <span class="eyebrow">Calculadora de materiales</span>
+                        <h1>Regla de tres</h1>
+                        <p>Convierte peso a piezas utilizando el empaque y peso configurados para cada parte.</p>
+                    </div>
+                    <div class="history-summary">
+                        <strong id="historyCount">0</strong><span>calculos guardados</span>
+                    </div>
+                </header>
+                <div class="rule-layout">
+                    <section class="calculator-panel" aria-labelledby="calculator-title">
+                        <div class="panel-heading">
+                            <span class="step-number">1</span>
+                            <div>
+                                <h2 id="calculator-title">Selecciona el material</h2>
+                                <p>Elige la linea y despues el numero de parte.</p>
+                            </div>
+                        </div>
+                        <div class="field-grid">
+                            <label class="field-label" for="tipo"
+                                ><span>Linea o tipo</span
+                                ><select id="tipo" class="browser-default">
+                                    <option value="" selected>Selecciona una linea</option>
+                                </select></label
+                            ><label class="field-label" for="parte"
+                                ><span>Numero de parte</span
+                                ><select id="parte" class="browser-default" disabled>
+                                    <option value="" selected>Selecciona una parte</option>
+                                </select></label
+                            >
+                        </div>
+                        <div id="info" class="part-info" hidden></div>
+                        <div class="calculation-area">
+                            <div class="panel-heading compact">
+                                <span class="step-number">2</span>
+                                <div>
+                                    <h2>Ingresa la cantidad</h2>
+                                    <p>Escribe el peso o valor que deseas convertir.</p>
+                                </div>
+                            </div>
+                            <label class="field-label" for="userInput"
+                                ><span>Cantidad</span
+                                ><input
+                                    type="number"
+                                    id="userInput"
+                                    min="0"
+                                    step="any"
+                                    inputmode="decimal"
+                                    placeholder="0" /></label
+                            ><button id="calculateBtn" class="btn-large primary-action" type="button" disabled>
+                                Calcular
+                            </button>
+                        </div>
+                        <div id="resultCard" class="result-card" hidden aria-live="polite">
+                            <span>Resultado estimado</span><strong id="resultado">0.00</strong><small>piezas</small>
+                        </div>
+                    </section>
+                    <section class="history-panel" aria-labelledby="history-title">
+                        <div class="history-heading">
+                            <div>
+                                <span class="eyebrow">Actividad</span>
+                                <h2 id="history-title">Resultados guardados</h2>
+                            </div>
+                            <button id="clearHistoryBtn" class="btn-flat danger-action" type="button">Limpiar</button>
+                        </div>
+                        <div id="emptyHistory" class="empty-state">
+                            <span class="empty-mark">=</span><strong>Aun no hay calculos</strong>
+                            <p>Los resultados apareceran aqui automaticamente.</p>
+                        </div>
+                        <div id="history" class="history-list" aria-live="polite"></div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <div id="settings-modal" class="modal settings-modal">
+            <div class="modal-content">
+                <div class="modal-heading">
+                    <div>
+                        <span class="eyebrow">Preferencias y datos</span>
+                        <h4>Ajustes</h4>
+                    </div>
+                    <button class="modal-close close-button" aria-label="Cerrar">&times;</button>
+                </div>
+                <div class="setting-row">
+                    <div><strong>Tema</strong><span id="dark-mode-text">Modo Oscuro</span></div>
+                    <div class="switch">
+                        <label><input type="checkbox" id="dark-mode-toggle" /><span class="lever"></span></label>
+                    </div>
+                </div>
+                <div class="setting-row stacked">
+                    <div>
+                        <strong>Exportar historial</strong><span>Descarga o comparte los calculos guardados</span>
+                    </div>
+                    <div class="button-pair">
+                        <button class="btn blue" onclick="downloadHistory()">Descargar</button
+                        ><button class="btn green" onclick="shareHistory()">Compartir</button>
+                    </div>
+                </div>
+                <div class="setting-row">
+                    <div><strong>Restablecer historial</strong><span>Elimina todos los resultados guardados</span></div>
+                    <button class="btn red modal-trigger" data-target="clear-history-modal">Limpiar</button>
+                </div>
+            </div>
+        </div>
+        <div id="clear-history-modal" class="modal confirmation-modal">
+            <div class="modal-content">
+                <h5>Limpiar historial</h5>
+                <p>Se eliminaran todos los calculos guardados. Esta accion no se puede deshacer.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close btn-flat">Cancelar</button
+                ><button id="confirmClearHistory" class="btn red">Limpiar todo</button>
+            </div>
+        </div>
+        <footer class="page-footer blue darken-4">
+            <div class="container">
+                © <span id="current-year"></span> Samuel Eduardo Renteria Quintero NCG
+                <span class="footer-dot">•</span> <span id="version"></span>
+            </div>
+        </footer>
+        <script src="js/materialize.min.js"></script>
+        <script src="js/navigationbar.js"></script>
+        <script src="js/partsdb.js"></script>
+        <script src="js/reglatres.js"></script>
+    </body>
+</html>

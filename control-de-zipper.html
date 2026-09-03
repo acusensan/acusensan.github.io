@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Control de Zipper</title>
+        <link rel="stylesheet" href="css/zipper.css" />
+    </head>
+    <body class="zipper-page">
+        <header class="app-header">
+            <div>
+                <span class="eyebrow">Control de materiales</span>
+                <h1>Control de Zipper</h1>
+            </div>
+            <div class="header-actions">
+                <button class="btn secondary" onclick="exportToExcel()">Exportar CSV</button
+                ><button class="btn danger" onclick="resetRecords()">Restablecer</button
+                ><button class="btn primary" onclick="openWorkflow()">+ Nueva solicitud</button>
+            </div>
+        </header>
+        <main class="zipper-shell">
+            <section class="summary-grid">
+                <div class="summary-card"><strong id="pendingCount">0</strong><span>Pendientes</span></div>
+                <div class="summary-card"><strong id="completeCount">0</strong><span>Surtidos</span></div>
+                <div class="summary-card"><strong id="recordCount">0</strong><span>Registros</span></div>
+            </section>
+            <section class="history-panel">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">Actividad</span>
+                        <h2>Historial</h2>
+                    </div>
+                </div>
+                <div id="emptyHistory" class="empty-state">No hay solicitudes registradas.</div>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Parte</th>
+                                <th>Cajas</th>
+                                <th>Producción</th>
+                                <th>Materiales</th>
+                                <th>Fecha/Hora</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyBody"></tbody>
+                    </table>
+                </div>
+            </section>
+            <div id="requestList" hidden></div>
+        </main>
+        <div id="workflowModal" class="modal" role="dialog" aria-modal="true">
+            <div class="modal-content">
+                <button class="close-btn" onclick="closeWorkflow()" aria-label="Cerrar">×</button>
+                <div class="step-progress">
+                    <span id="progress1" class="active">1</span><span id="progress2">2</span
+                    ><span id="progress3">3</span>
+                </div>
+                <div id="step1" class="step active">
+                    <span class="eyebrow">Paso 1 de 3</span>
+                    <h2>Escanear gafete de Producción</h2>
+                    <input
+                        id="worker1"
+                        class="scan-input"
+                        autocomplete="off"
+                        inputmode="numeric"
+                        placeholder="ID de producción"
+                    /><button class="next-btn" onclick="goStep2()">Continuar</button>
+                </div>
+                <div id="step2" class="step">
+                    <span class="eyebrow">Paso 2 de 3</span>
+                    <h2>Seleccionar partes</h2>
+                    <div class="part-grid" id="partGrid"></div>
+                    <div class="selected-box">
+                        <h3>Partes seleccionadas</h3>
+                        <div id="selectedList"></div>
+                    </div>
+                    <button class="next-btn" onclick="goStep3()">Continuar</button>
+                </div>
+                <div id="step3" class="step">
+                    <span class="eyebrow">Paso 3 de 3</span>
+                    <h2>Escanear gafete de Materiales</h2>
+                    <input
+                        id="worker2"
+                        class="scan-input"
+                        autocomplete="off"
+                        inputmode="numeric"
+                        placeholder="ID de materiales"
+                    /><button class="next-btn" onclick="saveRecord()">Finalizar solicitud</button>
+                </div>
+            </div>
+        </div>
+        <div id="qtyModal" class="qty-modal">
+            <div class="qty-box">
+                <span class="eyebrow">Cantidad</span>
+                <h2 id="qtyPartName"></h2>
+                <label for="qtyInput">Número de cajas</label
+                ><input id="qtyInput" class="qty-input" type="number" value="1" min="1" />
+                <div class="qty-actions">
+                    <button class="btn secondary" onclick="qtyModal.style.display='none'">Cancelar</button
+                    ><button class="btn primary" onclick="addPartToList()">Agregar</button>
+                </div>
+            </div>
+        </div>
+        <footer>© <span id="current-year"></span> SERQ NCG · v1.1</footer>
+        <script src="js/zipper.js"></script>
+    </body>
+</html>

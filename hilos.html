@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"/>
+        <meta name="theme-color" content="#0d47a1" />
+        <title>Hilos | ./Acu</title>
+        <link rel="stylesheet" href="css/materialize.min.css" />
+        <link rel="stylesheet" href="css/navigationbar.css" />
+        <link rel="stylesheet" href="css/hilos.css" />
+    </head>
+    <body class="hilos-page">
+        <a class="skip-link" href="#main-content">Saltar al contenido</a>
+        <ul id="slide-out" class="sidenav hilos-sidenav" aria-label="Navegacion principal">
+            <li class="sidenav-heading">
+                <span class="sidenav-mark">A</span>
+                <div><strong>./Acu</strong><small>Herramientas de materiales</small></div>
+            </li>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="ascan.html">A-Scan</a></li>
+            <li><a href="ajuste.html">Ajuste</a></li>
+            <li><a href="scan.html">Escaneo</a></li>
+            <li><a href="barcode.html">Generar codigo de barras</a></li>
+            <li class="active"><a href="hilos.html" aria-current="page">Hilos</a></li>
+            <li><a href="invrack.html">Inventario Racks</a></li>
+            <li><a href="partescompradas.html">Partes Compradas</a></li>
+            <li><a href="reglatres.html">Regla de Tres</a></li>
+            <li><a href="table.html">Verificar</a></li>
+        </ul>
+        <nav class="blue darken-4 hilos-nav" aria-label="Barra superior">
+            <div class="nav-wrapper">
+                <button
+                    class="menu-button sidenav-trigger"
+                    data-target="slide-out"
+                    aria-label="Abrir menu"
+                    type="button"
+                >
+                    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                </button>
+                <a href="hilos.html" class="brand-logo hilos-brand"><code>Hilos</code></a>
+                <ul class="right">
+                    <li>
+                        <a href="#settings-modal" class="modal-trigger nav-action" aria-label="Abrir ajustes"
+                            ><img src="icons/settings.svg" alt="" class="nav-icon"
+                        /></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main id="main-content">
+            <div class="container hilos-shell">
+                <header class="page-heading">
+                    <div>
+                        <span class="eyebrow">Catalogo de materiales</span>
+                        <h1>Consulta de hilos</h1>
+                        <p>Busca por numero de parte, color, ubicacion, calibre o linea de produccion.</p>
+                    </div>
+                    <div class="result-summary"><strong id="resultCount">0</strong><span>resultados</span></div>
+                </header>
+                <section class="catalog-panel" aria-labelledby="catalog-title">
+                    <div class="toolbar">
+                        <label class="search-field" for="searchBar"
+                            ><span class="sr-only">Buscar hilos</span
+                            ><input
+                                type="search"
+                                id="searchBar"
+                                placeholder="Buscar parte, color, ubicacion..."
+                                autocomplete="off"
+                            /><button id="clearSearch" type="button" aria-label="Limpiar busqueda" hidden>
+                                &times;
+                            </button></label
+                        >
+                        <label class="filter-field" for="calibreFilter"
+                            ><span class="sr-only">Filtrar por calibre</span
+                            ><select id="calibreFilter" class="browser-default">
+                                <option value="">Todos los calibres</option>
+                            </select></label
+                        >
+                    </div>
+                    <div id="loadError" class="state-message error-state" hidden>
+                        <strong>No se pudo cargar el catalogo</strong>
+                        <p>Verifica que hilosdb.js este disponible.</p>
+                    </div>
+                    <div id="emptyResults" class="state-message" hidden>
+                        <span class="empty-icon">?</span><strong>Sin coincidencias</strong>
+                        <p>Prueba con otro numero de parte, color o ubicacion.</p>
+                    </div>
+                    <div id="dataContainer" class="data-container" aria-live="polite"></div>
+                </section>
+            </div>
+        </main>
+
+        <div
+            id="thread-modal"
+            class="modal detail-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="detailPartNumber"
+        >
+            <div class="modal-content">
+                <div class="modal-heading">
+                    <div>
+                        <span class="eyebrow">Detalle del hilo</span>
+                        <h4 id="detailPartNumber">Numero de parte</h4>
+                    </div>
+                    <button class="modal-close close-button" type="button" aria-label="Cerrar">&times;</button>
+                </div>
+                <div class="barcode-card">
+                    <svg id="modalImage" role="img" aria-label="Codigo de barras del numero de parte"></svg
+                    ><button id="copyPartBtn" class="btn-flat copy-button" type="button">Copiar numero de parte</button>
+                </div>
+                <dl id="barcodeDetails" class="details-grid"></dl>
+            </div>
+            <div class="modal-footer"><button class="modal-close btn blue darken-4">Listo</button></div>
+        </div>
+        <div
+            id="settings-modal"
+            class="modal settings-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="settings-title"
+        >
+            <div class="modal-content">
+                <div class="modal-heading">
+                    <div>
+                        <span class="eyebrow">Preferencias</span>
+                        <h4 id="settings-title">Ajustes</h4>
+                    </div>
+                    <button class="modal-close close-button" type="button" aria-label="Cerrar">&times;</button>
+                </div>
+                <div class="setting-row">
+                    <div><strong>Tema de la aplicacion</strong><span id="dark-mode-text">Modo Oscuro</span></div>
+                    <div class="switch">
+                        <label><input type="checkbox" id="dark-mode-toggle" /><span class="lever"></span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="page-footer blue darken-4">
+            <div class="container">
+                © <span id="current-year"></span> Samuel Eduardo Renteria Quintero NCG
+                <span class="footer-dot">•</span> <span id="version"></span>
+            </div>
+        </footer>
+        <script src="js/materialize.min.js"></script>
+        <script src="js/navigationbar.js"></script>
+        <script src="js/JsBarcode.all.min.js"></script>
+        <script src="js/hilosdb.js"></script>
+        <script src="js/hilos.js"></script>
+    </body>
+</html>

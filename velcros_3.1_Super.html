@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velcros Floor Control v3.1</title>
+    <link rel="stylesheet" href="css/velcros.css">
+</head>
+<body class="velcros-page supervisor-mode">
+
+<div id="successScreen" class="success-overlay">
+    <div class="success-icon">✓</div>
+    <h1 style="color:var(--success)">Solicitud registrada</h1>
+    <p>Su pedido ha sido enviado al almacén.</p>
+    <div class="timer-text">Reiniciando en <span id="countdown">3</span> segundos...</div>
+</div>
+
+<header class="app-header">
+    <div class="brand-block"><span class="brand-mark">V</span><div class="logo">VELCROS CTRL 3.1<small>Control con supervisor</small></div></div>
+    <nav class="tab-nav" aria-label="Secciones">
+        <button id="nav-material" class="active" onclick="setTab('material')">Solicitud</button>
+        <button id="nav-supervisor" onclick="setTab('supervisor')">Supervisor</button>
+        <button id="nav-status" onclick="setTab('status')">Monitor</button>
+        <button id="nav-log" onclick="setTab('log')">Historial</button>
+    </nav>
+</header>
+
+<main class="container" id="main-content">
+    
+    <div id="tab-material">
+        <div id="step1" class="step-container">
+            <div class="step-title">ID de Empleado</div>
+            <input type="text" id="flow-id" aria-label="ID de empleado" autocomplete="off" class="big-input" placeholder="Scan Gafete" onkeydown="if(event.key==='Enter') goToStep(2)">
+            <button class="btn btn-primary" onclick="goToStep(2)">Siguiente</button>
+        </div>
+
+        <div id="step2" class="step-container" style="display:none;">
+    <div class="step-title">Unidad</div>
+
+    <div class="option-grid">
+        <button class="option-btn" onclick="selectUnidad('Unidad 1')">Unidad 1</button>
+        <button class="option-btn" onclick="selectUnidad('Unidad 2')">Unidad 2</button>
+    </div>
+
+    <button class="btn btn-outline" style="margin-top:20px" onclick="goToStep(1)">
+        Regresar
+    </button>
+</div>
+    <div id="step2b" class="step-container" style="display:none;">
+    <div class="step-title" id="modulo-title">Módulo</div>
+
+    <div class="option-grid" id="modulo-options"></div>
+
+    <button class="btn btn-outline" style="margin-top:20px" onclick="goToStep(2)">
+        Regresar
+    </button>
+</div>
+        <div id="step3" class="step-container" style="display:none;">
+            <div class="step-title">Material</div>
+            <div class="option-grid">
+                <button class="option-btn" onclick="selectMat('Hilos')">Hilos</button>
+                <button class="option-btn" onclick="selectMat('Velcros')">Velcros</button>
+                <button class="option-btn" onclick="selectMat('PullStrap')">PullStrap</button>
+                <button class="option-btn" onclick="selectMat('Lace')">Lace</button>
+                <button class="option-btn" onclick="selectMat('Elastico')">Elastico</button>
+                <button class="option-btn" onclick="selectMat('Binding')">Binding</button>
+                <button class="option-btn" onclick="selectMat('Etiqueta')">Etiqueta</button>
+                <button class="option-btn" onclick="selectMat('Boton')">Boton</button>
+            </div>
+            <button class="btn btn-outline" style="margin-top:20px" onclick="goToStep(2)">Regresar</button>
+        </div>
+
+        
+
+        <div id="stepMaterialDetail" class="step-container" style="display:none;">
+    <div class="step-title">Select Part Number</div>
+    <div class="option-grid" id="material-options"></div>
+    <button class="btn btn-outline" onclick="goToStep(3)">Regresar</button>
+</div>
+
+<div id="step4" class="step-container" style="display:none;">
+    <div class="step-title" id="summary-text">Cantidad</div>
+    <input type="text" id="flow-qty" class="big-input" placeholder="0" inputmode="numeric" pattern="[0-9]*" readonly>
+    <div id="num-pad" style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px;">
+  <button class="option-btn" onclick="addDigit('1')">1</button>
+  <button class="option-btn" onclick="addDigit('2')">2</button>
+  <button class="option-btn" onclick="addDigit('3')">3</button>
+  <button class="option-btn" onclick="addDigit('4')">4</button>
+  <button class="option-btn" onclick="addDigit('5')">5</button>
+  <button class="option-btn" onclick="addDigit('6')">6</button>
+  <button class="option-btn" onclick="addDigit('7')">7</button>
+  <button class="option-btn" onclick="addDigit('8')">8</button>
+  <button class="option-btn" onclick="addDigit('9')">9</button>
+  <button class="option-btn" onclick="clearQty()">C</button>
+  <button class="option-btn" onclick="addDigit('0')">0</button>
+  <button class="option-btn" onclick="backspaceQty()">⌫</button>
+</div>
+
+    <!-- units -->
+    <div class="option-grid" id="unit-options" style="margin-bottom:20px"></div>
+
+    <button class="btn btn-primary" onclick="finishOrder()">Finalizar Pedido</button>
+    <button class="btn btn-outline" onclick="goToStep(3)">Regresar</button>
+</div>
+    </div>
+
+    <div id="tab-supervisor" style="display:none;">
+
+  <div class="section-header">PENDIENTES DE APROBACIÓN</div>
+  <div id="supervisorGrid"></div>
+
+  <div class="section-header" style="color:var(--error)">
+    SOLICITUDES RECHAZADAS
+  </div>
+  <div id="supervisorDeclinedGrid" style="opacity:0.7"></div>
+
+</div>
+    <div id="tab-status" style="display:none;">
+        <div class="dashboard">
+            <div class="stat-card"><span class="stat-val" id="dash-active">0</span><span class="stat-lab">Pendientes</span></div>
+            <div class="stat-card" onmousedown="startWipeUnlock()" onmouseup="cancelWipeUnlock()" onmouseleave="cancelWipeUnlock()" ontouchstart="startWipeUnlock()" ontouchend="cancelWipeUnlock()"
+>
+  <span class="stat-val" id="dash-delivered" style="color:var(--success)">0</span>
+  <span class="stat-lab">Surtidos Hoy</span>
+</div>
+            <div class="stat-card"><button class="btn btn-outline" onclick="lockMonitor()">Bloquear Monitor</button></div>
+            <button id="wipeBtn" class="stat-card" style="color:var(--error); display:none;" onclick="clearData()">WIPE</button>
+        </div>
+        <div class="section-header">SOLICITUDES ACTIVAS</div>
+        <div id="activeGrid"></div>
+        <div class="section-header">COMPLETADOS</div>
+        <div id="doneGrid" style="opacity:0.6"></div>
+        <div class="section-header" style="color:var(--error)">SOLICITUDES RECHAZADAS</div>
+        <div id="declinedGrid" style="opacity:0.7"></div>
+        
+        </div>
+
+    <div id="tab-log" style="display:none;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+            <input type="text" id="logSearch" placeholder="Buscar ID..." style="width:300px; padding:10px; border-radius:8px; border:1px solid #ddd;" oninput="render()">
+            <div>
+                <button class="btn btn-primary" style="background:var(--success)" onclick="downloadCSV()">CSV</button>
+                
+            </div>
+        </div>
+        <div id="logItems"></div>
+    </div>
+</div>
+
+<div id="toast"></div>
+<script src="js/velcros_3.1_Super.js"></script>
+</body>
+</html>
