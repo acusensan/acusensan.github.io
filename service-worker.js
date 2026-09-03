@@ -1,4 +1,4 @@
-const VERSION = 'v3.1';
+const VERSION = 'v3.2';
 
 const STATIC_CACHE = `static-${VERSION}`;
 const DYNAMIC_CACHE = `dynamic-${VERSION}`;
@@ -69,7 +69,7 @@ const STATIC_ASSETS = [
   '/icons/icon-512.png'
 
   // Add the manifest if the application has one:
-  // '/manifest.json'
+	'/manifest.json'
 ];
 
 /*
