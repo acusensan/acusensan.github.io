@@ -1,8 +1,25 @@
-const VERSION = 'v3.0';
+'use strict';
+
+/*
+ * SERVICE WORKER VERSION
+ *
+ * Change this value every time you deploy updated files.
+ * Examples:
+ *   2026.09.03.1
+ *   2026.09.03.2
+ */
+const VERSION = '2026.09.03.1';
 
 const STATIC_CACHE = `static-${VERSION}`;
 const DYNAMIC_CACHE = `dynamic-${VERSION}`;
 
+const MAX_DYNAMIC_CACHE_ITEMS = 50;
+
+/*
+ * ESSENTIAL OFFLINE FILES
+ *
+ * Make sure every path below exists.
+ */
 const STATIC_ASSETS = [
   // Main page
   '/',
@@ -66,31 +83,61 @@ const STATIC_ASSETS = [
   // Icons
   '/icons/settings.svg',
   '/icons/icon-192.png',
-  '/icons/icon-512.png'
+  '/icons/icon-512.png',
 
-  // Add the manifest if the application has one:
-  // '/manifest.json'
+  // PWA manifest
+  '/manifest.json'
 ];
 
 /*
  * INSTALL
  *
- * Save all essential application files in the static cache.
+ * Cache essential application files.
+ *
+ * Files are cached individually so that one missing file
+ * does not prevent the entire service worker from installing.
  */
 self.addEventListener('install', event => {
+  console.log(`[SW] Installing version ${VERSION}`);
+
   event.waitUntil(
     (async () => {
       const cache = await caches.open(STATIC_CACHE);
 
       for (const asset of STATIC_ASSETS) {
         try {
-          await cache.add(asset);
+          /*
+           * Request the newest file from the server instead
+           * of using the browser's normal HTTP cache.
+           */
+          const request = new Request(asset, {
+            cache: 'reload'
+          });
+
+          const response = await fetch(request);
+
+          if (!response.ok) {
+            throw new Error(
+              `HTTP ${response.status} ${response.statusText}`
+            );
+          }
+
+          await cache.put(asset, response);
+
           console.log('[SW] Cached:', asset);
         } catch (error) {
-          console.warn('[SW] Failed to cache:', asset, error);
+          console.warn(
+            '[SW] Failed to cache:',
+            asset,
+            error
+          );
         }
       }
 
+      /*
+       * Activate this new service worker without waiting
+       * for all previously opened tabs to close.
+       */
       await self.skipWaiting();
     })()
   );
@@ -99,28 +146,40 @@ self.addEventListener('install', event => {
 /*
  * ACTIVATE
  *
- * Delete caches belonging to older service-worker versions.
+ * Delete caches created by older service-worker versions.
  */
 self.addEventListener('activate', event => {
+  console.log(`[SW] Activating version ${VERSION}`);
+
   event.waitUntil(
     (async () => {
       const cacheNames = await caches.keys();
 
       await Promise.all(
         cacheNames.map(cacheName => {
-          if (
-            cacheName !== STATIC_CACHE &&
-            cacheName !== DYNAMIC_CACHE
-          ) {
-            console.log('[SW] Deleting old cache:', cacheName);
+          const isCurrentCache =
+            cacheName === STATIC_CACHE ||
+            cacheName === DYNAMIC_CACHE;
+
+          if (!isCurrentCache) {
+            console.log(
+              '[SW] Deleting old cache:',
+              cacheName
+            );
+
             return caches.delete(cacheName);
           }
 
-          return Promise.resolve();
+          return Promise.resolve(false);
         })
       );
 
+      /*
+       * Immediately control all open pages within scope.
+       */
       await self.clients.claim();
+
+      console.log(`[SW] Version ${VERSION} is active`);
     })()
   );
 });
@@ -128,7 +187,8 @@ self.addEventListener('activate', event => {
 /*
  * LIMIT DYNAMIC CACHE
  *
- * Delete the oldest entries when the maximum size is exceeded.
+ * Delete the oldest dynamically cached entries when the
+ * maximum cache size is exceeded.
  */
 async function limitCacheSize(cacheName, maxItems) {
   const cache = await caches.open(cacheName);
@@ -136,7 +196,10 @@ async function limitCacheSize(cacheName, maxItems) {
 
   while (requests.length > maxItems) {
     const oldestRequest = requests.shift();
-    await cache.delete(oldestRequest);
+
+    if (oldestRequest) {
+      await cache.delete(oldestRequest);
+    }
   }
 }
 
@@ -150,148 +213,233 @@ function canCacheResponse(request, response) {
 
   const requestUrl = new URL(request.url);
 
-  // Only dynamically cache files from this website.
+  /*
+   * Only cache resources from this website.
+   */
   if (requestUrl.origin !== self.location.origin) {
     return false;
   }
 
+  /*
+   * "basic" means a normal same-origin response.
+   */
   return response.type === 'basic';
 }
 
 /*
- * SAVE A RESPONSE IN THE DYNAMIC CACHE
+ * SAVE RESPONSE
+ *
+ * Save a successful response in the selected cache.
  */
-async function saveToDynamicCache(request, response) {
-  if (canCacheResponse(request, response)) {
-    const cache = await caches.open(DYNAMIC_CACHE);
-
-    await cache.put(request, response.clone());
-    await limitCacheSize(DYNAMIC_CACHE, 50);
+async function saveResponse(cacheName, request, response) {
+  if (!canCacheResponse(request, response)) {
+    return;
   }
 
-  return response;
+  const cache = await caches.open(cacheName);
+
+  await cache.put(request, response.clone());
+
+  if (cacheName === DYNAMIC_CACHE) {
+    await limitCacheSize(
+      DYNAMIC_CACHE,
+      MAX_DYNAMIC_CACHE_ITEMS
+    );
+  }
 }
 
 /*
- * FETCH
+ * NETWORK-FIRST STRATEGY
+ *
+ * Used for HTML pages and other files where freshness
+ * is more important than instant cached loading.
+ *
+ * 1. Try the network.
+ * 2. Save the newest response.
+ * 3. If offline, return the cached response.
  */
-self.addEventListener('fetch', event => {
-  const request = event.request;
+async function networkFirst(request) {
+  try {
+    const networkResponse = await fetch(request, {
+      cache: 'no-store'
+    });
 
-  // Service workers should only cache GET requests.
-  if (request.method !== 'GET') {
-    return;
-  }
-
-  // Do not handle unsupported URL protocols.
-  if (!request.url.startsWith('http')) {
-    return;
-  }
-
-  /*
-   * HTML NAVIGATION
-   *
-   * Strategy:
-   * 1. Return the requested page from the cache.
-   * 2. If it is not cached, request it from the network.
-   * 3. Save the successful network response.
-   * 4. If offline, return index.html as a fallback.
-   */
-  if (request.mode === 'navigate') {
-    event.respondWith(
-      (async () => {
-        const cachedResponse = await caches.match(request);
-
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-
-        try {
-          const networkResponse = await fetch(request);
-
-          await saveToDynamicCache(request, networkResponse);
-
-          return networkResponse;
-        } catch (error) {
-          console.warn(
-            '[SW] Navigation failed while offline:',
-            request.url
-          );
-
-          const indexFallback = await caches.match('/index.html');
-
-          if (indexFallback) {
-            return indexFallback;
-          }
-
-          return new Response(
-            `
-              <!DOCTYPE html>
-              <html lang="en">
-                <head>
-                  <meta charset="UTF-8">
-                  <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1"
-                  >
-                  <title>Offline</title>
-                </head>
-                <body>
-                  <h1>You are offline</h1>
-                  <p>
-                    This page is not currently available offline.
-                  </p>
-                </body>
-              </html>
-            `,
-            {
-              status: 503,
-              statusText: 'Offline',
-              headers: {
-                'Content-Type': 'text/html; charset=UTF-8'
-              }
-            }
-          );
-        }
-      })()
+    await saveResponse(
+      DYNAMIC_CACHE,
+      request,
+      networkResponse
     );
 
-    return;
+    return networkResponse;
+  } catch (error) {
+    console.warn(
+      '[SW] Network request failed:',
+      request.url,
+      error
+    );
+
+    const cachedResponse = await caches.match(request);
+
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+
+    /*
+     * If an HTML page is unavailable, return the
+     * cached home page as an offline fallback.
+     */
+    if (
+      request.mode === 'navigate' ||
+      request.destination === 'document'
+    ) {
+      const indexFallback =
+        await caches.match('/index.html') ||
+        await caches.match('/');
+
+      if (indexFallback) {
+        return indexFallback;
+      }
+
+      return createOfflinePage();
+    }
+
+    return createOfflineResponse();
   }
+}
+
+/*
+ * STALE-WHILE-REVALIDATE STRATEGY
+ *
+ * Used for CSS, JavaScript, images, fonts and JSON.
+ *
+ * 1. Return the cached response immediately, if available.
+ * 2. Request the newest version in the background.
+ * 3. Save the newest version for the next request.
+ */
+async function staleWhileRevalidate(request, event) {
+  const cachedResponse = await caches.match(request);
+
+  const networkPromise = fetch(request, {
+    cache: 'no-store'
+  })
+    .then(async networkResponse => {
+      await saveResponse(
+        DYNAMIC_CACHE,
+        request,
+        networkResponse
+      );
+
+      return networkResponse;
+    })
+    .catch(error => {
+      console.warn(
+        '[SW] Background update failed:',
+        request.url,
+        error
+      );
+
+      return null;
+    });
 
   /*
-   * CSS, JAVASCRIPT, IMAGES, FONTS AND OTHER FILES
-   *
-   * Strategy:
-   * 1. Return the file from the cache.
-   * 2. If it is not cached, request it from the network.
-   * 3. Save the successful network response dynamically.
+   * Keep the background cache update alive even after
+   * returning the cached response to the page.
    */
-  event.respondWith(
-    (async () => {
-      const cachedResponse = await caches.match(request);
+  if (cachedResponse) {
+    event.waitUntil(networkPromise);
+    return cachedResponse;
+  }
 
-      if (cachedResponse) {
-        return cachedResponse;
+  const networkResponse = await networkPromise;
+
+  if (networkResponse) {
+    return networkResponse;
+  }
+
+  return createOfflineResponse();
+}
+
+/*
+ * OFFLINE HTML PAGE
+ */
+function createOfflinePage() {
+  return new Response(
+    `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    >
+    <meta name="theme-color" content="#ffffff">
+    <title>Offline</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
       }
 
-      try {
-        const networkResponse = await fetch(request);
-
-        await saveToDynamicCache(request, networkResponse);
-
-        return networkResponse;
-      } catch (error) {
-        console.warn(
-          '[SW] Resource unavailable while offline:',
-          request.url
-        );
-
-        return new Response('', {
-          status: 503,
-          statusText: 'Offline'
-        });
+      body {
+        min-height: 100vh;
+        margin: 0;
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: Arial, sans-serif;
+        color: #202124;
+        background: #f5f7fa;
       }
-    })()
-  );
-});
+
+      main {
+        width: 100%;
+        max-width: 480px;
+        padding: 32px;
+        text-align: center;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        margin-top: 0;
+      }
+
+      p {
+        line-height: 1.6;
+      }
+
+      button {
+        margin-top: 12px;
+        padding: 12px 20px;
+        color: #ffffff;
+        background: #1565c0;
+        border: 0;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <h1>You are offline</h1>
+
+      <p>
+        This page is not currently available. Check your
+        connection and try again.
+      </p>
+
+      <button type="button" onclick="window.location.reload()">
+        Try again
+      </button>
+    </main>
+  </body>
+</html>`,
+    {
+      status: 503,
+      statusText: 'Offline',
+      headers: {
+        'Content-

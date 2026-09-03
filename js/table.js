@@ -4,6 +4,8 @@ let allParts = [];
 let groupedData = {};
 let orderedLocations = [];
 window.checkedState = {};
+window.scannedState = {};
+let labelDetector=null, labelBusy=false, labelUrl="";
 const STORAGE_KEY = "verificar_data2";
 document.addEventListener('DOMContentLoaded', () => {
     if (window.M) {
@@ -61,6 +63,11 @@ function bindEvents() {
     });
     document.getElementById('confirm-delete-btn').addEventListener('click', confirmDelete);
     document.getElementById('confirm-clear-btn').addEventListener('click', clearStoredData);
+    document.getElementById('openScannerBtn')?.addEventListener('click', openLabelPhoto);
+    document.getElementById('closeScannerBtn')?.addEventListener('click', closeLabelPhoto);
+    document.getElementById('stopScannerBtn')?.addEventListener('click', closeLabelPhoto);
+    document.getElementById('resetScannerBtn')?.addEventListener('click', resetLabelPhoto);
+    document.getElementById('labelPhotoInput')?.addEventListener('change', analyzeLabelPhoto);
 }
 
 const mobileAddPartQuery = window.matchMedia('(max-width: 700px)');
@@ -125,7 +132,8 @@ function saveData() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
         groupedData,
         orderedLocations,
-        checkedState: window.checkedState
+        checkedState: window.checkedState,
+        scannedState: window.scannedState
     }));
 }
 
@@ -136,6 +144,7 @@ function loadData() {
             groupedData = saved.groupedData || {};
             orderedLocations = saved.orderedLocations || [];
             window.checkedState = saved.checkedState || {};
+            window.scannedState = saved.scannedState || {};
         }
         sanitizeState();
     } catch (error) {
@@ -149,8 +158,11 @@ function sanitizeState() {
     if (currentIndex >= orderedLocations.length) currentIndex = Math.max(0, orderedLocations.length - 1);
     orderedLocations.forEach(loc => {
         if (!Array.isArray(window.checkedState[loc])) window.checkedState[loc] = [];
+        if (!Array.isArray(window.scannedState[loc])) window.scannedState[loc] = [];
         while (window.checkedState[loc].length < groupedData[loc].length) window.checkedState[loc].push(false);
+        while (window.scannedState[loc].length < groupedData[loc].length) window.scannedState[loc].push(false);
         window.checkedState[loc] = window.checkedState[loc].slice(0, groupedData[loc].length);
+        window.scannedState[loc] = window.scannedState[loc].slice(0, groupedData[loc].length);
     });
 }
 
@@ -201,7 +213,8 @@ function renderRows(loc, items) {
         if (window.checkedState[loc][index]) tr.classList.add('done');
         const partTd = document.createElement('td');
         partTd.className = 'part-number';
-        partTd.textContent = part;
+        if (window.scannedState[loc]?.[index]) { const dot=document.createElement('span'); dot.className='scanned-dot'; dot.title='Agregado por foto'; partTd.append(dot); }
+        const text=document.createElement('span'); text.textContent=part; partTd.append(text);
         partTd.onclick = () => makeEditable(partTd, loc, index, 0);
         const qtyTd = document.createElement('td');
         qtyTd.textContent = qty;
@@ -246,7 +259,7 @@ function updateOverallProgress() {
 
 function makeEditable(td, loc, row, col) {
     if (td.querySelector('input')) return;
-    const original = td.textContent,
+    const original = groupedData[loc][row][col],
         input = document.createElement('input');
     input.className = 'editable-input';
     input.value = original;
@@ -289,6 +302,7 @@ function addLocation() {
     }
     groupedData[loc] = [];
     window.checkedState[loc] = [];
+    window.scannedState[loc] = [];
     orderedLocations.push(loc);
     orderedLocations.sort((a, b) => a.localeCompare(b, undefined, {
         numeric: true
@@ -391,6 +405,7 @@ function addPart() {
     const loc = orderedLocations[currentIndex];
     groupedData[loc].push([part, qty]);
     window.checkedState[loc].push(false);
+    window.scannedState[loc].push(false);
     partInput.value = '';
     qtyInput.value = '';
     document.getElementById('partSearchResults').innerHTML = '';
@@ -419,6 +434,7 @@ function confirmDelete() {
     } = deleteTarget;
     groupedData[loc].splice(index, 1);
     window.checkedState[loc].splice(index, 1);
+    window.scannedState[loc]?.splice(index, 1);
     deleteTarget = null;
     saveData();
     render();
@@ -453,7 +469,7 @@ function importCSV(event) {
     reader.onload = () => {
         const nextData = {},
             nextOrder = [],
-            nextChecks = {};
+            nextChecks = {}, nextScanned = {};
         String(reader.result).split(/\r?\n/).slice(1).forEach(line => {
             const [locRaw, partRaw, qtyRaw] = parseCSVLine(line);
             const loc = (locRaw || '').trim(),
@@ -464,9 +480,10 @@ function importCSV(event) {
                 nextData[loc] = [];
                 nextOrder.push(loc);
                 nextChecks[loc] = [];
+                nextScanned[loc] = [];
             }
             nextData[loc].push([part, qty]);
-            nextChecks[loc].push(false);
+            nextChecks[loc].push(false); nextScanned[loc].push(false);
         });
         if (!nextOrder.length) {
             toast('El archivo no contiene filas validas', 'red');
@@ -476,7 +493,7 @@ function importCSV(event) {
         orderedLocations = nextOrder.sort((a, b) => a.localeCompare(b, undefined, {
             numeric: true
         }));
-        window.checkedState = nextChecks;
+        window.checkedState = nextChecks; window.scannedState = nextScanned;
         currentIndex = 0;
         saveData();
         render();
@@ -551,12 +568,28 @@ async function shareCSV() {
     downloadCSV();
 }
 
+
+function barcodeText(v){return String(v||'').trim().replace(/\s+/g,'').toUpperCase();}
+function taggedValue(raw,tag){const v=barcodeText(raw);const patterns=[new RegExp('^\\('+tag+'\\)[:=\\-]?(.*)$'),new RegExp('^'+tag+'[:=\\-](.*)$'),new RegExp('^'+tag+'(.*)$')];for(const p of patterns){const m=v.match(p);if(m&&m[1])return m[1];}return '';}
+function chooseStrictLabelData(values){let part='',qty='';for(const raw of values){const p=taggedValue(raw,'P');if(p&&/[A-Z]/.test(p)&&/\d/.test(p)&&/^[A-Z0-9._\-/]+$/.test(p))part=p;const q=taggedValue(raw,'Q').replace(/EA$/,'');if(q&&/^\d+(?:\.\d+)?$/.test(q)&&Number(q)>0)qty=String(Number(q));}if(!part){part=values.map(barcodeText).filter(v=>!/^[(]?[QVSM][):=\-]?/.test(v)&&/[A-Z]/.test(v)&&/\d/.test(v)&&/^[A-Z0-9._\-/]+$/.test(v)).sort((a,b)=>b.length-a.length)[0]||'';}return{part,qty};}
+function canvasFrom(img){const max=2200,scale=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight)),cv=document.createElement('canvas');cv.width=Math.round(img.naturalWidth*scale);cv.height=Math.round(img.naturalHeight*scale);cv.getContext('2d',{willReadFrequently:true}).drawImage(img,0,0,cv.width,cv.height);return cv;}
+function enhance(source,contrast=1.45,brightness=8,threshold=null){const cv=document.createElement('canvas');cv.width=source.width;cv.height=source.height;const x=cv.getContext('2d',{willReadFrequently:true});x.drawImage(source,0,0);const im=x.getImageData(0,0,cv.width,cv.height),d=im.data;for(let i=0;i<d.length;i+=4){let g=.299*d[i]+.587*d[i+1]+.114*d[i+2];g=Math.max(0,Math.min(255,(g-128)*contrast+128+brightness));if(threshold!==null)g=g>=threshold?255:0;d[i]=d[i+1]=d[i+2]=g;}x.putImageData(im,0,0);return cv;}
+async function fastDetect(img){const base=canvasFrom(img),sources=[base,enhance(base,1.4,8),enhance(base,1.2,0,135)],hits=[];for(const source of sources){try{for(const r of await labelDetector.detect(source)){const v=barcodeText(r.rawValue);if(v)hits.push(v);}}catch(e){console.warn('Detection pass skipped',e);}}return[...new Set(hits)];}
+function labelMessage(t,type=''){const e=document.getElementById('scannerMessage');e.textContent=t;e.className='scanner-message'+(type?' '+type:'');}
+function resetLabelPhoto(){labelBusy=false;const i=document.getElementById('labelPhotoInput');if(i)i.value='';if(labelUrl)URL.revokeObjectURL(labelUrl);labelUrl='';document.getElementById('photoPanel').hidden=true;document.getElementById('scannerPartValue').textContent='Pendiente';document.getElementById('scannerQtyValue').textContent='Pendiente';document.getElementById('scannerRawValue').textContent='Ninguno';labelMessage('Toma una foto clara de la etiqueta completa.');}
+async function setupLabelDetector(){if(!('BarcodeDetector'in window))throw Error('unsupported');const s=await BarcodeDetector.getSupportedFormats();const f=['code_128','code_39','code_93','codabar'].filter(x=>s.includes(x));labelDetector=new BarcodeDetector(f.length?{formats:f}:undefined);}
+async function openLabelPhoto(){if(!orderedLocations.length){toast('Importa un CSV o crea una ubicacion primero','orange');return;}resetLabelPhoto();M.Modal.getInstance(document.getElementById('scanner-modal'))?.open();try{await setupLabelDetector();}catch(e){labelMessage('Usa Chrome en Android mediante HTTPS o como PWA instalada.','warning');}}
+async function analyzeLabelPhoto(e){const file=e.target.files?.[0];if(!file||labelBusy)return;labelBusy=true;labelMessage('Analizando etiqueta...');labelUrl=URL.createObjectURL(file);const img=document.getElementById('labelPhotoPreview');img.src=labelUrl;document.getElementById('photoPanel').hidden=false;try{await img.decode();if(!labelDetector)await setupLabelDetector();const vals=await fastDetect(img);document.getElementById('scannerRawValue').textContent=vals.join(' | ')||'Ninguno';const{part,qty}=chooseStrictLabelData(vals);document.getElementById('scannerPartValue').textContent=part||'No detectado';document.getElementById('scannerQtyValue').textContent=qty||'No detectada';if(!part||!qty){labelBusy=false;labelMessage(!qty?'No se encontro un codigo marcado Q. Toma otra foto mas cerca y enfocada.':'No se encontro el codigo P. Toma otra foto mas cerca y enfocada.','warning');return;}labelMessage(`Detectado: ${part}, cantidad ${qty}`,'success');savePhotoMaterial(part,qty);setTimeout(closeLabelPhoto,650);}catch(err){console.error(err);labelBusy=false;labelMessage('No se pudo leer la foto. Intenta con mejor enfoque.','warning');}}
+function closeLabelPhoto(){labelDetector=null;M.Modal.getInstance(document.getElementById('scanner-modal'))?.close();setTimeout(resetLabelPhoto,200);}
+function savePhotoMaterial(part,qty){const loc=orderedLocations[currentIndex];if(!Array.isArray(window.scannedState[loc]))window.scannedState[loc]=[];const i=groupedData[loc].findIndex(([p])=>barcodeText(p)===part);if(i>=0){groupedData[loc][i][1]=qty;window.scannedState[loc][i]=true;}else{groupedData[loc].push([part,qty]);window.checkedState[loc].push(false);window.scannedState[loc].push(true);}saveData();render();toast(`${part}, cantidad ${qty}, guardado en ${loc}`,'blue');}
+
 function clearStoredData() {
     // Clear both the stored copy and every in-memory reference.
     localStorage.removeItem(STORAGE_KEY);
     groupedData = {};
     orderedLocations = [];
     window.checkedState = {};
+    window.scannedState = {};
     currentIndex = 0;
     deleteTarget = null;
 
