@@ -68,7 +68,6 @@
                         <strong id="overallDone">0</strong><span id="overallTotal">de 0 verificados</span>
                     </div>
                     </div>
-                    <div class="table-scan-toolbar"><button id="openScannerBtn" class="btn blue darken-4" type="button">▣ Fotografiar etiqueta</button><span>Detecta Parte y Cantidad en una foto</span></div>
                     <div class="table-panel">
                         <div class="table-scroll">
                             <table class="verify-table">
@@ -86,6 +85,7 @@
                         </div>
                     </div>
                     <div id="add-part-panel" class="add-part-panel" aria-hidden="false">
+                        <button id="openScannerBtn" class="btn blue darken-4 scanner-form-button" type="button">▣ Fotografiar etiqueta</button>
                         <div class="mobile-sheet-heading">
                             <div>
                                 <span class="eyebrow">Ubicacion actual</span>
@@ -142,19 +142,44 @@
             </div>
         </div>
 		
-        <div id="scanner-modal" class="modal scanner-modal" role="dialog" aria-modal="true" aria-labelledby="scanner-title">
-            <div class="modal-content">
-                <div class="modal-heading"><div><span class="eyebrow">Lectura dirigida sin conexion</span><h4 id="scanner-title">Fotografiar etiqueta</h4></div><button id="closeScannerBtn" class="close-button" type="button" aria-label="Cerrar">&times;</button></div>
-                <p>Incluye la etiqueta completa y mantenla horizontal. Se analizaran por separado las zonas de Parte y Cantidad.</p>
-                <label class="photo-button btn blue darken-4">▣ Tomar foto<input id="labelPhotoInput" type="file" accept="image/*" capture="environment"></label>
-                <div id="photoPanel" class="photo-panel" hidden><img id="labelPhotoPreview" alt="Foto de etiqueta"><div class="crop-guide part-guide"><span>Parte</span></div><div class="crop-guide qty-guide"><span>Cantidad</span></div></div>
-                <div id="scannerMessage" class="scanner-message" role="status">Toma una foto clara de la etiqueta completa.</div>
-                <div class="detected-values"><label><small>Numero de parte</small><input id="scannerPartValue" type="text" autocapitalize="characters" placeholder="No detectado"></label><label><small>Cantidad</small><input id="scannerQtyValue" type="number" min="1" inputmode="numeric" placeholder="No detectada"></label></div>
-                <div id="scannerPartWarning" class="scanner-warning" hidden>La parte no coincide exactamente con el catalogo local. Revisa los caracteres.</div>
-                <details><summary>Valores detectados</summary><code id="scannerRawValue">Ninguno</code></details>
-                <div class="scanner-actions"><button id="resetScannerBtn" class="btn-flat" type="button">Otra foto</button><button id="useScannerBtn" class="btn green" type="button" disabled>Agregar a ubicacion</button><button id="stopScannerBtn" class="btn red lighten-1" type="button">Cancelar</button></div>
-            </div>
-        </div>
+        <div id="scanner-modal" class="modal scanner-modal">
+		  <div class="modal-content">
+			<div class="modal-heading">
+			  <div>
+				<span class="eyebrow">Lectura rapida sin conexion</span>
+				<h4>Fotografiar etiqueta</h4>
+			  </div>
+			  <button id="closeScannerBtn" class="close-button" type="button" aria-label="Cerrar">&times;</button>
+			</div>
+			<p>Incluye completos los codigos <strong>Part No. (P)</strong> y <strong>Quantity (Q)</strong>. </p>
+			<label class="photo-button btn blue darken-4">▣ Tomar foto <input id="labelPhotoInput" type="file" accept="image/*" capture="environment">
+			</label>
+			<div id="photoPanel" class="photo-panel" hidden>
+			  <img id="labelPhotoPreview" alt="Foto de etiqueta">
+			</div>
+			<div id="scannerMessage" class="scanner-message" role="status">Toma una foto clara de la etiqueta completa.</div>
+			<div class="detected-values">
+			  <div>
+				<small>Numero de parte</small>
+				<input id="scannerPartValue" type="text" autocapitalize="characters" placeholder="No detectado">
+			  </div>
+			  <div>
+				<small>Cantidad</small>
+				<input id="scannerQtyValue" type="number" min="1" inputmode="numeric" placeholder="No detectada">
+			  </div>
+			</div>
+			<details>
+			  <summary>Valores detectados</summary>
+			  <code id="scannerRawValue">Ninguno</code>
+			</details>
+			<div class="scanner-actions">
+			  <button id="resetScannerBtn" class="btn-flat" type="button">Otra foto</button>
+              <button id="useScannerBtn" class="btn green" type="button" disabled>Usar datos</button>
+			  <button id="stopScannerBtn" class="btn red lighten-1">Cancelar</button>
+			</div>
+		  </div>
+		</div>
+		
         <div id="settings-modal" class="modal settings-modal">
             <div class="modal-content">
                 <div class="modal-heading">
