@@ -2,6 +2,10 @@ let allPartsIndex = [];
 let partSearchModalInstance = null;
 let itemToDelete = null;
 const STORAGE_KEY = 'ajuste_entries';
+let labelDetector = null;
+let labelPhotoUrl = '';
+let labelScannerBusy = false;
+let pendingLabelResult = null;
 const rackRanges = {
     'Rack 1': [121, 140],
     'Rack 2': [221, 240],
@@ -52,6 +56,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('open-capture-button').addEventListener('click', openCaptureSheet);
     document.getElementById('close-capture-button').addEventListener('click', closeCaptureSheet);
     document.getElementById('capture-backdrop').addEventListener('click', closeCaptureSheet);
+    document.getElementById('open-label-scanner')?.addEventListener('click', openLabelScanner);
+    document.getElementById('close-label-scanner')?.addEventListener('click', closeLabelScanner);
+    document.getElementById('cancel-label-scanner')?.addEventListener('click', closeLabelScanner);
+    document.getElementById('reset-label-scanner')?.addEventListener('click', resetLabelScanner);
+    document.getElementById('use-label-result')?.addEventListener('click', useLabelResult);
+    document.getElementById('label-photo-input')?.addEventListener('change', analyzeLabelPhoto);
     document.addEventListener('keydown', event => {
         if (event.key === 'Escape' && document.getElementById('capture-panel').classList.contains('is-open')) {
             closeCaptureSheet();
@@ -247,7 +257,8 @@ function renderEntry(entry, prepend = false) {
     const copy = document.createElement('span');
     copy.className = 'record-copy';
     const title = document.createElement('strong');
-    title.textContent = entry.part;
+    if (entry.scanned) { const dot = document.createElement('span'); dot.className = 'scanned-dot'; dot.title = 'Agregado por foto'; title.append(dot); }
+    title.append(document.createTextNode(entry.part));
     const detail = document.createElement('small');
     detail.textContent = `Cantidad: ${entry.quantity}${entry.boxes?` · Cajas: ${Number(entry.boxes).toFixed(2)}`:''}`;
     copy.append(title, detail);
@@ -485,6 +496,200 @@ async function shareData() {
         if (error.name === 'AbortError') return;
     }
     downloadData();
+}
+
+
+function normalizeLabelValue(value) {
+    return String(value || '').trim().replace(/\s+/g, '').toUpperCase();
+}
+function extractLabelTag(raw, tag) {
+    const value = normalizeLabelValue(raw);
+    const patterns = [
+        new RegExp(`^\\(${tag}\\)[:=\\-]?(.*)$`),
+        new RegExp(`^${tag}[:=\\-](.*)$`)
+    ];
+    for (const pattern of patterns) {
+        const match = value.match(pattern);
+        if (match?.[1]) return match[1];
+    }
+    return '';
+}
+function makeLabelCanvas(image) {
+    const maxSide = 2200;
+    const scale = Math.min(1, maxSide / Math.max(image.naturalWidth, image.naturalHeight));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(image.naturalWidth * scale);
+    canvas.height = Math.round(image.naturalHeight * scale);
+    canvas.getContext('2d', { willReadFrequently: true }).drawImage(image, 0, 0, canvas.width, canvas.height);
+    return canvas;
+}
+function enhanceLabelCanvas(source, contrast = 1.4, brightness = 8) {
+    const canvas = document.createElement('canvas');
+    canvas.width = source.width;
+    canvas.height = source.height;
+    const context = canvas.getContext('2d', { willReadFrequently: true });
+    context.drawImage(source, 0, 0);
+    const image = context.getImageData(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < image.data.length; i += 4) {
+        let gray = .299 * image.data[i] + .587 * image.data[i + 1] + .114 * image.data[i + 2];
+        gray = Math.max(0, Math.min(255, (gray - 128) * contrast + 128 + brightness));
+        image.data[i] = image.data[i + 1] = image.data[i + 2] = gray;
+    }
+    context.putImageData(image, 0, 0);
+    return canvas;
+}
+async function detectLabelBarcodes(image) {
+    const original = makeLabelCanvas(image);
+    const sources = [original, enhanceLabelCanvas(original)];
+    const detections = [];
+    for (const source of sources) {
+        try {
+            const results = await labelDetector.detect(source);
+            for (const result of results) {
+                const value = normalizeLabelValue(result.rawValue);
+                if (!value) continue;
+                const box = result.boundingBox || { x: 0, y: 0, width: 0, height: 0 };
+                detections.push({
+                    value,
+                    x: box.x / source.width,
+                    y: box.y / source.height,
+                    width: box.width / source.width,
+                    height: box.height / source.height
+                });
+            }
+        } catch (error) {
+            console.warn('Label detection pass skipped', error);
+        }
+    }
+    const unique = new Map();
+    detections.forEach(item => {
+        const previous = unique.get(item.value);
+        if (!previous || item.width > previous.width) unique.set(item.value, item);
+    });
+    return [...unique.values()];
+}
+function knownPartMatch(value) {
+    const normalized = normalizeLabelValue(value);
+    return allPartsIndex.some(item => normalizeLabelValue(item.part) === normalized);
+}
+function classifyLabelDetections(items) {
+    let part = '';
+    let qty = '';
+    for (const item of items) {
+        const taggedPart = extractLabelTag(item.value, 'P');
+        const taggedQty = extractLabelTag(item.value, 'Q').replace(/EA$/, '');
+        if (taggedPart && /[A-Z]/.test(taggedPart) && /\d/.test(taggedPart)) part = taggedPart;
+        if (taggedQty && /^\d+(?:\.\d+)?$/.test(taggedQty) && Number(taggedQty) > 0) qty = String(Number(taggedQty));
+    }
+    if (!part) {
+        const candidates = items.filter(item => {
+            const value = item.value;
+            return !/^[(]?[QVSMT][):=\-]?/.test(value) && /[A-Z]/.test(value) && /\d/.test(value) && /^[A-Z0-9._\-/]+$/.test(value);
+        });
+        candidates.sort((a, b) => {
+            const knownDifference = Number(knownPartMatch(b.value)) - Number(knownPartMatch(a.value));
+            if (knownDifference) return knownDifference;
+            const sizeDifference = b.width - a.width;
+            if (Math.abs(sizeDifference) > .03) return sizeDifference;
+            return b.value.length - a.value.length;
+        });
+        part = candidates[0]?.value || '';
+    }
+    if (!qty) {
+        const numeric = items.filter(item => /^\d+(?:\.\d+)?(?:EA)?$/.test(item.value)).map(item => ({ ...item, number: Number(item.value.replace(/EA$/, '')) })).filter(item => item.number > 0);
+        if (numeric.length) {
+            const partItem = items.find(item => item.value === part);
+            numeric.sort((a, b) => {
+                // For untagged labels, quantity is normally left of the other numeric barcodes
+                // and below the large part barcode. Position is more reliable than largest number.
+                const aBelow = partItem ? Number(a.y > partItem.y) : Number(a.y > .5);
+                const bBelow = partItem ? Number(b.y > partItem.y) : Number(b.y > .5);
+                if (aBelow !== bBelow) return bBelow - aBelow;
+                if (Math.abs(a.x - b.x) > .08) return a.x - b.x;
+                return a.value.length - b.value.length;
+            });
+            qty = String(numeric[0].number);
+        }
+    }
+    return { part, qty };
+}
+function setLabelScannerMessage(text, type = '') {
+    const element = document.getElementById('label-scanner-message');
+    element.textContent = text;
+    element.className = `label-scanner-message${type ? ` ${type}` : ''}`;
+}
+function resetLabelScanner() {
+    labelScannerBusy = false;
+    pendingLabelResult = null;
+    const input = document.getElementById('label-photo-input');
+    if (input) input.value = '';
+    if (labelPhotoUrl) URL.revokeObjectURL(labelPhotoUrl);
+    labelPhotoUrl = '';
+    document.getElementById('label-photo-panel').hidden = true;
+    document.getElementById('label-part-value').textContent = 'Pendiente';
+    document.getElementById('label-qty-value').textContent = 'Pendiente';
+    document.getElementById('label-raw-values').textContent = 'Ninguno';
+    document.getElementById('use-label-result').disabled = true;
+    setLabelScannerMessage('Toma una foto clara de la etiqueta completa.');
+}
+async function setupLabelDetector() {
+    if (!('BarcodeDetector' in window)) throw new Error('BarcodeDetector unavailable');
+    const supported = await BarcodeDetector.getSupportedFormats();
+    const formats = ['code_128', 'code_39', 'code_93', 'codabar', 'itf'].filter(format => supported.includes(format));
+    labelDetector = new BarcodeDetector(formats.length ? { formats } : undefined);
+}
+async function openLabelScanner() {
+    resetLabelScanner();
+    if (mobileCaptureQuery.matches) closeCaptureSheet({ restoreFocus: false });
+    M.Modal.getInstance(document.getElementById('label-scanner-modal'))?.open();
+    try { await setupLabelDetector(); }
+    catch (error) { setLabelScannerMessage('Usa Chrome en Android mediante HTTPS o como PWA instalada.', 'warning'); }
+}
+async function analyzeLabelPhoto(event) {
+    const file = event.target.files?.[0];
+    if (!file || labelScannerBusy) return;
+    labelScannerBusy = true;
+    setLabelScannerMessage('Analizando etiqueta...');
+    if (labelPhotoUrl) URL.revokeObjectURL(labelPhotoUrl);
+    labelPhotoUrl = URL.createObjectURL(file);
+    const image = document.getElementById('label-photo-preview');
+    image.src = labelPhotoUrl;
+    document.getElementById('label-photo-panel').hidden = false;
+    try {
+        await image.decode();
+        if (!labelDetector) await setupLabelDetector();
+        const detections = await detectLabelBarcodes(image);
+        document.getElementById('label-raw-values').textContent = detections.map(item => item.value).join(' | ') || 'Ninguno';
+        const result = classifyLabelDetections(detections);
+        document.getElementById('label-part-value').textContent = result.part || 'No detectado';
+        document.getElementById('label-qty-value').textContent = result.qty || 'No detectada';
+        if (!result.part || !result.qty) {
+            labelScannerBusy = false;
+            setLabelScannerMessage('No se detectaron ambos datos. Toma otra foto mas cerca, paralela y sin reflejos.', 'warning');
+            return;
+        }
+        pendingLabelResult = result;
+        document.getElementById('use-label-result').disabled = false;
+        setLabelScannerMessage(`Detectado: ${result.part}, cantidad ${result.qty}. Revisa y pulsa Usar datos.`, 'success');
+    } catch (error) {
+        console.error('Could not analyze label photo', error);
+        labelScannerBusy = false;
+        setLabelScannerMessage('No se pudo leer la foto. Intenta con mejor enfoque e iluminacion.', 'warning');
+    }
+}
+function useLabelResult() {
+    if (!pendingLabelResult) return;
+    document.getElementById('selectedPart').value = pendingLabelResult.part;
+    document.getElementById('quantity').value = pendingLabelResult.qty;
+    M.updateTextFields();
+    closeLabelScanner();
+    if (mobileCaptureQuery.matches) openCaptureSheet();
+    toast(`Etiqueta leida: <strong>${pendingLabelResult.part} (${pendingLabelResult.qty})</strong>`, 'blue');
+}
+function closeLabelScanner() {
+    labelDetector = null;
+    M.Modal.getInstance(document.getElementById('label-scanner-modal'))?.close();
+    setTimeout(resetLabelScanner, 220);
 }
 
 function renderInlinePartResults() {
