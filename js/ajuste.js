@@ -232,11 +232,13 @@ function addEntry() {
             rack,
             part,
             quantity,
-            boxes
+            boxes,
+            scanned: document.getElementById('selectedPart').dataset.scanned === 'true'
         };
     renderEntry(entry, true);
     saveEntriesToLocalStorage();
     document.getElementById('selectedPart').value = '';
+    delete document.getElementById('selectedPart').dataset.scanned;
     document.getElementById('quantity').value = '';
     document.getElementById('partSearchResults').innerHTML = '';
     M.updateTextFields();
@@ -507,20 +509,35 @@ async function shareData() {
 
 
 function normalizeLabelValue(value) {
-    return String(value || '').trim().replace(/\s+/g, '').toUpperCase();
+    return String(value || '').replace(/[\x00-\x1F\x7F]/g, '').trim().replace(/\s+/g, '').toUpperCase();
 }
 
 function extractLabelTag(rawValue, tag) {
     const value = normalizeLabelValue(rawValue);
-    const patterns = [
-        new RegExp(`^\\(${tag}\\)[:=\\-]?(.*)$`),
-        new RegExp(`^${tag}[:=\\-](.*)$`)
-    ];
-    for (const pattern of patterns) {
-        const match = value.match(pattern);
-        if (match?.[1]) return match[1];
+    const wrapped = value.match(new RegExp(`^\\(${tag}\\)[:=\\-]?(.*)$`));
+    if (wrapped?.[1]) return wrapped[1];
+    const separated = value.match(new RegExp(`^${tag}[:=\\-](.*)$`));
+    if (separated?.[1]) return separated[1];
+    // Quantity barcodes commonly encode Q500 with no separator.
+    if (tag === 'Q') {
+        const compact = value.match(/^Q(\d+(?:\.\d+)?)(?:EA)?$/);
+        if (compact?.[1]) return compact[1];
     }
     return '';
+}
+
+function normalizeDetectedPart(value) {
+    const raw = normalizeLabelValue(value);
+    const tagged = extractLabelTag(raw, 'P');
+    if (tagged) return tagged;
+    // Some suppliers encode P immediately before the real part without punctuation.
+    // Strip it only when the remaining value is a known local part, or follows the
+    // observed Lear pattern PL... where the actual part begins with L.
+    if (raw.startsWith('P') && raw.length > 7) {
+        const withoutP = raw.slice(1);
+        if (knownPartMatch(withoutP) || /^L[A-Z0-9._\-/]*\d[A-Z0-9._\-/]*$/.test(withoutP)) return withoutP;
+    }
+    return raw;
 }
 
 function isValidLabelPart(value) {
@@ -635,8 +652,9 @@ function combineLabelDetections(detections) {
 async function detectLabelBarcodes(image) {
     const sourceCanvas = makeLabelCanvas(image);
     const regions = [
-        { name: 'part', x: .06, y: .34, width: .70, height: .37 },
-        { name: 'quantity', x: .01, y: .58, width: .45, height: .40 }
+        { name: 'part', x: .05, y: .31, width: .73, height: .40 },
+        { name: 'quantity', x: 0, y: .60, width: .42, height: .38 },
+        { name: 'quantity', x: 0, y: .52, width: .50, height: .46 }
     ];
     const detections = [];
     for (const region of regions) {
@@ -650,11 +668,18 @@ async function detectLabelBarcodes(image) {
             height: result.height * region.height
         })));
     }
-    const hasPart = detections.some(item => item.region === 'part');
-    const hasQuantity = detections.some(item => item.region === 'quantity');
-    if (!hasPart || !hasQuantity) {
-        detections.push(...await detectRegionWithEnhancement(sourceCanvas, 'full'));
-    }
+    // One original full-image pass finds tagged P/Q barcodes on other layouts.
+    try {
+        const fullResults = await labelDetector.detect(sourceCanvas);
+        for (const result of fullResults) {
+            const value = normalizeLabelValue(result.rawValue);
+            if (!value) continue;
+            const box = result.boundingBox || { x: 0, y: 0, width: sourceCanvas.width, height: sourceCanvas.height };
+            detections.push({ value, format: result.format || '', pass: 'original', region: 'full',
+                x: box.x / sourceCanvas.width, y: box.y / sourceCanvas.height,
+                width: box.width / sourceCanvas.width, height: box.height / sourceCanvas.height });
+        }
+    } catch (error) { console.warn('Full label pass skipped', error); }
     return combineLabelDetections(detections);
 }
 
@@ -685,25 +710,39 @@ function classifyLabelDetections(items) {
     for (const item of items) {
         const taggedPart = extractLabelTag(item.value, 'P');
         const taggedQuantity = extractLabelTag(item.value, 'Q').replace(/EA$/, '');
-        if (taggedPart && isValidLabelPart(taggedPart)) part = taggedPart;
+        if (taggedPart && isValidLabelPart(taggedPart)) part = normalizeDetectedPart(taggedPart);
         if (taggedQuantity && isValidLabelQuantity(taggedQuantity)) qty = String(Number(taggedQuantity));
     }
     if (!part) {
-        const candidates = items.filter(item => item.region === 'part' && isValidLabelPart(item.value) && !hasExcludedLabelPrefix(item.value));
+        const candidates = items
+            .filter(item => item.region === 'part')
+            .map(item => ({ ...item, value: normalizeDetectedPart(item.value) }))
+            .filter(item => isValidLabelPart(item.value) && !hasExcludedLabelPrefix(item.value));
         candidates.sort(comparePartCandidates);
         part = candidates[0]?.value || '';
     }
     if (!part) {
-        const candidates = items.filter(item => item.region === 'full' && isValidLabelPart(item.value) && !hasExcludedLabelPrefix(item.value));
+        const candidates = items
+            .filter(item => item.region === 'full')
+            .map(item => ({ ...item, value: normalizeDetectedPart(item.value) }))
+            .filter(item => isValidLabelPart(item.value) && !hasExcludedLabelPrefix(item.value));
         candidates.sort(comparePartCandidates);
         part = candidates[0]?.value || '';
     }
     if (!qty) {
-        const candidates = items.filter(item => item.region === 'quantity' && isValidLabelQuantity(item.value));
+        let candidates = items.filter(item => item.region === 'quantity' &&
+            isValidLabelQuantity(item.value) &&
+            normalizeLabelValue(item.value).replace(/EA$/, '').length <= 7);
         candidates.sort(compareQuantityCandidates);
-        if (candidates.length) qty = String(Number(candidates[0].value.replace(/EA$/, '')));
+        if (!candidates.length) {
+            candidates = items.filter(item => item.region === 'full' && item.x < .52 && item.y > .48 &&
+                isValidLabelQuantity(item.value) &&
+                normalizeLabelValue(item.value).replace(/EA$/, '').length <= 7);
+            candidates.sort(compareQuantityCandidates);
+        }
+        if (candidates.length) qty = String(Number(normalizeLabelValue(candidates[0].value).replace(/EA$/, '')));
     }
-    return { part, qty };
+    return { part: normalizeDetectedPart(part), qty };
 }
 
 function setLabelScannerMessage(text, type = '') {
@@ -793,6 +832,7 @@ function useLabelResult() {
     if (!isValidLabelPart(part) || !isValidLabelQuantity(qty)) return;
     document.getElementById('selectedPart').value = part;
     document.getElementById('quantity').value = String(Number(qty));
+    document.getElementById('selectedPart').dataset.scanned = 'true';
     M.updateTextFields();
     closeLabelScanner();
     if (mobileCaptureQuery.matches) openCaptureSheet();
