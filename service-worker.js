@@ -8,7 +8,7 @@
  *   2026.09.03.1
  *   2026.09.03.2
  */
-const VERSION = '2026.09.04.1';
+const VERSION = '2026.09.03.1';
 
 const STATIC_CACHE = `static-${VERSION}`;
 const DYNAMIC_CACHE = `dynamic-${VERSION}`;

@@ -146,21 +146,38 @@
         <div id="label-scanner-modal" class="modal label-scanner-modal" role="dialog" aria-modal="true" aria-labelledby="label-scanner-title">
             <div class="modal-content">
                 <div class="modal-heading">
-                    <div><span class="eyebrow">Lectura sin conexion</span><h4 id="label-scanner-title">Fotografiar etiqueta</h4></div>
+                    <div>
+                        <span class="eyebrow">Lectura dirigida sin conexion</span>
+                        <h4 id="label-scanner-title">Fotografiar etiqueta</h4>
+                    </div>
                     <button id="close-label-scanner" class="close-button" type="button" aria-label="Cerrar">&times;</button>
                 </div>
-                <p class="label-scanner-help">Incluye completos los codigos de Parte (P) y Cantidad (Q). Tambien reconoce etiquetas sin prefijos usando la posicion de cada codigo.</p>
+                <p class="label-scanner-help">Incluye la etiqueta completa y mantenla lo mas horizontal posible. Se analizaran por separado las zonas de Parte y Cantidad.</p>
                 <label class="label-photo-button btn blue darken-4">
                     <span aria-hidden="true">▣</span> Tomar foto
                     <input id="label-photo-input" type="file" accept="image/*" capture="environment">
                 </label>
-                <div id="label-photo-panel" class="label-photo-panel" hidden><img id="label-photo-preview" alt="Foto de la etiqueta"></div>
+                <div id="label-photo-panel" class="label-photo-panel" hidden>
+                    <img id="label-photo-preview" alt="Foto de la etiqueta">
+                    <div class="label-crop-guide part-guide"><span>Parte</span></div>
+                    <div class="label-crop-guide quantity-guide"><span>Cantidad</span></div>
+                </div>
                 <div id="label-scanner-message" class="label-scanner-message" role="status">Toma una foto clara de la etiqueta completa.</div>
                 <div class="label-detected-values">
-                    <div><small>Numero de parte</small><strong id="label-part-value">Pendiente</strong></div>
-                    <div><small>Cantidad</small><strong id="label-qty-value">Pendiente</strong></div>
+                    <label>
+                        <small>Numero de parte</small>
+                        <input id="label-part-value" type="text" autocomplete="off" autocapitalize="characters" placeholder="No detectado">
+                    </label>
+                    <label>
+                        <small>Cantidad</small>
+                        <input id="label-qty-value" type="number" min="1" step="1" inputmode="numeric" placeholder="No detectada">
+                    </label>
                 </div>
-                <details class="label-diagnostics"><summary>Valores detectados</summary><code id="label-raw-values">Ninguno</code></details>
+                <div id="label-part-warning" class="label-part-warning" hidden>La parte no coincide exactamente con el catalogo local. Revisa los caracteres antes de continuar.</div>
+                <details class="label-diagnostics">
+                    <summary>Valores detectados</summary>
+                    <code id="label-raw-values">Ninguno</code>
+                </details>
                 <div class="label-scanner-actions">
                     <button id="reset-label-scanner" class="btn-flat" type="button">Otra foto</button>
                     <button id="use-label-result" class="btn green" type="button" disabled>Usar datos</button>
