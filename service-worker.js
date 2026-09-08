@@ -3,12 +3,9 @@
 /*
  * SERVICE WORKER VERSION
  *
- * Change this value every time you deploy updated files.
- * Examples:
- *   2026.09.03.1
- *   2026.09.03.2
+ * Change this value whenever you deploy updated files.
  */
-const VERSION = '2026.09.04.6';
+const VERSION = '2026.09.08.1';
 
 const STATIC_CACHE = `static-${VERSION}`;
 const DYNAMIC_CACHE = `dynamic-${VERSION}`;
@@ -16,9 +13,11 @@ const DYNAMIC_CACHE = `dynamic-${VERSION}`;
 const MAX_DYNAMIC_CACHE_ITEMS = 50;
 
 /*
- * ESSENTIAL OFFLINE FILES
+ * STATIC ASSETS
  *
- * Make sure every path below exists.
+ * Every path should exist on the server.
+ * Missing files will be reported in the console but will not
+ * prevent the remaining files from being cached.
  */
 const STATIC_ASSETS = [
   // Main page
@@ -92,10 +91,7 @@ const STATIC_ASSETS = [
 /*
  * INSTALL
  *
- * Cache essential application files.
- *
- * Files are cached individually so that one missing file
- * does not prevent the entire service worker from installing.
+ * Cache the application shell.
  */
 self.addEventListener('install', event => {
   console.log(`[SW] Installing version ${VERSION}`);
@@ -104,12 +100,8 @@ self.addEventListener('install', event => {
     (async () => {
       const cache = await caches.open(STATIC_CACHE);
 
-      for (const asset of STATIC_ASSETS) {
-        try {
-          /*
-           * Request the newest file from the server instead
-           * of using the browser's normal HTTP cache.
-           */
+      const results = await Promise.allSettled(
+        STATIC_ASSETS.map(async asset => {
           const request = new Request(asset, {
             cache: 'reload'
           });
@@ -118,25 +110,49 @@ self.addEventListener('install', event => {
 
           if (!response.ok) {
             throw new Error(
-              `HTTP ${response.status} ${response.statusText}`
+              `${asset}: HTTP ${response.status} ${response.statusText}`
             );
           }
 
-          await cache.put(asset, response);
+          await cache.put(request, response);
 
           console.log('[SW] Cached:', asset);
-        } catch (error) {
-          console.warn(
-            '[SW] Failed to cache:',
-            asset,
-            error
-          );
-        }
+
+          return asset;
+        })
+      );
+
+      const failedAssets = results
+        .filter(result => result.status === 'rejected')
+        .map(result => result.reason);
+
+      if (failedAssets.length > 0) {
+        console.warn(
+          `[SW] ${failedAssets.length} file(s) failed to cache:`,
+          failedAssets
+        );
       }
 
       /*
-       * Activate this new service worker without waiting
-       * for all previously opened tabs to close.
+       * Verify that the main offline page was cached.
+       * Without index.html, navigation would not have a reliable fallback.
+       */
+      const cachedIndex = await cache.match('/index.html');
+
+      if (!cachedIndex) {
+        throw new Error(
+          '[SW] Installation failed because /index.html was not cached.'
+        );
+      }
+
+      const cachedRequests = await cache.keys();
+
+      console.log(
+        `[SW] Static cache contains ${cachedRequests.length} file(s).`
+      );
+
+      /*
+       * Activate the new service worker immediately.
        */
       await self.skipWaiting();
     })()
@@ -146,7 +162,7 @@ self.addEventListener('install', event => {
 /*
  * ACTIVATE
  *
- * Delete caches created by older service-worker versions.
+ * Delete old application caches and take control of open pages.
  */
 self.addEventListener('activate', event => {
   console.log(`[SW] Activating version ${VERSION}`);
@@ -162,11 +178,7 @@ self.addEventListener('activate', event => {
             cacheName === DYNAMIC_CACHE;
 
           if (!isCurrentCache) {
-            console.log(
-              '[SW] Deleting old cache:',
-              cacheName
-            );
-
+            console.log('[SW] Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
 
@@ -174,12 +186,9 @@ self.addEventListener('activate', event => {
         })
       );
 
-      /*
-       * Immediately control all open pages within scope.
-       */
       await self.clients.claim();
 
-      console.log(`[SW] Version ${VERSION} is active`);
+      console.log(`[SW] Version ${VERSION} is active.`);
     })()
   );
 });
@@ -187,8 +196,7 @@ self.addEventListener('activate', event => {
 /*
  * LIMIT DYNAMIC CACHE
  *
- * Delete the oldest dynamically cached entries when the
- * maximum cache size is exceeded.
+ * Remove the oldest cached entries when the limit is exceeded.
  */
 async function limitCacheSize(cacheName, maxItems) {
   const cache = await caches.open(cacheName);
@@ -204,7 +212,7 @@ async function limitCacheSize(cacheName, maxItems) {
 }
 
 /*
- * DETERMINE WHETHER A RESPONSE CAN BE CACHED
+ * CHECK WHETHER A RESPONSE CAN BE CACHED
  */
 function canCacheResponse(request, response) {
   if (!response || !response.ok) {
@@ -213,23 +221,15 @@ function canCacheResponse(request, response) {
 
   const requestUrl = new URL(request.url);
 
-  /*
-   * Only cache resources from this website.
-   */
   if (requestUrl.origin !== self.location.origin) {
     return false;
   }
 
-  /*
-   * "basic" means a normal same-origin response.
-   */
   return response.type === 'basic';
 }
 
 /*
- * SAVE RESPONSE
- *
- * Save a successful response in the selected cache.
+ * SAVE A RESPONSE
  */
 async function saveResponse(cacheName, request, response) {
   if (!canCacheResponse(request, response)) {
@@ -249,14 +249,51 @@ async function saveResponse(cacheName, request, response) {
 }
 
 /*
- * NETWORK-FIRST STRATEGY
+ * FIND A CACHED RESPONSE
  *
- * Used for HTML pages and other files where freshness
- * is more important than instant cached loading.
+ * Search the static cache first, then the dynamic cache.
+ */
+async function findCachedResponse(request) {
+  const staticCache = await caches.open(STATIC_CACHE);
+  const dynamicCache = await caches.open(DYNAMIC_CACHE);
+
+  let cachedResponse = await staticCache.match(request);
+
+  if (cachedResponse) {
+    return cachedResponse;
+  }
+
+  cachedResponse = await dynamicCache.match(request);
+
+  if (cachedResponse) {
+    return cachedResponse;
+  }
+
+  /*
+   * Try matching only the pathname.
+   *
+   * This helps when the requested URL contains query parameters,
+   * such as /scan.html?source=pwa.
+   */
+  const requestUrl = new URL(request.url);
+  const pathname = requestUrl.pathname;
+
+  cachedResponse = await staticCache.match(pathname);
+
+  if (cachedResponse) {
+    return cachedResponse;
+  }
+
+  return dynamicCache.match(pathname);
+}
+
+/*
+ * NETWORK-FIRST
  *
+ * Used for HTML navigation:
  * 1. Try the network.
- * 2. Save the newest response.
- * 3. If offline, return the cached response.
+ * 2. Cache the newest response.
+ * 3. Use the cache when offline.
  */
 async function networkFirst(request) {
   try {
@@ -278,23 +315,25 @@ async function networkFirst(request) {
       error
     );
 
-    const cachedResponse = await caches.match(request);
+    const cachedResponse = await findCachedResponse(request);
 
     if (cachedResponse) {
       return cachedResponse;
     }
 
     /*
-     * If an HTML page is unavailable, return the
-     * cached home page as an offline fallback.
+     * Return the cached home page when a requested HTML page
+     * is not available offline.
      */
     if (
       request.mode === 'navigate' ||
       request.destination === 'document'
     ) {
+      const staticCache = await caches.open(STATIC_CACHE);
+
       const indexFallback =
-        await caches.match('/index.html') ||
-        await caches.match('/');
+        await staticCache.match('/index.html') ||
+        await staticCache.match('/');
 
       if (indexFallback) {
         return indexFallback;
@@ -308,16 +347,15 @@ async function networkFirst(request) {
 }
 
 /*
- * STALE-WHILE-REVALIDATE STRATEGY
+ * STALE-WHILE-REVALIDATE
  *
- * Used for CSS, JavaScript, images, fonts and JSON.
- *
- * 1. Return the cached response immediately, if available.
- * 2. Request the newest version in the background.
- * 3. Save the newest version for the next request.
+ * Used for CSS, JavaScript, images, fonts, JSON and manifests:
+ * 1. Return the cached response immediately.
+ * 2. Update the cache in the background.
+ * 3. Use the network directly if no cached response exists.
  */
 async function staleWhileRevalidate(request, event) {
-  const cachedResponse = await caches.match(request);
+  const cachedResponse = await findCachedResponse(request);
 
   const networkPromise = fetch(request, {
     cache: 'no-store'
@@ -341,10 +379,6 @@ async function staleWhileRevalidate(request, event) {
       return null;
     });
 
-  /*
-   * Keep the background cache update alive even after
-   * returning the cached response to the page.
-   */
   if (cachedResponse) {
     event.waitUntil(networkPromise);
     return cachedResponse;
@@ -360,86 +394,207 @@ async function staleWhileRevalidate(request, event) {
 }
 
 /*
+ * CACHE-FIRST
+ *
+ * Used for files that rarely change, such as icons.
+ */
+async function cacheFirst(request) {
+  const cachedResponse = await findCachedResponse(request);
+
+  if (cachedResponse) {
+    return cachedResponse;
+  }
+
+  try {
+    const networkResponse = await fetch(request);
+
+    await saveResponse(
+      DYNAMIC_CACHE,
+      request,
+      networkResponse
+    );
+
+    return networkResponse;
+  } catch (error) {
+    console.warn(
+      '[SW] Resource unavailable offline:',
+      request.url,
+      error
+    );
+
+    return createOfflineResponse();
+  }
+}
+
+/*
+ * FETCH
+ *
+ * Intercept requests made by controlled pages.
+ */
+self.addEventListener('fetch', event => {
+  const request = event.request;
+
+  /*
+   * Cache only GET requests.
+   */
+  if (request.method !== 'GET') {
+    return;
+  }
+
+  const requestUrl = new URL(request.url);
+
+  /*
+   * Ignore browser extension requests and unsupported protocols.
+   */
+  if (
+    requestUrl.protocol !== 'http:' &&
+    requestUrl.protocol !== 'https:'
+  ) {
+    return;
+  }
+
+  /*
+   * HTML navigation uses network-first so pages stay current
+   * while still working offline.
+   */
+  if (
+    request.mode === 'navigate' ||
+    request.destination === 'document'
+  ) {
+    event.respondWith(networkFirst(request));
+    return;
+  }
+
+  /*
+   * CSS, JavaScript, JSON and manifests use
+   * stale-while-revalidate.
+   */
+  if (
+    request.destination === 'style' ||
+    request.destination === 'script' ||
+    request.destination === 'manifest' ||
+    requestUrl.pathname.endsWith('.json')
+  ) {
+    event.respondWith(
+      staleWhileRevalidate(request, event)
+    );
+    return;
+  }
+
+  /*
+   * Images and fonts use cache-first.
+   */
+  if (
+    request.destination === 'image' ||
+    request.destination === 'font'
+  ) {
+    event.respondWith(cacheFirst(request));
+    return;
+  }
+
+  /*
+   * Other same-origin GET requests use network-first.
+   */
+  if (requestUrl.origin === self.location.origin) {
+    event.respondWith(networkFirst(request));
+  }
+});
+
+/*
  * OFFLINE HTML PAGE
  */
 function createOfflinePage() {
-  return new Response(
-    `<!DOCTYPE html>
+  const offlineHtml = `
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1"
-    >
-    <meta name="theme-color" content="#ffffff">
-    <title>Offline</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <title>Offline</title>
 
-    <style>
-      * {
-        box-sizing: border-box;
-      }
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-      body {
-        min-height: 100vh;
-        margin: 0;
-        padding: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: Arial, sans-serif;
-        color: #202124;
-        background: #f5f7fa;
-      }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      color: #202124;
+      background: #f5f7fa;
+    }
 
-      main {
-        width: 100%;
-        max-width: 480px;
-        padding: 32px;
-        text-align: center;
-        background: #ffffff;
-        border-radius: 16px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-      }
+    main {
+      width: 100%;
+      max-width: 480px;
+      padding: 32px;
+      text-align: center;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
 
-      h1 {
-        margin-top: 0;
-      }
+    h1 {
+      margin-top: 0;
+    }
 
-      p {
-        line-height: 1.6;
-      }
+    p {
+      line-height: 1.6;
+    }
 
-      button {
-        margin-top: 12px;
-        padding: 12px 20px;
-        color: #ffffff;
-        background: #1565c0;
-        border: 0;
-        border-radius: 8px;
-        font-size: 16px;
-        cursor: pointer;
-      }
-    </style>
-  </head>
+    button {
+      margin-top: 12px;
+      padding: 12px 20px;
+      color: #ffffff;
+      background: #1565c0;
+      border: 0;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
 
-  <body>
-    <main>
-      <h1>You are offline</h1>
+<body>
+  <main>
+    <h1>You are offline</h1>
 
-      <p>
-        This page is not currently available. Check your
-        connection and try again.
-      </p>
+    <p>
+      This page is not currently available. Check your
+      connection and try again.
+    </p>
 
-      <button type="button" onclick="window.location.reload()">
-        Try again
-      </button>
-    </main>
-  </body>
-</html>`,
-    {
-      status: 503,
-      statusText: 'Offline',
-      headers: {
-        'Content-
+    <button type="button" onclick="window.location.reload()"> Try again </button>
+  </main>
+</body>
+</html>`;
+
+  return new Response(offlineHtml, {
+    status: 503,
+    statusText: 'Offline',
+    headers: {
+      'Content-Type': 'text/html; charset=UTF-8',
+      'Cache-Control': 'no-store'
+    }
+  });
+}
+
+/*
+ * GENERIC OFFLINE RESPONSE
+ */
+function createOfflineResponse() {
+  return new Response('Resource unavailable while offline.', {
+    status: 503,
+    statusText: 'Offline',
+    headers: {
+      'Content-Type': 'text/plain; charset=UTF-8',
+      'Cache-Control': 'no-store'
+    }
+  });
+}
