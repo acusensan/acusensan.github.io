@@ -53,7 +53,7 @@
                     <div>
                         <span class="eyebrow">Calculadora de materiales</span>
                         <h1>Regla de tres</h1>
-                        <p>Convierte peso a piezas utilizando el empaque y peso configurados para cada parte.</p>
+                        <p>Convierte peso a piezas/yd utilizando el empaque y peso configurados para cada parte.</p>
                     </div>
                     <div class="history-summary">
                         <strong id="historyCount">0</strong><span>calculos guardados</span>
@@ -65,21 +65,15 @@
                             <span class="step-number">1</span>
                             <div>
                                 <h2 id="calculator-title">Selecciona el material</h2>
-                                <p>Elige la linea y despues el numero de parte.</p>
+                                <p>Busca y selecciona el numero de parte.</p>
                             </div>
                         </div>
-                        <div class="field-grid">
-                            <label class="field-label" for="tipo"
-                                ><span>Linea o tipo</span
-                                ><select id="tipo" class="browser-default">
-                                    <option value="" selected>Selecciona una linea</option>
-                                </select></label
-                            ><label class="field-label" for="parte"
-                                ><span>Numero de parte</span
-                                ><select id="parte" class="browser-default" disabled>
-                                    <option value="" selected>Selecciona una parte</option>
-                                </select></label
-                            >
+                        <div class="field-grid part-search-grid">
+                            <label class="field-label part-search-field" for="parte">
+                                <span>Numero de parte</span>
+                                <input type="search" id="parte" autocomplete="off" autocapitalize="characters" placeholder="Buscar numero de parte..." aria-autocomplete="list" aria-controls="partSearchResults" aria-expanded="false" />
+                                <div id="partSearchResults" class="part-results" role="listbox"></div>
+                            </label>
                         </div>
                         <div id="info" class="part-info" hidden></div>
                         <div class="calculation-area">
@@ -90,30 +84,19 @@
                                     <p>Escribe el peso o valor que deseas convertir.</p>
                                 </div>
                             </div>
-                            <label class="field-label" for="userInput"
-                                ><span>Cantidad</span
-                                ><input
-                                    type="number"
-                                    id="userInput"
-                                    min="0"
-                                    step="any"
-                                    inputmode="decimal"
-                                    placeholder="0" /></label
-                            ><button id="calculateBtn" class="btn-large primary-action" type="button" disabled>
-                                Calcular
-                            </button>
-                        </div>
-                        <div id="resultCard" class="result-card" hidden aria-live="polite">
-                            <span>Resultado estimado</span><strong id="resultado">0.00</strong><small>piezas</small>
+                            <label class="field-label" for="userInput">
+							<span>Cantidad</span>
+							<input type="number" id="userInput" min="0" step="any" inputmode="decimal" placeholder="0" /></label>
+							<button id="calculateBtn" class="btn-large primary-action" type="button" disabled>Calcular</button>
                         </div>
                     </section>
                     <section class="history-panel" aria-labelledby="history-title">
                         <div class="history-heading">
                             <div>
                                 <span class="eyebrow">Actividad</span>
-                                <h2 id="history-title">Resultados guardados</h2>
+                                <h2 id="history-title">Resultados guardados</h2><small class="history-help">Vista compacta para consultar más cálculos</small>
                             </div>
-                            <button id="clearHistoryBtn" class="btn-flat danger-action" type="button">Limpiar</button>
+                            <button id="openTotalsBtn" class="btn-small totals-button modal-trigger" data-target="totals-modal" type="button">Totales</button>
                         </div>
                         <div id="emptyHistory" class="empty-state">
                             <span class="empty-mark">=</span><strong>Aun no hay calculos</strong>
@@ -140,10 +123,17 @@
                         <label><input type="checkbox" id="dark-mode-toggle" /><span class="lever"></span></label>
                     </div>
                 </div>
-                <div class="setting-row stacked">
+                <div class="setting-row stacked export-settings-row">
                     <div>
-                        <strong>Exportar historial</strong><span>Descarga o comparte los calculos guardados</span>
+                        <strong>Exportar historial</strong><span>Cambia el nombre base y conserva la fecha y hora automaticamente</span>
                     </div>
+                    <label class="field-label export-name-field" for="exportFileName">
+                        <span>Nombre del archivo</span>
+                        <div class="export-name-control">
+                            <input id="exportFileName" type="text" value="regla_de_tres" autocomplete="off" spellcheck="false" maxlength="80" aria-describedby="exportNamePreview" />
+                            <small id="exportNamePreview">regla_de_tres_FECHA_HORA.csv</small>
+                        </div>
+                    </label>
                     <div class="button-pair">
                         <button class="btn blue" onclick="downloadHistory()">Descargar</button
                         ><button class="btn green" onclick="shareHistory()">Compartir</button>
@@ -151,8 +141,71 @@
                 </div>
                 <div class="setting-row">
                     <div><strong>Restablecer historial</strong><span>Elimina todos los resultados guardados</span></div>
-                    <button class="btn red modal-trigger" data-target="clear-history-modal">Limpiar</button>
+                    <button id="clearHistoryBtn" class="btn red modal-trigger" data-target="clear-history-modal" type="button">Limpiar</button>
                 </div>
+            </div>
+        </div>
+        <div id="totals-modal" class="modal totals-modal">
+            <div class="modal-content">
+                <div class="modal-heading">
+                    <div>
+                        <span class="eyebrow">Resumen por material</span>
+                        <h4>Totales por número de parte</h4>
+                    </div>
+                    <button class="modal-close close-button" type="button" aria-label="Cerrar">&times;</button>
+                </div>
+                <p class="totals-description">Las cantidades y los resultados se agrupan por número de parte.</p>
+                <div id="emptyTotals" class="empty-totals">No hay cálculos guardados.</div>
+                <div class="totals-table-wrap">
+                    <table id="totalsTable" class="striped responsive-table totals-table" aria-label="Totales por número de parte">
+                        <thead>
+                            <tr>
+                                <th>Número de parte</th>
+                                <th>Registros</th>
+                                <th>Cantidad total</th>
+                                <th>Total Piezas/YD</th>
+                            </tr>
+                        </thead>
+                        <tbody id="totalsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close btn-flat" type="button">Cerrar</button>
+            </div>
+        </div>
+        <div id="edit-history-modal" class="modal history-edit-modal">
+            <div class="modal-content">
+                <div class="modal-heading">
+                    <div>
+                        <span class="eyebrow">Editar calculo</span>
+                        <h4>Actualizar resultado</h4>
+                    </div>
+                    <button class="modal-close close-button" type="button" aria-label="Cerrar">&times;</button>
+                </div>
+                <label class="field-label" for="editHistoryPart">
+                    <span>Numero de parte</span>
+                    <input id="editHistoryPart" type="search" autocomplete="off" autocapitalize="characters" placeholder="Numero de parte" />
+                </label>
+                <label class="field-label edit-history-quantity" for="editHistoryInput">
+                    <span>Cantidad</span>
+                    <input id="editHistoryInput" type="number" min="0" step="any" inputmode="decimal" placeholder="0" />
+                </label>
+                <p id="editHistoryError" class="history-form-error" role="alert" hidden></p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close btn-flat" type="button">Cancelar</button>
+                <button id="saveHistoryEdit" class="btn blue darken-4" type="button">Guardar cambios</button>
+            </div>
+        </div>
+        <div id="delete-history-modal" class="modal confirmation-modal">
+            <div class="modal-content">
+                <h5>Eliminar calculo</h5>
+                <p id="deleteHistoryText">Esta accion eliminara el resultado seleccionado.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close btn-flat" type="button">Cancelar</button>
+                <button id="confirmDeleteHistory" class="btn red" type="button">Eliminar</button>
             </div>
         </div>
         <div id="clear-history-modal" class="modal confirmation-modal">
