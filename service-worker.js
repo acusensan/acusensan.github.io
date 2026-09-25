@@ -5,7 +5,7 @@
  *
  * Change this value whenever you deploy updated files.
  */
-const VERSION = '2026.09.25.1';
+const VERSION = '2026.09.25.2';
 
 const STATIC_CACHE = `static-${VERSION}`;
 const DYNAMIC_CACHE = `dynamic-${VERSION}`;
