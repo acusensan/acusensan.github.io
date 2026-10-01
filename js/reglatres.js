@@ -185,8 +185,10 @@ function calcular() {
         toast('No se puede calcular: revisa la parte y cantidad', 'orange');
         return;
     }
-    const result = input * Number(part.piecesPerUnit) / Number(part.weight),
-        formatted = result.toFixed(2);
+    const result = Math.floor(
+        input * Number(part.piecesPerUnit) / Number(part.weight)
+    );
+    const formatted = result;
     historyData.unshift({
         partNumber: part.partNumber,
         input,
@@ -228,9 +230,9 @@ function renderHistory() {
             value = document.createElement('span'),
             unit = document.createElement('small');
         part.textContent = row.partNumber;
-        meta.textContent = `Cantidad: ${row.input}${row.timestamp?` · ${new Date(row.timestamp).toLocaleString('es-MX',{dateStyle:'short',timeStyle:'short'})}`:''}`;
+        meta.textContent = `Peso Total: ${row.input}${row.timestamp?` · ${new Date(row.timestamp).toLocaleString('es-MX',{dateStyle:'short',timeStyle:'short'})}`:''}`;
         value.textContent = row.result;
-        unit.textContent = 'Piezas/YD';
+        unit.textContent = 'Total de piezas/yds';
         copy.append(part, meta);
         result.className = 'history-result';
         result.append(value, unit);
@@ -275,10 +277,7 @@ function getPartTotals() {
     );
 }
 function formatTotal(value) {
-    return Number(value).toLocaleString('es-MX', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2
-    });
+    return Math.floor(Number(value)).toLocaleString('es-MX');
 }
 function renderTotals() {
     const body = document.getElementById('totalsTableBody');
@@ -293,8 +292,6 @@ function renderTotals() {
         const row = document.createElement('tr');
         [
             total.partNumber,
-            total.records,
-            formatTotal(total.inputTotal),
             formatTotal(total.resultTotal)
         ].forEach(value => {
             const cell = document.createElement('td');
@@ -334,7 +331,9 @@ function saveHistoryEdit() {
         ...historyData[historyEditIndex],
         partNumber,
         input,
-        result: (input * Number(part.piecesPerUnit) / Number(part.weight)).toFixed(2),
+        result: Math.floor(
+            input * Number(part.piecesPerUnit) / Number(part.weight)
+        ),
         timestamp: new Date().toISOString()
     };
     historyEditIndex = null;
@@ -347,7 +346,7 @@ function openHistoryDelete(index) {
     const row = historyData[index];
     if (!row) return;
     historyDeleteIndex = index;
-    document.getElementById('deleteHistoryText').textContent = `Eliminar el calculo de ${row.partNumber}, cantidad ${row.input}, resultado ${row.result} Piezas/YD.`;
+    document.getElementById('deleteHistoryText').textContent = `Eliminar el calculo de ${row.partNumber}, cantidad ${row.input}, resultado ${row.result} Total de piezas / yd.`;
     M.Modal.getInstance(document.getElementById('delete-history-modal')).open();
 }
 function confirmDeleteHistory() {
@@ -389,7 +388,7 @@ function generateCSV() {
         [row.partNumber, row.input, row.result].map(csvCell).join(',')
     );
     const totalRows = getPartTotals().map(total =>
-        [total.partNumber, total.resultTotal.toFixed(2)].map(csvCell).join(',')
+        [total.partNumber, Math.floor(total.resultTotal)].map(csvCell).join(',')
     );
     return [
         'DETALLE',

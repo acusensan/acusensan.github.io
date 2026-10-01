@@ -95,8 +95,8 @@
                             <span id="rack-position" class="rack-position" aria-live="polite"></span>
                         </div>
 						<div class="rack-navigation">
-                            <button class="btn-flat" type="button" onclick="changeRack(-1)">← Anterior</button
-                            ><button class="btn blue darken-4" type="button" onclick="changeRack(1)">Siguiente →</button>
+                            <button class="btn red darken-4" type="button" onclick="changeRack(-1)">← Anterior</button
+                            ><button class="btn green darken-4" type="button" onclick="changeRack(1)">Siguiente →</button>
                         </div>
                         <div class="field-grid">
                             <label class="field-label" for="section"><span>Area</span>
@@ -207,13 +207,13 @@
                 <div class="setting-row stacked">
                     <div><strong>Exportar registros</strong><span>Descarga o comparte un archivo CSV</span></div>
                     <div class="button-pair">
-                        <button class="btn blue" onclick="downloadData()">Descargar</button>
-						<button class="btn green" onclick="shareData()">Compartir</button>
+                        <button class="btn blue darken-4" onclick="downloadData()">Descargar</button>
+						<button class="btn green darken-4" onclick="shareData()">Compartir</button>
                     </div>
                 </div>
                 <div class="setting-row">
                     <div><strong>Restablecer ajuste</strong><span>Elimina todos los registros guardados</span></div>
-                    <button class="btn red" onclick="clearAllEntries()">Limpiar</button>
+                    <button class="btn red darken-4" onclick="clearAllEntries()">Limpiar</button>
                 </div>
             </div>
         </div>
@@ -245,9 +245,9 @@
                 </div>
             </div>
             <div class="modal-footer preview-footer">
-                <button class="modal-close btn red" type="button">Cerrar</button>
-                <button class="btn blue" type="button" onclick="downloadData()">Descargar</button>
-                <button class="btn green" type="button" onclick="shareData()">Compartir</button>
+                <button class="modal-close btn red darken-4" type="button">Cerrar</button>
+                <button class="btn blue darken-4" type="button" onclick="downloadData()">Descargar</button>
+                <button class="btn green darken-4" type="button" onclick="shareData()">Compartir</button>
             </div>
         </div>
 
@@ -265,6 +265,45 @@
             </div>
         </div>
 
+        <div id="edit-entry-modal" class="modal edit-entry-modal" role="dialog" aria-modal="true" aria-labelledby="edit-entry-title">
+            <div class="modal-content">
+                <div class="modal-heading">
+                    <div>
+                        <span class="eyebrow">Modificar registro</span>
+                        <h4 id="edit-entry-title">Editar registro</h4>
+                    </div>
+                    <button class="modal-close close-button" type="button" aria-label="Cerrar">&times;</button>
+                </div>
+                <div class="edit-entry-grid">
+                    <label class="field-label" for="edit-section">
+                        <span>Area</span>
+                        <select id="edit-section" class="browser-default">
+                            <option value="Rack 1">Rack A</option>
+                            <option value="Rack 2">Rack B</option>
+                            <option value="Rack 3">Rack C</option>
+                            <option value="Rack 4">Otra ubicacion</option>
+                        </select>
+                    </label>
+                    <label class="field-label" for="edit-rack">
+                        <span>Rack o ubicacion</span>
+                        <select id="edit-rack" class="browser-default"></select>
+                    </label>
+                    <label class="field-label edit-part-field" for="edit-part">
+                        <span>Numero de parte</span>
+                        <input id="edit-part" type="search" autocomplete="off" autocapitalize="characters" placeholder="Numero de parte...">
+                        <div id="edit-part-results" class="part-results edit-part-results"></div>
+                    </label>
+                    <label class="field-label" for="edit-quantity">
+                        <span>Cantidad</span>
+                        <input id="edit-quantity" type="number" min="1" step="1" inputmode="numeric" placeholder="0">
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer edit-entry-footer">
+                <button class="modal-close btn-flat" type="button">Cancelar</button>
+                <button id="save-edit-entry" class="btn blue darken-4" type="button">Guardar cambios</button>
+            </div>
+        </div>
         <div id="delete-confirm-modal" class="modal confirmation-modal">
             <div class="modal-content">
                 <h5>Eliminar registro</h5>
@@ -298,7 +337,7 @@
             </div>
             <div class="modal-footer">
                 <button class="modal-close btn-flat">Cancelar</button>
-				<button id="confirm-clear-btn" class="btn red">Limpiar todo</button>
+				<button id="confirm-clear-btn" class="btn red darken-4">Limpiar todo</button>
             </div>
         </div>
 

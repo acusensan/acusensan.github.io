@@ -1266,3 +1266,138 @@
         font-size: .7rem;
     }
 }
+
+/* Simple two-column totals list with exact mobile alignment. */
+.rule-three-page .totals-modal {
+    width: min(680px, calc(100% - 24px));
+    max-height: 90dvh;
+}
+
+.rule-three-page .totals-table-wrap {
+    max-height: 62dvh;
+    overflow: auto;
+    padding: 0;
+    border: 1px solid var(--rt-border);
+    border-radius: 10px;
+}
+
+.rule-three-page .totals-table {
+    width: 100%;
+    margin: 0;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.rule-three-page .totals-table th,
+.rule-three-page .totals-table td {
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--rt-border);
+    vertical-align: middle;
+}
+
+.rule-three-page .totals-table th:first-child,
+.rule-three-page .totals-table td:first-child {
+    width: 65%;
+    text-align: left;
+}
+
+.rule-three-page .totals-table th:last-child,
+.rule-three-page .totals-table td:last-child {
+    width: 35%;
+    text-align: right;
+}
+
+.rule-three-page .totals-table td:first-child {
+    font-weight: 750;
+}
+
+.rule-three-page .totals-table td:last-child {
+    color: var(--rt-primary);
+    font-weight: 800;
+}
+
+.rule-three-page .totals-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+@media (max-width: 600px) {
+    .rule-three-page .totals-modal {
+        width: calc(100% - 10px);
+        max-height: 94dvh;
+    }
+
+    .rule-three-page .totals-modal .modal-content {
+        padding: 15px 10px 10px;
+    }
+
+    .rule-three-page .totals-table,
+    .rule-three-page .totals-table thead,
+    .rule-three-page .totals-table tbody {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    .rule-three-page .totals-table thead tr,
+    .rule-three-page .totals-table tbody tr {
+        display: grid !important;
+        grid-template-columns: minmax(0, 62%) minmax(0, 38%) !important;
+        width: 100% !important;
+    }
+
+    .rule-three-page .totals-table th,
+    .rule-three-page .totals-table td,
+    .rule-three-page .totals-table th:first-child,
+    .rule-three-page .totals-table td:first-child,
+    .rule-three-page .totals-table th:last-child,
+    .rule-three-page .totals-table td:last-child {
+        display: block !important;
+        width: auto !important;
+        min-width: 0 !important;
+        padding-top: 11px !important;
+        padding-bottom: 11px !important;
+    }
+
+    .rule-three-page .totals-table th:first-child,
+    .rule-three-page .totals-table td:first-child {
+        padding-left: 9px !important;
+        padding-right: 6px !important;
+        text-align: left !important;
+    }
+
+    .rule-three-page .totals-table th:last-child,
+    .rule-three-page .totals-table td:last-child {
+        padding-left: 6px !important;
+        padding-right: 9px !important;
+        text-align: right !important;
+    }
+
+    .rule-three-page .totals-table th {
+        position: static !important;
+        font-size: .66rem !important;
+        line-height: 1.2 !important;
+        white-space: normal !important;
+    }
+
+    .rule-three-page .totals-table td {
+        font-size: .82rem !important;
+        line-height: 1.25 !important;
+        overflow-wrap: anywhere;
+    }
+}
+
+@media (max-width: 360px) {
+    .rule-three-page .totals-table thead tr,
+    .rule-three-page .totals-table tbody tr {
+        grid-template-columns: minmax(0, 66%) minmax(0, 34%) !important;
+    }
+
+    .rule-three-page .totals-table th {
+        font-size: .61rem !important;
+        letter-spacing: 0 !important;
+    }
+
+    .rule-three-page .totals-table td {
+        font-size: .76rem !important;
+    }
+}

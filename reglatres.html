@@ -154,15 +154,13 @@
                     </div>
                     <button class="modal-close close-button" type="button" aria-label="Cerrar">&times;</button>
                 </div>
-                <p class="totals-description">Las cantidades y los resultados se agrupan por número de parte.</p>
+                <p class="totals-description">Total de Piezas/YD agrupado por número de parte.</p>
                 <div id="emptyTotals" class="empty-totals">No hay cálculos guardados.</div>
                 <div class="totals-table-wrap">
                     <table id="totalsTable" class="striped responsive-table totals-table" aria-label="Totales por número de parte">
                         <thead>
                             <tr>
                                 <th>Número de parte</th>
-                                <th>Registros</th>
-                                <th>Cantidad total</th>
                                 <th>Total Piezas/YD</th>
                             </tr>
                         </thead>
@@ -188,7 +186,7 @@
                     <input id="editHistoryPart" type="search" autocomplete="off" autocapitalize="characters" placeholder="Numero de parte" />
                 </label>
                 <label class="field-label edit-history-quantity" for="editHistoryInput">
-                    <span>Cantidad</span>
+                    <span>Peso Total</span>
                     <input id="editHistoryInput" type="number" min="0" step="any" inputmode="decimal" placeholder="0" />
                 </label>
                 <p id="editHistoryError" class="history-form-error" role="alert" hidden></p>

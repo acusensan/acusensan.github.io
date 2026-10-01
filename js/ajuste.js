@@ -1,6 +1,7 @@
 let allPartsIndex = [];
 let partSearchModalInstance = null;
 let itemToDelete = null;
+let itemToEdit = null;
 const STORAGE_KEY = 'ajuste_entries';
 let labelDetector = null;
 let labelPhotoUrl = '';
@@ -47,6 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     document.getElementById('confirm-delete-btn').addEventListener('click', confirmDelete);
+    document.getElementById('edit-section').addEventListener('change', updateEditRackOptions);
+    document.getElementById('edit-part').addEventListener('input', event => { event.target.value = event.target.value.toUpperCase(); renderEditPartResults(); });
+    document.getElementById('edit-part').addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); const first = document.querySelector('#edit-part-results .part-result'); first ? first.click() : saveEditedEntry(); } });
+    document.getElementById('edit-quantity').addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); saveEditedEntry(); } });
+    document.getElementById('save-edit-entry').addEventListener('click', saveEditedEntry);
     document.getElementById('confirm-clear-btn').addEventListener('click', confirmClear);
     document.getElementById('modalPartSearch').addEventListener('input', modalSearchParts);
     document.getElementById('exportPreviewSearch').addEventListener('input', renderExportPreviewRows);
@@ -268,6 +274,12 @@ function renderEntry(entry, prepend = false) {
         title.append(dot);
     }
     title.append(document.createTextNode(entry.part));
+    title.className = 'editable-part';
+    title.tabIndex = 0;
+    title.setAttribute('role', 'button');
+    title.setAttribute('aria-label', `Editar ${entry.part}`);
+    title.addEventListener('click', () => openEditEntry(li));
+    title.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openEditEntry(li); } });
     const detail = document.createElement('small');
     detail.textContent = `Cantidad: ${entry.quantity}${entry.boxes?` · Cajas: ${Number(entry.boxes).toFixed(2)}`:''}`;
     copy.append(title, detail);
@@ -285,6 +297,58 @@ function renderEntry(entry, prepend = false) {
     const list = document.getElementById('entry-list');
     prepend ? list.prepend(li) : list.append(li);
     updateRecordState();
+}
+
+function findSectionForRack(rack) {
+    for (const [section, range] of Object.entries(rackRanges)) {
+        if (typeof range[0] === 'number') { for (let n = range[0]; n <= range[1]; n++) if (`APC0${n}` === rack) return section; }
+        else if (range.includes(rack)) return section;
+    }
+    return 'Rack 4';
+}
+function updateEditRackOptions(selectedRack = '') {
+    const select = document.getElementById('edit-rack');
+    const range = rackRanges[document.getElementById('edit-section').value];
+    select.innerHTML = '';
+    if (typeof range[0] === 'number') for (let n = range[0]; n <= range[1]; n++) { const value = `APC0${n}`; select.add(new Option(value, value)); }
+    else range.forEach(value => select.add(new Option(value, value)));
+    if (selectedRack && [...select.options].some(option => option.value === selectedRack)) select.value = selectedRack;
+}
+function openEditEntry(listItem) {
+    itemToEdit = listItem;
+    const entry = JSON.parse(listItem.dataset.entry);
+    document.getElementById('edit-section').value = findSectionForRack(entry.rack);
+    updateEditRackOptions(entry.rack);
+    document.getElementById('edit-part').value = entry.part;
+    document.getElementById('edit-quantity').value = entry.quantity;
+    document.getElementById('edit-part-results').innerHTML = '';
+    M.updateTextFields();
+    M.Modal.getInstance(document.getElementById('edit-entry-modal')).open();
+    setTimeout(() => document.getElementById('edit-part').focus(), 180);
+}
+function renderEditPartResults() {
+    const input = document.getElementById('edit-part'), query = input.value.trim().toLowerCase(), results = document.getElementById('edit-part-results');
+    results.innerHTML = ''; if (!query) return;
+    allPartsIndex.filter(item => item.part.toLowerCase().includes(query)).slice(0, 20).forEach(item => {
+        const button = document.createElement('button'); button.className = 'part-result'; button.type = 'button';
+        const strong = document.createElement('strong'); strong.textContent = item.part;
+        const small = document.createElement('small'); small.textContent = item.category;
+        button.append(strong, small); button.onclick = () => { input.value = item.part; results.innerHTML = ''; document.getElementById('edit-quantity').focus(); }; results.append(button);
+    });
+}
+function saveEditedEntry() {
+    if (!itemToEdit) return;
+    const rack = document.getElementById('edit-rack').value, part = document.getElementById('edit-part').value.trim().toUpperCase(), quantity = Number(document.getElementById('edit-quantity').value);
+    if (!rack || !part || !Number.isFinite(quantity) || quantity <= 0) { toast('Completa la ubicacion, parte y una cantidad valida', 'orange darken-1'); return; }
+    const previous = JSON.parse(itemToEdit.dataset.entry), updated = { ...previous, rack, part, quantity, boxes: calculateBoxes(part, quantity) };
+    itemToEdit.dataset.entry = JSON.stringify(updated); itemToEdit.querySelector('.record-location').textContent = rack;
+    const title = itemToEdit.querySelector('.record-copy strong'); title.innerHTML = '';
+    if (updated.scanned) { const dot = document.createElement('span'); dot.className = 'scanned-dot'; dot.title = 'Agregado desde una foto'; dot.setAttribute('aria-label', 'Escaneado'); title.append(dot); }
+    title.append(document.createTextNode(part)); title.setAttribute('aria-label', `Editar ${part}`);
+    itemToEdit.querySelector('.record-copy small').textContent = `Cantidad: ${quantity}${updated.boxes ? ` · Cajas: ${Number(updated.boxes).toFixed(2)}` : ''}`;
+    itemToEdit.querySelector('.delete-record').setAttribute('aria-label', `Eliminar ${part} de ${rack}`);
+    saveEntriesToLocalStorage(); renderExportPreviewRows(); itemToEdit = null;
+    M.Modal.getInstance(document.getElementById('edit-entry-modal')).close(); toast(`Actualizado: <strong>${rack} ${part} (${quantity})</strong>`, 'green darken-1');
 }
 
 function confirmDelete() {
