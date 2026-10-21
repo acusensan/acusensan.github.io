@@ -1,20 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const searchBar = document.getElementById('searchBar'),
-        lineFilter = document.getElementById('lineFilter'),
-        clearSearch = document.getElementById('clearSearch'),
-        dataContainer = document.getElementById('dataContainer'),
-        emptyResults = document.getElementById('emptyResults'),
-        loadError = document.getElementById('loadError'),
-        resultCount = document.getElementById('resultCount'),
-        modal = document.getElementById('part-modal'),
-        modalImage = document.getElementById('modalImage'),
-        details = document.getElementById('barcodeDetails'),
-        detailPart = document.getElementById('detailPartNumber'),
-        copyButton = document.getElementById('copyPartBtn');
+    const searchBar = document.getElementById('partsSearchBar'),
+        lineFilter = document.getElementById('partsLineFilter'),
+        clearSearch = document.getElementById('partsClearSearch'),
+        dataContainer = document.getElementById('partsDataContainer'),
+        emptyResults = document.getElementById('partsEmptyResults'),
+        loadError = document.getElementById('partsLoadError'),
+        resultCount = document.getElementById('partsResultCount'),
+        modal = document.getElementById('parts-part-modal'),
+        modalImage = document.getElementById('partsModalImage'),
+        details = document.getElementById('partsBarcodeDetails'),
+        detailPart = document.getElementById('partsDetailPartNumber'),
+        copyButton = document.getElementById('partsCopyPartBtn');
     let selectedPart = '';
     if (window.M) {
-        M.Modal.init(document.querySelectorAll('.modal'));
-        M.Sidenav.init(document.querySelectorAll('.sidenav'));
+        M.Modal.init(document.querySelectorAll('#parts-part-modal'));
+        
     }
     if (!window.partsDB) {
         loadError.hidden = false;
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function copyPart(text) {
-        copyTextToClipboard(text).then(() => M.toast({
+        copyPartsTextToClipboard(text).then(() => M.toast({
             html: 'Numero de parte copiado',
             classes: 'green darken-1'
         })).catch(() => M.toast({
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     displayData(data);
 });
 
-function copyTextToClipboard(text) {
+function copyPartsTextToClipboard(text) {
     if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
     return new Promise((resolve, reject) => {
         const textarea = document.createElement('textarea');

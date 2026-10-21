@@ -378,7 +378,7 @@ function renderTotals() {
 
     tr.innerHTML = `
       <td>${i++}</td>
-      <td>${row.part}</td>
+      <td><button type="button" class="part-number-button" data-part="${escapeHtml(row.part)}" onclick="openPartDetails(this.dataset.part)" aria-label="Ver detalles de ${escapeHtml(row.part)}">${escapeHtml(row.part)}</button></td>
       <td>${row.scanned}</td>
       <td>${row.daily}</td>
       <td>${row.prod}</td>
@@ -1218,3 +1218,173 @@ function initGlobalEvents() {
     saveState();
   });
 }
+
+
+/* =========================
+   COMPARATIVO PART DETAILS
+   Shows every field available in partsDB.js for the selected part.
+========================= */
+let selectedDetailsPart = null;
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function formatPartFieldLabel(key) {
+  const labels = {
+    location: "Ubicacion",
+    pack: "Standard pack",
+    daily: "Demanda diaria",
+    type: "Tipo",
+    description: "Descripcion",
+    supplier: "Proveedor",
+    family: "Familia",
+    area: "Area",
+    line: "Linea",
+    station: "Estacion",
+    unit: "Unidad",
+    uom: "Unidad de medida"
+  };
+  return labels[key] || String(key)
+    .replace(/[_-]+/g, " ")
+    .replace(/\b\w/g, char => char.toUpperCase());
+}
+
+function formatPartFieldValue(value) {
+  if (value === null || value === undefined || value === "") return "Sin dato";
+  if (typeof value === "boolean") return value ? "Si" : "No";
+  if (typeof value === "object") {
+    try { return JSON.stringify(value, null, 2); }
+    catch { return String(value); }
+  }
+  return String(value);
+}
+
+function createPartMetric(label, value, danger = false) {
+  const card = document.createElement("div");
+  card.className = `part-metric${danger ? " danger" : ""}`;
+  const labelEl = document.createElement("span");
+  labelEl.textContent = label;
+  const valueEl = document.createElement("strong");
+  valueEl.textContent = value;
+  valueEl.title = String(value);
+  card.append(labelEl, valueEl);
+  return card;
+}
+
+function openPartDetails(part) {
+  const data = partsDB?.[part];
+  if (!data) {
+    M.toast({ html: `No se encontro informacion para ${escapeHtml(part)}`, classes: "orange darken-2" });
+    return;
+  }
+
+  selectedDetailsPart = part;
+  const scanned = Number(totalsMap[part] || 0);
+  const daily = Number(data.daily || 0);
+  const prod = Number(csvTotalsMap[part] || 0);
+  const combined = scanned + prod;
+  const packSize = Number(data.pack || 0);
+  const scannedPacks = packSize > 0 ? Math.floor(scanned / packSize) : 0;
+  const looseScanned = packSize > 0 ? scanned % packSize : scanned;
+  const packSummary = packSize > 0
+    ? `${scannedPacks}${looseScanned ? ` + ${looseScanned} pcs` : ""}`
+    : "Sin pack";
+  const remaining = Math.max(daily - combined, 0);
+  const exceeded = daily > 0 && combined > daily;
+
+  document.getElementById("partDetailsTitle").textContent = part;
+  document.getElementById("partDetailsSubtitle").textContent =
+    data.description || data.descripcion || "Informacion completa del catalogo de partes";
+
+  const metrics = document.getElementById("partDetailsMetrics");
+  metrics.replaceChildren(
+    createPartMetric("Escaneado", scanned),
+    createPartMetric("Packs escaneados", packSummary),
+    createPartMetric("Produccion", prod),
+    createPartMetric("Daily", daily || "Sin dato"),
+    createPartMetric(exceeded ? "Excedente" : "Restante", exceeded ? combined - daily : remaining, exceeded)
+  );
+
+  const entries = Object.entries(data);
+  const preferredOrder = ["description", "descripcion", "location", "pack", "daily", "supplier", "proveedor"];
+  entries.sort(([a], [b]) => {
+    const ai = preferredOrder.indexOf(a);
+    const bi = preferredOrder.indexOf(b);
+    if (ai !== -1 || bi !== -1) return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+    return a.localeCompare(b, "es");
+  });
+
+  const grid = document.getElementById("partDetailsGrid");
+  grid.replaceChildren();
+  entries.forEach(([key, value]) => {
+    const field = document.createElement("div");
+    const formatted = formatPartFieldValue(value);
+    const isWide = typeof value === "object" || formatted.length > 70;
+    field.className = `part-detail-field${isWide ? " wide" : ""}`;
+
+    const label = document.createElement("span");
+    label.className = "part-detail-label";
+    label.textContent = formatPartFieldLabel(key);
+
+    const valueEl = document.createElement("span");
+    valueEl.className = `part-detail-value${formatted === "Sin dato" ? " empty" : ""}`;
+    valueEl.textContent = formatted;
+    field.append(label, valueEl);
+    grid.appendChild(field);
+  });
+
+  document.getElementById("partDetailsFieldCount").textContent =
+    `${entries.length} ${entries.length === 1 ? "campo" : "campos"}`;
+
+  const addBtn = document.getElementById("addPartDetailsBtn");
+  addBtn.disabled = !(Number(data.pack) > 0);
+  addBtn.title = addBtn.disabled ? "Esta parte no tiene un pack valido" : "Agregar usando el standard pack";
+
+  const modalEl = document.getElementById("part-details-modal");
+  let modal = M.Modal.getInstance(modalEl);
+  if (!modal) modal = M.Modal.init(modalEl, { dismissible: true, opacity: 0.45 });
+  modal.open();
+}
+
+function copySelectedPartDetails() {
+  if (!selectedDetailsPart || !partsDB[selectedDetailsPart]) return;
+  const data = partsDB[selectedDetailsPart];
+  const lines = [`Numero de parte\t${selectedDetailsPart}`];
+  Object.entries(data).forEach(([key, value]) => {
+    lines.push(`${formatPartFieldLabel(key)}\t${formatPartFieldValue(value).replace(/\n/g, " ")}`);
+  });
+  const scanned = Number(totalsMap[selectedDetailsPart] || 0);
+  const packSize = Number(data.pack || 0);
+  const packs = packSize > 0 ? Math.floor(scanned / packSize) : 0;
+  const loose = packSize > 0 ? scanned % packSize : scanned;
+  lines.push(`Escaneado\t${scanned}`);
+  lines.push(`Packs escaneados\t${packSize > 0 ? `${packs}${loose ? ` + ${loose} pcs` : ""}` : "Sin pack"}`);
+  lines.push(`Produccion\t${csvTotalsMap[selectedDetailsPart] || 0}`);
+
+  navigator.clipboard.writeText(lines.join("\n")).then(() => {
+    M.toast({ html: `Informacion de ${escapeHtml(selectedDetailsPart)} copiada`, classes: "green darken-2" });
+  }).catch(() => {
+    M.toast({ html: "No fue posible copiar la informacion", classes: "red darken-2" });
+  });
+}
+
+function addSelectedPartFromDetails() {
+  if (!selectedDetailsPart) return;
+  const modalEl = document.getElementById("part-details-modal");
+  const modal = M.Modal.getInstance(modalEl);
+  if (modal) modal.close();
+  addPartFromSearch(selectedDetailsPart);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const modalEl = document.getElementById("part-details-modal");
+  if (modalEl && window.M) M.Modal.init(modalEl, { dismissible: true, opacity: 0.45 });
+  document.getElementById("copyPartDetailsBtn")?.addEventListener("click", copySelectedPartDetails);
+  document.getElementById("addPartDetailsBtn")?.addEventListener("click", addSelectedPartFromDetails);
+});

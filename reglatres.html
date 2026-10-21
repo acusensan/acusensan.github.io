@@ -21,7 +21,6 @@
             <li><a href="ajuste.html">Ajuste</a></li>
             <li><a href="scan.html">Escaneo</a></li>
             <li><a href="barcode.html">Generar codigo de barras</a></li>
-            <li><a href="hilos.html">Hilos</a></li>
             <li><a href="invrack.html">Inventario Racks</a></li>
             <li><a href="partescompradas.html">Partes Compradas</a></li>
             <li class="active"><a href="reglatres.html" aria-current="page">Regla de Tres</a></li>
@@ -59,8 +58,12 @@
                         <strong id="historyCount">0</strong><span>calculos guardados</span>
                     </div>
                 </header>
-                <div class="rule-layout">
-                    <section class="calculator-panel" aria-labelledby="calculator-title">
+                <div class="rule-tabs" role="tablist" aria-label="Regla de tres">
+                    <button id="calculatorTab" class="rule-tab active" type="button" role="tab" aria-selected="true" aria-controls="calculatorPanel">Calculadora</button>
+                    <button id="historyTab" class="rule-tab" type="button" role="tab" aria-selected="false" aria-controls="historyPanel">Resultados guardados <span id="historyTabCount" class="rule-tab-count">0</span></button>
+                </div>
+                <div class="rule-layout rule-tab-content">
+                    <section id="calculatorPanel" class="calculator-panel rule-tab-panel active" role="tabpanel" aria-labelledby="calculatorTab">
                         <div class="panel-heading">
                             <span class="step-number">1</span>
                             <div>
@@ -90,7 +93,7 @@
 							<button id="calculateBtn" class="btn-large primary-action" type="button" disabled>Calcular</button>
                         </div>
                     </section>
-                    <section class="history-panel" aria-labelledby="history-title">
+                    <section id="historyPanel" class="history-panel rule-tab-panel" role="tabpanel" aria-labelledby="historyTab" hidden>
                         <div class="history-heading">
                             <div>
                                 <span class="eyebrow">Actividad</span>

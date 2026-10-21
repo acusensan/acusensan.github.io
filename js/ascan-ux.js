@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     actualizarResumen();
 });
 
-const autosaveIndicator = document.getElementById('autosaveIndicator')
+
 /* ===== DATA ===== */
 const defs = {
     parte: {
@@ -17,13 +17,10 @@ const defs = {
         label: 'Serie',
         type: 'text'
     },
-    cantidad: {
-        label: 'Cantidad',
-        type: 'number',
-        min: '0',
-        step: 'any',
-        inputMode: 'decimal'
-    },
+   cantidad: {
+    label: 'Cantidad',
+    type: 'text'
+},
     ubicacion: {
         label: 'Ubicación',
         type: 'text'
@@ -52,6 +49,14 @@ function enfocarCampoActivo() {
     target.select();
 }
 
+let saveToastTimer = null
+function mostrarToastGuardado() {
+    clearTimeout(saveToastTimer)
+    saveToastTimer = setTimeout(() => {
+        if (typeof M !== 'undefined' && typeof M.toast === 'function') M.toast({ html: '✓ Datos guardados', classes: 'save-toast', displayLength: 1400 })
+    }, 350)
+}
+
 /* ===== STORAGE ===== */
 function guardarDatos() {
     actualizarResumen()
@@ -59,9 +64,7 @@ function guardarDatos() {
         listas,
         listaActivaId: listaActiva?.id
     }))
-    autosaveIndicator.style.display = 'block'
-    clearTimeout(autosaveIndicator._t)
-    autosaveIndicator._t = setTimeout(() => autosaveIndicator.style.display = 'none', 1500)
+    mostrarToastGuardado()
 }
 
 function cargarDatos() {
@@ -121,9 +124,10 @@ function renderTabs() {
     tabs.replaceChildren()
     listas.forEach(l => {
         const chip = document.createElement('div')
-        chip.className = 'chip ' + (listaActiva && l.id === listaActiva.id ? 'blue' : '')
+        chip.className = 'chip browser-tab' + (listaActiva && l.id === listaActiva.id ? ' is-active' : '')
         chip.tabIndex = 0
-        chip.setAttribute('role', 'button')
+        chip.setAttribute('role', 'tab')
+        chip.setAttribute('aria-selected', String(Boolean(listaActiva && l.id === listaActiva.id)))
         chip.setAttribute('aria-label', `Abrir ${l.nombre}. Doble clic para renombrar.`)
 
         const name = document.createElement('span')
@@ -155,7 +159,7 @@ function seleccionarLista(id) {
     // CLEAR UI BEFORE SYNC
     cuerpoTabla.innerHTML = ''
 
-    btnCopiar.disabled = btnPivot.disabled = btnExportar.disabled = btnCompartir.disabled = !listaActiva
+    btnCopiar.disabled = btnExportar.disabled = btnCompartir.disabled = !listaActiva
 
     renderTabs()
     construirFormulario()
@@ -193,17 +197,19 @@ function renombrarLista(id) {
 /* ===== FORM ===== */
 function construirFormulario() {
     formEscaneo.innerHTML = '';
-    encabezadoTabla.innerHTML = ''
+    encabezadoTabla.innerHTML = '<th class="sequence-column" aria-label="Número de secuencia">#</th>'
     if (!listaActiva) return
     listaActiva.campos.forEach((c, i) => {
         const col = document.createElement('div')
         col.className = 'input-field col s12'
         const inp = document.createElement('input')
         inp.id = c.key;
-        inp.type = c.type
-        if (c.min !== undefined) inp.min = c.min
-        if (c.step) inp.step = c.step
-        if (c.inputMode) inp.inputMode = c.inputMode
+        inp.type = c.key === 'cantidad' ? 'text' : c.type
+        if (c.key !== 'cantidad') {
+		if (c.min !== undefined) inp.min = c.min
+		if (c.step) inp.step = c.step
+		if (c.inputMode) inp.inputMode = c.inputMode
+}
         inp.autocomplete = 'off'
         inp.addEventListener('keydown', e => {
             if (e.key === 'Enter') {
@@ -228,11 +234,7 @@ function construirFormulario() {
         const lbl = document.createElement('label')
         lbl.htmlFor = c.key;
         lbl.textContent = c.label
-        const step = document.createElement('span')
-        step.className = 'scan-step'
-        step.textContent = i + 1
-        step.setAttribute('aria-hidden', 'true')
-        col.append(step, inp, lbl);
+        col.append(inp, lbl);
         formEscaneo.appendChild(col)
         encabezadoTabla.appendChild(Object.assign(document.createElement('th'), {
             textContent: c.label
@@ -299,19 +301,49 @@ function agregarFila() {
     showScanStatus("Escaneado")
 }
 
+/* ===== SEARCH ===== */
+function normalizarBusqueda(value) {
+    return String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim()
+}
+
+function obtenerFilasVisibles() {
+    if (!listaActiva) return []
+    const query = normalizarBusqueda(document.getElementById('globalSearch')?.value)
+    return listaActiva.filas
+        .map((row, originalIndex) => ({ row, originalIndex }))
+        .filter(({ row }) => !query || listaActiva.campos.some(campo =>
+            normalizarBusqueda(row[campo.key]).includes(query)
+        ))
+}
+
+function configurarBusqueda() {
+    const search = document.getElementById('globalSearch')
+    if (search && !search.dataset.bound) {
+        search.addEventListener('input', renderTabla)
+        search.dataset.bound = 'true'
+    }
+}
+
 /* ===== TABLE ===== */
 function renderTabla() {
     cuerpoTabla.innerHTML = ''
     if (!listaActiva) return
-    listaActiva.filas.forEach((r, i) => {
+    const filasVisibles = obtenerFilasVisibles()
+    filasVisibles.forEach(({ row: r, originalIndex: i }, visibleIndex) => {
         const tr = document.createElement('tr')
-        if (i === 0) {
+        if (visibleIndex === 0) {
             tr.classList.add('new-row')
 
             setTimeout(() => {
                 tr.classList.remove('new-row')
             }, 1200)
         }
+        const sequenceCell = document.createElement('td')
+        sequenceCell.className = 'sequence-column'
+        sequenceCell.textContent = i + 1
+        sequenceCell.setAttribute('aria-label', `Registro ${i + 1}`)
+        tr.appendChild(sequenceCell)
+
         listaActiva.campos.forEach(c => {
             const td = document.createElement('td')
 
@@ -383,65 +415,82 @@ function renderTabla() {
         tr.appendChild(td)
         cuerpoTabla.appendChild(tr)
     })
-    renderDataExplorer()
-}
-
-/* ===== DATA EXPLORER ===== */
-function renderDataExplorer() {
-    const search = document.getElementById('globalSearch')
-    const select = document.getElementById('searchField')
-    const details = document.getElementById('listDetails')
-    if (!search || !select || !details) return
-    details.textContent = listaActiva ? `${listaActiva.filas.length} registros · ${listaActiva.campos.length} campos` : '0 registros · 0 campos'
-    const current = select.value
-    select.replaceChildren(new Option('Todos los campos', 'all'))
-    if (listaActiva) listaActiva.campos.forEach(c => select.add(new Option(c.label, c.key)))
-    select.value = [...select.options].some(o => o.value === current) ? current : 'all'
-    applyDataSearch()
-}
-function applyDataSearch() {
-    const search = document.getElementById('globalSearch')
-    const select = document.getElementById('searchField')
     const summary = document.getElementById('searchSummary')
-    const mobile = document.getElementById('mobileRecords')
-    if (!search || !select || !summary || !mobile) return
-    const query = search.value.trim().toLocaleLowerCase('es-MX')
-    const field = select.value
-    const rows = listaActiva?.filas || []
-    const matches = rows.map((r,index) => ({r,index})).filter(({r}) => {
-        if (!query) return true
-        const keys = field === 'all' ? [...listaActiva.campos.map(c => c.key), 'tiempo'] : [field]
-        return keys.some(key => String(r[key] ?? '').toLocaleLowerCase('es-MX').includes(query))
-    })
-    document.querySelectorAll('#cuerpoTabla tr').forEach((tr,index) => { tr.hidden = !matches.some(m => m.index === index) })
-    summary.textContent = query ? `${matches.length} de ${rows.length} registros encontrados` : `${rows.length} registros`
-    mobile.replaceChildren()
-    if (!matches.length) {
-        const empty = document.createElement('div'); empty.className='no-results'; empty.textContent='No se encontraron registros.'; mobile.appendChild(empty); return
+    if (summary) {
+        const total = listaActiva.filas.length
+        summary.textContent = filasVisibles.length === total ? `${total} registros` : `${filasVisibles.length} de ${total} registros`
     }
-    matches.forEach(({r,index},position) => {
-        const card=document.createElement('article'); card.className='mobile-record'
-        const head=document.createElement('div'); head.className='mobile-record-head'
-        const number=document.createElement('span'); number.className='record-number'; number.textContent=`#${String(position+1).padStart(2,'0')}`
-        const del=document.createElement('button'); del.type='button'; del.className='mobile-delete'; del.textContent='×'; del.setAttribute('aria-label',`Eliminar registro ${position+1}`)
-        del.onclick=()=>materialConfirm('¿Eliminar fila?','Confirmar eliminación').then(ok=>{if(ok){listaActiva.filas.splice(index,1);guardarDatos();renderTabla()}})
-        head.append(number,del)
-        const grid=document.createElement('div'); grid.className='mobile-record-grid'
-        listaActiva.campos.forEach(c=>{const box=document.createElement('div');box.className='mobile-field';const label=document.createElement('small');label.textContent=c.label;const value=document.createElement('strong');value.textContent=r[c.key]||'—';box.append(label,value);grid.appendChild(box)})
-        const time=document.createElement('div');time.className='mobile-field';const tl=document.createElement('small');tl.textContent='Hora';const tv=document.createElement('strong');const dt=new Date(r.tiempo);tv.textContent=Number.isNaN(dt.getTime())?'—':dt.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});time.append(tl,tv);grid.appendChild(time)
-        card.append(head,grid);mobile.appendChild(card)
-    })
 }
-document.getElementById('globalSearch')?.addEventListener('input', applyDataSearch)
-document.getElementById('searchField')?.addEventListener('change', applyDataSearch)
 
 /* ===== UTIL ===== */
+let formatoCopia = 'tab'
+
+function escapeCell(value) {
+    const text = String(value ?? '')
+    return `"${text.replace(/"/g, '""')}"`
+}
+
+function construirTextoCopia() {
+    if (!listaActiva) return ''
+    const separator = formatoCopia === 'csv' ? ',' : '\t'
+    const format = value => formatoCopia === 'csv' ? escapeCell(value) : String(value ?? '')
+    const rows = [listaActiva.campos.map(c => format(c.label)).join(separator)]
+    listaActiva.filas.forEach(row => {
+        rows.push(listaActiva.campos.map(c => format(row[c.key] || '')).join(separator))
+    })
+    return rows.join('\n')
+}
+
+function renderCopiarPreview() {
+    copiarTableHead.innerHTML = ''
+    copiarTableBody.innerHTML = ''
+    const headerRow = document.createElement('tr')
+    listaActiva.campos.forEach(campo => {
+        const th = document.createElement('th')
+        th.textContent = campo.label
+        headerRow.appendChild(th)
+    })
+    copiarTableHead.appendChild(headerRow)
+
+    listaActiva.filas.forEach(row => {
+        const tr = document.createElement('tr')
+        listaActiva.campos.forEach(campo => {
+            const td = document.createElement('td')
+            td.textContent = row[campo.key] || '—'
+            if (campo.type === 'number') td.classList.add('number-column')
+            tr.appendChild(td)
+        })
+        copiarTableBody.appendChild(tr)
+    })
+
+    if (!listaActiva.filas.length) {
+        const tr = document.createElement('tr')
+        const td = document.createElement('td')
+        td.colSpan = Math.max(listaActiva.campos.length, 1)
+        td.className = 'dialog-empty'
+        td.textContent = 'Esta lista todavía no contiene registros.'
+        tr.appendChild(td)
+        copiarTableBody.appendChild(tr)
+    }
+    textoCopiar.value = construirTextoCopia()
+}
+
+function cambiarFormatoCopia(format, button) {
+    formatoCopia = format
+    document.querySelectorAll('[data-copy-format]').forEach(el => el.classList.toggle('is-active', el === button))
+    textoCopiar.value = construirTextoCopia()
+    copiarSelectionInfo.textContent = format === 'csv' ? 'Formato CSV seleccionado' : 'Formato de tabla seleccionado'
+}
+
 function copiarLista() {
+    if (!listaActiva) return
     syncTablaConDatos()
-    tituloCopiar.textContent = `Copiar – ${listaActiva.nombre}`
-    const l = [listaActiva.campos.map(c => c.label).join('\t')]
-    listaActiva.filas.forEach(r => l.push(listaActiva.campos.map(c => r[c.key] || '').join('\t')))
-    textoCopiar.value = l.join('\n')
+    formatoCopia = 'tab'
+    tituloCopiar.textContent = listaActiva.nombre
+    copiarMeta.textContent = `${listaActiva.filas.length} registros · ${listaActiva.campos.length} columnas`
+    copiarSelectionInfo.textContent = 'Formato de tabla seleccionado'
+    document.querySelectorAll('[data-copy-format]').forEach(el => el.classList.toggle('is-active', el.dataset.copyFormat === 'tab'))
+    renderCopiarPreview()
     M.Modal.getInstance(modalCopiar).open()
 }
 
@@ -461,45 +510,6 @@ async function writeClipboard(text) {
 }
 function copiarTexto() { return writeClipboard(textoCopiar.value) }
 
-function abrirPivot() {
-    syncTablaConDatos()
-    tituloPivot.textContent = `Resumen – ${listaActiva.nombre}`
-
-    const t = {}
-    const l = ['Parte\t Cantidad\t Escaneos'] // headers
-
-    listaActiva.filas.forEach(r => {
-        const p = (r.parte || '').trim().toUpperCase()
-        const q = parseFloat(r.cantidad || 0)
-
-        if (!p) return
-
-        if (!t[p]) {
-            t[p] = {
-                count: 0,
-                sum: 0
-            }
-        }
-
-        // COUNT scans
-        t[p].count += 1
-
-        // SUM quantity
-        t[p].sum += q
-    })
-
-    Object.keys(t).forEach(p => {
-        l.push(`${p}\t${t[p].sum}\t${t[p].count}`)
-    })
-
-    textoPivot.value = l.join('\n')
-    M.Modal.getInstance(modalPivot).open()
-}
-
-function copiarPivot() {
-    syncTablaConDatos()
-    writeClipboard(textoPivot.value)
-}
 
 
 /* ===== EXPORT CSV ===== */
@@ -679,7 +689,7 @@ function borrarTodosLosDatos() {
             construirFormulario();
             renderTabla();
             actualizarResumen();
-            [btnCopiar, btnPivot, btnExportar, btnCompartir].forEach(btn => btn.disabled = true);
+            [btnCopiar, btnExportar, btnCompartir].forEach(btn => btn.disabled = true);
         });
 }
 
@@ -688,6 +698,7 @@ cargarDatos()
 renderTabs()
 construirFormulario()
 renderTabla()
+configurarBusqueda()
 
 function actualizarResumen() {
     const listCount = document.getElementById('listCount');

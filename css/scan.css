@@ -1036,7 +1036,7 @@
    COMPARATIVO: compact rows and prevent text wrapping
    ========================================================= */
 .scan-page .totals-panel .compact-table tbody td {
-    padding: 7px 5px;
+    padding: 1px 2px;
     font-size: 0.78rem;
     line-height: 1.15;
     white-space: nowrap;
@@ -1069,4 +1069,272 @@
     .scan-page .totals-panel .compact-table tbody td:nth-child(2) {
         font-size: 0.68rem;
     }
+}
+
+
+/* =========================================================
+   COMPARATIVO: clickable part numbers + professional details
+   ========================================================= */
+.scan-page .part-number-button {
+    appearance: none;
+    width: 100%;
+    border: 0;
+    border-radius: 8px;
+    padding: 7px 9px;
+    background: transparent;
+    color: var(--sc-primary);
+    font: inherit;
+    font-weight: 800;
+    line-height: 1.2;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: rgba(13, 71, 161, 0.28);
+    text-underline-offset: 3px;
+    transition: background-color .16s ease, color .16s ease, transform .16s ease;
+}
+.scan-page .part-number-button:hover,
+.scan-page .part-number-button:focus-visible {
+    background: var(--sc-soft);
+    color: var(--sc-primary);
+    outline: 2px solid rgba(13, 71, 161, 0.28);
+    outline-offset: 1px;
+}
+.scan-page .part-number-button:active { transform: translateY(1px); }
+.scan-page tr.exceeded .part-number-button {
+    color: #fff;
+    text-decoration-color: rgba(255,255,255,.65);
+}
+.scan-page tr.exceeded .part-number-button:hover,
+.scan-page tr.exceeded .part-number-button:focus-visible {
+    background: rgba(255,255,255,.16);
+    color: #fff;
+    outline-color: rgba(255,255,255,.7);
+}
+.scan-page .part-details-modal {
+    width: min(980px, calc(100% - 28px));
+    max-height: 88%;
+    border-radius: 22px;
+    overflow: hidden;
+}
+.scan-page .part-details-modal .modal-content { padding: 0 26px 28px; }
+.scan-page .part-details-hero {
+    position: sticky;
+    z-index: 4;
+    top: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin: 0 -26px 20px;
+    padding: 24px 26px 20px;
+    border-bottom: 1px solid var(--sc-border);
+    background: linear-gradient(135deg, var(--sc-surface) 65%, var(--sc-soft));
+}
+.scan-page .part-details-hero h4 {
+    margin: 3px 0 4px;
+    color: var(--sc-text);
+    font-size: clamp(1.55rem, 4vw, 2.2rem);
+    font-weight: 850;
+    letter-spacing: -.025em;
+}
+.scan-page .part-details-hero p { margin: 0; color: var(--sc-muted); }
+.scan-page .part-details-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(130px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+}
+.scan-page .part-metric {
+    min-width: 0;
+    padding: 14px 15px;
+    border: 1px solid var(--sc-border);
+    border-radius: 13px;
+    background: var(--sc-bg);
+}
+.scan-page .part-metric span {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--sc-muted);
+    font-size: .7rem;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+.scan-page .part-metric strong {
+    display: block;
+    overflow: hidden;
+    color: var(--sc-text);
+    font-size: 1.24rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.scan-page .part-metric.danger { border-color: #ef9a9a; background: #ffebee; }
+.scan-page .part-metric.danger strong { color: #b71c1c; }
+.scan-page.dark-mode .part-metric.danger { background: #421f24; border-color: #8f343d; }
+.scan-page.dark-mode .part-metric.danger strong { color: #ffb3ba; }
+.scan-page .part-details-section-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+.scan-page .part-details-section-heading h5 { margin: 2px 0 0; font-weight: 800; }
+.scan-page .part-details-count {
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: var(--sc-soft);
+    color: var(--sc-primary);
+    font-size: .75rem;
+    font-weight: 800;
+}
+.scan-page .part-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+.scan-page .part-detail-field {
+    min-width: 0;
+    padding: 13px 14px;
+    border: 1px solid var(--sc-border);
+    border-radius: 12px;
+    background: var(--sc-surface);
+}
+.scan-page .part-detail-field.wide { grid-column: 1 / -1; }
+.scan-page .part-detail-label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--sc-muted);
+    font-size: .7rem;
+    font-weight: 800;
+    letter-spacing: .055em;
+    text-transform: uppercase;
+}
+.scan-page .part-detail-value {
+    display: block;
+    overflow-wrap: anywhere;
+    color: var(--sc-text);
+    font-size: .98rem;
+    font-weight: 700;
+    white-space: pre-wrap;
+}
+.scan-page .part-detail-value.empty { color: var(--sc-muted); font-style: italic; font-weight: 500; }
+.scan-page .part-details-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    height: auto !important;
+    min-height: 70px;
+    padding: 10px 16px !important;
+    border-top: 1px solid var(--sc-border);
+}
+@media (max-width: 700px) {
+    .scan-page .part-details-modal { width: calc(100% - 14px); max-height: 94%; }
+    .scan-page .part-details-modal .modal-content { padding: 0 15px 20px; }
+    .scan-page .part-details-hero { margin: 0 -15px 16px; padding: 19px 15px 16px; }
+    .scan-page .part-details-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .scan-page .part-details-grid { grid-template-columns: 1fr; }
+    .scan-page .part-detail-field.wide { grid-column: auto; }
+    .scan-page .part-details-footer { flex-wrap: wrap; }
+    .scan-page .part-details-footer .btn,
+    .scan-page .part-details-footer .btn-flat { flex: 1 1 140px; margin: 0; }
+}
+
+
+/* Compact part details v2: designed to fit without scrolling on standard desktop displays */
+.scan-page .part-details-modal {
+    width: min(900px, calc(100% - 24px));
+    max-height: calc(100vh - 28px);
+    border-radius: 18px;
+    overflow: visible;
+}
+.scan-page .part-details-modal .modal-content {
+    max-height: none;
+    overflow: visible;
+    padding: 0 18px 12px;
+}
+.scan-page .part-details-hero {
+    position: static;
+    margin: 0 -18px 10px;
+    padding: 14px 18px 11px;
+}
+.scan-page .part-details-hero h4 {
+    margin: 1px 0 1px;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+}
+.scan-page .part-details-hero p {
+    font-size: .82rem;
+    line-height: 1.25;
+}
+.scan-page .part-details-hero .eyebrow { font-size: .62rem; }
+.scan-page .part-details-hero .close-button {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+}
+.scan-page .part-details-metrics {
+    grid-template-columns: repeat(5, minmax(105px, 1fr));
+    gap: 7px;
+    margin-bottom: 11px;
+}
+.scan-page .part-metric {
+    padding: 8px 10px;
+    border-radius: 10px;
+}
+.scan-page .part-metric span {
+    margin-bottom: 2px;
+    font-size: .61rem;
+}
+.scan-page .part-metric strong { font-size: 1.02rem; }
+.scan-page .part-details-section-heading {
+    margin-bottom: 6px;
+}
+.scan-page .part-details-section-heading h5 {
+    margin: 0;
+    font-size: 1.05rem;
+}
+.scan-page .part-details-section-heading .eyebrow { display: none; }
+.scan-page .part-details-count { padding: 3px 7px; font-size: .66rem; }
+.scan-page .part-details-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+}
+.scan-page .part-detail-field,
+.scan-page .part-detail-field.wide {
+    grid-column: auto;
+    padding: 7px 9px;
+    border-radius: 9px;
+}
+.scan-page .part-detail-label {
+    margin-bottom: 2px;
+    font-size: .6rem;
+}
+.scan-page .part-detail-value {
+    font-size: .84rem;
+    line-height: 1.18;
+    max-height: 2.36em;
+    overflow: hidden;
+}
+.scan-page .part-details-footer {
+    min-height: 48px;
+    padding: 6px 12px !important;
+}
+.scan-page .part-details-footer .btn-small,
+.scan-page .part-details-footer .btn-flat {
+    height: 32px;
+    line-height: 32px;
+    font-size: .74rem;
+}
+@media (max-width: 700px) {
+    .scan-page .part-details-modal {
+        width: calc(100% - 10px);
+        max-height: calc(100vh - 10px);
+        overflow-y: auto;
+    }
+    .scan-page .part-details-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .scan-page .part-details-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 430px) {
+    .scan-page .part-details-grid { grid-template-columns: 1fr; }
 }

@@ -21,7 +21,6 @@
             <li><a href="ajuste.html">Ajuste</a></li>
             <li class="active"><a href="scan.html" aria-current="page">Escaneo</a></li>
             <li><a href="barcode.html">Generar codigo de barras</a></li>
-            <li><a href="hilos.html">Hilos</a></li>
             <li><a href="invrack.html">Inventario Racks</a></li>
             <li><a href="partescompradas.html">Partes Compradas</a></li>
             <li><a href="reglatres.html">Regla de Tres</a></li>
@@ -270,6 +269,34 @@
             <div class="modal-footer">
                 <button class="modal-close btn red">Cancelar</button>
 				<button class="btn green" onclick="confirmAddFromModal()">Agregar</button>
+            </div>
+        </div>
+
+        <!-- Professional part detail modal: populated from every property in partsDB.js -->
+        <div id="part-details-modal" class="modal part-details-modal" aria-labelledby="partDetailsTitle">
+            <div class="modal-content">
+                <div class="part-details-hero">
+                    <div>
+                        <span class="eyebrow">Ficha de material</span>
+                        <h4 id="partDetailsTitle">Detalle de parte</h4>
+                        <p id="partDetailsSubtitle">Informacion completa del catalogo</p>
+                    </div>
+                    <button class="modal-close close-button" type="button" aria-label="Cerrar detalle">&times;</button>
+                </div>
+                <div id="partDetailsMetrics" class="part-details-metrics" aria-label="Resumen operativo"></div>
+                <div class="part-details-section-heading">
+                    <div>
+                        <span class="eyebrow">partsDB.js</span>
+                        <h5>Informacion del material</h5>
+                    </div>
+                    <span id="partDetailsFieldCount" class="part-details-count"></span>
+                </div>
+                <div id="partDetailsGrid" class="part-details-grid"></div>
+            </div>
+            <div class="modal-footer part-details-footer">
+                <button id="copyPartDetailsBtn" class="btn-small blue darken-2" type="button">Copiar</button>
+                <button id="addPartDetailsBtn" class="btn-small green" type="button">Agregar pack</button>
+                <button class="modal-close btn-flat btn-small" type="button">Cerrar</button>
             </div>
         </div>
         <footer class="page-footer blue darken-4">

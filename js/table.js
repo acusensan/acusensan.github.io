@@ -1,4 +1,6 @@
 let deleteTarget = null;
+let editTarget = null;
+let locationDeleteTarget = null;
 let currentIndex = 0;
 let allParts = [];
 let groupedData = {};
@@ -62,6 +64,9 @@ function bindEvents() {
         }
     });
     document.getElementById('confirm-delete-btn').addEventListener('click', confirmDelete);
+    document.getElementById('save-edit-item-btn').addEventListener('click', saveEditedItem);
+    document.getElementById('emptyRackBtn').addEventListener('click', requestEmptyRack);
+    document.getElementById('confirm-empty-rack-btn').addEventListener('click', confirmEmptyRack);
     document.getElementById('confirm-clear-btn').addEventListener('click', clearStoredData);
     document.getElementById('openScannerBtn')?.addEventListener('click', openLabelPhoto);
     document.getElementById('closeScannerBtn')?.addEventListener('click', closeLabelPhoto);
@@ -135,6 +140,7 @@ function saveData() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
         groupedData,
         orderedLocations,
+        currentIndex,
         checkedState: window.checkedState,
         scannedState: window.scannedState
     }));
@@ -146,6 +152,7 @@ function loadData() {
         if (saved) {
             groupedData = saved.groupedData || {};
             orderedLocations = saved.orderedLocations || [];
+            currentIndex = Number.isInteger(saved.currentIndex) ? saved.currentIndex : 0;
             window.checkedState = saved.checkedState || {};
             window.scannedState = saved.scannedState || {};
         }
@@ -216,16 +223,20 @@ function renderRows(loc, items) {
         if (window.checkedState[loc][index]) tr.classList.add('done');
         const partTd = document.createElement('td');
         partTd.className = 'part-number';
-        if (window.scannedState[loc]?.[index]) { const dot=document.createElement('span'); dot.className='scanned-dot'; dot.title='Agregado por foto'; partTd.append(dot); }
-        const text=document.createElement('span'); text.textContent=part; partTd.append(text);
-        partTd.onclick = () => makeEditable(partTd, loc, index, 0);
+        if (window.scannedState[loc]?.[index]) {
+            const dot = document.createElement('span');
+            dot.className = 'scanned-dot';
+            dot.title = 'Agregado por foto';
+            partTd.append(dot);
+        }
+        const text = document.createElement('span');
+        text.textContent = part;
+        partTd.append(text);
         const qtyTd = document.createElement('td');
         qtyTd.textContent = qty;
-        qtyTd.onclick = () => makeEditable(qtyTd, loc, index, 1);
         const packTd = document.createElement('td');
         packTd.className = 'pack-value';
-        const pack = Number((window.partsDB || {})[part]?.pack),
-            amount = Number(qty);
+        const pack = Number((window.partsDB || {})[part]?.pack), amount = Number(qty);
         packTd.textContent = pack > 0 && Number.isFinite(amount) ? `${(amount / pack).toFixed(2)} cajas` : 'No disponible';
         const statusTd = document.createElement('td');
         statusTd.textContent = window.checkedState[loc][index] ? 'Verificado' : 'Pendiente';
@@ -239,19 +250,21 @@ function renderRows(loc, items) {
             saveData();
             render();
         };
+        const edit = document.createElement('button');
+        edit.className = 'edit-btn';
+        edit.textContent = 'Editar';
+        edit.onclick = () => openEditItem(loc, index);
         const del = document.createElement('button');
         del.className = 'delete-btn';
         del.textContent = 'Eliminar';
         del.onclick = () => requestDelete(loc, index);
-        actionTd.append(done, del);
+        actionTd.append(edit, del, done);
         tr.append(partTd, qtyTd, packTd, statusTd, actionTd);
         body.append(tr);
     });
 }
-
 function updateOverallProgress() {
-    let total = 0,
-        done = 0;
+    let total = 0, done = 0;
     orderedLocations.forEach(loc => {
         total += (groupedData[loc] || []).length;
         done += (window.checkedState[loc] || []).filter(Boolean).length;
@@ -259,36 +272,75 @@ function updateOverallProgress() {
     document.getElementById('overallDone').textContent = done;
     document.getElementById('overallTotal').textContent = `de ${total} verificados`;
 }
-
-function makeEditable(td, loc, row, col) {
-    if (td.querySelector('input')) return;
-    const original = groupedData[loc][row][col],
-        input = document.createElement('input');
-    input.className = 'editable-input';
-    input.value = original;
-    td.textContent = '';
-    td.append(input);
-    input.focus();
-    input.select();
-    let saved = false;
-    const commit = () => {
-        if (saved) return;
-        saved = true;
-        const value = input.value.trim();
-        if (value) groupedData[loc][row][col] = value;
-        saveData();
-        render();
-    };
-    input.addEventListener('blur', commit);
-    input.addEventListener('keydown', e => {
-        if (e.key === 'Enter') input.blur();
-        if (e.key === 'Escape') {
-            saved = true;
-            render();
-        }
-    });
+function openEditItem(loc, index) {
+    editTarget = { loc, index };
+    const [part, qty] = groupedData[loc][index];
+    document.getElementById('edit-item-location').textContent = loc;
+    document.getElementById('edit-item-part').value = part;
+    document.getElementById('edit-item-qty').value = qty;
+    M.Modal.getInstance(document.getElementById('edit-item-modal')).open();
+    setTimeout(() => {
+        const input = document.getElementById('edit-item-part');
+        input.focus();
+        input.select();
+    }, 150);
 }
-
+function saveEditedItem() {
+    if (!editTarget) return;
+    const part = document.getElementById('edit-item-part').value.trim().toUpperCase();
+    const qty = document.getElementById('edit-item-qty').value.trim();
+    if (!part || !qty || Number(qty) <= 0) {
+        toast('Completa una parte y cantidad valida', 'orange');
+        return;
+    }
+    const { loc, index } = editTarget;
+    groupedData[loc][index] = [part, qty];
+    editTarget = null;
+    saveData();
+    render();
+    M.Modal.getInstance(document.getElementById('edit-item-modal')).close();
+    toast('Material actualizado', 'green');
+}
+function locationIsComplete(loc) {
+    const items = groupedData[loc] || [];
+    const checks = window.checkedState[loc] || [];
+    return items.length === 0 || items.every((_, index) => checks[index] === true);
+}
+function canLeaveCurrentLocation() {
+    if (!orderedLocations.length) return true;
+    const loc = orderedLocations[currentIndex];
+    if (locationIsComplete(loc)) return true;
+    const pending = (groupedData[loc] || []).length - (window.checkedState[loc] || []).filter(Boolean).length;
+    return window.confirm(`La ubicacion ${loc} tiene ${pending} material${pending === 1 ? '' : 'es'} sin verificar. ¿Deseas salir de esta ubicacion?`);
+}
+function rackForLocation(loc) {
+    const value = String(loc || '').toUpperCase();
+    if (value.startsWith('APC01')) return { key: 'APC01', label: 'Rack 1' };
+    if (value.startsWith('APC02')) return { key: 'APC02', label: 'Rack 2' };
+    return { key: 'OTHER', label: 'Otras ubicaciones' };
+}
+function requestEmptyRack() {
+    if (!orderedLocations.length) return;
+    const location = orderedLocations[currentIndex];
+    const itemCount = (groupedData[location] || []).length;
+    locationDeleteTarget = { location };
+    document.getElementById('empty-rack-title').textContent = `Vaciar ${location}`;
+    document.getElementById('empty-rack-text').textContent = `Se eliminaran los ${itemCount} materiales de la ubicacion ${location}. La ubicacion permanecera disponible y esta accion no se puede deshacer.`;
+    M.Modal.getInstance(document.getElementById('location-modal')).close();
+    M.Modal.getInstance(document.getElementById('empty-rack-modal')).open();
+}
+function confirmEmptyRack() {
+    if (!locationDeleteTarget) return;
+    const { location } = locationDeleteTarget;
+    groupedData[location] = [];
+    window.checkedState[location] = [];
+    window.scannedState[location] = [];
+    locationDeleteTarget = null;
+    saveData();
+    render();
+    M.Modal.getInstance(document.getElementById('empty-rack-modal')).close();
+    toast(`Ubicacion ${location} vaciada`, 'red lighten-1');
+}
 function addLocation() {
     const input = document.getElementById('new-location'),
         loc = input.value.trim().toUpperCase();
@@ -299,6 +351,7 @@ function addLocation() {
     if (groupedData[loc]) {
         currentIndex = orderedLocations.indexOf(loc);
         input.value = '';
+        saveData();
         render();
         toast('La ubicacion ya existe', 'blue-grey');
         return;
@@ -327,52 +380,89 @@ function addLocation() {
 function moveLocation(direction) {
     const next = currentIndex + direction;
     if (next < 0 || next >= orderedLocations.length) return;
+    if (!canLeaveCurrentLocation()) return;
     currentIndex = next;
+    saveData();
     render();
-
-    if (!mobileAddPartQuery.matches) {
-        document.getElementById('partSearch').focus();
-    }
+    if (!mobileAddPartQuery.matches) document.getElementById('partSearch').focus();
 }
-
 function openLocationPicker() {
     document.getElementById('locationSearch').value = '';
     renderLocationList();
     M.Modal.getInstance(document.getElementById('location-modal')).open();
     setTimeout(() => document.getElementById('locationSearch').focus(), 150);
 }
-
 function renderLocationList() {
-    const query = document.getElementById('locationSearch').value.trim().toLowerCase(),
-        list = document.getElementById('locationList');
+    const query = document.getElementById('locationSearch').value.trim().toLowerCase();
+    const list = document.getElementById('locationList');
     list.innerHTML = '';
-    orderedLocations.forEach((loc, index) => {
-        if (query && !loc.toLowerCase().includes(query)) return;
-        const button = document.createElement('button');
-        button.className = `location-option${index===currentIndex?' active':''}`;
-        const count = (window.checkedState[loc] || []).filter(Boolean).length,
-            total = (groupedData[loc] || []).length;
-        const name = document.createElement('strong');
-        name.textContent = loc;
-        const status = document.createElement('small');
-        status.textContent = `${count}/${total}`;
-        button.append(name, status);
-        button.onclick = () => {
-            currentIndex = index;
-            M.Modal.getInstance(document.getElementById('location-modal')).close();
-            render();
-
-            if (mobileAddPartQuery.matches) {
-                document.querySelector('.location-toolbar')?.scrollIntoView({
-                    block: 'nearest',
-                    behavior: 'smooth'
-                });
-            }
+    const groups = [
+        { key: 'APC01', label: 'Rack 1' },
+        { key: 'APC02', label: 'Rack 2' },
+        { key: 'OTHER', label: 'Otras ubicaciones' }
+    ];
+    groups.forEach(group => {
+        const matches = orderedLocations
+            .map((loc, index) => ({ loc, index }))
+            .filter(item => rackForLocation(item.loc).key === group.key)
+            .filter(item => !query || item.loc.toLowerCase().includes(query));
+        if (!matches.length) return;
+        const section = document.createElement('section');
+        section.className = 'location-group';
+        const heading = document.createElement('button');
+        heading.type = 'button';
+        heading.className = 'location-group-heading';
+        const title = document.createElement('strong');
+        title.textContent = group.label;
+        const meta = document.createElement('span');
+        const total = document.createElement('small');
+        total.textContent = `${matches.length} ubicacion${matches.length === 1 ? '' : 'es'}`;
+        const chevron = document.createElement('span');
+        chevron.className = 'location-group-chevron';
+        chevron.setAttribute('aria-hidden', 'true');
+        chevron.textContent = '⌄';
+        meta.append(total, chevron);
+        heading.append(title, meta);
+        const options = document.createElement('div');
+        options.className = 'location-group-options';
+        const startsCollapsed = !query && (group.key === 'APC01' || group.key === 'APC02');
+        options.hidden = startsCollapsed;
+        heading.setAttribute('aria-expanded', String(!startsCollapsed));
+        heading.onclick = () => {
+            const expanded = heading.getAttribute('aria-expanded') === 'true';
+            heading.setAttribute('aria-expanded', String(!expanded));
+            options.hidden = expanded;
         };
-        list.append(button);
+        matches.forEach(({ loc, index }) => {
+            const button = document.createElement('button');
+            button.className = `location-option${index === currentIndex ? ' active' : ''}`;
+            const count = (window.checkedState[loc] || []).filter(Boolean).length;
+            const itemTotal = (groupedData[loc] || []).length;
+            const name = document.createElement('strong');
+            name.textContent = loc;
+            const status = document.createElement('small');
+            status.textContent = `${count}/${itemTotal}`;
+            button.append(name, status);
+            button.onclick = () => {
+                if (index !== currentIndex && !canLeaveCurrentLocation()) return;
+                currentIndex = index;
+                saveData();
+                M.Modal.getInstance(document.getElementById('location-modal')).close();
+                render();
+                if (mobileAddPartQuery.matches) {
+                    document.querySelector('.location-toolbar')?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                }
+            };
+            options.append(button);
+        });
+        section.append(heading, options);
+        list.append(section);
     });
+    const emptyButton = document.getElementById('emptyRackBtn');
+    const currentLocation = orderedLocations[currentIndex];
+    emptyButton.hidden = !currentLocation;
+    if (currentLocation) emptyButton.textContent = `Vaciar ubicacion ${currentLocation}`;
 }
-
 function renderPartResults() {
     const query = document.getElementById('partSearch').value.trim().toLowerCase(),
         results = document.getElementById('partSearchResults');

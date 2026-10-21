@@ -1,146 +1,182 @@
 <!doctype html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"/>
-        <meta name="theme-color" content="#0d47a1" />
-        <title>Partes Compradas | ./Acu</title>
-        <link rel="stylesheet" href="css/materialize.min.css" />
-        <link rel="stylesheet" href="css/navigationbar.css" />
-        <link rel="stylesheet" href="css/partescompradas.css" />
-    </head>
-    <body class="purchased-parts-page">
-        <a class="skip-link" href="#main-content">Saltar al contenido</a>
-        <ul id="slide-out" class="sidenav" aria-label="Navegacion principal">
-            <li class="sidenav-heading">
-                <span class="sidenav-mark">A</span>
-                <div><strong>./Acu</strong><small>Herramientas de materiales</small></div>
-            </li>
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="ascan.html">A-Scan</a></li>
-            <li><a href="ajuste.html">Ajuste</a></li>
-            <li><a href="scan.html">Escaneo</a></li>
-            <li><a href="barcode.html">Generar codigo de barras</a></li>
-            <li><a href="hilos.html">Hilos</a></li>
-            <li><a href="invrack.html">Inventario Racks</a></li>
-            <li class="active"><a href="partescompradas.html" aria-current="page">Partes Compradas</a></li>
-            <li><a href="reglatres.html">Regla de Tres</a></li>
-            <li><a href="table.html">Verificar</a></li>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+    <meta name="theme-color" content="#0d47a1" />
+    <title>Hilos y Partes Compradas | ./Acu</title>
+    <link rel="stylesheet" href="css/materialize.min.css" />
+    <link rel="stylesheet" href="css/navigationbar.css" />
+    <link rel="stylesheet" href="css/partescompradas.css" />
+  </head>
+  <body class="catalog-tabs-page"><a class="skip-link" href="#catalog-tabs">Saltar al contenido</a>
+    <ul id="slide-out" class="sidenav catalog-sidenav" aria-label="Navegacion principal">
+      <li class="sidenav-heading"><span class="sidenav-mark">A</span>
+        <div><strong>./Acu</strong><small>Herramientas de materiales</small></div>
+      </li>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="ascan.html">A-Scan</a></li>
+      <li><a href="ajuste.html">Ajuste</a></li>
+      <li><a href="scan.html">Escaneo</a></li>
+      <li><a href="barcode.html">Generar codigo de barras</a></li>
+      <li><a href="invrack.html">Inventario Racks</a></li>
+      <li><a href="#parts-panel" data-open-tab="parts-tab">Partes Compradas</a></li>
+      <li><a href="reglatres.html">Regla de Tres</a></li>
+      <li><a href="table.html">Verificar</a></li>
+    </ul>
+    <nav class="blue darken-4 catalog-nav" aria-label="Barra superior">
+      <div class="nav-wrapper"><button class="menu-button sidenav-trigger" data-target="slide-out" type="button" aria-label="Abrir menu"><span class="bar"></span><span class="bar"></span><span class="bar"></span></button><a href="#hilos-panel" class="brand-logo catalog-brand"><code>Catalogos</code></a>
+        <ul class="right">
+          <li><a href="#settings-modal" class="modal-trigger nav-action" aria-label="Abrir ajustes"><img src="icons/settings.svg" alt="" class="nav-icon" /></a></li>
         </ul>
-        <nav class="blue darken-4 purchased-nav">
-            <div class="nav-wrapper">
-                <button
-                    class="menu-button sidenav-trigger"
-                    data-target="slide-out"
-                    type="button"
-                    aria-label="Abrir menu"
-                >
-                    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-                </button>
-                <a href="partescompradas.html" class="brand-logo purchased-brand"><code>Partes Compradas</code></a>
-                <ul class="right">
-                    <li>
-                        <a href="#settings-modal" class="modal-trigger nav-action" aria-label="Abrir ajustes"
-                            ><img src="icons/settings.svg" alt="" class="nav-icon"
-                        /></a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
-        <main id="main-content">
-            <div class="container purchased-shell">
-                <header class="page-heading">
-                    <div>
-                        <span class="eyebrow">Catalogo de materiales</span>
-                        <h1>Partes compradas</h1>
-                        <p>Consulta ubicacion, empaque, linea y datos operativos de cada componente.</p>
-                    </div>
-                    <div class="result-summary"><strong id="resultCount">0</strong><span>resultados</span></div>
-                </header>
-                <section class="catalog-panel" aria-labelledby="catalog-title">
-                    <div class="toolbar">
-                        <label class="search-field" for="searchBar"
-                            ><span class="sr-only">Buscar partes</span
-                            ><input
-                                type="search"
-                                id="searchBar"
-                                placeholder="Buscar parte, descripcion o ubicacion..."
-                                autocomplete="off"
-                            /><button id="clearSearch" type="button" aria-label="Limpiar busqueda" hidden>
-                                &times;
-                            </button></label
-                        >
-                        <label class="filter-field" for="lineFilter"
-                            ><span class="sr-only">Filtrar por linea</span
-                            ><select id="lineFilter" class="browser-default">
-                                <option value="">Todas las lineas</option>
-                            </select></label
-                        >
-                    </div>
-                    <div id="loadError" class="state-message error-state" hidden>
-                        <strong>No se pudo cargar el catalogo</strong>
-                        <p>Verifica que partsdb.js este disponible.</p>
-                    </div>
-                    <div id="emptyResults" class="state-message" hidden>
-                        <span class="empty-icon">?</span><strong>Sin coincidencias</strong>
-                        <p>Prueba con otro numero de parte, descripcion o ubicacion.</p>
-                    </div>
-                    <div id="dataContainer" class="data-container" aria-live="polite"></div>
-                </section>
-            </div>
+      </div>
+    </nav>
+    <main id="catalog-tabs">
+      <div class="chrome-tabs-bar" role="tablist" aria-label="Catalogos"><button id="hilos-tab" class="chrome-tab" role="tab" aria-selected="true" aria-controls="hilos-panel" type="button">Hilos</button><button id="parts-tab" class="chrome-tab" role="tab" aria-selected="false" aria-controls="parts-panel" type="button" tabindex="-1">Partes Compradas</button></div>
+      <section id="hilos-panel" class="tab-panel hilos-app" role="tabpanel" aria-labelledby="hilos-tab">
+        <main>
+          <div class="container hilos-shell">
+            <header class="page-heading">
+              <div><span class="eyebrow">Catalogo de materiales</span>
+                <h1>Consulta de hilos</h1>
+                <p>Busca por numero de parte, color, ubicacion, calibre o linea de produccion.</p>
+              </div>
+              <div class="result-summary"><strong id="hilosResultCount">0</strong><span>resultados</span></div>
+            </header>
+            <section class="catalog-panel" aria-label="Catalogo de hilos">
+              <div class="toolbar"><label class="search-field" for="hilosSearchBar"><span class="sr-only">Buscar hilos</span><input type="search" id="hilosSearchBar" placeholder="Buscar parte, color, ubicacion..." autocomplete="off" /><button id="hilosClearSearch" type="button" aria-label="Limpiar busqueda" hidden>&times;</button></label><label class="filter-field" for="hilosCalibreFilter"><span class="sr-only">Filtrar por calibre</span><select id="hilosCalibreFilter" class="browser-default">
+                    <option value="">Todos los calibres</option>
+                  </select></label></div>
+              <div id="hilosLoadError" class="state-message error-state" hidden><strong>No se pudo cargar el catalogo</strong>
+                <p>Verifica que hilosdb.js este disponible.</p>
+              </div>
+              <div id="hilosEmptyResults" class="state-message" hidden><span class="empty-icon">?</span><strong>Sin coincidencias</strong>
+                <p>Prueba con otro numero de parte, color o ubicacion.</p>
+              </div>
+              <div id="hilosDataContainer" class="data-container" aria-live="polite"></div>
+            </section>
+          </div>
         </main>
+      </section>
+      <section id="parts-panel" class="tab-panel purchased-parts-app" role="tabpanel" aria-labelledby="parts-tab" hidden>
+        <main>
+          <div class="container purchased-shell">
+            <header class="page-heading">
+              <div><span class="eyebrow">Catalogo de materiales</span>
+                <h1>Partes compradas</h1>
+                <p>Consulta ubicacion, empaque, linea y datos operativos de cada componente.</p>
+              </div>
+              <div class="result-summary"><strong id="partsResultCount">0</strong><span>resultados</span></div>
+            </header>
+            <section class="catalog-panel" aria-label="Catalogo de partes compradas">
+              <div class="toolbar"><label class="search-field" for="partsSearchBar"><span class="sr-only">Buscar partes</span><input type="search" id="partsSearchBar" placeholder="Buscar parte, descripcion o ubicacion..." autocomplete="off" /><button id="partsClearSearch" type="button" aria-label="Limpiar busqueda" hidden>&times;</button></label><label class="filter-field" for="partsLineFilter"><span class="sr-only">Filtrar por linea</span><select id="partsLineFilter" class="browser-default">
+                    <option value="">Todas las lineas</option>
+                  </select></label></div>
+              <div id="partsLoadError" class="state-message error-state" hidden><strong>No se pudo cargar el catalogo</strong>
+                <p>Verifica que partsdb.js este disponible.</p>
+              </div>
+              <div id="partsEmptyResults" class="state-message" hidden><span class="empty-icon">?</span><strong>Sin coincidencias</strong>
+                <p>Prueba con otro numero de parte, descripcion o ubicacion.</p>
+              </div>
+              <div id="partsDataContainer" class="data-container" aria-live="polite"></div>
+            </section>
+          </div>
+        </main>
+      </section>
+    </main>
+    <div id="hilos-thread-modal" class="modal detail-modal hilos-app" role="dialog" aria-modal="true" aria-labelledby="hilosDetailPartNumber">
+      <div class="modal-content">
+        <div class="modal-heading">
+          <div><span class="eyebrow">Detalle del hilo</span>
+            <h4 id="hilosDetailPartNumber">Numero de parte</h4>
+          </div><button class="modal-close close-button" type="button" aria-label="Cerrar">&times;</button>
+        </div>
+        <div class="barcode-card"><svg id="hilosModalImage" role="img" aria-label="Codigo de barras del numero de parte"></svg><button id="hilosCopyPartBtn" class="btn-flat copy-button" type="button">Copiar numero de parte</button></div>
+        <dl id="hilosBarcodeDetails" class="details-grid"></dl>
+      </div>
+      <div class="modal-footer"><button class="modal-close btn blue darken-4">Listo</button></div>
+    </div>
+    <div id="parts-part-modal" class="modal detail-modal purchased-parts-app" role="dialog" aria-modal="true" aria-labelledby="partsDetailPartNumber">
+      <div class="modal-content">
+        <div class="modal-heading">
+          <div><span class="eyebrow">Detalle de material</span>
+            <h4 id="partsDetailPartNumber">Numero de parte</h4>
+          </div><button class="modal-close close-button" type="button" aria-label="Cerrar">&times;</button>
+        </div>
+        <div class="barcode-card"><svg id="partsModalImage" role="img" aria-label="Codigo de barras del numero de parte"></svg><button id="partsCopyPartBtn" class="btn-flat copy-button" type="button">Copiar numero de parte</button></div>
+        <dl id="partsBarcodeDetails" class="details-grid"></dl>
+      </div>
+      <div class="modal-footer"><button class="modal-close btn blue darken-4">Listo</button></div>
+    </div>
+    <div id="settings-modal" class="modal compact-modal" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+      <div class="modal-content">
+        <div class="modal-heading">
+          <div>
+            <span class="eyebrow">Preferencias y datos</span>
+            <h4 id="settings-title">Ajustes</h4>
+          </div>
+          <button class="modal-close close-button" type="button" aria-label="Cerrar">&times;</button>
+        </div>
+        <div class="setting-row">
+          <div><strong>Tema</strong><span id="dark-mode-text">Modo Oscuro</span></div>
+          <div class="switch">
+            <label><input type="checkbox" id="dark-mode-toggle" /><span class="lever"></span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="page-footer blue darken-4">
+      <div class="container">© <span id="current-year"></span> Samuel Eduardo Renteria Quintero NCG <span class="footer-dot">•</span><span id="version"></span></div>
+    </footer>
+    <script src="js/materialize.min.js"></script>
+    <script src="js/navigationbar.js"></script>
+    <script src="js/JsBarcode.all.min.js"></script>
+    <script src="js/hilosdb.js"></script>
+    <script src="js/partsdb.js"></script>
+    <script src="js/hilos.js"></script>
+    <script src="js/partescompradas.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const tabs = Array.from(document.querySelectorAll('.chrome-tab'));
+        const panels = Array.from(document.querySelectorAll('.tab-panel'));
 
-        <div
-            id="part-modal"
-            class="modal detail-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="detailPartNumber"
-        >
-            <div class="modal-content">
-                <div class="modal-heading">
-                    <div>
-                        <span class="eyebrow">Detalle de material</span>
-                        <h4 id="detailPartNumber">Numero de parte</h4>
-                    </div>
-                    <button class="modal-close close-button" type="button" aria-label="Cerrar">&times;</button>
-                </div>
-                <div class="barcode-card">
-                    <svg id="modalImage" role="img" aria-label="Codigo de barras del numero de parte"></svg
-                    ><button id="copyPartBtn" class="btn-flat copy-button" type="button">Copiar numero de parte</button>
-                </div>
-                <dl id="barcodeDetails" class="details-grid"></dl>
-            </div>
-            <div class="modal-footer"><button class="modal-close btn blue darken-4">Listo</button></div>
-        </div>
-        <div id="settings-modal" class="modal settings-modal">
-            <div class="modal-content">
-                <div class="modal-heading">
-                    <div>
-                        <span class="eyebrow">Preferencias</span>
-                        <h4>Ajustes</h4>
-                    </div>
-                    <button class="modal-close close-button" type="button" aria-label="Cerrar">&times;</button>
-                </div>
-                <div class="setting-row">
-                    <div><strong>Tema de la aplicacion</strong><span id="dark-mode-text">Modo Oscuro</span></div>
-                    <div class="switch">
-                        <label><input type="checkbox" id="dark-mode-toggle" /><span class="lever"></span></label>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <footer class="page-footer blue darken-4">
-            <div class="container">
-                © <span id="current-year"></span> Samuel Eduardo Renteria Quintero NCG
-                <span class="footer-dot">•</span> <span id="version"></span>
-            </div>
-        </footer>
-        <script src="js/materialize.min.js"></script>
-        <script src="js/navigationbar.js"></script>
-        <script src="js/JsBarcode.all.min.js"></script>
-        <script src="js/partsdb.js"></script>
-        <script src="js/partescompradas.js"></script>
-    </body>
+        function openTab(tabId, updateHash) {
+          const tab = document.getElementById(tabId);
+          if (!tab) return;
+          tabs.forEach(item => {
+            const active = item === tab;
+            item.setAttribute('aria-selected', String(active));
+            item.tabIndex = active ? 0 : -1;
+          });
+          panels.forEach(panel => {
+            panel.hidden = panel.id !== tab.getAttribute('aria-controls');
+          });
+          if (updateHash) history.replaceState(null, '', '#' + tab.getAttribute('aria-controls'));
+          localStorage.setItem('catalogActiveTab', tabId);
+        }
+        tabs.forEach((tab, index) => {
+          tab.addEventListener('click', () => openTab(tab.id, true));
+          tab.addEventListener('keydown', event => {
+            if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+            event.preventDefault();
+            let next = index;
+            if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+            if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+            if (event.key === 'Home') next = 0;
+            if (event.key === 'End') next = tabs.length - 1;
+            tabs[next].focus();
+            openTab(tabs[next].id, true);
+          });
+        });
+        document.querySelectorAll('[data-open-tab]').forEach(link => link.addEventListener('click', event => {
+          event.preventDefault();
+          openTab(link.dataset.openTab, true);
+          const instance = M.Sidenav.getInstance(document.getElementById('slide-out'));
+          if (instance) instance.close();
+        }));
+        const hashTab = location.hash === '#parts-panel' ? 'parts-tab' : location.hash === '#hilos-panel' ? 'hilos-tab' : null;
+        openTab(hashTab || localStorage.getItem('catalogActiveTab') || 'hilos-tab', false);
+      });
+    </script>
+  </body>
 </html>

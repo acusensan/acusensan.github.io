@@ -1,23 +1,47 @@
-/* Purchased-parts-only styles; scoped to protect navigationbar.css users. */
-.purchased-parts-page {
-    --pp-bg: #f4f7fb;
-    --pp-surface: #fff;
-    --pp-text: #172033;
-    --pp-muted: #667085;
-    --pp-border: #e3e9f2;
-    --pp-primary: #0d47a1;
-    --pp-soft: #eaf2ff;
-    background: var(--pp-bg);
-    color: var(--pp-text);
+/* Merged page shell and Chrome-style tabs. */
+:root { --tabs-blue:#0d47a1; --tabs-bg:#dfe6ef; --tabs-surface:#f4f7fb; --tabs-text:#172033; }
+* { box-sizing:border-box; }
+html, body { min-height:100%; }
+body.catalog-tabs-page { margin:0; background:var(--tabs-surface); color:var(--tabs-text); }
+.catalog-tabs-page.dark-mode { --tabs-bg:#111827; --tabs-surface:#0f141c; --tabs-text:#f3f6fb; }
+.catalog-tabs-page > main { padding-top:64px; }
+.chrome-tabs-bar { position:sticky; z-index:30; top:64px; display:flex; align-items:flex-end; gap:4px; min-height:48px; padding:8px 12px 0; background:var(--tabs-bg); border-bottom:1px solid rgba(0,0,0,.12); overflow-x:auto; }
+.chrome-tab { position:relative; display:flex; align-items:center; gap:9px; min-width:170px; max-width:240px; height:40px; padding:0 18px; border:0; border-radius:12px 12px 0 0; background:rgba(255,255,255,.48); color:#344054; cursor:pointer; font:600 .9rem system-ui,sans-serif; white-space:nowrap; }
+.chrome-tab::before { content:''; width:8px; height:8px; border-radius:50%; background:#98a2b3; }
+.chrome-tab:hover { background:rgba(255,255,255,.72); }
+.chrome-tab[aria-selected='true'] { z-index:2; background:var(--tabs-surface); color:var(--tabs-blue); }
+.chrome-tab[aria-selected='true']::before { background:var(--tabs-blue); }
+.catalog-tabs-page.dark-mode .chrome-tab { color:#cbd5e1; background:rgba(255,255,255,.07); }
+.catalog-tabs-page.dark-mode .chrome-tab[aria-selected='true'] { color:#8ab4f8; background:var(--tabs-surface); }
+.tab-panel[hidden] { display:none !important; }
+.tab-panel { min-height:calc(100dvh - 112px); }
+.hilos-app main, .purchased-parts-app main { padding-top:0 !important; }
+.hilos-app .hilos-shell, .purchased-parts-app .purchased-shell { padding-top:30px; }
+.catalog-tabs-page.dark-mode .hilos-app { --hi-bg:#0f141c; --hi-surface:#171e29; --hi-text:#f3f6fb; --hi-muted:#aab4c4; --hi-border:#2b3545; --hi-soft:#172d51; }
+.catalog-tabs-page.dark-mode .purchased-parts-app { --pp-bg:#0f141c; --pp-surface:#171e29; --pp-text:#f3f6fb; --pp-muted:#aab4c4; --pp-border:#2b3545; --pp-soft:#172d51; }
+@media (max-width:600px) {
+ .catalog-tabs-page > main { padding-top:56px; }
+ .chrome-tabs-bar { top:56px; min-height:44px; padding:6px 5px 0; }
+ .chrome-tab { min-width:145px; height:38px; padding:0 12px; font-size:.82rem; }
+ .hilos-app .hilos-shell, .purchased-parts-app .purchased-shell { padding-top:8px; }
 }
-.purchased-parts-page main {
+
+/* Hilos-only styles. Scoped to protect pages sharing navigationbar.css. */
+.hilos-app {
+    --hi-bg: #f4f7fb;
+    --hi-surface: #fff;
+    --hi-text: #172033;
+    --hi-muted: #667085;
+    --hi-border: #e3e9f2;
+    --hi-primary: #0d47a1;
+    --hi-soft: #eaf2ff;
+    background: var(--hi-bg);
+    color: var(--hi-text);
+}
+.hilos-app main {
     padding-top: 64px;
 }
-.purchased-parts-page .purchased-shell {
-    width: min(1180px, calc(100% - 32px));
-    padding: 38px 0 48px;
-}
-.purchased-parts-page .skip-link {
+.hilos-app .skip-link {
     position: fixed;
     z-index: 3000;
     top: 8px;
@@ -28,23 +52,23 @@
     padding: 10px 14px;
     border-radius: 8px;
 }
-.purchased-parts-page .skip-link:focus {
+.hilos-app .skip-link:focus {
     transform: none;
 }
-.purchased-parts-page .purchased-nav .nav-wrapper {
+.hilos-app .hilos-nav .nav-wrapper {
     padding: 0 clamp(8px, 3vw, 28px);
 }
-.purchased-parts-page .purchased-brand code {
+.hilos-app .hilos-brand code {
     color: #fff;
-    font: 700 1.25rem system-ui;
+    font: 700 1.35rem system-ui;
 }
-.purchased-parts-page .nav-icon {
+.hilos-app .nav-icon {
     width: 24px;
     height: 24px;
-    filter: brightness(0) invert(1);
     vertical-align: middle;
+    filter: brightness(0) invert(1);
 }
-.purchased-parts-page .nav-action {
+.hilos-app .nav-action {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -52,14 +76,630 @@
     height: 64px; /* match navbar height */
     padding: 0;
 }
-.purchased-parts-page .page-heading {
+.hilos-app .hilos-shell {
+    width: min(1180px, calc(100% - 32px));
+    padding: 38px 0 48px;
+}
+.hilos-app .page-heading {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     gap: 24px;
     margin-bottom: 24px;
 }
-.purchased-parts-page .eyebrow {
+.hilos-app .eyebrow {
+    display: block;
+    color: var(--hi-primary);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+}
+.hilos-app h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 750;
+    letter-spacing: -0.04em;
+    margin: 6px 0 8px;
+}
+.hilos-app .page-heading p {
+    color: var(--hi-muted);
+    margin: 0;
+}
+.hilos-app .result-summary {
+    min-width: 105px;
+    padding: 12px 16px;
+    border: 1px solid var(--hi-border);
+    border-radius: 13px;
+    background: var(--hi-surface);
+    text-align: center;
+}
+.hilos-app .result-summary strong,
+.hilos-app .result-summary span {
+    display: block;
+}
+.hilos-app .result-summary strong {
+    color: var(--hi-primary);
+    font-size: 1.35rem;
+}
+.hilos-app .result-summary span {
+    color: var(--hi-muted);
+    font-size: 0.75rem;
+}
+.hilos-app .catalog-panel {
+    overflow: hidden;
+    border: 1px solid var(--hi-border);
+    border-radius: 18px;
+    background: var(--hi-surface);
+    box-shadow: 0 3px 14px rgba(20, 33, 52, 0.05);
+}
+.hilos-app .toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 220px;
+    gap: 12px;
+    padding: 18px;
+    border-bottom: 1px solid var(--hi-border);
+}
+.hilos-app .search-field {
+    position: relative;
+}
+.hilos-app .search-field input,
+.hilos-app .filter-field select {
+    box-sizing: border-box !important;
+    width: 100%;
+    height: 48px !important;
+    margin: 0 !important;
+    padding: 0 44px 0 14px !important;
+    border: 1px solid var(--hi-border) !important;
+    border-radius: 11px !important;
+    background: var(--hi-surface) !important;
+    color: var(--hi-text) !important;
+    box-shadow: none !important;
+    font-size: 1rem !important;
+    text-align: left !important;
+}
+.hilos-app .filter-field select {
+    padding-right: 12px !important;
+}
+.hilos-app .search-field input:focus,
+.hilos-app .filter-field select:focus {
+    border-color: var(--hi-primary) !important;
+    box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.12) !important;
+    outline: 0;
+}
+.hilos-app #clearSearch {
+    position: absolute;
+    right: 6px;
+    top: 5px;
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--hi-muted);
+    cursor: pointer;
+    font-size: 1.6rem;
+}
+.hilos-app .data-container {
+    overflow: auto;
+}
+.hilos-app .thread-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.hilos-app .thread-table th {
+    position: sticky;
+    z-index: 2;
+    top: 0;
+    padding: 13px 16px;
+    background: #f8fafc;
+    color: var(--hi-muted);
+    font-size: 0.72rem;
+    letter-spacing: 0.07em;
+    text-align: left;
+    text-transform: uppercase;
+}
+.hilos-app .thread-table td {
+    padding: 15px 16px;
+    border-top: 1px solid var(--hi-border);
+    text-align: left;
+    vertical-align: middle;
+}
+.hilos-app .thread-row {
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+.hilos-app .thread-row:hover,
+.hilos-app .thread-row:focus {
+    background: var(--hi-soft);
+    outline: 0;
+}
+.hilos-app .part-cell strong,
+.hilos-app .part-cell small {
+    display: block;
+}
+.hilos-app .part-cell small {
+    max-width: 440px;
+    margin-top: 3px;
+    color: var(--hi-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.hilos-app .location-badge,
+.hilos-app .calibre-badge {
+    display: inline-block;
+    padding: 6px 9px;
+    border-radius: 8px;
+    background: var(--hi-soft);
+    color: var(--hi-primary);
+    font-size: 0.78rem;
+    font-weight: 800;
+}
+.hilos-app .color-cell {
+    font-weight: 700;
+}
+.hilos-app .row-arrow {
+    color: #98a2b3;
+    font-size: 1.4rem;
+    text-align: right !important;
+}
+.hilos-app .state-message {
+    padding: 80px 24px;
+    text-align: center;
+    color: var(--hi-muted);
+}
+.hilos-app .state-message strong {
+    display: block;
+    color: var(--hi-text);
+    margin: 12px 0 4px;
+}
+.hilos-app .state-message p {
+    margin: 0;
+}
+.hilos-app .empty-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    margin: auto;
+    border-radius: 50%;
+    background: var(--hi-soft);
+    color: var(--hi-primary);
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+.hilos-app .error-state strong {
+    color: #c62828;
+}
+.hilos-app .detail-modal,
+.hilos-app .settings-modal {
+    border-radius: 18px;
+}
+.hilos-app .detail-modal {
+    max-width: 720px;
+    max-height: 90vh;
+}
+.hilos-app .settings-modal {
+    max-width: 560px;
+}
+.hilos-app .modal-content {
+    max-height: calc(90vh - 60px);
+    overflow: auto;
+}
+.hilos-app .modal-heading,
+.hilos-app .setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+.hilos-app .modal-heading h4 {
+    font-weight: 750;
+    margin: 2px 0 0;
+    overflow-wrap: anywhere;
+}
+.hilos-app .close-button {
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    width: 42px;
+    height: 42px;
+    font-size: 2rem;
+}
+.hilos-app .barcode-card {
+    margin: 22px 0;
+    padding: 22px;
+    border: 1px solid var(--hi-border);
+    border-radius: 14px;
+    background: #fff;
+    text-align: center;
+}
+.hilos-app #modalImage {
+    display: block;
+    width: 100%;
+    max-width: 620px;
+    height: auto;
+    margin: auto;
+}
+.hilos-app .copy-button {
+    margin-top: 12px;
+    color: var(--hi-primary);
+    text-transform: none;
+}
+.hilos-app .details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin: 0;
+}
+.hilos-app .detail-pair {
+    padding: 13px;
+    border-radius: 10px;
+    background: var(--hi-soft);
+}
+.hilos-app .detail-pair dt {
+    color: var(--hi-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.hilos-app .detail-pair dd {
+    margin: 4px 0 0;
+    font-weight: 650;
+    overflow-wrap: anywhere;
+}
+.hilos-app .modal-footer {
+    position: sticky;
+    bottom: 0;
+    border-top: 1px solid var(--hi-border);
+    background: var(--hi-surface) !important;
+}
+.hilos-app .setting-row {
+    padding: 20px 0;
+    border-top: 1px solid var(--hi-border);
+    margin-top: 18px;
+}
+.hilos-app .setting-row strong,
+.hilos-app .setting-row div > span {
+    display: block;
+}
+.hilos-app .setting-row div > span {
+    color: var(--hi-muted);
+    font-size: 0.84rem;
+    margin-top: 3px;
+}
+.hilos-app .page-footer {
+    margin: 0;
+    font-size: 0.88rem;
+}
+.hilos-app .footer-dot {
+    padding: 0 7px;
+}
+.hilos-app .sidenav {
+    padding-top: 12px;
+}
+.hilos-app .sidenav-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 24px 20px;
+}
+.hilos-app .sidenav-heading small {
+    display: block;
+    color: #667085;
+    font-size: 0.75rem;
+}
+.hilos-app .sidenav-mark {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: #0d47a1;
+    color: #fff;
+    font-weight: 800;
+}
+.hilos-app .sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+.hilos-app.dark-mode {
+    --hi-bg: #0f141c;
+    --hi-surface: #171e29;
+    --hi-text: #f3f6fb;
+    --hi-muted: #aab4c4;
+    --hi-border: #2b3545;
+    --hi-soft: #172d51;
+}
+.hilos-app.dark-mode .catalog-panel,
+.hilos-app.dark-mode .modal,
+.hilos-app.dark-mode .search-field input,
+.hilos-app.dark-mode .filter-field select {
+    background: var(--hi-surface) !important;
+    color: var(--hi-text) !important;
+}
+.hilos-app.dark-mode .thread-table th {
+    background: #121923;
+    color: var(--hi-muted);
+}
+.hilos-app.dark-mode .thread-table td {
+    background: var(--hi-surface);
+    color: var(--hi-text);
+}
+.hilos-app.dark-mode .thread-row:hover td,
+.hilos-app.dark-mode .thread-row:focus td {
+    background: var(--hi-soft) !important;
+}
+.hilos-app.dark-mode .barcode-card {
+    background: #fff !important;
+    color: #172033 !important;
+}
+@media (max-width: 700px) {
+    .hilos-app .toolbar {
+        grid-template-columns: 1fr;
+    }
+    .hilos-app .thread-table thead {
+        display: none;
+    }
+    .hilos-app .thread-table,
+    .hilos-app .thread-table tbody,
+    .hilos-app .thread-table tr,
+    .hilos-app .thread-table td {
+        display: block;
+        width: 100%;
+    }
+    .hilos-app .thread-row {
+        position: relative;
+        padding: 14px 54px 14px 14px;
+        border-top: 1px solid var(--hi-border);
+    }
+    .hilos-app .thread-table td {
+        padding: 4px 0;
+        border: 0;
+    }
+    .hilos-app .thread-table .row-arrow {
+        position: absolute;
+        right: 18px;
+        top: 50%;
+        width: auto;
+        transform: translateY(-50%);
+    }
+    .hilos-app .thread-table .location-cell,
+    .hilos-app .thread-table .color-cell,
+    .hilos-app .thread-table .calibre-cell {
+        display: inline-block;
+        width: auto;
+        margin: 7px 7px 0 0;
+    }
+    .hilos-app .part-cell small {
+        white-space: normal;
+    }
+    .hilos-app .details-grid {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 600px) {
+    .hilos-app main {
+        padding-top: 56px;
+    }
+    .hilos-app .hilos-shell {
+        width: calc(100% - 20px);
+        padding-top: 24px;
+    }
+    .hilos-app .page-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .hilos-app .result-summary {
+        display: flex;
+        align-items: baseline;
+        gap: 7px;
+        min-width: 0;
+    }
+    .hilos-app .modal {
+        width: calc(100% - 20px);
+    }
+    .hilos-app .barcode-card {
+        padding: 14px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .hilos-app * {
+        scroll-behavior: auto !important;
+        transition: none !important;
+    }
+}
+
+/* Phone layout: keep the search and calibre filter fixed at the bottom. */
+@media (max-width: 600px) {
+    .hilos-app main {
+        padding-bottom: 74px;
+    }
+
+    .hilos-app .hilos-shell {
+        width: calc(100% - 10px);
+        padding: 8px 0 18px;
+    }
+
+    .hilos-app .page-heading {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 6px;
+        margin: 0 4px 7px;
+    }
+
+    .hilos-app .page-heading .eyebrow,
+    .hilos-app .page-heading p {
+        display: none;
+    }
+
+    .hilos-app h1 {
+        margin: 0;
+        font-size: 1.25rem;
+        letter-spacing: -0.02em;
+    }
+
+    .hilos-app .result-summary {
+        align-self: center;
+        padding: 4px 8px;
+        border-radius: 8px;
+        font-size: .72rem;
+    }
+
+    .hilos-app .result-summary strong {
+        font-size: .9rem;
+    }
+
+    .hilos-app .result-summary span {
+        font-size: .65rem;
+    }
+
+    .hilos-app .catalog-panel {
+        overflow: visible;
+        border-radius: 12px;
+    }
+
+    .hilos-app .toolbar {
+        position: fixed;
+        z-index: 40;
+        left: 5px;
+        right: 5px;
+        bottom: 5px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 112px;
+        gap: 5px;
+        padding: 6px;
+        border: 1px solid var(--hi-border);
+        border-radius: 12px;
+        background: var(--hi-surface);
+        box-shadow: 0 -4px 20px rgba(20, 33, 52, .18);
+    }
+
+    .hilos-app .search-field input,
+    .hilos-app .filter-field select {
+        height: 44px !important;
+        border-radius: 9px !important;
+        font-size: .86rem !important;
+    }
+
+    .hilos-app .search-field input {
+        padding: 0 38px 0 10px !important;
+    }
+
+    .hilos-app .filter-field select {
+        padding: 0 7px !important;
+    }
+
+    .hilos-app #clearSearch {
+        top: 3px;
+        right: 3px;
+        width: 38px;
+        height: 38px;
+    }
+
+    .hilos-app .data-container {
+        max-height: calc(100dvh - 145px);
+        overflow: auto;
+        overscroll-behavior: contain;
+    }
+
+    .hilos-app .thread-row {
+        padding: 9px 42px 9px 10px;
+    }
+
+    .hilos-app .thread-table td {
+        font-size: .86rem;
+    }
+
+    .hilos-app .location-badge,
+    .hilos-app .calibre-badge {
+        padding: 4px 7px;
+        font-size: .7rem;
+    }
+
+    .hilos-app .thread-table .location-cell,
+    .hilos-app .thread-table .color-cell,
+    .hilos-app .thread-table .calibre-cell {
+        margin-top: 4px;
+    }
+
+    .hilos-app .page-footer {
+        display: none;
+    }
+}
+
+/* Purchased-parts-only styles; scoped to protect navigationbar.css users. */
+.purchased-parts-app {
+    --pp-bg: #f4f7fb;
+    --pp-surface: #fff;
+    --pp-text: #172033;
+    --pp-muted: #667085;
+    --pp-border: #e3e9f2;
+    --pp-primary: #0d47a1;
+    --pp-soft: #eaf2ff;
+    background: var(--pp-bg);
+    color: var(--pp-text);
+}
+.purchased-parts-app main {
+    padding-top: 64px;
+}
+.purchased-parts-app .purchased-shell {
+    width: min(1180px, calc(100% - 32px));
+    padding: 38px 0 48px;
+}
+.purchased-parts-app .skip-link {
+    position: fixed;
+    z-index: 3000;
+    top: 8px;
+    left: 8px;
+    transform: translateY(-150%);
+    background: #fff;
+    color: #0d47a1;
+    padding: 10px 14px;
+    border-radius: 8px;
+}
+.purchased-parts-app .skip-link:focus {
+    transform: none;
+}
+.purchased-parts-app .purchased-nav .nav-wrapper {
+    padding: 0 clamp(8px, 3vw, 28px);
+}
+.purchased-parts-app .purchased-brand code {
+    color: #fff;
+    font: 700 1.25rem system-ui;
+}
+.purchased-parts-app .nav-icon {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+    vertical-align: middle;
+}
+.purchased-parts-app .nav-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 56px;
+    height: 64px; /* match navbar height */
+    padding: 0;
+}
+.purchased-parts-app .page-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+.purchased-parts-app .eyebrow {
     display: block;
     color: var(--pp-primary);
     font-size: 0.75rem;
@@ -67,17 +707,17 @@
     letter-spacing: 0.11em;
     text-transform: uppercase;
 }
-.purchased-parts-page h1 {
+.purchased-parts-app h1 {
     font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 750;
     letter-spacing: -0.04em;
     margin: 6px 0 8px;
 }
-.purchased-parts-page .page-heading p {
+.purchased-parts-app .page-heading p {
     color: var(--pp-muted);
     margin: 0;
 }
-.purchased-parts-page .result-summary {
+.purchased-parts-app .result-summary {
     min-width: 105px;
     padding: 12px 16px;
     border: 1px solid var(--pp-border);
@@ -85,37 +725,37 @@
     background: var(--pp-surface);
     text-align: center;
 }
-.purchased-parts-page .result-summary strong,
-.purchased-parts-page .result-summary span {
+.purchased-parts-app .result-summary strong,
+.purchased-parts-app .result-summary span {
     display: block;
 }
-.purchased-parts-page .result-summary strong {
+.purchased-parts-app .result-summary strong {
     color: var(--pp-primary);
     font-size: 1.35rem;
 }
-.purchased-parts-page .result-summary span {
+.purchased-parts-app .result-summary span {
     color: var(--pp-muted);
     font-size: 0.75rem;
 }
-.purchased-parts-page .catalog-panel {
+.purchased-parts-app .catalog-panel {
     overflow: hidden;
     border: 1px solid var(--pp-border);
     border-radius: 18px;
     background: var(--pp-surface);
     box-shadow: 0 3px 14px rgba(20, 33, 52, 0.05);
 }
-.purchased-parts-page .toolbar {
+.purchased-parts-app .toolbar {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 240px;
     gap: 12px;
     padding: 18px;
     border-bottom: 1px solid var(--pp-border);
 }
-.purchased-parts-page .search-field {
+.purchased-parts-app .search-field {
     position: relative;
 }
-.purchased-parts-page .search-field input,
-.purchased-parts-page .filter-field select {
+.purchased-parts-app .search-field input,
+.purchased-parts-app .filter-field select {
     box-sizing: border-box !important;
     width: 100%;
     height: 48px !important;
@@ -127,16 +767,16 @@
     color: var(--pp-text) !important;
     font-size: 1rem !important;
 }
-.purchased-parts-page .filter-field select {
+.purchased-parts-app .filter-field select {
     padding-right: 12px !important;
 }
-.purchased-parts-page .search-field input:focus,
-.purchased-parts-page .filter-field select:focus {
+.purchased-parts-app .search-field input:focus,
+.purchased-parts-app .filter-field select:focus {
     border-color: var(--pp-primary) !important;
     box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.12) !important;
     outline: 0;
 }
-.purchased-parts-page #clearSearch {
+.purchased-parts-app #clearSearch {
     position: absolute;
     right: 6px;
     top: 5px;
@@ -149,14 +789,14 @@
     cursor: pointer;
     font-size: 1.6rem;
 }
-.purchased-parts-page .data-container {
+.purchased-parts-app .data-container {
     overflow: auto;
 }
-.purchased-parts-page .parts-table {
+.purchased-parts-app .parts-table {
     width: 100%;
     border-collapse: collapse;
 }
-.purchased-parts-page .parts-table th {
+.purchased-parts-app .parts-table th {
     position: sticky;
     z-index: 2;
     top: 0;
@@ -168,26 +808,26 @@
     text-align: left;
     text-transform: uppercase;
 }
-.purchased-parts-page .parts-table td {
+.purchased-parts-app .parts-table td {
     padding: 15px 16px;
     border-top: 1px solid var(--pp-border);
     text-align: left;
     vertical-align: middle;
 }
-.purchased-parts-page .part-row {
+.purchased-parts-app .part-row {
     cursor: pointer;
     transition: background 0.15s ease;
 }
-.purchased-parts-page .part-row:hover,
-.purchased-parts-page .part-row:focus {
+.purchased-parts-app .part-row:hover,
+.purchased-parts-app .part-row:focus {
     background: var(--pp-soft);
     outline: 0;
 }
-.purchased-parts-page .part-cell strong,
-.purchased-parts-page .part-cell small {
+.purchased-parts-app .part-cell strong,
+.purchased-parts-app .part-cell small {
     display: block;
 }
-.purchased-parts-page .part-cell small {
+.purchased-parts-app .part-cell small {
     max-width: 520px;
     margin-top: 3px;
     color: var(--pp-muted);
@@ -195,8 +835,8 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.purchased-parts-page .location-badge,
-.purchased-parts-page .pack-badge {
+.purchased-parts-app .location-badge,
+.purchased-parts-app .pack-badge {
     display: inline-block;
     padding: 6px 9px;
     border-radius: 8px;
@@ -205,28 +845,28 @@
     font-size: 0.78rem;
     font-weight: 800;
 }
-.purchased-parts-page .color-cell {
+.purchased-parts-app .color-cell {
     font-weight: 700;
 }
-.purchased-parts-page .row-arrow {
+.purchased-parts-app .row-arrow {
     color: #98a2b3;
     font-size: 1.4rem;
     text-align: right !important;
 }
-.purchased-parts-page .state-message {
+.purchased-parts-app .state-message {
     padding: 80px 24px;
     text-align: center;
     color: var(--pp-muted);
 }
-.purchased-parts-page .state-message strong {
+.purchased-parts-app .state-message strong {
     display: block;
     color: var(--pp-text);
     margin: 12px 0 4px;
 }
-.purchased-parts-page .state-message p {
+.purchased-parts-app .state-message p {
     margin: 0;
 }
-.purchased-parts-page .empty-icon {
+.purchased-parts-app .empty-icon {
     display: grid;
     place-items: center;
     width: 48px;
@@ -238,37 +878,37 @@
     font-size: 1.4rem;
     font-weight: 800;
 }
-.purchased-parts-page .error-state strong {
+.purchased-parts-app .error-state strong {
     color: #c62828;
 }
-.purchased-parts-page .detail-modal,
-.purchased-parts-page .settings-modal {
+.purchased-parts-app .detail-modal,
+.purchased-parts-app .settings-modal {
     border-radius: 18px;
 }
-.purchased-parts-page .detail-modal {
+.purchased-parts-app .detail-modal {
     max-width: 760px;
     max-height: 90vh;
 }
-.purchased-parts-page .settings-modal {
+.purchased-parts-app .settings-modal {
     max-width: 560px;
 }
-.purchased-parts-page .modal-content {
+.purchased-parts-app .modal-content {
     max-height: calc(90vh - 60px);
     overflow: auto;
 }
-.purchased-parts-page .modal-heading,
-.purchased-parts-page .setting-row {
+.purchased-parts-app .modal-heading,
+.purchased-parts-app .setting-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
 }
-.purchased-parts-page .modal-heading h4 {
+.purchased-parts-app .modal-heading h4 {
     font-weight: 750;
     margin: 2px 0 0;
     overflow-wrap: anywhere;
 }
-.purchased-parts-page .close-button {
+.purchased-parts-app .close-button {
     border: 0;
     border-radius: 50%;
     background: transparent;
@@ -277,7 +917,7 @@
     height: 42px;
     font-size: 2rem;
 }
-.purchased-parts-page .barcode-card {
+.purchased-parts-app .barcode-card {
     margin: 22px 0;
     padding: 22px;
     border: 1px solid var(--pp-border);
@@ -285,82 +925,82 @@
     background: #fff;
     text-align: center;
 }
-.purchased-parts-page #modalImage {
+.purchased-parts-app #modalImage {
     display: block;
     width: 100%;
     max-width: 660px;
     height: auto;
     margin: auto;
 }
-.purchased-parts-page .copy-button {
+.purchased-parts-app .copy-button {
     margin-top: 12px;
     color: var(--pp-primary);
     text-transform: none;
 }
-.purchased-parts-page .details-grid {
+.purchased-parts-app .details-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 10px;
     margin: 0;
 }
-.purchased-parts-page .detail-pair {
+.purchased-parts-app .detail-pair {
     padding: 13px;
     border-radius: 10px;
     background: var(--pp-soft);
 }
-.purchased-parts-page .detail-pair dt {
+.purchased-parts-app .detail-pair dt {
     color: var(--pp-muted);
     font-size: 0.72rem;
     font-weight: 700;
     text-transform: uppercase;
 }
-.purchased-parts-page .detail-pair dd {
+.purchased-parts-app .detail-pair dd {
     margin: 4px 0 0;
     font-weight: 650;
     overflow-wrap: anywhere;
 }
-.purchased-parts-page .modal-footer {
+.purchased-parts-app .modal-footer {
     position: sticky;
     bottom: 0;
     border-top: 1px solid var(--pp-border);
     background: var(--pp-surface) !important;
 }
-.purchased-parts-page .setting-row {
+.purchased-parts-app .setting-row {
     padding: 20px 0;
     border-top: 1px solid var(--pp-border);
     margin-top: 18px;
 }
-.purchased-parts-page .setting-row strong,
-.purchased-parts-page .setting-row div > span {
+.purchased-parts-app .setting-row strong,
+.purchased-parts-app .setting-row div > span {
     display: block;
 }
-.purchased-parts-page .setting-row div > span {
+.purchased-parts-app .setting-row div > span {
     color: var(--pp-muted);
     font-size: 0.84rem;
     margin-top: 3px;
 }
-.purchased-parts-page .page-footer {
+.purchased-parts-app .page-footer {
     margin: 0;
     font-size: 0.88rem;
 }
-.purchased-parts-page .footer-dot {
+.purchased-parts-app .footer-dot {
     padding: 0 7px;
 }
-.purchased-parts-page .sidenav {
+.purchased-parts-app .sidenav {
     padding-top: 12px;
 }
-.purchased-parts-page .sidenav-heading {
+.purchased-parts-app .sidenav-heading {
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 15px 24px 20px;
 }
-.purchased-parts-page .sidenav-heading small {
+.purchased-parts-app .sidenav-heading small {
     display: block;
     color: #667085;
     font-size: 0.75rem;
 }
-.purchased-parts-page .sidenav-mark {
+.purchased-parts-app .sidenav-mark {
     display: grid;
     place-items: center;
     width: 38px;
@@ -370,7 +1010,7 @@
     color: #fff;
     font-weight: 800;
 }
-.purchased-parts-page .sr-only {
+.purchased-parts-app .sr-only {
     position: absolute !important;
     width: 1px !important;
     height: 1px !important;
@@ -381,7 +1021,7 @@
     white-space: nowrap !important;
     border: 0 !important;
 }
-.purchased-parts-page.dark-mode {
+.purchased-parts-app.dark-mode {
     --pp-bg: #0f141c;
     --pp-surface: #171e29;
     --pp-text: #f3f6fb;
@@ -389,110 +1029,110 @@
     --pp-border: #2b3545;
     --pp-soft: #172d51;
 }
-.purchased-parts-page.dark-mode .catalog-panel,
-.purchased-parts-page.dark-mode .modal,
-.purchased-parts-page.dark-mode .search-field input,
-.purchased-parts-page.dark-mode .filter-field select {
+.purchased-parts-app.dark-mode .catalog-panel,
+.purchased-parts-app.dark-mode .modal,
+.purchased-parts-app.dark-mode .search-field input,
+.purchased-parts-app.dark-mode .filter-field select {
     background: var(--pp-surface) !important;
     color: var(--pp-text) !important;
 }
-.purchased-parts-page.dark-mode .parts-table th {
+.purchased-parts-app.dark-mode .parts-table th {
     background: #121923;
 }
-.purchased-parts-page.dark-mode .parts-table td {
+.purchased-parts-app.dark-mode .parts-table td {
     background: var(--pp-surface);
     color: var(--pp-text);
 }
-.purchased-parts-page.dark-mode .part-row:hover td,
-.purchased-parts-page.dark-mode .part-row:focus td {
+.purchased-parts-app.dark-mode .part-row:hover td,
+.purchased-parts-app.dark-mode .part-row:focus td {
     background: var(--pp-soft) !important;
 }
-.purchased-parts-page.dark-mode .barcode-card {
+.purchased-parts-app.dark-mode .barcode-card {
     background: #fff !important;
     color: #172033 !important;
 }
 @media (max-width: 700px) {
-    .purchased-parts-page .toolbar {
+    .purchased-parts-app .toolbar {
         grid-template-columns: 1fr;
     }
-    .purchased-parts-page .parts-table thead {
+    .purchased-parts-app .parts-table thead {
         display: none;
     }
-    .purchased-parts-page .parts-table,
-    .purchased-parts-page .parts-table tbody,
-    .purchased-parts-page .parts-table tr,
-    .purchased-parts-page .parts-table td {
+    .purchased-parts-app .parts-table,
+    .purchased-parts-app .parts-table tbody,
+    .purchased-parts-app .parts-table tr,
+    .purchased-parts-app .parts-table td {
         display: block;
         width: 100%;
     }
-    .purchased-parts-page .part-row {
+    .purchased-parts-app .part-row {
         position: relative;
         padding: 14px 54px 14px 14px;
         border-top: 1px solid var(--pp-border);
     }
-    .purchased-parts-page .parts-table td {
+    .purchased-parts-app .parts-table td {
         padding: 4px 0;
         border: 0;
     }
-    .purchased-parts-page .parts-table .row-arrow {
+    .purchased-parts-app .parts-table .row-arrow {
         position: absolute;
         right: 18px;
         top: 50%;
         width: auto;
         transform: translateY(-50%);
     }
-    .purchased-parts-page .parts-table .location-cell,
-    .purchased-parts-page .parts-table .pack-cell,
-    .purchased-parts-page .parts-table .color-cell {
+    .purchased-parts-app .parts-table .location-cell,
+    .purchased-parts-app .parts-table .pack-cell,
+    .purchased-parts-app .parts-table .color-cell {
         display: inline-block;
         width: auto;
         margin: 7px 7px 0 0;
     }
-    .purchased-parts-page .part-cell small {
+    .purchased-parts-app .part-cell small {
         white-space: normal;
     }
-    .purchased-parts-page .details-grid {
+    .purchased-parts-app .details-grid {
         grid-template-columns: 1fr 1fr;
     }
 }
 @media (max-width: 600px) {
-    .purchased-parts-page main {
+    .purchased-parts-app main {
         padding-top: 56px;
     }
-    .purchased-parts-page .purchased-shell {
+    .purchased-parts-app .purchased-shell {
         width: calc(100% - 20px);
         padding-top: 24px;
     }
-    .purchased-parts-page .page-heading {
+    .purchased-parts-app .page-heading {
         align-items: flex-start;
         flex-direction: column;
     }
-    .purchased-parts-page .result-summary {
+    .purchased-parts-app .result-summary {
         display: flex;
         align-items: baseline;
         gap: 7px;
         min-width: 0;
     }
-    .purchased-parts-page .details-grid {
+    .purchased-parts-app .details-grid {
         grid-template-columns: 1fr;
     }
-    .purchased-parts-page .modal {
+    .purchased-parts-app .modal {
         width: calc(100% - 20px);
     }
 }
 
 /* Phone layout: keep part search and line filter fixed at the bottom. */
 @media (max-width: 600px) {
-    .purchased-parts-page main {
+    .purchased-parts-app main {
         padding-bottom: 74px;
     }
 
-    .purchased-parts-page .purchased-shell {
+    .purchased-parts-app .purchased-shell {
         width: calc(100% - 10px);
         padding: 8px 0 18px;
     }
 
-    .purchased-parts-page .page-heading {
+    .purchased-parts-app .page-heading {
         display: grid;
         grid-template-columns: minmax(0, 1fr) auto;
         align-items: center;
@@ -500,38 +1140,38 @@
         margin: 0 4px 7px;
     }
 
-    .purchased-parts-page .page-heading .eyebrow,
-    .purchased-parts-page .page-heading p {
+    .purchased-parts-app .page-heading .eyebrow,
+    .purchased-parts-app .page-heading p {
         display: none;
     }
 
-    .purchased-parts-page h1 {
+    .purchased-parts-app h1 {
         margin: 0;
         font-size: 1.25rem;
         letter-spacing: -0.02em;
     }
 
-    .purchased-parts-page .result-summary {
+    .purchased-parts-app .result-summary {
         align-self: center;
         padding: 4px 8px;
         border-radius: 8px;
         font-size: .72rem;
     }
 
-    .purchased-parts-page .result-summary strong {
+    .purchased-parts-app .result-summary strong {
         font-size: .9rem;
     }
 
-    .purchased-parts-page .result-summary span {
+    .purchased-parts-app .result-summary span {
         font-size: .65rem;
     }
 
-    .purchased-parts-page .catalog-panel {
+    .purchased-parts-app .catalog-panel {
         overflow: visible;
         border-radius: 12px;
     }
 
-    .purchased-parts-page .toolbar {
+    .purchased-parts-app .toolbar {
         position: fixed;
         z-index: 40;
         left: 5px;
@@ -547,55 +1187,168 @@
         box-shadow: 0 -4px 20px rgba(20, 33, 52, .18);
     }
 
-    .purchased-parts-page .search-field input,
-    .purchased-parts-page .filter-field select {
+    .purchased-parts-app .search-field input,
+    .purchased-parts-app .filter-field select {
         height: 44px !important;
         border-radius: 9px !important;
         font-size: .86rem !important;
     }
 
-    .purchased-parts-page .search-field input {
+    .purchased-parts-app .search-field input {
         padding: 0 38px 0 10px !important;
     }
 
-    .purchased-parts-page .filter-field select {
+    .purchased-parts-app .filter-field select {
         padding: 0 7px !important;
     }
 
-    .purchased-parts-page #clearSearch {
+    .purchased-parts-app #clearSearch {
         top: 3px;
         right: 3px;
         width: 38px;
         height: 38px;
     }
 
-    .purchased-parts-page .data-container {
+    .purchased-parts-app .data-container {
         max-height: calc(100dvh - 145px);
         overflow: auto;
         overscroll-behavior: contain;
     }
 
-    .purchased-parts-page .part-row {
+    .purchased-parts-app .part-row {
         padding: 9px 42px 9px 10px;
     }
 
-    .purchased-parts-page .parts-table td {
+    .purchased-parts-app .parts-table td {
         font-size: .86rem;
     }
 
-    .purchased-parts-page .location-badge,
-    .purchased-parts-page .pack-badge {
+    .purchased-parts-app .location-badge,
+    .purchased-parts-app .pack-badge {
         padding: 4px 7px;
         font-size: .7rem;
     }
 
-    .purchased-parts-page .parts-table .location-cell,
-    .purchased-parts-page .parts-table .pack-cell,
-    .purchased-parts-page .parts-table .color-cell {
+    .purchased-parts-app .parts-table .location-cell,
+    .purchased-parts-app .parts-table .pack-cell,
+    .purchased-parts-app .parts-table .color-cell {
         margin-top: 4px;
     }
 
-    .purchased-parts-page .page-footer {
+    .purchased-parts-app .page-footer {
         display: none;
     }
+}
+
+/* Shared navigation and settings, matched to ajuste.html / ajuste.css. */
+.catalog-tabs-page .catalog-nav .nav-wrapper {
+    padding: 0 clamp(8px, 3vw, 28px);
+}
+.catalog-tabs-page .catalog-brand code {
+    color: #fff;
+    font-family: inherit;
+    font-weight: 700;
+}
+.catalog-tabs-page .nav-icon {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    filter: brightness(0) invert(1);
+}
+.catalog-tabs-page .nav-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 56px;
+    height: 64px;
+    padding: 0;
+}
+.catalog-tabs-page .sidenav {
+    padding-top: 12px;
+}
+.catalog-tabs-page .sidenav-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 24px 20px;
+}
+.catalog-tabs-page .sidenav-heading small {
+    display: block;
+    color: #667085;
+    font-size: .75rem;
+}
+.catalog-tabs-page .sidenav-mark {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: #0d47a1;
+    color: #fff;
+    font-weight: 800;
+}
+.catalog-tabs-page .compact-modal {
+    max-width: 580px;
+    border-radius: 18px;
+    background: var(--tabs-surface);
+    color: var(--tabs-text);
+}
+.catalog-tabs-page .modal-heading,
+.catalog-tabs-page .setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+.catalog-tabs-page .modal-heading h4 {
+    margin: 2px 0 0;
+    font-weight: 750;
+}
+.catalog-tabs-page .modal-heading .eyebrow {
+    display: block;
+    color: var(--tabs-blue);
+    font-size: .75rem;
+    font-weight: 800;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+}
+.catalog-tabs-page .close-button {
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font-size: 2rem;
+}
+.catalog-tabs-page .setting-row {
+    padding: 18px 0;
+    border-top: 1px solid rgba(102, 112, 133, .22);
+}
+.catalog-tabs-page .setting-row:first-of-type {
+    margin-top: 18px;
+}
+.catalog-tabs-page .setting-row strong,
+.catalog-tabs-page .setting-row div > span {
+    display: block;
+}
+.catalog-tabs-page .setting-row div > span {
+    margin-top: 3px;
+    color: #667085;
+    font-size: .84rem;
+}
+.catalog-tabs-page.dark-mode .compact-modal {
+    background: #171e29 !important;
+    color: #f3f6fb !important;
+}
+.catalog-tabs-page.dark-mode .setting-row {
+    border-color: #2b3545;
+}
+.catalog-tabs-page.dark-mode .setting-row div > span {
+    color: #aab4c4;
+}
+@media (max-width: 600px) {
+    .catalog-tabs-page .nav-action { height: 56px; }
+    .catalog-tabs-page .compact-modal { width: calc(100% - 20px); }
 }

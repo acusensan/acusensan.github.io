@@ -1401,3 +1401,92 @@
         font-size: .76rem !important;
     }
 }
+
+
+/* Chrome-style top tabs for calculator and saved results. */
+.rule-three-page .rule-tabs {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    padding: 0 8px;
+    border-bottom: 1px solid var(--rt-border);
+}
+.rule-three-page .rule-tab {
+    position: relative;
+    min-width: 150px;
+    min-height: 42px;
+    padding: 0 18px;
+    border: 1px solid transparent;
+    border-bottom: 0;
+    border-radius: 12px 12px 0 0;
+    background: transparent;
+    color: var(--rt-muted);
+    cursor: pointer;
+    font: inherit;
+    font-size: .86rem;
+    font-weight: 750;
+}
+.rule-three-page .rule-tab:hover {
+    background: var(--rt-soft);
+    color: var(--rt-text);
+}
+.rule-three-page .rule-tab.active {
+    z-index: 1;
+    margin-bottom: -1px;
+    border-color: var(--rt-border);
+    background: var(--rt-surface);
+    color: var(--rt-primary);
+}
+.rule-three-page .rule-tab:focus-visible {
+    outline: 3px solid rgba(13, 71, 161, .2);
+    outline-offset: 2px;
+}
+.rule-three-page .rule-tab-count {
+    display: inline-grid;
+    place-items: center;
+    min-width: 21px;
+    height: 21px;
+    margin-left: 6px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: var(--rt-soft);
+    font-size: .7rem;
+}
+.rule-three-page .rule-tab-content {
+    display: block;
+    margin-top: 14px;
+}
+.rule-three-page .rule-tab-panel[hidden] {
+    display: none !important;
+}
+.rule-three-page .rule-tab-panel.active {
+    width: 100%;
+}
+.rule-three-page .history-panel.rule-tab-panel {
+    position: static;
+}
+.rule-three-page .history-list {
+    max-height: min(68dvh, 640px);
+}
+@media (max-width: 600px) {
+    .rule-three-page .rule-tabs {
+        padding: 0 2px;
+    }
+    .rule-three-page .rule-tab {
+        flex: 1 1 0;
+        min-width: 0;
+        min-height: 40px;
+        padding: 0 8px;
+        font-size: .76rem;
+    }
+    .rule-three-page .rule-tab-count {
+        min-width: 19px;
+        height: 19px;
+        margin-left: 3px;
+        padding: 0 5px;
+        font-size: .64rem;
+    }
+    .rule-three-page .rule-tab-content {
+        margin-top: 9px;
+    }
+}

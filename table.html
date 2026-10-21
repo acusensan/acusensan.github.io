@@ -21,7 +21,6 @@
             <li><a href="ajuste.html">Ajuste</a></li>
             <li><a href="scan.html">Escaneo</a></li>
             <li><a href="barcode.html">Generar codigo de barras</a></li>
-            <li><a href="hilos.html">Hilos</a></li>
             <li><a href="invrack.html">Inventario Racks</a></li>
             <li><a href="partescompradas.html">Partes Compradas</a></li>
             <li><a href="reglatres.html">Regla de Tres</a></li>
@@ -119,6 +118,36 @@
                     ><span>Buscar</span><input id="locationSearch" type="search" placeholder="Buscar ubicacion..."
                 /></label>
                 <div id="locationList" class="location-list"></div>
+                <div class="rack-modal-actions">
+                    <button id="emptyRackBtn" class="btn red" type="button" hidden>Vaciar ubicacion actual</button>
+                </div>
+            </div>
+        </div>
+        <div id="edit-item-modal" class="modal edit-item-modal">
+            <div class="modal-content">
+                <div class="modal-heading">
+                    <div>
+                        <span class="eyebrow">Editar material</span>
+                        <h4 id="edit-item-location">Material</h4>
+                    </div>
+                    <button class="modal-close close-button" type="button" aria-label="Cerrar">&times;</button>
+                </div>
+                <label class="field-label" for="edit-item-part"><span>Numero de parte</span><input id="edit-item-part" type="text" autocomplete="off" /></label>
+                <label class="field-label edit-qty-field" for="edit-item-qty"><span>Cantidad</span><input id="edit-item-qty" type="number" min="1" inputmode="numeric" /></label>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close btn-flat" type="button">Cancelar</button>
+                <button id="save-edit-item-btn" class="btn blue darken-4" type="button">Guardar cambios</button>
+            </div>
+        </div>
+        <div id="empty-rack-modal" class="modal confirmation-modal">
+            <div class="modal-content">
+                <h5 id="empty-rack-title">Vaciar ubicacion</h5>
+                <p id="empty-rack-text"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close btn-flat" type="button">Cancelar</button>
+                <button id="confirm-empty-rack-btn" class="btn red" type="button">Vaciar ubicacion</button>
             </div>
         </div>
         <div id="delete-modal" class="modal confirmation-modal">

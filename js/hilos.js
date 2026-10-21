@@ -1,20 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const searchBar = document.getElementById('searchBar'),
-        calibreFilter = document.getElementById('calibreFilter'),
-        clearSearch = document.getElementById('clearSearch'),
-        dataContainer = document.getElementById('dataContainer'),
-        emptyResults = document.getElementById('emptyResults'),
-        loadError = document.getElementById('loadError'),
-        resultCount = document.getElementById('resultCount'),
-        modal = document.getElementById('thread-modal'),
-        modalImage = document.getElementById('modalImage'),
-        details = document.getElementById('barcodeDetails'),
-        detailPart = document.getElementById('detailPartNumber'),
-        copyButton = document.getElementById('copyPartBtn');
+    const searchBar = document.getElementById('hilosSearchBar'),
+        calibreFilter = document.getElementById('hilosCalibreFilter'),
+        clearSearch = document.getElementById('hilosClearSearch'),
+        dataContainer = document.getElementById('hilosDataContainer'),
+        emptyResults = document.getElementById('hilosEmptyResults'),
+        loadError = document.getElementById('hilosLoadError'),
+        resultCount = document.getElementById('hilosResultCount'),
+        modal = document.getElementById('hilos-thread-modal'),
+        modalImage = document.getElementById('hilosModalImage'),
+        details = document.getElementById('hilosBarcodeDetails'),
+        detailPart = document.getElementById('hilosDetailPartNumber'),
+        copyButton = document.getElementById('hilosCopyPartBtn');
     let selectedPart = '';
     if (window.M) {
-        M.Modal.init(document.querySelectorAll('.modal'));
-        M.Sidenav.init(document.querySelectorAll('.sidenav'));
+        M.Modal.init(document.querySelectorAll('#hilos-thread-modal'));
+        
     }
     if (!window.hilosDB) {
         loadError.hidden = false;
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function copyPart(text) {
-        copyTextToClipboard(text).then(() => M.toast({
+        copyHilosTextToClipboard(text).then(() => M.toast({
             html: 'Numero de parte copiado',
             classes: 'green darken-1'
         })).catch(() => M.toast({
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
     displayData(data);
 });
 
-function copyTextToClipboard(text) {
+function copyHilosTextToClipboard(text) {
     if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
     return new Promise((resolve, reject) => {
         const textarea = document.createElement('textarea');

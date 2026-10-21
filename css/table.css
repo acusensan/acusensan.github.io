@@ -1309,3 +1309,83 @@ body.verify-page {
         grid-column: 1 / -1;
     }
 }
+
+
+/* Rack-group navigation, separate edit menu, and rack cleanup controls */
+.verify-page .location-group { margin: 0 0 14px; border: 1px solid var(--vf-border); border-radius: 12px; overflow: hidden; }
+.verify-page .location-group-heading { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--vf-soft); color: var(--vf-primary); }
+.verify-page .location-group-heading small { color: var(--vf-muted); }
+.verify-page .location-group .location-option:last-child { border-bottom: 0; }
+.verify-page .rack-modal-actions { position: sticky; bottom: 0; padding-top: 12px; background: var(--vf-surface); }
+.verify-page .rack-modal-actions .btn { width: 100%; border-radius: 10px; text-transform: none; }
+.verify-page .edit-item-modal { max-width: 520px; }
+.verify-page .edit-item-modal .field-label { margin-top: 18px; }
+.verify-page .edit-qty-field { max-width: 190px; }
+.verify-page .edit-btn { background: #eaf2ff; color: #0d47a1; }
+.verify-page.dark-mode .edit-btn { background: #17335d; color: #c9dcff; }
+@media (max-width: 700px) {
+    .verify-page .row-actions { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+    .verify-page .row-actions button { width: 100%; padding: 0 6px; }
+    .verify-page .location-list { max-height: 58vh; }
+    .verify-page .edit-qty-field { max-width: none; }
+}
+
+/* Requested compact row actions and collapsible rack groups */
+.verify-page .row-actions {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+.verify-page .row-actions button {
+    height: 28px;
+    min-width: 0;
+    padding: 0 7px;
+    border-radius: 6px;
+    font-size: .72rem;
+    line-height: 28px;
+    white-space: nowrap;
+}
+.verify-page .location-group-heading {
+    width: 100%;
+    border: 0;
+    cursor: pointer;
+    text-align: left;
+}
+.verify-page .location-group-heading > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+}
+.verify-page .location-group-chevron {
+    color: var(--vf-primary);
+    font-size: 1.1rem;
+    transition: transform 160ms ease;
+}
+.verify-page .location-group-heading[aria-expanded="true"] .location-group-chevron {
+    transform: rotate(180deg);
+}
+.verify-page .location-group-options[hidden] {
+    display: none;
+}
+@media (min-width: 701px) and (max-width: 1024px) {
+    .verify-page .row-actions {
+        flex-wrap: nowrap;
+    }
+    .verify-page .row-actions button {
+        min-width: 0;
+        padding: 0 6px;
+    }
+}
+@media (max-width: 700px) {
+    .verify-page .row-actions {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 5px;
+    }
+    .verify-page .row-actions button {
+        width: auto;
+        flex: 0 1 auto;
+        height: 28px;
+        padding: 0 7px;
+        font-size: .7rem;
+    }
+}

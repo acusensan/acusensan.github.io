@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadHistory();
     buildPartsData();
     bindEvents();
+    initRuleTabs();
     renderHistory();
     updateCalculationState();
 });
@@ -100,6 +101,23 @@ function bindEvents() {
     exportNameInput.addEventListener('input', updateExportNamePreview);
     exportNameInput.addEventListener('change', saveExportName);
     updateExportNamePreview();
+}
+
+function initRuleTabs() {
+    const tabs = [
+        { button: document.getElementById('calculatorTab'), panel: document.getElementById('calculatorPanel') },
+        { button: document.getElementById('historyTab'), panel: document.getElementById('historyPanel') }
+    ];
+    const activateTab = selected => {
+        tabs.forEach(tab => {
+            const active = tab === selected;
+            tab.button.classList.toggle('active', active);
+            tab.button.setAttribute('aria-selected', String(active));
+            tab.panel.classList.toggle('active', active);
+            tab.panel.hidden = !active;
+        });
+    };
+    tabs.forEach(tab => tab.button.addEventListener('click', () => activateTab(tab)));
 }
 
 function closePartResults() {
@@ -219,6 +237,8 @@ function renderHistory() {
     container.innerHTML = '';
     empty.hidden = historyData.length > 0;
     document.getElementById('historyCount').textContent = historyData.length;
+    const historyTabCount = document.getElementById('historyTabCount');
+    if (historyTabCount) historyTabCount.textContent = historyData.length;
     renderTotals();
     historyData.forEach(row => {
         const item = document.createElement('div');
