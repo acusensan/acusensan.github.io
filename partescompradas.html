@@ -32,8 +32,8 @@
       </div>
     </nav>
     <main id="catalog-tabs">
-      <div class="chrome-tabs-bar" role="tablist" aria-label="Catalogos"><button id="hilos-tab" class="chrome-tab" role="tab" aria-selected="true" aria-controls="hilos-panel" type="button">Hilos</button><button id="parts-tab" class="chrome-tab" role="tab" aria-selected="false" aria-controls="parts-panel" type="button" tabindex="-1">Partes Compradas</button></div>
-      <section id="hilos-panel" class="tab-panel hilos-app" role="tabpanel" aria-labelledby="hilos-tab">
+      <div class="chrome-tabs-bar" role="tablist" aria-label="Catalogos"><button id="parts-tab" class="chrome-tab" role="tab" aria-selected="true" aria-controls="parts-panel" type="button">Partes Compradas</button><button id="hilos-tab" class="chrome-tab" role="tab" aria-selected="false" aria-controls="hilos-panel" type="button" tabindex="-1">Hilos</button></div>
+      <section id="hilos-panel" class="tab-panel hilos-app" role="tabpanel" aria-labelledby="hilos-tab" hidden>
         <main>
           <div class="container hilos-shell">
             <header class="page-heading">
@@ -58,7 +58,7 @@
           </div>
         </main>
       </section>
-      <section id="parts-panel" class="tab-panel purchased-parts-app" role="tabpanel" aria-labelledby="parts-tab" hidden>
+      <section id="parts-panel" class="tab-panel purchased-parts-app" role="tabpanel" aria-labelledby="parts-tab">
         <main>
           <div class="container purchased-shell">
             <header class="page-heading">
@@ -175,7 +175,7 @@
           if (instance) instance.close();
         }));
         const hashTab = location.hash === '#parts-panel' ? 'parts-tab' : location.hash === '#hilos-panel' ? 'hilos-tab' : null;
-        openTab(hashTab || localStorage.getItem('catalogActiveTab') || 'hilos-tab', false);
+        openTab(hashTab || localStorage.getItem('catalogActiveTab') || 'parts-tab', false);
       });
     </script>
   </body>

@@ -31,7 +31,7 @@
                 <button class="menu-button" id="menuBtn" type="button" aria-label="Abrir menu protegido">
                     <span class="bar"></span><span class="bar"></span><span class="bar"></span>
                 </button>
-                <a href="scan.html" class="brand-logo scan-brand"><code>Escaneo</code></a>
+                <a href="scan.html" class="brand-logo scan-brand"><code>Centro de escaneo</code></a>
                 <ul class="right">
                     <li>
                         <a href="#settings-modal" class="modal-trigger nav-action" aria-label="Abrir ajustes"><img src="icons/settings.svg" alt="" class="nav-icon"/></a>
@@ -42,16 +42,6 @@
 
         <main id="main-content">
             <div class="container scan-shell">
-                <header class="page-heading">
-                    <div>
-                        <span class="eyebrow">Captura de materiales</span>
-                        <h1>Centro de escaneo</h1>
-                        <p>Escanea partes, controla cantidades y compara el avance contra la produccion.</p>
-                    </div>
-                    <div id="scanStatus" class="scan-status ready" role="status">
-                        <span class="dot"></span><span class="text">Listo para escanear</span>
-                    </div>
-                </header>
 
                 <section class="scan-capture" aria-labelledby="capture-title">
                     <div class="capture-heading">
@@ -61,7 +51,11 @@
                                 <h2 id="capture-title">Escanear material</h2>
                                 <p>Presiona Enter para pasar de parte a cantidad.</p>
                             </div>
+							
                         </div>
+						<div id="scanStatus" class="scan-status ready" role="status">
+								<span class="dot"></span><span class="text">Listo para escanear</span>
+							</div>
                     </div>
                     <div class="capture-controls">
                         <label class="file-button">Cargar produccion<input type="file" id="csvFile" accept=".csv" /><span class="sr-only"></span></label>

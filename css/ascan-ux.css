@@ -2038,3 +2038,41 @@ body.ascan-page {
     grid-template-columns: 1fr;
   }
 }
+
+/* ===== RESPONSIVE TABLE VISIBILITY FIX =====
+   Keep the table available on small screens. The previous max-width:700px
+   rule hid .table-wrapper and switched exclusively to mobile cards. */
+@media (max-width: 700px) {
+  .ascan-page .records-scroll .table-wrapper {
+    display: block !important;
+    width: 100%;
+    min-width: 0;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .ascan-page .records-scroll .scan-table {
+    display: table;
+    width: max-content;
+    min-width: 100%;
+    table-layout: auto;
+  }
+
+  .ascan-page .records-scroll .scan-table th,
+  .ascan-page .records-scroll .scan-table td {
+    min-width: 96px;
+    white-space: nowrap;
+  }
+
+  .ascan-page .records-scroll .scan-table .row-number-header,
+  .ascan-page .records-scroll .scan-table .row-number-cell,
+  .ascan-page .records-scroll .scan-table .sequence-column {
+    min-width: 42px !important;
+    width: 42px !important;
+  }
+
+  /* Avoid rendering duplicate records as cards and as a table. */
+  .ascan-page .records-scroll .mobile-records {
+    display: none !important;
+  }
+}

@@ -377,6 +377,7 @@
         padding-top: 24px;
     }
     .invrack-page .page-heading {
+		display:none;
         align-items: flex-start;
         flex-direction: column;
     }

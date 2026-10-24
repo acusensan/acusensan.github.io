@@ -316,7 +316,7 @@ body.catalog-tabs-page { margin:0; background:var(--tabs-surface); color:var(--t
     background: #fff;
     text-align: center;
 }
-.hilos-app #modalImage {
+.hilos-app #hilosModalImage {
     display: block;
     width: 100%;
     max-width: 620px;
@@ -925,7 +925,7 @@ body.catalog-tabs-page { margin:0; background:var(--tabs-surface); color:var(--t
     background: #fff;
     text-align: center;
 }
-.purchased-parts-app #modalImage {
+.purchased-parts-app #partsModalImage {
     display: block;
     width: 100%;
     max-width: 660px;
@@ -1351,4 +1351,113 @@ body.catalog-tabs-page { margin:0; background:var(--tabs-surface); color:var(--t
 @media (max-width: 600px) {
     .catalog-tabs-page .nav-action { height: 56px; }
     .catalog-tabs-page .compact-modal { width: calc(100% - 20px); }
+}
+
+
+/* Responsive modal and small-screen hardening. */
+.catalog-tabs-page .detail-modal {
+    width: min(760px, calc(100% - 24px));
+    max-height: min(90dvh, 900px);
+    margin: auto;
+    overflow: hidden;
+}
+.catalog-tabs-page .detail-modal .modal-content {
+    max-width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+.catalog-tabs-page .detail-modal .barcode-card {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+}
+.catalog-tabs-page .detail-modal .barcode-card svg,
+.catalog-tabs-page #hilosModalImage,
+.catalog-tabs-page #partsModalImage {
+    display: block;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin-inline: auto;
+    overflow: visible;
+}
+.catalog-tabs-page .detail-modal .modal-heading > div {
+    min-width: 0;
+}
+.catalog-tabs-page .detail-modal .modal-footer {
+    height: auto;
+    min-height: 64px;
+    padding: 10px 16px;
+}
+
+@media (max-width: 600px) {
+    .chrome-tabs-bar {
+        align-items: stretch;
+        overflow-x: hidden;
+    }
+    .chrome-tab {
+        flex: 1 1 0;
+        min-width: 0;
+        justify-content: center;
+        padding-inline: 8px;
+    }
+    .chrome-tab::before {
+        flex: 0 0 8px;
+    }
+    .catalog-tabs-page .detail-modal {
+        top: max(6px, env(safe-area-inset-top)) !important;
+        width: calc(100% - 12px) !important;
+        max-height: calc(100dvh - 12px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+        border-radius: 14px;
+    }
+    .catalog-tabs-page .detail-modal .modal-content {
+        max-height: calc(100dvh - 76px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+        padding: 14px 12px 12px;
+    }
+    .catalog-tabs-page .detail-modal .modal-heading {
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .catalog-tabs-page .detail-modal .modal-heading h4 {
+        font-size: clamp(1.15rem, 6vw, 1.55rem);
+        line-height: 1.2;
+    }
+    .catalog-tabs-page .detail-modal .close-button {
+        flex: 0 0 42px;
+    }
+    .catalog-tabs-page .detail-modal .barcode-card {
+        margin: 14px 0;
+        padding: 10px 8px;
+    }
+    .catalog-tabs-page .detail-modal .copy-button {
+        width: 100%;
+        min-height: 44px;
+        margin-top: 8px;
+        white-space: normal;
+        line-height: 1.25;
+    }
+    .catalog-tabs-page .detail-modal .details-grid {
+        grid-template-columns: 1fr;
+    }
+    .catalog-tabs-page .detail-modal .modal-footer {
+        padding-bottom: max(10px, env(safe-area-inset-bottom));
+    }
+}
+
+@media (max-width: 360px) {
+    .chrome-tab {
+        gap: 5px;
+        font-size: .76rem;
+        padding-inline: 5px;
+    }
+    .catalog-tabs-page .detail-modal {
+        width: calc(100% - 8px) !important;
+    }
+    .catalog-tabs-page .detail-modal .modal-content {
+        padding-inline: 8px;
+    }
+    .catalog-tabs-page .detail-modal .barcode-card {
+        padding-inline: 4px;
+    }
 }
