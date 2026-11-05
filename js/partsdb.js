@@ -18,7 +18,7 @@ const partsDB = {
     "weight": 513,
     "piecesPerUnit": 50,
     "line": "Velcro",
-    "daily": 433.2,
+    "daily": 286.6,
     "kanban": 1,
     "location": "APC0110",
     "productionLine": "Velcro"
@@ -42,7 +42,7 @@ const partsDB = {
     "weight": 3631,
     "piecesPerUnit": 300,
     "line": "Misc",
-    "daily": 569.8,
+    "daily": 392.8,
     "kanban": 1,
     "location": "APC0203",
     "productionLine": "Misc"
@@ -54,7 +54,7 @@ const partsDB = {
     "weight": 381,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1609.6,
+    "daily": 1463.2,
     "kanban": 5,
     "location": "APC0101",
     "productionLine": "Colorado"
@@ -66,7 +66,7 @@ const partsDB = {
     "weight": 102,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 3230.4,
+    "daily": 2942.8,
     "kanban": 1,
     "location": "APC0101",
     "productionLine": "Colorado"
@@ -78,7 +78,7 @@ const partsDB = {
     "weight": 106,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1615.2,
+    "daily": 1471.4,
     "kanban": 1,
     "location": "APC0101",
     "productionLine": "Colorado"
@@ -90,7 +90,7 @@ const partsDB = {
     "weight": 175,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1615.2,
+    "daily": 1471.4,
     "kanban": 1,
     "location": "APC0101",
     "productionLine": "Colorado"
@@ -102,7 +102,7 @@ const partsDB = {
     "weight": 165,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1615.2,
+    "daily": 1471.4,
     "kanban": 1,
     "location": "APC0101",
     "productionLine": "Colorado"
@@ -114,7 +114,7 @@ const partsDB = {
     "weight": 70,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 808.6,
+    "daily": 734.6,
     "kanban": 1,
     "location": "APC0101",
     "productionLine": "Colorado"
@@ -126,7 +126,7 @@ const partsDB = {
     "weight": 153,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1609.6,
+    "daily": 1463.2,
     "kanban": 1,
     "location": "APC0102",
     "productionLine": "Colorado"
@@ -138,7 +138,7 @@ const partsDB = {
     "weight": 263,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 2142.6,
+    "daily": 1926.8,
     "kanban": 1,
     "location": "APC0102",
     "productionLine": "Colorado"
@@ -150,7 +150,7 @@ const partsDB = {
     "weight": 200,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 804.8,
+    "daily": 731.6,
     "kanban": 1,
     "location": "APC0102",
     "productionLine": "Colorado"
@@ -162,7 +162,7 @@ const partsDB = {
     "weight": 2791,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 303,
+    "daily": 303.8,
     "kanban": 2,
     "location": "APC0102",
     "productionLine": "Colorado"
@@ -174,7 +174,7 @@ const partsDB = {
     "weight": 819,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 808.6,
+    "daily": 734.6,
     "kanban": 1,
     "location": "APC0102",
     "productionLine": "Colorado"
@@ -186,7 +186,7 @@ const partsDB = {
     "weight": 286,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 303,
+    "daily": 303.8,
     "kanban": 1,
     "location": "APC0102",
     "productionLine": "Colorado"
@@ -198,7 +198,7 @@ const partsDB = {
     "weight": 14706,
     "piecesPerUnit": 766,
     "line": "Zipper",
-    "daily": 492,
+    "daily": 196.8,
     "kanban": 1,
     "location": "APC0103",
     "productionLine": "Zipper"
@@ -210,7 +210,7 @@ const partsDB = {
     "weight": 14760,
     "piecesPerUnit": 766,
     "line": "Zipper",
-    "daily": 57.8,
+    "daily": 27.6,
     "kanban": 1,
     "location": "APC0103",
     "productionLine": "Zipper"
@@ -222,7 +222,7 @@ const partsDB = {
     "weight": 14760,
     "piecesPerUnit": 766,
     "line": "Zipper",
-    "daily": 3018.8,
+    "daily": 3303.4,
     "kanban": 3,
     "location": "APC0103",
     "productionLine": "Zipper"
@@ -234,7 +234,7 @@ const partsDB = {
     "weight": 459,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 806.6,
+    "daily": 736.8,
     "kanban": 1,
     "location": "APC0103",
     "productionLine": "Colorado"
@@ -246,7 +246,7 @@ const partsDB = {
     "weight": 12942,
     "piecesPerUnit": 766,
     "line": "Zipper",
-    "daily": 34.4,
+    "daily": 50.2,
     "kanban": 1,
     "location": "APC0103",
     "productionLine": "Zipper"
@@ -258,7 +258,7 @@ const partsDB = {
     "weight": 220,
     "piecesPerUnit": 20,
     "line": "Zipper",
-    "daily": 12.8,
+    "daily": 0,
     "kanban": 2,
     "location": "APC0104",
     "productionLine": "Zipper"
@@ -270,7 +270,7 @@ const partsDB = {
     "weight": 220,
     "piecesPerUnit": 20,
     "line": "Zipper",
-    "daily": 596.8,
+    "daily": 313.6,
     "kanban": 2,
     "location": "APC0104",
     "productionLine": "Zipper"
@@ -282,7 +282,7 @@ const partsDB = {
     "weight": 250,
     "piecesPerUnit": 20,
     "line": "Zipper",
-    "daily": 361.6,
+    "daily": 147.2,
     "kanban": 1,
     "location": "APC0104",
     "productionLine": "Zipper"
@@ -294,7 +294,7 @@ const partsDB = {
     "weight": 250,
     "piecesPerUnit": 20,
     "line": "Zipper",
-    "daily": 502.4,
+    "daily": 292.8,
     "kanban": 2,
     "location": "APC0104",
     "productionLine": "Zipper"
@@ -306,7 +306,7 @@ const partsDB = {
     "weight": 250,
     "piecesPerUnit": 20,
     "line": "Zipper",
-    "daily": 11245.2,
+    "daily": 7638.4,
     "kanban": 5,
     "location": "APC0104",
     "productionLine": "Zipper"
@@ -318,7 +318,7 @@ const partsDB = {
     "weight": 52,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 8064,
+    "daily": 5492,
     "kanban": 1,
     "location": "APC0105",
     "productionLine": "Fix-Storage"
@@ -330,7 +330,7 @@ const partsDB = {
     "weight": 91,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 4838.4,
+    "daily": 3295.2,
     "kanban": 1,
     "location": "APC0105",
     "productionLine": "Fix-Storage"
@@ -342,7 +342,7 @@ const partsDB = {
     "weight": 377,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 1612.8,
+    "daily": 1098.4,
     "kanban": 1,
     "location": "APC0105",
     "productionLine": "Fix-Storage"
@@ -354,7 +354,7 @@ const partsDB = {
     "weight": 94,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 1612.8,
+    "daily": 1098.4,
     "kanban": 1,
     "location": "APC0105",
     "productionLine": "Fix-Storage"
@@ -366,7 +366,7 @@ const partsDB = {
     "weight": 104,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 3225.6,
+    "daily": 2196.8,
     "kanban": 1,
     "location": "APC0105",
     "productionLine": "Fix-Storage"
@@ -378,7 +378,7 @@ const partsDB = {
     "weight": 375,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 3136.8,
+    "daily": 2085,
     "kanban": 2,
     "location": "APC0106",
     "productionLine": "Fix-Storage"
@@ -390,7 +390,7 @@ const partsDB = {
     "weight": 371,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 3136.8,
+    "daily": 2085,
     "kanban": 2,
     "location": "APC0106",
     "productionLine": "Fix-Storage"
@@ -402,7 +402,7 @@ const partsDB = {
     "weight": 159,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 5860,
+    "daily": 3888,
     "kanban": 1,
     "location": "APC0106",
     "productionLine": "Fix-Storage"
@@ -414,7 +414,7 @@ const partsDB = {
     "weight": 66,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 6451.2,
+    "daily": 0,
     "kanban": 1,
     "location": "APC0106",
     "productionLine": "Fix-Storage"
@@ -426,7 +426,7 @@ const partsDB = {
     "weight": 128,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 8533.6,
+    "daily": 0,
     "kanban": 1,
     "location": "APC0106",
     "productionLine": "Fix-Storage"
@@ -438,7 +438,7 @@ const partsDB = {
     "weight": 844,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 3140.4,
+    "daily": 2062.4,
     "kanban": 5,
     "location": "APC0107",
     "productionLine": "Fix-Storage"
@@ -450,7 +450,7 @@ const partsDB = {
     "weight": 811,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 3140.4,
+    "daily": 2062.4,
     "kanban": 5,
     "location": "APC0107",
     "productionLine": "Fix-Storage"
@@ -462,7 +462,7 @@ const partsDB = {
     "weight": 124,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 3745.2,
+    "daily": 2344.4,
     "kanban": 1,
     "location": "APC0107",
     "productionLine": "Fix-Storage"
@@ -474,7 +474,7 @@ const partsDB = {
     "weight": 152,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 6127.2,
+    "daily": 4046.4,
     "kanban": 1,
     "location": "APC0107",
     "productionLine": "Fix-Storage"
@@ -486,7 +486,7 @@ const partsDB = {
     "weight": 290,
     "piecesPerUnit": 20,
     "line": "Savana",
-    "daily": 649.4,
+    "daily": 574,
     "kanban": 1,
     "location": "APC0108",
     "productionLine": "Savana"
@@ -498,7 +498,7 @@ const partsDB = {
     "weight": 324,
     "piecesPerUnit": 20,
     "line": "Savana",
-    "daily": 649.4,
+    "daily": 574,
     "kanban": 1,
     "location": "APC0108",
     "productionLine": "Savana"
@@ -510,7 +510,7 @@ const partsDB = {
     "weight": 1364,
     "piecesPerUnit": 20,
     "line": "Savana",
-    "daily": 662.6,
+    "daily": 576.2,
     "kanban": 5,
     "location": "APC0108",
     "productionLine": "Savana"
@@ -522,7 +522,7 @@ const partsDB = {
     "weight": 766,
     "piecesPerUnit": 20,
     "line": "Savana",
-    "daily": 572.8,
+    "daily": 522,
     "kanban": 2,
     "location": "APC0108",
     "productionLine": "Savana"
@@ -534,7 +534,7 @@ const partsDB = {
     "weight": 1211.4,
     "piecesPerUnit": 144,
     "line": "Misc",
-    "daily": 100.4,
+    "daily": 94.2,
     "kanban": 1,
     "location": "APC0109",
     "productionLine": "Misc"
@@ -546,7 +546,7 @@ const partsDB = {
     "weight": 486,
     "piecesPerUnit": 50,
     "line": "Velcro",
-    "daily": 1193,
+    "daily": 1177.2,
     "kanban": 1,
     "location": "APC0109",
     "productionLine": "Velcro"
@@ -558,7 +558,7 @@ const partsDB = {
     "weight": 876,
     "piecesPerUnit": 109.33,
     "line": "Velcro",
-    "daily": 5168.4,
+    "daily": 4114.6,
     "kanban": 5,
     "location": "APC0109",
     "productionLine": "Velcro"
@@ -570,7 +570,7 @@ const partsDB = {
     "weight": 441,
     "piecesPerUnit": 100,
     "line": "Velcro",
-    "daily": 66,
+    "daily": 34.2,
     "kanban": 1,
     "location": "APC0110",
     "productionLine": "Velcro"
@@ -582,7 +582,7 @@ const partsDB = {
     "weight": 360,
     "piecesPerUnit": 100,
     "line": "Velcro",
-    "daily": 3021.6,
+    "daily": 2652.8,
     "kanban": 2,
     "location": "APC0110",
     "productionLine": "Velcro"
@@ -594,7 +594,7 @@ const partsDB = {
     "weight": 3720,
     "piecesPerUnit": 144,
     "line": "Misc",
-    "daily": 472.2,
+    "daily": 307,
     "kanban": 1,
     "location": "APC0110",
     "productionLine": "Misc"
@@ -606,7 +606,7 @@ const partsDB = {
     "weight": 1790.1,
     "piecesPerUnit": 874.89,
     "line": "Misc",
-    "daily": 6587.6,
+    "daily": 0,
     "kanban": 2,
     "location": "APC0110",
     "productionLine": "Misc"
@@ -618,7 +618,7 @@ const partsDB = {
     "weight": 216,
     "piecesPerUnit": 27,
     "line": "Velcro",
-    "daily": 129.6,
+    "daily": 435.6,
     "kanban": 1,
     "location": "APC0110",
     "productionLine": "Velcro"
@@ -630,7 +630,7 @@ const partsDB = {
     "weight": 57,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 4847.6,
+    "daily": 0,
     "kanban": 1,
     "location": "APC0111",
     "productionLine": "Colorado"
@@ -642,7 +642,7 @@ const partsDB = {
     "weight": 64,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1615.2,
+    "daily": 1471.4,
     "kanban": 1,
     "location": "APC0111",
     "productionLine": "Colorado"
@@ -654,7 +654,7 @@ const partsDB = {
     "weight": 264,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 806.6,
+    "daily": 736.8,
     "kanban": 1,
     "location": "APC0111",
     "productionLine": "Colorado"
@@ -666,7 +666,7 @@ const partsDB = {
     "weight": 147,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1617.2,
+    "daily": 1469.2,
     "kanban": 1,
     "location": "APC0111",
     "productionLine": "Colorado"
@@ -678,7 +678,7 @@ const partsDB = {
     "weight": 263,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 804.8,
+    "daily": 731.6,
     "kanban": 1,
     "location": "APC0111",
     "productionLine": "Colorado"
@@ -690,7 +690,7 @@ const partsDB = {
     "weight": 32,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 4845.6,
+    "daily": 4414.2,
     "kanban": 1,
     "location": "APC0111",
     "productionLine": "Colorado"
@@ -702,7 +702,7 @@ const partsDB = {
     "weight": 122,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 303,
+    "daily": 303.8,
     "kanban": 1,
     "location": "APC0112",
     "productionLine": "Colorado"
@@ -714,7 +714,7 @@ const partsDB = {
     "weight": 284,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1615.2,
+    "daily": 1471.4,
     "kanban": 1,
     "location": "APC0112",
     "productionLine": "Colorado"
@@ -726,7 +726,7 @@ const partsDB = {
     "weight": 298,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1615.2,
+    "daily": 1471.4,
     "kanban": 1,
     "location": "APC0112",
     "productionLine": "Colorado"
@@ -738,7 +738,7 @@ const partsDB = {
     "weight": 509,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 808.6,
+    "daily": 734.6,
     "kanban": 1,
     "location": "APC0112",
     "productionLine": "Colorado"
@@ -750,7 +750,7 @@ const partsDB = {
     "weight": 91,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 804.8,
+    "daily": 731.6,
     "kanban": 1,
     "location": "APC0112",
     "productionLine": "Colorado"
@@ -762,7 +762,7 @@ const partsDB = {
     "weight": 82,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 502.8,
+    "daily": 438.4,
     "kanban": 1,
     "location": "APC0112",
     "productionLine": "Colorado"
@@ -774,7 +774,7 @@ const partsDB = {
     "weight": 12942,
     "piecesPerUnit": 766,
     "line": "Zipper",
-    "daily": 908.6,
+    "daily": 789.4,
     "kanban": 1,
     "location": "APC0113",
     "productionLine": "Zipper"
@@ -786,7 +786,7 @@ const partsDB = {
     "weight": 86,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 1613.2,
+    "daily": 1473.6,
     "kanban": 1,
     "location": "APC0113",
     "productionLine": "Colorado"
@@ -798,7 +798,7 @@ const partsDB = {
     "weight": 37,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 606,
+    "daily": 607.6,
     "kanban": 1,
     "location": "APC0113",
     "productionLine": "Colorado"
@@ -810,7 +810,7 @@ const partsDB = {
     "weight": 191,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 303,
+    "daily": 303.8,
     "kanban": 1,
     "location": "APC0113",
     "productionLine": "Colorado"
@@ -822,7 +822,7 @@ const partsDB = {
     "weight": 14760,
     "piecesPerUnit": 766,
     "line": "Zipper",
-    "daily": 181.8,
+    "daily": 113,
     "kanban": 1,
     "location": "APC0113",
     "productionLine": "Zipper"
@@ -834,7 +834,7 @@ const partsDB = {
     "weight": 14760,
     "piecesPerUnit": 766,
     "line": "Zipper",
-    "daily": 187.2,
+    "daily": 181.6,
     "kanban": 1,
     "location": "APC0113",
     "productionLine": "Zipper"
@@ -846,7 +846,7 @@ const partsDB = {
     "weight": 74,
     "piecesPerUnit": 20,
     "line": "Colorado",
-    "daily": 303,
+    "daily": 303.8,
     "kanban": 1,
     "location": "APC0113",
     "productionLine": "Colorado"
@@ -858,7 +858,7 @@ const partsDB = {
     "weight": 114,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 18430.2,
+    "daily": 12160.2,
     "kanban": 2,
     "location": "APC0114",
     "productionLine": "Fix-Storage"
@@ -870,7 +870,7 @@ const partsDB = {
     "weight": 176,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 12085.2,
+    "daily": 8012.8,
     "kanban": 2,
     "location": "APC0114",
     "productionLine": "Fix-Storage"
@@ -882,7 +882,7 @@ const partsDB = {
     "weight": 310,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 33.8,
+    "daily": 492,
     "kanban": 1,
     "location": "APC0114",
     "productionLine": "BT1 Old"
@@ -894,7 +894,7 @@ const partsDB = {
     "weight": 330,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 30.4,
+    "daily": 0,
     "kanban": 1,
     "location": "APC0114",
     "productionLine": "BT1 Old"
@@ -906,7 +906,7 @@ const partsDB = {
     "weight": 20,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 3225.6,
+    "daily": 2196.8,
     "kanban": 1,
     "location": "APC0115",
     "productionLine": "Fix-Storage"
@@ -918,7 +918,7 @@ const partsDB = {
     "weight": 40,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 3225.6,
+    "daily": 2196.8,
     "kanban": 1,
     "location": "APC0115",
     "productionLine": "Fix-Storage"
@@ -930,7 +930,7 @@ const partsDB = {
     "weight": 98,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 3225.6,
+    "daily": 2196.8,
     "kanban": 1,
     "location": "APC0115",
     "productionLine": "Fix-Storage"
@@ -942,7 +942,7 @@ const partsDB = {
     "weight": 57,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 3140.4,
+    "daily": 2062.4,
     "kanban": 1,
     "location": "APC0115",
     "productionLine": "Fix-Storage"
@@ -954,7 +954,7 @@ const partsDB = {
     "weight": 143,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 153.6,
+    "daily": 78.4,
     "kanban": 1,
     "location": "APC0115",
     "productionLine": "Fix-Storage"
@@ -966,7 +966,7 @@ const partsDB = {
     "weight": 162,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 302.4,
+    "daily": 156.8,
     "kanban": 1,
     "location": "APC0116",
     "productionLine": "Fix-Storage"
@@ -978,7 +978,7 @@ const partsDB = {
     "weight": 156,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 302.4,
+    "daily": 156.8,
     "kanban": 1,
     "location": "APC0116",
     "productionLine": "Fix-Storage"
@@ -990,7 +990,7 @@ const partsDB = {
     "weight": 98,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 617.6,
+    "daily": 313.6,
     "kanban": 1,
     "location": "APC0116",
     "productionLine": "Fix-Storage"
@@ -1002,7 +1002,7 @@ const partsDB = {
     "weight": 142,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 154.4,
+    "daily": 78.4,
     "kanban": 1,
     "location": "APC0116",
     "productionLine": "Fix-Storage"
@@ -1014,7 +1014,7 @@ const partsDB = {
     "weight": 127,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 154.4,
+    "daily": 78.4,
     "kanban": 1,
     "location": "APC0116",
     "productionLine": "Fix-Storage"
@@ -1026,7 +1026,7 @@ const partsDB = {
     "weight": 222,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 3225.6,
+    "daily": 2196.8,
     "kanban": 2,
     "location": "APC0116",
     "productionLine": "Fix-Storage"
@@ -1038,7 +1038,7 @@ const partsDB = {
     "weight": 56,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 6030,
+    "daily": 0,
     "kanban": 1,
     "location": "APC0117",
     "productionLine": "Fix-Storage"
@@ -1050,7 +1050,7 @@ const partsDB = {
     "weight": 121,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 1482,
+    "daily": 972,
     "kanban": 1,
     "location": "APC0117",
     "productionLine": "Fix-Storage"
@@ -1062,7 +1062,7 @@ const partsDB = {
     "weight": 93,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 1293.6,
+    "daily": 972,
     "kanban": 1,
     "location": "APC0117",
     "productionLine": "Fix-Storage"
@@ -1074,7 +1074,7 @@ const partsDB = {
     "weight": 125,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 3880.8,
+    "daily": 2916,
     "kanban": 2,
     "location": "APC0117",
     "productionLine": "Fix-Storage"
@@ -1086,7 +1086,7 @@ const partsDB = {
     "weight": 142,
     "piecesPerUnit": 20,
     "line": "Fix-Storage",
-    "daily": 2587.2,
+    "daily": 1944,
     "kanban": 1,
     "location": "APC0117",
     "productionLine": "Fix-Storage"
@@ -1098,7 +1098,7 @@ const partsDB = {
     "weight": 60,
     "piecesPerUnit": 20,
     "line": "Misc",
-    "daily": 1298.8,
+    "daily": 1148,
     "kanban": 1,
     "location": "APC0118",
     "productionLine": "Misc"
@@ -1110,7 +1110,7 @@ const partsDB = {
     "weight": 103,
     "piecesPerUnit": 500,
     "line": "Misc",
-    "daily": 572.8,
+    "daily": 522,
     "kanban": 1,
     "location": "APC0118",
     "productionLine": "Misc"
@@ -1122,7 +1122,7 @@ const partsDB = {
     "weight": 316,
     "piecesPerUnit": 20,
     "line": "Misc",
-    "daily": 572.8,
+    "daily": 522,
     "kanban": 2,
     "location": "APC0118",
     "productionLine": "Misc"
@@ -1134,7 +1134,7 @@ const partsDB = {
     "weight": 438,
     "piecesPerUnit": 1000,
     "line": "Misc",
-    "daily": 459.2,
+    "daily": 420.6,
     "kanban": 1,
     "location": "APC0118",
     "productionLine": "Misc"
@@ -1146,7 +1146,7 @@ const partsDB = {
     "weight": 396,
     "piecesPerUnit": 1000,
     "line": "Misc",
-    "daily": 1582,
+    "daily": 1458.4,
     "kanban": 1,
     "location": "APC0118",
     "productionLine": "Misc"
@@ -1158,7 +1158,7 @@ const partsDB = {
     "weight": 417,
     "piecesPerUnit": 20,
     "line": "Misc",
-    "daily": 13167.2,
+    "daily": 0,
     "kanban": 1,
     "location": "APC0118",
     "productionLine": "Misc"
@@ -1170,7 +1170,7 @@ const partsDB = {
     "weight": 342,
     "piecesPerUnit": 20,
     "line": "Misc",
-    "daily": 11568,
+    "daily": 0,
     "kanban": 1,
     "location": "APC0118",
     "productionLine": "Misc"
@@ -1182,7 +1182,7 @@ const partsDB = {
     "weight": 342,
     "piecesPerUnit": 20,
     "line": "Misc",
-    "daily": 1377.6,
+    "daily": 588,
     "kanban": 1,
     "location": "APC0118",
     "productionLine": "Misc"
@@ -1194,7 +1194,7 @@ const partsDB = {
     "weight": 129,
     "piecesPerUnit": 20,
     "line": "Savana",
-    "daily": 662.6,
+    "daily": 576.2,
     "kanban": 1,
     "location": "APC0119",
     "productionLine": "Savana"
@@ -1206,7 +1206,7 @@ const partsDB = {
     "weight": 12,
     "piecesPerUnit": 20,
     "line": "Misc",
-    "daily": 132,
+    "daily": 82,
     "kanban": 1,
     "location": "APC0119",
     "productionLine": "Misc"
@@ -1218,7 +1218,7 @@ const partsDB = {
     "weight": 12,
     "piecesPerUnit": 20,
     "line": "Misc",
-    "daily": 42,
+    "daily": 20,
     "kanban": 1,
     "location": "APC0119",
     "productionLine": "Misc"
@@ -1242,7 +1242,7 @@ const partsDB = {
     "weight": 12,
     "piecesPerUnit": 20,
     "line": "Misc",
-    "daily": 369,
+    "daily": 142.8,
     "kanban": 1,
     "location": "APC0119",
     "productionLine": "Misc"
@@ -1254,7 +1254,7 @@ const partsDB = {
     "weight": 12,
     "piecesPerUnit": 20,
     "line": "Misc",
-    "daily": 123.8,
+    "daily": 125.8,
     "kanban": 1,
     "location": "APC0119",
     "productionLine": "Misc"
@@ -1266,7 +1266,7 @@ const partsDB = {
     "weight": 12,
     "piecesPerUnit": 20,
     "line": "Misc",
-    "daily": 3800.4,
+    "daily": 3748,
     "kanban": 1,
     "location": "APC0119",
     "productionLine": "Misc"
@@ -1278,7 +1278,7 @@ const partsDB = {
     "weight": 12,
     "piecesPerUnit": 20,
     "line": "Misc",
-    "daily": 90.4,
+    "daily": 986,
     "kanban": 1,
     "location": "APC0119",
     "productionLine": "Misc"
@@ -1290,7 +1290,7 @@ const partsDB = {
     "weight": 973,
     "piecesPerUnit": 1000,
     "line": "Misc",
-    "daily": 2157.2,
+    "daily": 2378.2,
     "kanban": 2,
     "location": "APC0119",
     "productionLine": "Misc"
@@ -1302,7 +1302,7 @@ const partsDB = {
     "weight": 369,
     "piecesPerUnit": 50,
     "line": "Velcro",
-    "daily": 1891.8,
+    "daily": 1723.4,
     "kanban": 2,
     "location": "APC0120",
     "productionLine": "Velcro"
@@ -1314,7 +1314,7 @@ const partsDB = {
     "weight": 387,
     "piecesPerUnit": 50,
     "line": "Velcro",
-    "daily": 1111.2,
+    "daily": 800.4,
     "kanban": 2,
     "location": "APC0120",
     "productionLine": "Velcro"
@@ -1326,7 +1326,7 @@ const partsDB = {
     "weight": 522,
     "piecesPerUnit": 50,
     "line": "Velcro",
-    "daily": 2544,
+    "daily": 1688.8,
     "kanban": 2,
     "location": "APC0120",
     "productionLine": "Velcro"
@@ -1338,7 +1338,7 @@ const partsDB = {
     "weight": 720,
     "piecesPerUnit": 100,
     "line": "Velcro",
-    "daily": 1318.4,
+    "daily": 880.2,
     "kanban": 2,
     "location": "APC0120",
     "productionLine": "Velcro"
@@ -1350,7 +1350,7 @@ const partsDB = {
     "weight": 150,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 5063.6,
+    "daily": 5196.4,
     "kanban": 1,
     "location": "APC0201",
     "productionLine": "SUV"
@@ -1362,7 +1362,7 @@ const partsDB = {
     "weight": 132,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 5352.8,
+    "daily": 5499.6,
     "kanban": 1,
     "location": "APC0201",
     "productionLine": "SUV"
@@ -1374,7 +1374,7 @@ const partsDB = {
     "weight": 113,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 7595.4,
+    "daily": 0,
     "kanban": 1,
     "location": "APC0201",
     "productionLine": "SUV"
@@ -1386,7 +1386,7 @@ const partsDB = {
     "weight": 419,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 2335.2,
+    "daily": 2306.6,
     "kanban": 1,
     "location": "APC0201",
     "productionLine": "SUV"
@@ -1398,7 +1398,7 @@ const partsDB = {
     "weight": 1104,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 459.2,
+    "daily": 420.6,
     "kanban": 1,
     "location": "APC0201",
     "productionLine": "SUV"
@@ -1410,7 +1410,7 @@ const partsDB = {
     "weight": 7,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 5447.6,
+    "daily": 5429.2,
     "kanban": 2,
     "location": "APC0202",
     "productionLine": "SUV"
@@ -1422,7 +1422,7 @@ const partsDB = {
     "weight": 109,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 5352.8,
+    "daily": 5499.6,
     "kanban": 1,
     "location": "APC0202",
     "productionLine": "SUV"
@@ -1434,7 +1434,7 @@ const partsDB = {
     "weight": 98,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 4985.8,
+    "daily": 0,
     "kanban": 1,
     "location": "APC0202",
     "productionLine": "SUV"
@@ -1446,7 +1446,7 @@ const partsDB = {
     "weight": 143,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 435,
+    "daily": 434,
     "kanban": 1,
     "location": "APC0202",
     "productionLine": "SUV"
@@ -1458,7 +1458,7 @@ const partsDB = {
     "weight": 280,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 904.4,
+    "daily": 836.4,
     "kanban": 1,
     "location": "APC0202",
     "productionLine": "SUV"
@@ -1470,7 +1470,7 @@ const partsDB = {
     "weight": 344,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 2048.4,
+    "daily": 1878.2,
     "kanban": 1,
     "location": "APC0202",
     "productionLine": "SUV"
@@ -1494,7 +1494,7 @@ const partsDB = {
     "weight": 129,
     "piecesPerUnit": 20,
     "line": "Misc",
-    "daily": 5348,
+    "daily": 0,
     "kanban": 3,
     "location": "APC0203",
     "productionLine": "Misc"
@@ -1506,19 +1506,19 @@ const partsDB = {
     "weight": null,
     "piecesPerUnit": 0,
     "line": "Misc",
-    "daily": 199.8,
+    "daily": 0,
     "kanban": 1,
     "location": "APC0203",
     "productionLine": "Misc"
   },
   "L001433340NCPAA": {
     "description": "RET ARROW D2384 25X50MM",
-    "pack": 0,
+    "pack": 3000,
     "cost": 0.0157,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 70,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 1972,
     "kanban": 1,
     "location": "APC0204",
     "productionLine": "T2X"
@@ -1527,142 +1527,142 @@ const partsDB = {
     "description": "RET FLAT STRIP 5258",
     "pack": 0,
     "cost": 0.026,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 90,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 10,
     "kanban": 1,
     "location": "APC0204",
     "productionLine": "T2X"
   },
   "L001698194NCPAA": {
     "description": "FLAT RET D5258 W30 L230",
-    "pack": 0,
+    "pack": 2300,
     "cost": 0.0351,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 100,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 10,
     "kanban": 1,
     "location": "APC0204",
     "productionLine": "T2X"
   },
   "L001701146NCPAA": {
     "description": "RET FS 5258 25MMX270MM",
-    "pack": 0,
+    "pack": 2000,
     "cost": 0.0293,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 120,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 10,
     "kanban": 1,
     "location": "APC0204",
     "productionLine": "T2X"
   },
   "L001701757NCPAA": {
     "description": "RET TIEDOWN 5258 30X250M",
-    "pack": 0,
+    "pack": 2000,
     "cost": 0.0278,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 110,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 10,
     "kanban": 1,
     "location": "APC0204",
     "productionLine": "T2X"
   },
   "L003455760NCPAE": {
     "description": "STFR 321.4x269.9x1.5MM",
-    "pack": 0,
+    "pack": 250,
     "cost": 0.3552,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 2290,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 474.8,
     "kanban": 1,
     "location": "APC0204",
     "productionLine": "T2X"
   },
   "L001702050NCPAA": {
     "description": "FLAP-RET 5258 W30,L270MM",
-    "pack": 0,
+    "pack": 1200,
     "cost": 0.0301,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 120,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 10,
     "kanban": 1,
     "location": "APC0205",
     "productionLine": "T2X"
   },
   "L001706672NCPAA": {
     "description": "RET FLAT STRIP 25X255MM",
-    "pack": 0,
+    "pack": 2000,
     "cost": 0.0277,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 110,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 20,
     "kanban": 1,
     "location": "APC0205",
     "productionLine": "T2X"
   },
   "L003455759NCPAF": {
     "description": "TIEDOW PP 5258 30X695MM",
-    "pack": 0,
+    "pack": 250,
     "cost": 0.1099,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 290,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 946,
     "kanban": 1,
     "location": "APC0205",
     "productionLine": "T2X"
   },
   "L003461757NCPAA": {
     "description": "RET ARROW 2384 25X20MM",
-    "pack": 0,
+    "pack": 2000,
     "cost": 0.0066,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 30,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 493,
     "kanban": 1,
     "location": "APC0205",
     "productionLine": "T2X"
   },
   "L003941829HXWAB": {
     "description": "ZIPPER 5/8 W32.2 L565MM",
-    "pack": 0,
+    "pack": 1000,
     "cost": 0.33795,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 260,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 1946,
     "kanban": 1,
     "location": "APC0205",
     "productionLine": "T2X"
   },
   "L003987906NCPAA": {
     "description": "RET TIEDOW 5258 25X315MM",
-    "pack": 0,
+    "pack": 1500,
     "cost": 0.0337,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 140,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 10,
     "kanban": 1,
     "location": "APC0205",
     "productionLine": "T2X"
   },
   "L004256807NCPAA": {
     "description": "TIEDOW PP 5258 20X135MM",
-    "pack": 0,
+    "pack": 3000,
     "cost": 0.0149,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 50,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 1032,
     "kanban": 1,
     "location": "APC0205",
     "productionLine": "T2X"
@@ -1674,7 +1674,7 @@ const partsDB = {
     "weight": 960,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 34,
+    "daily": 491,
     "kanban": 1,
     "location": "APC0206",
     "productionLine": "BT1 Old"
@@ -1686,19 +1686,19 @@ const partsDB = {
     "weight": 810,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 34,
+    "daily": 0,
     "kanban": 1,
     "location": "APC0206",
     "productionLine": "BT1 Old"
   },
   "L002187742HXWAB": {
     "description": "ZIPPER 5/8 W32.5 L535MM",
-    "pack": 0,
+    "pack": 1000,
     "cost": 0.29254,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 250,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 20,
     "kanban": 1,
     "location": "APC0206",
     "productionLine": "T2X"
@@ -1710,7 +1710,7 @@ const partsDB = {
     "weight": null,
     "piecesPerUnit": 0,
     "line": "T2X",
-    "daily": 0,
+    "daily": 3.6,
     "kanban": 1,
     "location": "APC0206",
     "productionLine": "T2X"
@@ -1722,7 +1722,7 @@ const partsDB = {
     "weight": 216,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 24.8,
+    "daily": 0,
     "kanban": 1,
     "location": "APC0206",
     "productionLine": "BT1"
@@ -1734,7 +1734,7 @@ const partsDB = {
     "weight": 279,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 24.8,
+    "daily": 0,
     "kanban": 1,
     "location": "APC0206",
     "productionLine": "BT1"
@@ -1746,7 +1746,7 @@ const partsDB = {
     "weight": 46,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 49.6,
+    "daily": 0,
     "kanban": 1,
     "location": "APC0206",
     "productionLine": "BT1"
@@ -1758,7 +1758,7 @@ const partsDB = {
     "weight": 123,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 12.4,
+    "daily": 0,
     "kanban": 1,
     "location": "APC0206",
     "productionLine": "BT1"
@@ -1770,7 +1770,7 @@ const partsDB = {
     "weight": 118,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 24.8,
+    "daily": 0,
     "kanban": 1,
     "location": "APC0206",
     "productionLine": "BT1"
@@ -1782,7 +1782,7 @@ const partsDB = {
     "weight": 114,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 12.4,
+    "daily": 0,
     "kanban": 1,
     "location": "APC0206",
     "productionLine": "BT1"
@@ -1794,7 +1794,7 @@ const partsDB = {
     "weight": 46,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 12.4,
+    "daily": 0,
     "kanban": 1,
     "location": "APC0206",
     "productionLine": "BT1"
@@ -1806,7 +1806,7 @@ const partsDB = {
     "weight": 342,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 2723.8,
+    "daily": 2714.6,
     "kanban": 2,
     "location": "APC0211",
     "productionLine": "SUV"
@@ -1818,7 +1818,7 @@ const partsDB = {
     "weight": 348,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 445.2,
+    "daily": 428.4,
     "kanban": 2,
     "location": "APC0211",
     "productionLine": "SUV"
@@ -1830,7 +1830,7 @@ const partsDB = {
     "weight": 465,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 2048.4,
+    "daily": 1878.2,
     "kanban": 2,
     "location": "APC0211",
     "productionLine": "SUV"
@@ -1842,7 +1842,7 @@ const partsDB = {
     "weight": 1145,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 459.2,
+    "daily": 420.6,
     "kanban": 3,
     "location": "APC0211",
     "productionLine": "SUV"
@@ -1854,7 +1854,7 @@ const partsDB = {
     "weight": 39,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 904.4,
+    "daily": 836.4,
     "kanban": 1,
     "location": "APC0212",
     "productionLine": "SUV"
@@ -1866,7 +1866,7 @@ const partsDB = {
     "weight": 140,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 459.2,
+    "daily": 420.6,
     "kanban": 1,
     "location": "APC0212",
     "productionLine": "SUV"
@@ -1878,7 +1878,7 @@ const partsDB = {
     "weight": 317,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 2309.4,
+    "daily": 2317.4,
     "kanban": 1,
     "location": "APC0212",
     "productionLine": "SUV"
@@ -1890,7 +1890,7 @@ const partsDB = {
     "weight": 850,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 435,
+    "daily": 434,
     "kanban": 2,
     "location": "APC0212",
     "productionLine": "SUV"
@@ -1902,7 +1902,7 @@ const partsDB = {
     "weight": 135,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 2309.4,
+    "daily": 2317.4,
     "kanban": 1,
     "location": "APC0212",
     "productionLine": "SUV"
@@ -1914,7 +1914,7 @@ const partsDB = {
     "weight": 352,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 435,
+    "daily": 434,
     "kanban": 2,
     "location": "APC0212",
     "productionLine": "SUV"
@@ -1926,7 +1926,7 @@ const partsDB = {
     "weight": 100,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 1377.6,
+    "daily": 1261.8,
     "kanban": 1,
     "location": "APC0213",
     "productionLine": "SUV"
@@ -1938,7 +1938,7 @@ const partsDB = {
     "weight": 110,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 427.2,
+    "daily": 266.4,
     "kanban": 1,
     "location": "APC0213",
     "productionLine": "SUV"
@@ -1950,7 +1950,7 @@ const partsDB = {
     "weight": 113,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 213.6,
+    "daily": 133.2,
     "kanban": 1,
     "location": "APC0213",
     "productionLine": "SUV"
@@ -1962,31 +1962,31 @@ const partsDB = {
     "weight": 151,
     "piecesPerUnit": 20,
     "line": "SUV",
-    "daily": 427.2,
+    "daily": 266.4,
     "kanban": 1,
     "location": "APC0213",
     "productionLine": "SUV"
   },
   "L003455772NCPAA": {
     "description": "RET TIEDOW 5258 30X300MM",
-    "pack": 0,
+    "pack": 1500,
     "cost": 0.033,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 120,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 486,
     "kanban": 1,
     "location": "APC0213",
     "productionLine": "T2X"
   },
   "L003455773NCPAA": {
     "description": "RET TIEDOW 5258 30X285MM",
-    "pack": 0,
+    "pack": 2000,
     "cost": 0.0314,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 120,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 973,
     "kanban": 1,
     "location": "APC0213",
     "productionLine": "T2X"
@@ -1996,9 +1996,9 @@ const partsDB = {
     "pack": 0,
     "cost": 0.0288,
     "weight": null,
-    "piecesPerUnit": 0,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 3.6,
     "kanban": 1,
     "location": "APC0214",
     "productionLine": "T2X"
@@ -2008,19 +2008,19 @@ const partsDB = {
     "pack": 0,
     "cost": 0.0294,
     "weight": null,
-    "piecesPerUnit": 0,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 3.6,
     "kanban": 1,
     "location": "APC0214",
     "productionLine": "T2X"
   },
   "L001701758NCPAA": {
     "description": "FLAP-RET 5258 W30,L290MM",
-    "pack": 0,
+    "pack": 1500,
     "cost": 0.0323,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 130,
+    "piecesPerUnit": 20,
     "line": "T2X",
     "daily": 0,
     "kanban": 1,
@@ -2029,108 +2029,108 @@ const partsDB = {
   },
   "L003572083NCPAD": {
     "description": "TIEDOW 5258 30X175MM",
-    "pack": 0,
+    "pack": 2500,
     "cost": 0.0258,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 70,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 536,
     "kanban": 1,
     "location": "APC0214",
     "productionLine": "T2X"
   },
   "L003784687NCPAA": {
     "description": "RET TIEDOWN 5258 30X430M",
-    "pack": 0,
+    "pack": 1000,
     "cost": 0.0474,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 190,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 1946,
     "kanban": 1,
     "location": "APC0214",
     "productionLine": "T2X"
   },
   "L003823725NCPAC": {
     "description": "TIEDOW PP 5258 30X175MM",
-    "pack": 0,
+    "pack": 2500,
     "cost": 0.0258,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 70,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 536,
     "kanban": 1,
     "location": "APC0214",
     "productionLine": "T2X"
   },
   "L003835893NCPAA": {
     "description": "TIEDOW 5258 30X220MM",
-    "pack": 0,
+    "pack": 1200,
     "cost": 0.0242,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 100,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 104,
     "kanban": 1,
     "location": "APC0215",
     "productionLine": "T2X"
   },
   "L003835894NCPAA": {
     "description": "TIEDOW 5258 30X310MM",
-    "pack": 0,
+    "pack": 1500,
     "cost": 0.0351,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 140,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 104,
     "kanban": 1,
     "location": "APC0215",
     "productionLine": "T2X"
   },
   "L003859081NCPAA": {
     "description": "TIEDOWN 5258 30X390MM",
-    "pack": 0,
+    "pack": 1300,
     "cost": 0.043,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 170,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 20,
     "kanban": 1,
     "location": "APC0215",
     "productionLine": "T2X"
   },
   "L003859082NCPAA": {
     "description": "TIEDOWN 5258 30X260MM",
-    "pack": 0,
+    "pack": 2000,
     "cost": 0.0286,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 110,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 5,
     "kanban": 1,
     "location": "APC0215",
     "productionLine": "T2X"
   },
   "L003941826NCPAA": {
     "description": "RET TIEDWN 5258 30X265MM",
-    "pack": 0,
+    "pack": 2000,
     "cost": 0.0292,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 120,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 973,
     "kanban": 1,
     "location": "APC0215",
     "productionLine": "T2X"
   },
   "L003941828NCPAA": {
     "description": "RET TIEDWN 5258 30X255MM",
-    "pack": 0,
+    "pack": 2000,
     "cost": 0.0281,
-    "weight": null,
-    "piecesPerUnit": 0,
+    "weight": 110,
+    "piecesPerUnit": 20,
     "line": "T2X",
-    "daily": 0,
+    "daily": 1285,
     "kanban": 1,
     "location": "APC0215",
     "productionLine": "T2X"
@@ -2142,7 +2142,7 @@ const partsDB = {
     "weight": 500,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 12.4,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2154,7 +2154,7 @@ const partsDB = {
     "weight": 102,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 51.2,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2166,7 +2166,7 @@ const partsDB = {
     "weight": 108,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 25.6,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2178,7 +2178,7 @@ const partsDB = {
     "weight": 132,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 24.8,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2190,7 +2190,7 @@ const partsDB = {
     "weight": 150,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 37.2,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2202,7 +2202,7 @@ const partsDB = {
     "weight": 486,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 12.4,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2214,7 +2214,7 @@ const partsDB = {
     "weight": 76,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 12.4,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2226,7 +2226,7 @@ const partsDB = {
     "weight": 2033,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 12.4,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2238,7 +2238,7 @@ const partsDB = {
     "weight": 86,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 74.4,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2250,7 +2250,7 @@ const partsDB = {
     "weight": 86,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 24.8,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2262,7 +2262,7 @@ const partsDB = {
     "weight": 38,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 24.8,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2274,7 +2274,7 @@ const partsDB = {
     "weight": 261,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 13.2,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2286,7 +2286,7 @@ const partsDB = {
     "weight": 225,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 26.4,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2298,7 +2298,7 @@ const partsDB = {
     "weight": 136,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 51.2,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2310,7 +2310,7 @@ const partsDB = {
     "weight": 202,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 37.2,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2322,7 +2322,7 @@ const partsDB = {
     "weight": 55,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 12.4,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2334,7 +2334,7 @@ const partsDB = {
     "weight": 103,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 136,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2346,7 +2346,7 @@ const partsDB = {
     "weight": 290,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 49.6,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2358,7 +2358,7 @@ const partsDB = {
     "weight": 100,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 12.4,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2370,7 +2370,7 @@ const partsDB = {
     "weight": 36,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 102,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2382,7 +2382,7 @@ const partsDB = {
     "weight": 257,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 12.4,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2394,7 +2394,7 @@ const partsDB = {
     "weight": 384,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 12.4,
+    "daily": 0,
     "kanban": 2,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2406,7 +2406,7 @@ const partsDB = {
     "weight": 348,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 12.4,
+    "daily": 0,
     "kanban": 2,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2418,7 +2418,7 @@ const partsDB = {
     "weight": 226,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 12.4,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2430,7 +2430,7 @@ const partsDB = {
     "weight": 220,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 25.6,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2442,7 +2442,7 @@ const partsDB = {
     "weight": 50,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 12.4,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2454,7 +2454,7 @@ const partsDB = {
     "weight": 69,
     "piecesPerUnit": 20,
     "line": "BT1",
-    "daily": 12.4,
+    "daily": 0,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1"
@@ -2466,7 +2466,7 @@ const partsDB = {
     "weight": 170,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 0,
+    "daily": 2901,
     "kanban": 0,
     "location": "BODPATIO",
     "productionLine": "BT1 Old"
@@ -2478,7 +2478,7 @@ const partsDB = {
     "weight": 27,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 34,
+    "daily": 0,
     "kanban": 0,
     "location": "BODPATIO",
     "productionLine": "BT1 Old"
@@ -2490,7 +2490,7 @@ const partsDB = {
     "weight": 56,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 0,
+    "daily": 2465,
     "kanban": 0,
     "location": "BODPATIO",
     "productionLine": "BT1 Old"
@@ -2502,7 +2502,7 @@ const partsDB = {
     "weight": 121,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 0,
+    "daily": 2465,
     "kanban": 0,
     "location": "BODPATIO",
     "productionLine": "BT1 Old"
@@ -2514,7 +2514,7 @@ const partsDB = {
     "weight": 128,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 204,
+    "daily": 0,
     "kanban": 0,
     "location": "BODPATIO",
     "productionLine": "BT1 Old"
@@ -2526,7 +2526,7 @@ const partsDB = {
     "weight": 93,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 34,
+    "daily": 0,
     "kanban": 0,
     "location": "BODPATIO",
     "productionLine": "BT1 Old"
@@ -2538,7 +2538,7 @@ const partsDB = {
     "weight": 142,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 68,
+    "daily": 0,
     "kanban": 0,
     "location": "BODPATIO",
     "productionLine": "BT1 Old"
@@ -2550,7 +2550,7 @@ const partsDB = {
     "weight": 124,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 34,
+    "daily": 0,
     "kanban": 0,
     "location": "BODPATIO",
     "productionLine": "BT1 Old"
@@ -2562,7 +2562,7 @@ const partsDB = {
     "weight": 152,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 68,
+    "daily": 0,
     "kanban": 0,
     "location": "BODPATIO",
     "productionLine": "BT1 Old"
@@ -2574,7 +2574,7 @@ const partsDB = {
     "weight": 330,
     "piecesPerUnit": 20,
     "line": "BT1 Old",
-    "daily": 6.2,
+    "daily": 492,
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1 Old"
@@ -2602,6 +2602,66 @@ const partsDB = {
     "kanban": 1,
     "location": "BODPATIO",
     "productionLine": "BT1 Old"
+  },
+  "L001506374LP2AA": {
+    "description": "ISO CHILD BUTTN 16MM LP2",
+    "pack": 1000,
+    "cost": 0.181,
+    "weight": null,
+    "piecesPerUnit": 20,
+    "line": "Colorado",
+    "daily": 67.6,
+    "kanban": 1,
+    "location": "APC0214",
+    "productionLine": "Colorado"
+  },
+  "L003455771NCPAA": {
+    "description": "RET TIEDOW 5258 30X315MM",
+    "pack": 1500,
+    "cost": 0.0347,
+    "weight": null,
+    "piecesPerUnit": 20,
+    "line": "T2X",
+    "daily": 0,
+    "kanban": 1,
+    "location": "APC0214",
+    "productionLine": "T2X"
+  },
+  "L003688837NCPAB": {
+    "description": "LABEL SAFPO CNT 104X48MM",
+    "pack": 1000,
+    "cost": 0.2532,
+    "weight": null,
+    "piecesPerUnit": 20,
+    "line": "Colorado",
+    "daily": 13.2,
+    "kanban": 1,
+    "location": "APC0214",
+    "productionLine": "Colorado"
+  },
+  "L003688838NCPAB": {
+    "description": "LABEL SAFETY POL 56X48MM",
+    "pack": 1000,
+    "cost": 0.145,
+    "weight": null,
+    "piecesPerUnit": 20,
+    "line": "Colorado",
+    "daily": 13.2,
+    "kanban": 1,
+    "location": "APC0214",
+    "productionLine": "Colorado"
+  },
+  "L003688839NCPAB": {
+    "description": "LABEL SAFPOL LH 104X48MM",
+    "pack": 1000,
+    "cost": 0.2532,
+    "weight": null,
+    "piecesPerUnit": 20,
+    "line": "Colorado",
+    "daily": 13.2,
+    "kanban": 1,
+    "location": "APC0214",
+    "productionLine": "Colorado"
   }
 };
 

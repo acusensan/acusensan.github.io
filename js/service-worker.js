@@ -3,7 +3,7 @@
 /*
  * Change VERSION every time updated website files are deployed.
  */
-const VERSION = "2026.09.03.2";
+const VERSION = "2026.11.05.1";
 const STATIC_CACHE = `static-${VERSION}`;
 const DYNAMIC_CACHE = `dynamic-${VERSION}`;
 const MAX_DYNAMIC_CACHE_ITEMS = 50;
