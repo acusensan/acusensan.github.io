@@ -2612,7 +2612,7 @@ const partsDB = {
     "line": "Colorado",
     "daily": 67.6,
     "kanban": 1,
-    "location": "APC0214",
+    "location": "APC0203",
     "productionLine": "Colorado"
   },
   "L003455771NCPAA": {
@@ -2624,7 +2624,7 @@ const partsDB = {
     "line": "T2X",
     "daily": 0,
     "kanban": 1,
-    "location": "APC0214",
+    "location": "APC0203",
     "productionLine": "T2X"
   },
   "L003688837NCPAB": {
@@ -2636,7 +2636,7 @@ const partsDB = {
     "line": "Colorado",
     "daily": 13.2,
     "kanban": 1,
-    "location": "APC0214",
+    "location": "APC0203",
     "productionLine": "Colorado"
   },
   "L003688838NCPAB": {
@@ -2648,7 +2648,7 @@ const partsDB = {
     "line": "Colorado",
     "daily": 13.2,
     "kanban": 1,
-    "location": "APC0214",
+    "location": "APC0203",
     "productionLine": "Colorado"
   },
   "L003688839NCPAB": {
@@ -2660,7 +2660,7 @@ const partsDB = {
     "line": "Colorado",
     "daily": 13.2,
     "kanban": 1,
-    "location": "APC0214",
+    "location": "APC0203",
     "productionLine": "Colorado"
   }
 };
